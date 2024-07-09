@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from 'react';
+import { HTMLEditElement } from '../utils/type'
 
 /**
  * Хук для работы с формой
@@ -8,16 +9,10 @@ import { useState, ChangeEvent } from 'react';
 export function useForm<T>(inputValues: T) {
   const [values, setValues] = useState(inputValues);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLEditElement >) => {
     const { value, name } = event.target;
     setValues({ ...values, [name]: value });
   };
-
-  /*const handleChangeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = event.target;
-    setValues({ ...values, [name]: value });
-  };*/
-
 
   return {
     values,
