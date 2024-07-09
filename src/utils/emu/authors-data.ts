@@ -1,6 +1,6 @@
-import { Author, AboutList } from "./type";
+import { Author } from "../type";
 
-export const authors: Author[] = [
+export let authorsCur: Author[] = [
     { id: 68, name: 'Адлер Мортимер' },
     { id: 90, name: 'Бивор Энтони' },
     { id: 116, name: 'Бушков Алекснадр' },
@@ -27,4 +27,17 @@ export const authors: Author[] = [
     { id: 80, name: 'Чехов А.П.' }
 ];
 
+export function setName(id: number, name: string) {
+    authorsCur=[...authorsCur.filter(el=>el.id!=id), {id,name}];//.find(el=>el.id===id)!.name=name;
+    authorsCur.sort((a, b) => (a.name > b.name)? 1 : ((b.name > a.name) ? -1 : 0));
+}
 
+export function addAuthor(name: string) {
+    const maxIdAuthor=authorsCur.reduce((acc, curr) => acc.id > curr.id ? acc : curr);
+    authorsCur=[...authorsCur, {id: maxIdAuthor.id+1,name}];//.find(el=>el.id===id)!.name=name;
+    authorsCur.sort((a, b) => (a.name > b.name)? 1 : ((b.name > a.name) ? -1 : 0));
+}
+
+export function delAuthor(id: number) {
+    authorsCur=[...authorsCur.filter(el=>el.id!=id)];//.find(el=>el.id===id)!.name=name;
+}

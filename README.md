@@ -1,9 +1,54 @@
-# Getting Started with Create React App
+# Назначение проекта
 
-Проект является прототипом публичной базы знания, основанной на базе метода ZettelKasten.
+Проект является прототипом прототипа (заготовкой)
+публичной базы знаний, основанной на модифицированной концепции
+[ZettelKasten](https://ru.wikipedia.org/wiki/%D0%A6%D0%B5%D1%82%D1%82%D0%B5%D0%BB%D1%8C%D0%BA%D0%B0%D1%81%D1%82%D0%B5%D0%BD).
 
+О теоритечском аспекте можно почитать на нашем [корпоративном блоге в Habr](https://habr.com/ru/companies/lumanbox/articles/).
+Администрация Habr признала наш проект интересным и общественно-полезным,
+поэтому бесплатно организовала корпоративный блог на своем ресурсе.
 
-## Available Scripts
+Примерный дизайн проекта доступен на [Figma](https://www.figma.com/community/file/1387406554424822333).
+Поскольку это прототип прототипа, то всякие Pixel Perfect смысла не имеют,
+так как проект будет еще сотни раз изменяться.
+Тут главное - правильная архитектура проекта,
+которая должна быть сделана "на вырост". На очень
+большой вырост. Поскольку сейчас "ключевые слова" и "авторы" -
+это почти идентичные компоненты. Но через пару спринтов
+они будут кардинально отличаться друг от друга.
+
+Структура проекта и подход к программированию были честно скопированы с проекта Yandex-практикум "Stellar-Burger".
+
+Последняя версия проекта задеплоена на http://www.piaris.net:8033/
+Переходить нужно четко по этой ссылке, поскольку я еще новичек в деплоях и это мой первый деплой React приложений.
+
+Backend в проекте эмулируется простыми константами (./src/utils/emu),
+которые обновляются при каждом обновлении страницы в браузере.
+
+Исходники проекта находятся [вот здесь](https://github.com/korvintaG/luman-box).
+
+По всем вопросам пишите: [korvin@sarmat-soft.ru](mailto:korvin@sarmat-soft.ru)
+или стучитесь в Telegram: [@KorvinTag](https://t.me/KorvinTag)
+
+## Степень готовности
+
+### Что уже сделано
+
+Реализовано отображение, добавление, редактирование, удаление
+следующих типов данных: авторы, источники, идеи, ключевые слова.  
+Все это это сделано в адаптивной верстке - варианты для Desktop и мобильного.
+
+### Что еще не сделано
+
+Нет аутентификации и авторизации. Планируется делать через Telegram - и это будет, скорее всего, тема отдельного спринта.
+
+Нет информационных страниц по ссылкам из карточек на главной странице. Скорее всего, они будут реализованы в самом конце стартапа.
+
+Нет совсем тестов никаких. Планируется добавить хоть какие то в ближайшее время.
+
+Ну и нету пока backend от слова совсем. Ждем второй части fullstack обучения.
+
+## Доступные скрипты
 
 In the project directory, you can run:
 
@@ -15,11 +60,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
@@ -27,21 +67,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

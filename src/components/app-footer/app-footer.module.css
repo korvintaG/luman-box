@@ -1,0 +1,27 @@
+.footer {
+  display: flex;
+  flex-grow: 1;
+  margin-top: auto;
+  flex-direction: column;
+  justify-content: end;
+  margin-bottom: 20px;
+}
+
+.contacts {
+  border-top: 1px black solid;
+  padding: 10px;
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.contact_part {
+  display: inline-block;
+}
+
+@media (max-width: 750px) {
+  .contact_part {
+    font-size: 14px;
+  }
+}

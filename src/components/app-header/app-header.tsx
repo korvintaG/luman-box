@@ -1,81 +1,96 @@
 import { useLocation } from 'react-router';
+import { useState, SyntheticEvent } from 'react';
 import styles from './app-header.module.css';
-import { Link } from 'react-router-dom';
+import { LinkActionUI } from '../ui/link-action/link-action';
 import clsx from 'clsx';
 import logoImg from '../../images/logo.svg';
 import authImg from '../../images/auth.svg';
 
 
-
+/**
+ * Компонент header приложения (меню)
+ */
 export const AppHeaderUI = () => {
+    const [burgerActivated, setBurgerActivated] = useState(false);
+    const burgerDeactivate = (e: SyntheticEvent) => setBurgerActivated(false);
     const location = useLocation();
+
     return (
         <header className={styles.header}>
             <nav className={`${styles.menu} p-4`}>
                 <div className={styles.menu_part_left}>
-                    <Link
+                    <LinkActionUI
                         to='/'
+                        actionHandle={burgerDeactivate}
                         className={clsx(styles.link, {
                             [styles.link_active]: location.pathname === '/'
                         })}
                     >
                         <img
-                            className={styles.img}
+                            className={styles.logo}
                             src={logoImg}
                             alt='логотип сайта'
                         />
-                    </Link>
-                    <div className={styles.menu_content}>
-                        <Link
-                            to='/authors'
-                            className={clsx(styles.link, {
-                                [styles.link_active]: location.pathname === '/authors'
-                            })}
-                        >
-                            <p className='text text_type_main-default ml-2'>Авторы</p>
-                        </Link>
-                        <Link to='/sources'>
-                            <div
-                                className={clsx(styles.link_position_last, styles.link, {
+                    </LinkActionUI>
+                    <input id={styles.menu_toggle} type="checkbox" checked={burgerActivated}
+                        onChange={(e) => setBurgerActivated(e.target.checked)} />
+                    <label className={styles.header__menu_button_container} htmlFor={styles.menu_toggle}>
+                        <div className={styles.header__menu_button}></div>
+                    </label>
+                    <ul className={styles.header__menu}>
+                        <li>
+                            <LinkActionUI
+                                to='/authors'
+                                actionHandle={burgerDeactivate}
+                                className={clsx(styles.header__menu_item, {
+                                    [styles.link_active]: location.pathname === '/authors'
+                                })}
+                            >
+                                Авторы
+                            </LinkActionUI>
+                        </li>
+                        <li>
+                            <LinkActionUI
+                                to='/sources'
+                                actionHandle={burgerDeactivate}
+                                className={clsx(styles.link_position_last, styles.header__menu_item, {
                                     [styles.link_active]: location.pathname === '/sources'
                                 })}
                             >
-                                <p className='text text_type_main-default ml-2'>
-                                    Источники
-                                </p>
-                            </div>
-                        </Link>
-                        <Link to='/ideas'>
-                            <div
-                                className={clsx(styles.link_position_last, styles.link, {
+                                Источники
+                            </LinkActionUI>
+                        </li>
+                        <li>
+                            <LinkActionUI
+                                to='/ideas'
+                                actionHandle={burgerDeactivate}
+                                className={clsx(styles.link_position_last, styles.header__menu_item, {
                                     [styles.link_active]: location.pathname === '/ideas'
                                 })}
                             >
-                                <p className='text text_type_main-default ml-2'>
-                                    Идеи
-                                </p>
-                            </div>
-                        </Link>
-                        <Link to='/keywords'>
-                            <div
-                                className={clsx(styles.link_position_last, styles.link, {
+                                Идеи
+                            </LinkActionUI>
+                        </li>
+                        <li>
+                            <LinkActionUI
+                                to='/keywords'
+                                actionHandle={burgerDeactivate}
+                                className={clsx(styles.link_position_last, styles.header__menu_item, {
                                     [styles.link_active]: location.pathname === '/keywords'
                                 })}
                             >
-                                <p className='text text_type_main-default ml-2'>
-                                    Ключевые слова
-                                </p>
-                            </div>
-                        </Link>
-                    </div>
+                                Ключевые слова
+                            </LinkActionUI>
+                        </li>
+                    </ul>
                 </div>
-                <Link to='/auth'>
+                <LinkActionUI to='/auth' actionHandle={burgerDeactivate}>
                     <img
-                        className={styles.img}
+                        className={styles.auth}
                         src={authImg}
                         alt='иконка авторизации'
                     />
-                </Link>
+                </LinkActionUI>
             </nav>
         </header>
     );
