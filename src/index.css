@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+#root {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,6 +21,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-grow: 1;
 }
 
 code {
@@ -18,20 +30,6 @@ code {
     monospace;
 }
 
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-display: swap;
-  src: url(./fonts/Montserrat-Regular.woff2) format('woff2');
-}
-
-@font-face {
-  font-family: 'Montserrat-Bold';
-  font-style: bold;
-  font-display: swap;
-  src: url(./fonts/Montserrat-Bold.woff2) format('woff2');
-}
 
 a {
   text-decoration: none;
@@ -42,7 +40,33 @@ ol {
   list-style: none;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+blockquote {
+  margin: 0;
+  padding: 0;
+}
+
 
 li {
   text-decoration: none;
 }
+
+.test {
+  color: red;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  flex-grow:1;
+}
+

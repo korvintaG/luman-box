@@ -2,37 +2,86 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.main {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: column;    
+  margin: 30px 30px;
+  gap: 15px;
 }
 
-.App-link {
-  color: #61dafb;
+.page_header {
+  text-transform: uppercase;
+  text-align: left;
+  font-size: 16px;
+  margin-bottom: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.header_record {
+  text-align: left;
+  padding-left: 20px;
+  padding-top: 20px;
+  font-size: 16px;
+  font-weight: normal;
+  font-family: 'Montserrat';
+}
+
+.input_block {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.input_label, .input_edit {
+  font-family: 'Montserrat';
+  font-size: 16px;
+}
+
+.input_label {
+  display: inline-block;
+}
+
+.input_edit {
+  min-width: 250px;
+}
+
+
+.button_block {
+  padding-top: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.button_submit, .button_delete {
+  width: 200px;
+  height: 30px;
+  font-size: 14px;
+}
+
+
+.button_submit {
+  background-color: #4E7BF0;
+  color: #EAF942;
+}
+
+.button_delete {
+  background-color: red;
+  color: yellow;
+}
+
+
+.error {
+  color: red;
+  text-align: left;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+  .header_record {
+    padding-left: 5px;
+    padding-top: 5px;
+     
   }
 }

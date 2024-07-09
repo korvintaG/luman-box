@@ -3,3 +3,4 @@ build
 .env
 .idea
 dist
+package-lock.json 

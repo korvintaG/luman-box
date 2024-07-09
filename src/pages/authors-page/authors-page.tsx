@@ -1,30 +1,56 @@
-import { FC, useEffect, useState } from 'react';
-import { getAuthors } from '../../utils/luman-emu-api';
-import { Author } from '../../utils/type';
-import { Link } from 'react-router-dom';
+import { FC, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+import { Preloader } from '../../components/ui/preloader';
+import { useSelector, useDispatch } from '../../services/store';
+import {
+    selectAuthors,
+    fetchAuthors,
+    selectIsDataLoading,
+    clearCurrentAuthor
+} from '../../slices/authors';
+import styles from './authors-page.module.css';
 
+
+/**
+ * Страница список авторов
+ */
 export const Authors: FC = () => {
+    const authors = useSelector(selectAuthors);
+    const isLoading = useSelector(selectIsDataLoading);
 
-    const [authors, setAuthors] = useState<Author[]>([]);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getAuthors().then((data) => setAuthors(data))
-    }, []);
+        dispatch(fetchAuthors())
+    }, [authors]);
+
+    const addNewAuthor = () => {
+        dispatch(clearCurrentAuthor());
+        navigate('/authors/add')
+    }
 
     return (
-        <main>
-            <ul>
-                {authors.length === 0 ? 
-                    <p>Тут будут авторы</p> 
-                    : authors.map((author) => (<li key={author.id}>
-                                <Link
-                                 to={`/authors/${author.id}`} >
+        <main className={clsx(styles.main,'main')}>
+            <h1 className='page_header'>Список авторов</h1>
+            {isLoading ?
+                <Preloader />
+                :
+                <>
+                    <ul className={styles.list}>
+                        {authors.map((author) => (<li key={author.id}>
+                            <Link
+                                className={styles.link}
+                                to={`/authors/${author.id}`} >
                                 {author.name}
-                                </Link>
-                                </li>))
-                }
+                            </Link>
+                        </li>))
+                        }
 
-            </ul>
+                    </ul>
+                    <button className='button_submit' onClick={addNewAuthor}>Добавить автора</button>
+                </>}
         </main>
 
     );

@@ -1,94 +1,132 @@
-.about {
-    display: flex;
-    gap: 10px;
-    margin: 10px auto;
-    flex-wrap: wrap;
-    justify-content: center;
+.main {
+  display: flex;
+  gap: 10px;
+  margin: 10px auto;
+  padding: 0 15px 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.list {
-    display: flex;
-    gap: 10px;
-    margin: 10px auto;
-    flex-wrap: wrap;
-    justify-content: center;
+/********************************************
+* список нюансов
+********************************************/
+.card_list {
+  display: flex;
+  gap: 10px;
+  margin: 10px auto;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .list_element {
-    width: 430px;
-    min-height: 450px;
-    min-width: 350px;
-
+  min-height: 450px;
+  min-width: 300px;
+  max-width: 430px;
 }
 
 .article {
-    height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    color: white;
-    font-family: 'Montserrat';
-    font-size: 20px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: white;
+  font-family: "Montserrat";
+  font-size: 20px;
+  border-radius: 20px;
 }
 
 .overlay {
-    /* универсальная разметка для полупрозрачности */
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: rgb(78 123 240 / 0.9);
-    flex-grow: 0;
-  }
-  
+  /* универсальная разметка для полупрозрачности */
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(78 123 240 / 0.9);
+  flex-grow: 0;
+  border-radius: 20px;
+}
 
-  .card_content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 0;
-    padding: 30px;
-    text-align: left;
-  }
-  
-  .icon {
-    flex-grow: 0;
-    width: 90px;
-  }
+.card_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 0;
+  padding: 30px;
+  text-align: left;
+}
 
-  a {
-    color: yellow;
-    font-weight: bold;
-  }
+.icon {
+  flex-grow: 0;
+  width: 90px;
+}
 
-  h2 {
-    text-transform: uppercase;
-    text-decoration: line-through;
-    font-size: 40px; 
-  }
+.list_element a {
+  color: yellow;
+  font-weight: bold;
+}
 
-  .wikino {
-    display: flex;
-    flex-grow: 0;
-  }
+/********************************************
+* раздел "Почему не вики"
+********************************************/
+.wikino {
+  display: flex;
+  flex-grow: 0;
+  margin: 40px auto;
+}
 
-  .wikino_img {
-    margin: 40px;
-    width: 200px;
-    height: 200px;
-    align-self: center;
-  }
+.wikino_img {
+  margin: 40px;
+  width: 200px;
+  height: 200px;
+  align-self: center;
+}
 
-  .wikino_article {
-    display: flex;
-    flex-direction: column;
-    max-width: 700px;
-    min-width: 340px;
-    font-family: 'Montserrat';
-    align-items: flex-start;
-    text-align: left;
-    font-size: 20px;
+.wikino_article {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  min-width: 300px;
+  font-family: "Montserrat";
+  align-items: flex-start;
+  text-align: left;
+  font-size: 20px;
 }
 
 .wikino_article a {
-    color: blue;
+  color: blue;
+}
+
+.wikino_header {
+  position: relative;
+  text-transform: uppercase;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  font-size: 40px;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+  .list_element {
+    min-height: 350px;
+  }
+  .article {
+    font-size: 16px;
+  }
+  .icon {
+    width: 60px;
+  }
+
+  .wikino {
+    margin: 10px auto;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .wikino_img {
+    margin: 10px auto;
+  }
+  .wikino_article {
+    gap: 10px;
+    font-size: 15px;
+  }
 }

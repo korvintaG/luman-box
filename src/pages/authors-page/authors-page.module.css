@@ -1,0 +1,11 @@
+.main a {
+    color: blue;
+}
+
+.list {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
