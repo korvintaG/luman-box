@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
-import { Preloader } from '../../components/ui/preloader';
+import { useNavigate } from 'react-router-dom';
+import { appRoutes } from '../../AppRoutes'
 import { useSelector, useDispatch } from '../../services/store';
 import {
     selectAuthors,
@@ -9,13 +8,13 @@ import {
     selectIsDataLoading,
     clearCurrentAuthor
 } from '../../slices/authors';
-import styles from './authors-page.module.css';
+import { AuthorListUI } from '../../components/ui/list/author-list'
 
 
 /**
  * Страница список авторов
  */
-export const Authors: FC = () => {
+export const AuthorsPage: FC = () => {
     const authors = useSelector(selectAuthors);
     const isLoading = useSelector(selectIsDataLoading);
 
@@ -28,30 +27,14 @@ export const Authors: FC = () => {
 
     const addNewAuthor = () => {
         dispatch(clearCurrentAuthor());
-        navigate('/authors/add')
+        navigate(appRoutes.authorAdd); 
     }
 
     return (
-        <main className={clsx(styles.main,'main')}>
-            <h1 className='page_header'>Список авторов</h1>
-            {isLoading ?
-                <Preloader />
-                :
-                <>
-                    <ul className={styles.list}>
-                        {authors.map((author) => (<li key={author.id}>
-                            <Link
-                                className={styles.link}
-                                to={`/authors/${author.id}`} >
-                                {author.name}
-                            </Link>
-                        </li>))
-                        }
-
-                    </ul>
-                    <button className='button_submit' onClick={addNewAuthor}>Добавить автора</button>
-                </>}
-        </main>
-
+        <AuthorListUI 
+            authors={authors}
+            addNewAuthor={addNewAuthor}
+            isLoading={isLoading}
+        />
     );
 };

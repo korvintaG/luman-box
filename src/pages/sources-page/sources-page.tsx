@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import clsx from 'clsx';
-import { Preloader } from '../../components/ui/preloader';
+import { useNavigate } from 'react-router-dom';
+import { appRoutes} from '../../AppRoutes'
 import { useSelector, useDispatch } from '../../services/store';
 import {
     selectSources,
@@ -9,12 +8,12 @@ import {
     selectIsDataLoading,
     clearCurrentSource
 } from '../../slices/sources';
-import styles from './sources-page.module.css';
+import {SourceListUI} from '../../components/ui/list/source-list';
 
 /**
  * Страница список источников
  */
-export const Sources: FC = () => {
+export const SourcesPage: FC = () => {
     const sources = useSelector(selectSources);
     const isLoading = useSelector(selectIsDataLoading);
 
@@ -27,30 +26,11 @@ export const Sources: FC = () => {
 
     const addNewSource = () => {
         dispatch(clearCurrentSource());
-        navigate('/sources/add')
+        navigate(appRoutes.sourceAdd)
     }
 
-    return (
-        <main className={clsx(styles.main, 'main')}>
-            <h1 className='page_header'>Список источников</h1>
-            {isLoading ?
-                <Preloader />
-                :
-                <>
-                    <ul className={styles.list}>
-                        {sources.map((source) => (<li key={source.id}>
-                            <Link
-                                className={styles.link}
-                                to={`/sources/${source.id}`} >
-                                {source.name + ' // ' + source.authorName}
-                            </Link>
-                        </li>))
-                        }
-
-                    </ul>
-                    <button className='button_submit' onClick={addNewSource}>Добавить источник</button>
-                </>}
-        </main>
-
-    );
+    return <SourceListUI 
+                sources={sources} 
+                isLoading={isLoading} 
+                addNewSource={addNewSource}/>
 };

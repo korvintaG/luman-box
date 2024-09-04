@@ -1,0 +1,29 @@
+.question {
+    padding: 10px;
+    text-align: center;
+}
+
+.buttons {
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.close-button {
+    position: absolute;
+    top: 1px;
+    right: 7px;
+    width: 30px;
+    height: 30px;
+    stroke: #a4a4a4;
+    transition: stroke 0.3s;
+    background: transparent;
+    border: none;
+  }
+  
+  .close-button:hover {
+    stroke: #ff0000;
+  }
+  

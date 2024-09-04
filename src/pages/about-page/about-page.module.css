@@ -24,45 +24,6 @@
   max-width: 430px;
 }
 
-.article {
-  height: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color: white;
-  font-family: "Montserrat";
-  font-size: 20px;
-  border-radius: 20px;
-}
-
-.overlay {
-  /* универсальная разметка для полупрозрачности */
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(78 123 240 / 0.9);
-  flex-grow: 0;
-  border-radius: 20px;
-}
-
-.card_content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 0;
-  padding: 30px;
-  text-align: left;
-}
-
-.icon {
-  flex-grow: 0;
-  width: 90px;
-}
-
-.list_element a {
-  color: yellow;
-  font-weight: bold;
-}
 
 /********************************************
 * раздел "Почему не вики"

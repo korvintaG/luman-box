@@ -40,7 +40,8 @@ export function prepare():SourceExtension[] {
     let sources = sourcesCur.map((el)=> {
         const author=authorsCur.find((e)=>e.id===el.author_id);
         return {...el, 
-            authorName:author? author.name : ''
+            authorName:author? author.name : '',
+            nameWithAuthor: author? el.name + ' // '+author.name : el.name,
         }
     });
     sources.sort((a, b) => (a.name > b.name)? 1 : ((b.name > a.name) ? -1 : 0));

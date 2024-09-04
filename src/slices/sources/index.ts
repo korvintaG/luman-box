@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { SourceExtension } from '../../utils/type'
+import { SourceExtension, RequestStatus } from '../../utils/type'
 import { getSourcesAPI, getSourceAPI, setSourceAPI, addSourceAPI, delSourceAPI } from '../../utils/emu/luman-emu-api'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
 
 export const initialState: ListToWork<SourceExtension> = {
   list: [],
   current: null,
-  isLoading: false,
+  status: RequestStatus.Idle,
   error: ''
 };
 
@@ -30,7 +30,7 @@ const sourcesSlice = createSlice({
   selectors: {
     selectSources: (sliceState) => sliceState.list,
     selectCurrentSource: (sliceState) => sliceState.current,
-    selectIsDataLoading: (sliceState) => sliceState.isLoading,
+    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
@@ -45,15 +45,15 @@ const sourcesSlice = createSlice({
         state.current = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
-        state.isLoading = true;
+        state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       })
       .addMatcher(isFullFilledAction, (state, _) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Success;
       });
   }
 });

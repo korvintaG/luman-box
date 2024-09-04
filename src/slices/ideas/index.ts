@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { IdeaExtension } from '../../utils/type'
+import { IdeaExtension, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
 import { getIdeasAPI, setIdeaAPI, getIdeaAPI, addIdeaAPI, delIdeaAPI } from '../../utils/emu/luman-emu-api'
 
 export const initialState: ListToWork<IdeaExtension> = {
   list: [],
   current: null,
-  isLoading: false,
+  status: RequestStatus.Idle,
   error: ''
 };
 
@@ -30,7 +30,7 @@ const ideasSlice = createSlice({
   selectors: {
     selectIdeas: (sliceState) => sliceState.list,
     selectCurrentIdea: (sliceState) => sliceState.current,
-    selectIsDataLoading: (sliceState) => sliceState.isLoading,
+    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
@@ -42,15 +42,15 @@ const ideasSlice = createSlice({
         state.current = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
-        state.isLoading = true;
+        state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       })
       .addMatcher(isFullFilledAction, (state, _) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Success;
       });
   }
 });

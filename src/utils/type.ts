@@ -10,7 +10,10 @@ export type SourceEditData = {
 
 export type Source = SourceEditData & {id: number;}
 
-export type SourceExtension = Source & {authorName: string};
+export type SourceExtension = Source & {
+    authorName: string;
+    nameWithAuthor: string;
+};
 
 
 export type IdeaEditData=  {
@@ -38,3 +41,13 @@ export type KeywordsIdea = {
 
 
 export type HTMLEditElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+export const enum RequestStatus {
+    Idle = 'idle',
+    Loading = 'loading',
+    Success = 'success',
+    Failed = 'failed',
+}
+
+export type RequestStatusKey = keyof typeof RequestStatus;
+export type RequestStatusValue = typeof RequestStatus[RequestStatusKey];

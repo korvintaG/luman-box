@@ -4,84 +4,18 @@
 
 .main {
   display: flex;
-  flex-direction: column;    
+  flex-direction: column;
   margin: 30px 30px;
   gap: 15px;
 }
 
-.page_header {
-  text-transform: uppercase;
+.record-header {
   text-align: left;
-  font-size: 16px;
-  margin-bottom: 0;
-}
-
-.header_record {
-  text-align: left;
-  padding-left: 20px;
-  padding-top: 20px;
+  padding-left: calc(100vw / 60);
+  padding-top: calc(100vw / 60);
   font-size: 16px;
   font-weight: normal;
   font-family: 'Montserrat';
 }
 
-.input_block {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
 
-.input_label, .input_edit {
-  font-family: 'Montserrat';
-  font-size: 16px;
-}
-
-.input_label {
-  display: inline-block;
-}
-
-.input_edit {
-  min-width: 250px;
-}
-
-
-.button_block {
-  padding-top: 20px;
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.button_submit, .button_delete {
-  width: 200px;
-  height: 30px;
-  font-size: 14px;
-}
-
-
-.button_submit {
-  background-color: #4E7BF0;
-  color: #EAF942;
-}
-
-.button_delete {
-  background-color: red;
-  color: yellow;
-}
-
-
-.error {
-  color: red;
-  text-align: left;
-}
-
-/********************************************
-* адаптивность
-********************************************/
-@media (max-width: 750px) {
-  .header_record {
-    padding-left: 5px;
-    padding-top: 5px;
-     
-  }
-}

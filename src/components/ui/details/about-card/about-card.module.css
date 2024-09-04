@@ -1,0 +1,56 @@
+.article {
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    font-family: "Montserrat";
+    font-size: 20px;
+    border-radius: 20px;
+  }
+
+  
+.article a {
+  color: yellow;
+  font-weight: bold;
+}
+
+
+  .overlay {
+    /* универсальная разметка для полупрозрачности */
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(78 123 240 / 0.9);
+    flex-grow: 0;
+    border-radius: 20px;
+  }
+  
+  .card_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 0;
+    padding: 30px;
+    text-align: left;
+  }
+
+  .icon {
+    flex-grow: 0;
+    width: 90px;
+  }
+  
+  
+
+  /********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+  .article {
+    font-size: 16px;
+  }
+  .icon {
+    width: 60px;
+  }
+
+}

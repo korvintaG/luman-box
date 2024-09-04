@@ -1,0 +1,125 @@
+.form {
+    margin: 40px auto;
+    display: flex;
+    flex-direction: row;
+    align-items:flex-start;
+    gap: 15px;
+    position: relative;
+    flex-flow: wrap;
+}
+
+/*.form > * {
+    border: 1px red solid;
+}*/
+
+.main {
+    margin: 20px;
+}
+
+.input {
+    max-width: calc(100% - 150px);   
+}
+
+.label {
+    min-width: 140px;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    display: inline-block;
+    text-align: right;
+}
+
+.buttons {
+    width: 500px;
+}
+
+.input_block {
+    display: flex;
+    gap: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    width: 100%;
+    /*border: 1px green solid;*/
+}
+
+.input_block input, .input_block select {
+    flex-grow: 1;
+}
+
+
+.original, .content  {
+    min-width: calc(50vw - 37px);
+}
+
+.original  {
+    font-style: italic;
+}
+
+
+.inputs {
+    height: 10vh;
+    width: 45vw;
+    min-height: 75px;
+}
+
+
+.buttons {
+    height: 10vh;
+    width: 45vw;
+    display: flex;
+    gap: 20px;
+    padding-left: 40px;
+    align-items: center;
+    min-height: 75px;
+}
+
+
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+    .main {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .form {
+        flex-direction: column;
+        margin-top: 10px;
+        gap: 35px;
+    }
+
+    .input_block {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .input_block label {
+        text-align: left;
+    }
+
+    .inputs {
+        width: calc(100vw - 10px);
+        height: 100%;
+    }
+
+    .input {
+        min-width: 90vw;
+    }
+
+    .buttons {
+        flex-direction: column;
+        margin:  auto;
+        padding-left: 0;
+        order: 10;
+    }
+
+    .original, .content {
+        width: calc(100vw - 10px);
+    }
+
+    .original textarea{
+        font-size: 12px;
+    }
+    
+}

@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { aboutList } from './data';
+import { AboutCardUI } from '../../components/ui/details/about-card/about-card'
 import styles from './about-page.module.css';
 import wiki_no from '../../images/wiki-no.png'
 
 /**
  * Страница "о системе"
  */
+
 export const AboutPage: FC = () => {
   return (
     <main className={styles.main}>
@@ -13,17 +15,11 @@ export const AboutPage: FC = () => {
         {aboutList.map(
           (el) =>
             <li className={styles.list_element}>
-              <article className={styles.article}
-                style={{
-                  backgroundImage: `url(${(el.image)})`
-                }}>
-                <div className={`${styles.overlay} ${styles.card_content}`}>
-                  <img src={el.icon} className={styles.icon} />
-                  <div dangerouslySetInnerHTML={
-                    { __html: el.text }}>
-                  </div>
-                </div>
-              </article>
+              <AboutCardUI
+                backgroundImage={el.image}
+                icon={el.icon}
+                text={el.text}
+              />
             </li>
         )}
       </ul>

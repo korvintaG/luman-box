@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Keyword } from '../../utils/type'
+import { Keyword, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
 import { getKeywordsAPI, setKeywordAPI, getKeywordAPI, addKeywordAPI, delKeywordAPI } from '../../utils/emu/luman-emu-api'
 
 export const initialState: ListToWork<Keyword> = {
   list: [],
   current: null,
-  isLoading: false,
+  status: RequestStatus.Idle,
   error: ''
 };
 
@@ -30,7 +30,7 @@ const keywordsSlice = createSlice({
   selectors: {
     selectKeywords: (sliceState) => sliceState.list,
     selectCurrentKeyword: (sliceState) => sliceState.current,
-    selectIsDataLoading: (sliceState) => sliceState.isLoading,
+    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
@@ -45,15 +45,15 @@ const keywordsSlice = createSlice({
         state.current = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
-        state.isLoading = true;
+        state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       })
       .addMatcher(isFullFilledAction, (state, _) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Success;
       });
   }
 });

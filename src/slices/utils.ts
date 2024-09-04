@@ -1,4 +1,5 @@
 import { AsyncThunk, SerializedError, UnknownAction , createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RequestStatusValue } from '../utils/type'
 
 const hasPrefix = (action: UnknownAction, prefix: string) => action.type.startsWith(prefix);
 const isRejected = (action: UnknownAction) => action.type.endsWith("/rejected");
@@ -43,6 +44,6 @@ type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 export interface ListToWork<T> {
     list: T[]; 
     current: T | null;
-    isLoading: boolean; // процесс загрузки
+    status: RequestStatusValue,
     error: string;
   }

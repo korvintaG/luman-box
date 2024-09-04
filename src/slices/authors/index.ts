@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Author } from '../../utils/type'
+import { Author, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
 import { getAuthorsAPI, setAuthorAPI, getAuthorAPI, addAuthorAPI, delAuthorAPI } from '../../utils/emu/luman-emu-api'
 
 export const initialState: ListToWork<Author> = {
   list: [],
   current: null,
-  isLoading: false,
+  status: RequestStatus.Idle,
   error: ''
 };
 
@@ -30,7 +30,7 @@ const authorsSlice = createSlice({
   selectors: {
     selectAuthors: (sliceState) => sliceState.list, 
     selectCurrentAuthor: (sliceState) => sliceState.current,  
-    selectIsDataLoading: (sliceState) => sliceState.isLoading,
+    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
@@ -45,15 +45,15 @@ const authorsSlice = createSlice({
         state.current = action.payload;
       })
       .addMatcher(isPendingAction, (state) => {
-        state.isLoading = true;
+        state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       })
       .addMatcher(isFullFilledAction, (state, _) => {
-        state.isLoading = false;
+        state.status=RequestStatus.Success;
       });
   }
 });

@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
-import {  useNavigate, Link } from 'react-router-dom';
-import clsx from 'clsx';
-import {Preloader} from '../../components/ui/preloader';
+import {  useNavigate } from 'react-router-dom';
+import { appRoutes} from '../../AppRoutes'
 import { useSelector, useDispatch } from '../../services/store';
+import { KeywordListUI } from '../../components/ui/list/keyword-list'
 import {
     selectKeywords,
     fetchKeywords,
@@ -10,13 +10,10 @@ import {
     clearCurrentKeyword
   } from '../../slices/keywords';
 
-import styles from './keywords-page.module.css';
-  
-
 /**
  * Страница список ключевых слов
  */
-export const Keywords: FC = () => {
+export const KeywordsPage: FC = () => {
     const keywords = useSelector(selectKeywords);
     const isLoading = useSelector(selectIsDataLoading);
     const dispatch = useDispatch();
@@ -28,28 +25,12 @@ export const Keywords: FC = () => {
 
     const addNewKeyword = () => {
         dispatch(clearCurrentKeyword());
-        navigate('/keywords/add')
+        navigate(appRoutes.keywordAdd);
     }
 
-    return (
-        <main className={clsx(styles.main,'main')}>
-            <h1 className='page_header'>Список ключевых слов</h1>
-            {isLoading ? 
-                    <Preloader /> 
-                :<>
-                    <ul className={styles.list}>
-                        {keywords.map((keyword) => (<li key={keyword.id}>
-                                        <Link
-                                        className={styles.link}
-                                        to={`/keywords/${keyword.id}`} >
-                                        {keyword.name}
-                                        </Link>
-                                        </li>))
-                        }
-                    </ul>
-                    <button className='button_submit' onClick={addNewKeyword}>Добавить ключевое слово</button>
-                </>}
-        </main>
-
-    );
+    return <KeywordListUI 
+        keywords={keywords}
+        addNewKeyword={addNewKeyword}
+        isLoading={isLoading}
+    />
 };
