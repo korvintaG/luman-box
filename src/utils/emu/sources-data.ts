@@ -49,7 +49,7 @@ export function prepare():SourceExtension[] {
 }    
 
 export function setSource(element:Source) {
-    sourcesCur=[...sourcesCur.filter(el=>el.id!=element.id), element];
+    sourcesCur=[...sourcesCur.filter(el=>el.id!==element.id), element];
     sourcesExtension=prepare();
 }
 

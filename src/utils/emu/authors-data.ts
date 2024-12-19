@@ -28,7 +28,7 @@ export let authorsCur: Author[] = [
 ];
 
 export function setName(id: number, name: string) {
-    authorsCur=[...authorsCur.filter(el=>el.id!=id), {id,name}];//.find(el=>el.id===id)!.name=name;
+    authorsCur=[...authorsCur.filter(el=>el.id!==id), {id,name}];//.find(el=>el.id===id)!.name=name;
     authorsCur.sort((a, b) => (a.name > b.name)? 1 : ((b.name > a.name) ? -1 : 0));
 }
 
