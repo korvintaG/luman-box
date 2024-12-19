@@ -1,0 +1,33 @@
+.main a {
+    color: blue;
+}
+
+.page-header {
+    text-transform: uppercase;
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+  
+.list {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+  .list-mobile-alterarion li:nth-of-type(odd) {
+        background-color: #e9ebf1;
+  }
+  .list-mobile-alterarion li {
+    padding: 3px;
+  }
+  .main-shrink {
+    margin-left: 9px;
+    margin-right: 9px;
+  }
+}

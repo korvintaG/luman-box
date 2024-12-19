@@ -1,0 +1,14 @@
+.keyword {
+  position: relative;
+}
+
+.btnClose {
+  position: relative;
+  top: -10px;
+  background-color: transparent;
+  border: none;
+}
+
+.btnClose:hover {
+  cursor: pointer;
+}

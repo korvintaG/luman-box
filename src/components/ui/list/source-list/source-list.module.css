@@ -1,0 +1,22 @@
+.main a {
+    color: blue;
+}
+
+.list {
+    display: flex;
+    text-align: left;
+    gap: 5px;
+    flex-direction: column;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+    .list {
+        gap: 10px;
+    }
+    .main {
+        margin: 15px 15px;
+    }
+}

@@ -1,0 +1,31 @@
+.keywords_block {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 10px 5px;
+    min-width: 100%;
+    border: 1px black solid;
+}
+
+.keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.keywords-select {
+    max-width: 300px;
+}
+
+.input_block {
+    display: flex;
+    gap: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    width: 100%;
+    /*border: 1px green solid;*/
+}
+
+.input_block input, .input_block select {
+    flex-grow: 1;
+}

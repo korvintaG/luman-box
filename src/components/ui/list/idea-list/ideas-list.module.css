@@ -1,0 +1,105 @@
+.main a {
+    color: blue;
+  }
+  
+  .list {
+    text-align: left;
+  }
+  
+  table {
+    border-spacing: 0;
+  }
+  
+  .list tr:nth-of-type(even) {
+    background-color: #e9ebf1;
+  }
+  
+  .list thead {
+    background-color: #4e7bf0;
+    color: white;
+  }
+  
+  .list th {
+    padding: 10px;
+  }
+  
+  .list td {
+    padding: 5px;
+  }
+  
+  .date_time {
+    min-width: 200px;
+  }
+  
+  /********************************************
+  * адаптивность
+  ********************************************/
+  @media (max-width: 750px) {
+    .list thead {
+      display: none;
+    }
+  
+    .list tbody tr {
+      /* выводим строки как блоки */
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 25px;
+    }
+  
+    .list tbody tr td {
+      text-align: left;
+      /*border: 1px red solid;*/
+    }
+  
+    .list > tbody > tr > td:first-of-type::before,
+    .list > tbody > tr > td:nth-of-type(2)::before,
+    .list > tbody > tr > td:nth-of-type(3)::before,
+    .list > tbody > tr > td:nth-of-type(4)::before {
+      display: block;
+      min-width: 100px;
+      max-width: 100px;
+      padding-right: 5px;
+      word-wrap: break-word;
+    }
+  
+    .list > tbody > tr > td:first-of-type::before {
+      content: "Название идеи: ";
+    }
+  
+    .list > tbody > tr > td:nth-of-type(2)::before {
+      content: "Источник: ";
+    }
+  
+    .list > tbody > tr > td:nth-of-type(3)::before {
+      content: "Пользо-ватель: ";
+    }
+  
+    .list > tbody > tr > td:nth-of-type(4)::before {
+      content: "Добавлено: ";
+    }
+  
+    .list tr:nth-of-type(odd) {
+      background-color: #e9ebf1;
+    }
+  
+    .list tr:nth-of-type(even) {
+      background-color: transparent;
+    }
+  
+    .list > tbody > tr > td:first-of-type,
+    .list > tbody > tr > td:nth-of-type(2),
+    .list > tbody > tr > td:nth-of-type(3),
+    .list > tbody > tr > td:nth-of-type(4) {
+      display: flex;
+      justify-content: flex-start;
+    }
+  
+    .list td {
+      line-height: 1;
+    }
+  
+    .main {
+      margin: 10px;
+    }
+  }
+  

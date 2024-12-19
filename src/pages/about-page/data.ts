@@ -1,4 +1,4 @@
-import { AboutList } from "../../utils/type";
+import { AboutList } from "./type";
 import BaseIcon from '../../images/Base.png';
 import BaseImage from '../../images/BaseBackground.png';
 import ModerateIcon from '../../images/Moderate.png';
@@ -12,6 +12,9 @@ import SupporterImage from '../../images/SupporterBackground.png';
 import BannedIcon from '../../images/Banned.png';
 import BannedImage from '../../images/BannedBackground.png';
 
+/**
+ * Данные для карточек - нюансов о системе
+ */
 export const aboutList: AboutList[] = [
     {
         id: 1,
@@ -33,7 +36,7 @@ export const aboutList: AboutList[] = [
     },
     {
         id: 4,
-        text:'Чтобы пользоваться нашей базой знаний, необходимо <a href="">авторизоваться через мессенджер Telegram</a>. Это очень просто, делается всего лишь один раз и не займет более пяти минут. Данный метод авторизации был выбран нами, как компромисс между анонимностью и безопасностью.',
+        text:'Чтобы пользоваться полным функционалом нашей базы знаний, необходимо <a href="">авторизоваться через мессенджер Telegram</a>. Это очень просто, делается всего лишь один раз и не займет более пяти минут. Данный метод авторизации был выбран нами, как компромисс между анонимностью и безопасностью.',
         icon: TelegramIcon,
         image: TelegramImage
     },

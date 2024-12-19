@@ -1,0 +1,136 @@
+#menu-toggle {
+    display: none;
+}
+
+.icon-container {
+    display: none;
+    height: 100%;
+    width: 140px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+}
+
+/* рисуем сам бургер - 3 линии */
+.icon {
+    display: flex;
+    background-color: #fff;
+    position: relative;
+    height: 4px;
+    width: 30px;
+    transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 2px;
+}
+
+.icon::before,
+.icon::after {
+    display: block;
+    background-color: #fff;
+    position: absolute;
+    height: 4px;
+    width: var(--logo-width);
+    transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 2px;
+}
+
+.icon::before {
+    content: "";
+    margin-top: -8px;
+}
+
+.icon::after {
+    content: "";
+    margin-top: 8px;
+}
+
+#menu-toggle:checked+.icon-container .icon::before {
+    margin-top: 0px;
+    transform: rotate(405deg);
+}
+
+#menu-toggle:checked+.icon-container .icon {
+    background: rgba(255, 255, 255, 0);
+}
+
+#menu-toggle:checked+.icon-container .icon::after {
+    margin-top: 0px;
+    transform: rotate(-405deg);
+}
+
+.menu {
+    display: flex;
+    text-transform: uppercase;
+    overflow: hidden;
+    gap: 53px;
+    color: var(--color-menu);
+    flex-wrap: nowrap;
+    line-height: normal;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 31px;
+}
+
+.item {
+    display: flex;
+    text-decoration: none;
+    color: #fff;
+}
+
+.item-active {
+    color: yellow;
+}
+
+/**
+ * адаптивность
+*/
+@media (max-width: 750px) {
+
+    .icon-container {
+        display: flex;
+        width: var(--logo-width);
+        height: var(--menu-height);
+        align-items: flex-end;
+    }
+
+    .menu {
+        max-inline-size: 100%;
+        position: absolute;
+        top: 0;
+        margin-top: var(--menu-height);
+        left: 0;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        gap: 0;
+        z-index: 1;
+    }
+
+    .menu>li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0.5em 0;
+        width: 100%;
+        color: white;
+        background-color: var(--background-color);
+    }
+
+    #menu-toggle~.menu li {
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    #menu-toggle:checked~.menu li {
+        border: 1px solid #333;
+        height: 3.5em;
+        padding: 0.5em;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+ }

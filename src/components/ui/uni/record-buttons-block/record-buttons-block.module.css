@@ -1,0 +1,26 @@
+.button-block {
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .button-submit,
+  .button-delete {
+    min-width: 200px;
+    height: 30px;
+    font-size: 14px;
+  }
+  
+  
+  .button-submit {
+    background-color: #4E7BF0;
+    color: #EAF942;
+  }
+  
+  .button-delete {
+    background-color: red;
+    color: yellow;
+  }
+  
+  
