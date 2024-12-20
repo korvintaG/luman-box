@@ -6,7 +6,8 @@ export class Author {
     id: number;
   
     @Column({ type: 'varchar',
-              nullable: true,})
+              select: false,
+              nullable: true})
     id_out: string;
   
     @Column('varchar')

@@ -18,18 +18,18 @@ export class AuthorsService {
   }
 
   findAll() {
-    return `This action returns all authors`;
+    return this.authorRepository.find( {order: { name: "ASC" }});
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} author`;
+    return this.authorRepository.findOneBy({ id });
   }
 
   update(id: number, updateAuthorDto: UpdateAuthorDto) {
-    return `This action updates a #${id} author`;
+    return this.authorRepository.update({id}, updateAuthorDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} author`;
+    return this.authorRepository.delete({ id });
   }
 }
