@@ -14,7 +14,7 @@ export class Keyword {
     @Column('varchar')
     name: string;
 
-    @ManyToMany(() => Idea, (idea) => idea.keywords)
+    @ManyToMany(() => Idea, (idea) => idea.keywords, { cascade: true })
     ideas: Idea[];
 
 }
