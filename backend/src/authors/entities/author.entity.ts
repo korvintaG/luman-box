@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { OneToMany, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Source } from '../../sources/entities/source.entity'
 
 @Entity('authors')
 export class Author {
@@ -12,5 +13,8 @@ export class Author {
   
     @Column('varchar')
     name: string;
-  
+
+    @OneToMany(() => Source, (source) => source.author)
+    sources: Source[];
+ 
 }

@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthorsModule } from './authors/authors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Author  } from './authors/entities/author.entity';
+import { Source  } from './sources/entities/source.entity';
+import { Keyword  } from './keywords/entities/keyword.entity';
+import { Idea  } from './ideas/entities/idea.entity';
 import { configProvider } from './app.config.provider';
+import { SourcesModule } from './sources/sources.module';
+import { KeywordsModule } from './keywords/keywords.module';
+import { IdeasModule } from './ideas/ideas.module';
 
 
 @Module({
@@ -15,10 +19,9 @@ import { configProvider } from './app.config.provider';
     username: configProvider.useValue.database.username,
     password: configProvider.useValue.database.password,
     database: configProvider.useValue.database.databaseName,
-    entities: [Author],
+    entities: [Author, Source, Keyword, Idea],
     synchronize: true,
-  }), AuthorsModule],
-  controllers: [AppController],
-  providers: [configProvider, AppService],
+  }), AuthorsModule, SourcesModule, KeywordsModule, IdeasModule],
+  providers: [configProvider],
 })
 export class AppModule {}
