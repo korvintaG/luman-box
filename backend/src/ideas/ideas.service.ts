@@ -5,7 +5,8 @@ import { Idea } from './entities/idea.entity';
 import { Keyword } from '../keywords/entities/keyword.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
-import { omit, assign }  from "lodash";
+import { isEmpty, omit }  from "lodash";
+
 
 @Injectable()
 export class IdeasService {
@@ -39,13 +40,19 @@ export class IdeasService {
 
   async update(id: number, updateIdeaDto: UpdateIdeaDto) {
     const onlyIdea=omit(updateIdeaDto, ["keywords"]);
-    if (updateIdeaDto.keywords)
-      if (updateIdeaDto.keywords.length>0) {
+    if (!isEmpty(onlyIdea)) {
+        await this.ideaRepository.update({id}, onlyIdea);
+    }
+    const idea = await this.ideaRepository.findOne({
+      where: { id },
+      relations: ['keywords'], 
+    });
+    if (updateIdeaDto.keywords && updateIdeaDto.keywords.length>0) {
         const keywords = await this.keywordRepository.find({ where: { id: In(updateIdeaDto.keywords) }});
-        assign(onlyIdea,{'keywords': keywords});
-      }
-    console.log('update',onlyIdea);
-    return this.ideaRepository.update({id}, onlyIdea);
+        idea.keywords = keywords; 
+        return this.ideaRepository.save(idea); 
+    }
+    return idea;
   }
 
   remove(id: number) {
