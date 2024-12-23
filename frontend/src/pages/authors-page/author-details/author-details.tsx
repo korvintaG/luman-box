@@ -8,20 +8,21 @@ import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-quest
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
     setAuthor, selectCurrentAuthor, delAuthor, selectError,
-    selectIsDataLoading, getAuthor, addAuthor
+    selectIsDataLoading, getAuthor, addAuthor, selectSliceState
 } from '../../../slices/authors';
 import { appRoutes } from '../../../AppRoutes';
+import { RequestStatus } from '../../../utils/type'
 
 /**
  * Компонент редактирования автора - данные + UI
  */
 export const AuthorDetails = () => {
-    const location = useLocation();
     const { id } = useParams();
     const [name, setName] = useState('');
     const msgDeleteHook = useMsgModal();
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
+    const sliceState = useSelector(selectSliceState);
     const error = useSelector(selectError);
     const currentAuthor = useSelector(selectCurrentAuthor);
     const dispatch = useDispatch();
@@ -32,16 +33,19 @@ export const AuthorDetails = () => {
     }, []);
 
     useEffect(() => {
+        if (sliceState===RequestStatus.Updated)
+            navigate(appRoutes.authors);            
+    }, [sliceState]);
+
+
+    useEffect(() => {
         if (currentAuthor)
             setName(currentAuthor.name)
     }, [currentAuthor]);
 
     const deleteAuthor = (e: SyntheticEvent) => {
         e.preventDefault();
-            dispatch(delAuthor(Number(id)))
-                .unwrap()
-                .then(() => navigate(appRoutes.authors))
-                .catch(() => { });
+        dispatch(delAuthor(Number(id)));
     }
 
     const handleSubmit = (e: SyntheticEvent) => {
@@ -50,7 +54,6 @@ export const AuthorDetails = () => {
             dispatch(setAuthor({ id: Number(id), name: name }));
         else
             dispatch(addAuthor(name));
-        navigate(appRoutes.authors);
     }
 
     if (isLoading)

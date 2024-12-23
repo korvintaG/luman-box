@@ -35,7 +35,7 @@ export class IdeasService {
   }
 
   findOne(id: number) {
-    return this.ideaRepository.findOneBy({ id });
+    return this.ideaRepository.findOne({where: {id}, relations: ['keywords']});
   }
 
   async update(id: number, updateIdeaDto: UpdateIdeaDto) {

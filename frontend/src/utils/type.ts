@@ -47,6 +47,7 @@ export const enum RequestStatus {
     Loading = 'loading',
     Success = 'success',
     Failed = 'failed',
+    Updated = 'updated'
 }
 
 export type RequestStatusKey = keyof typeof RequestStatus;

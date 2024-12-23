@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import { appRoutes } from '../../AppRoutes'
 import { useSelector, useDispatch } from '../../services/store';
 import {
@@ -17,18 +17,20 @@ import { AuthorListUI } from '../../components/ui/list/author-list'
 export const AuthorsPage: FC = () => {
     const authors = useSelector(selectAuthors);
     const isLoading = useSelector(selectIsDataLoading);
+    const location = useLocation();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        dispatch(fetchAuthors())
-    }, [authors]);
 
     const addNewAuthor = () => {
         dispatch(clearCurrentAuthor());
         navigate(appRoutes.authorAdd); 
     }
+
+    useEffect(() => {
+        console.log('AuthorsPage useEffect')
+        dispatch(fetchAuthors())
+    }, [navigate, location]);
 
     return (
         <AuthorListUI 

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Author, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
-import { getAuthorsAPI, setAuthorAPI, getAuthorAPI, addAuthorAPI, delAuthorAPI } from '../../utils/emu/luman-emu-api'
+import { getAuthorsAPI, setAuthorAPI, getAuthorAPI, addAuthorAPI, delAuthorAPI } from '../../utils/luman-api'
 
 export const initialState: ListToWork<Author> = {
   list: [],
@@ -31,11 +31,13 @@ const authorsSlice = createSlice({
     selectAuthors: (sliceState) => sliceState.list, 
     selectCurrentAuthor: (sliceState) => sliceState.current,  
     selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
+    selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAuthors.fulfilled, (state, action) => {
+        console.log('authorsSlice action.payload',action.payload)
         state.list = action.payload;
       })
       .addCase(getAuthor.pending, (state) => {
@@ -43,6 +45,15 @@ const authorsSlice = createSlice({
       })
       .addCase(getAuthor.fulfilled, (state, action) => {
         state.current = action.payload;
+      })
+      .addCase(setAuthor.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addCase(addAuthor.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addCase(delAuthor.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
       })
       .addMatcher(isPendingAction, (state) => {
         state.status=RequestStatus.Loading;
@@ -53,11 +64,12 @@ const authorsSlice = createSlice({
         state.error = action.error.message!;
       })
       .addMatcher(isFullFilledAction, (state, _) => {
-        state.status=RequestStatus.Success;
+        if (state.status===RequestStatus.Loading)
+          state.status=RequestStatus.Success;
       });
   }
 });
 
-export const { selectError, selectAuthors, selectCurrentAuthor, selectIsDataLoading } = authorsSlice.selectors;
+export const { selectError, selectAuthors, selectCurrentAuthor, selectSliceState, selectIsDataLoading } = authorsSlice.selectors;
 export const { clearCurrentAuthor } = authorsSlice.actions;
 export default authorsSlice.reducer;
