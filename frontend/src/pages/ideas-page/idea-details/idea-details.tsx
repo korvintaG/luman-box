@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from '../../../services/store';
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
     setIdea,selectCurrentIdea, delIdea,
-    selectIsDataLoading, getIdea, addIdea
+    selectIsDataLoading, getIdea, addIdea, selectSliceState
   } from '../../../slices/ideas';
 import {
     selectSources,
@@ -22,7 +22,7 @@ import {
   } from '../../../slices/keywords';
 import { appRoutes} from '../../../AppRoutes'
 
-import { IdeaEditData} from '../../../utils/type'
+import { RequestStatus, IdeaEditData} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 
 
@@ -40,6 +40,7 @@ export const IdeaDetails = () => {
     
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
+    const sliceState=  useSelector(selectSliceState);
     const isSourcesLoading = useSelector(sourcesLoading);
     const currentIdea = useSelector(selectCurrentIdea);
     const sources= useSelector(selectSources);
@@ -56,7 +57,13 @@ export const IdeaDetails = () => {
             const idNumber = Number(id);
             dispatch(getIdea(idNumber))
         }
-    },[]);
+    },[id]);
+
+    useEffect(() => {
+        if (sliceState===RequestStatus.Updated)
+            navigate(appRoutes.ideas);            
+    }, [sliceState]);
+
 
     useEffect(() => {
         if (currentIdea)
@@ -66,7 +73,6 @@ export const IdeaDetails = () => {
     const deleteIdea = (e: SyntheticEvent) => {
             const idNumber = Number(id);
             dispatch(delIdea(idNumber));
-            navigate(appRoutes.ideas);        
     }
 
     const deleteKeyword = (e: SyntheticEvent, id: number) => {
@@ -83,15 +89,10 @@ export const IdeaDetails = () => {
         e.preventDefault();
         if (id) {
             const idNumber = Number(id);
-            dispatch(setIdea({...values, id: idNumber, source_id: Number(values.source_id)})).
-            then(()=> {
-                navigate(appRoutes.ideas);
-            })
+            dispatch(setIdea({...values, id: idNumber, source_id: Number(values.source_id)}))
         }
-        else {
+        else 
             dispatch(addIdea(values));
-            navigate(appRoutes.ideas);
-        }
     }
 
     if (isLoading || isSourcesLoading || isKeywordsLoading)

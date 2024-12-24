@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { useEffect, useState, SyntheticEvent } from 'react';
+import { useEffect, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SourceDetailsUI } from '../../../components/ui/details/source-details/source-details'
 import {Preloader} from '../../../components/ui/uni/preloader';
@@ -7,15 +7,15 @@ import { useSelector, useDispatch } from '../../../services/store';
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
     setSource,selectCurrentSource, delSource, selectError,
-    selectIsDataLoading, getSource, addSource
+    selectIsDataLoading, getSource, addSource, selectSliceState
   } from '../../../slices/sources';
 import {
     selectAuthors,
-    fetchAuthors,
+    fetchAuthors, 
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
 import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { SourceEditData} from '../../../utils/type'
+import { RequestStatus, SourceEditData} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 
@@ -31,6 +31,7 @@ export const SourceDetails = () => {
     
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
+    const sliceState =  useSelector(selectSliceState);
     const isALoading = useSelector(aLoading);
     const currentSource = useSelector(selectCurrentSource);
     const authors= useSelector(selectAuthors);
@@ -47,6 +48,11 @@ export const SourceDetails = () => {
     },[]);
 
     useEffect(() => {
+        if (sliceState===RequestStatus.Updated)
+            navigate(appRoutes.sources);            
+    }, [sliceState]);
+
+    useEffect(() => {
         if (currentSource)
             setValues({name: currentSource.name, author_id: currentSource.author_id})
     },[currentSource]);
@@ -55,27 +61,19 @@ export const SourceDetails = () => {
     const deleteSourceAction = (e: SyntheticEvent) => {
             const idNumber = Number(id);
             dispatch(delSource(idNumber))
-            .unwrap()
-            .then(() => navigate(appRoutes.sources))
-            .catch(() => { });
     }
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id) {
             const idNumber = Number(id);
-            //console.log('handleSubmit',values);
-            dispatch(setSource({id: idNumber, author_id: Number(values.author_id), name:values.name})).
-            then(()=> {
-                navigate(appRoutes.sources);
-            })
+            dispatch(setSource({id: idNumber, author_id: Number(values.author_id), name:values.name}))
         }
-        else {
+        else 
             dispatch(addSource(values));
-            navigate(appRoutes.sources);
-        }
+        
     }
-    if (isLoading || isALoading)
+    if (isLoading || isALoading )
         return <Preloader/>;
 
     return (<>

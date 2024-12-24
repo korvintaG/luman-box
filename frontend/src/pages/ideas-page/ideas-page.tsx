@@ -23,7 +23,7 @@ export const IdeasPage: FC = () => {
 
     useEffect(() => {
         dispatch(fetchIdeas())
-    }, [ideas]);
+    }, []);
 
     const addNewIdea = () => {
         dispatch(clearCurrentIdea());

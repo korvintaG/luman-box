@@ -8,9 +8,11 @@ import { useMsgModal } from '../../../hooks/useMsgModal'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
     setKeyword,selectCurrentKeyword, delKeyword, selectError,
-    selectIsDataLoading, getKeyword, addKeyword
+    selectIsDataLoading, getKeyword, addKeyword, selectSliceState
   } from '../../../slices/keywords';
 import { appRoutes } from '../../../AppRoutes';
+import { RequestStatus} from '../../../utils/type'
+
 
 
 export const KeywordDetails = () => {
@@ -18,6 +20,7 @@ export const KeywordDetails = () => {
     const [name, setName] = useState('');
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
+    const sliceState = useSelector(selectSliceState);
     const msgDeleteHook = useMsgModal();
     const error = useSelector(selectError);
     const currentKeyword = useSelector(selectCurrentKeyword);
@@ -31,6 +34,12 @@ export const KeywordDetails = () => {
     },[]);
 
     useEffect(() => {
+        if (sliceState===RequestStatus.Updated)
+            navigate(appRoutes.keywords);            
+    }, [sliceState]);
+
+
+    useEffect(() => {
         if (currentKeyword)
             setName(currentKeyword.name)
     },[currentKeyword]);
@@ -38,22 +47,16 @@ export const KeywordDetails = () => {
     const deleteKeyword = (e: SyntheticEvent) => {
             const idNumber = Number(id);
             dispatch(delKeyword(idNumber))
-            .unwrap()
-            .then(() =>navigate(appRoutes.keywords))
-            .catch(()=>{});        
     }
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id) {
             const idNumber = Number(id);
-            dispatch(setKeyword({id: idNumber, name:name})).then(()=> {
-                navigate(appRoutes.keywords);
-            })
+            dispatch(setKeyword({id: idNumber, name:name}))
         }
         else {
             dispatch(addKeyword(name));
-            navigate(appRoutes.keywords);
         }
     }
 

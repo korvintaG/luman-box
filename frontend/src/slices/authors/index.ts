@@ -37,7 +37,6 @@ const authorsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchAuthors.fulfilled, (state, action) => {
-        console.log('authorsSlice action.payload',action.payload)
         state.list = action.payload;
       })
       .addCase(getAuthor.pending, (state) => {

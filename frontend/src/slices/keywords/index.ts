@@ -31,33 +31,44 @@ const keywordsSlice = createSlice({
     selectKeywords: (sliceState) => sliceState.list,
     selectCurrentKeyword: (sliceState) => sliceState.current,
     selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
+    selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchKeywords.fulfilled, (state, action) => {
         state.list = action.payload;
+        state.status=RequestStatus.Success;
+        console.log('keywordsSlice addCase(fetchKeywords',state.status)
       })
       .addCase(getKeyword.pending, (state) => {
         state.current = null;
       })
       .addCase(getKeyword.fulfilled, (state, action) => {
+        state.status=RequestStatus.Success;
         state.current = action.payload;
+      })
+      .addCase(setKeyword.fulfilled, (state, action) => {
+        state.status = RequestStatus.Updated;
+      })
+      .addCase(addKeyword.fulfilled, (state, action) => {
+        state.status = RequestStatus.Updated;
+      })
+      .addCase(delKeyword.fulfilled, (state, action) => {
+        state.status = RequestStatus.Updated;
       })
       .addMatcher(isPendingAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
+        console.log('keywordsSlice addMatcher(isPendingAction',state.status)
       })
       .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
         state.status=RequestStatus.Failed;
         state.error = action.error.message!;
-      })
-      .addMatcher(isFullFilledAction, (state, _) => {
-        state.status=RequestStatus.Success;
       });
   }
 });
 
-export const { selectError, selectKeywords, selectCurrentKeyword, selectIsDataLoading } = keywordsSlice.selectors;
+export const { selectError, selectKeywords, selectCurrentKeyword, selectSliceState, selectIsDataLoading } = keywordsSlice.selectors;
 export const { clearCurrentKeyword } = keywordsSlice.actions;
 export default keywordsSlice.reducer;

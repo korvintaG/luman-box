@@ -22,7 +22,7 @@ export const SourcesPage: FC = () => {
 
     useEffect(() => {
         dispatch(fetchSources())
-    }, [sources]);
+    }, []);
 
     const addNewSource = () => {
         dispatch(clearCurrentSource());

@@ -17,7 +17,7 @@ type TAuthorsResponse = {data: Author[]};
 export const getAuthorsAPI = () : Promise<Author[]> => {
     return fetch(`${URL_API}/authors`)
     .then((res) => checkResponse<Author[]>(res))
-    .then((data) => { console.log('getAuthorsAPI',data); return data});
+    .then((data) => data);
   }; 
 
 export const getAuthorAPI = (id:number) : Promise<Author> => {
@@ -148,7 +148,7 @@ export const getKeywordAPI = (id:number) : Promise<Keyword> => {
 export const setKeywordAPI = (data: {id:number, name: string})  => {
     return fetch(`${URL_API}/keywords/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({data}),
+      body: JSON.stringify(data),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
   .then((res)=>res.json())
