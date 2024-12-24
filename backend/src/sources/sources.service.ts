@@ -18,7 +18,7 @@ export class SourcesService {
   }
 
   findAll() {
-    return this.sourceRepository.find( {order: { name: "ASC" }});
+    return this.sourceRepository.find( {relations: { author: true }, order: { name: "ASC" }});
   }
 
   findOne(id: number) {

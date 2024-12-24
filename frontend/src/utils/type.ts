@@ -11,10 +11,15 @@ export type SourceEditData = {
 export type Source = SourceEditData & {id: number;}
 
 export type SourceExtension = Source & {
-    authorName: string;
-    nameWithAuthor: string;
+    author?: Author;
 };
 
+export function authorNameFromObj(author?: Author): string {
+    if (author) 
+        if (author.name)
+            return author.name;
+    return '';
+}
 
 export type IdeaEditData=  {
     source_id: number;

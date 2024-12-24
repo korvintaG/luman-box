@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { SourceExtension } from '../../../../utils/type';
+import { SourceExtension, authorNameFromObj } from '../../../../utils/type';
 import { RecordListUI } from '../../../../components/ui/uni/record-list'
 import { Link } from 'react-router-dom';
 import { getRouteParam , appRoutes} from '../../../../AppRoutes'
@@ -23,7 +23,7 @@ export const SourceListUI : FC<SourceListUIProps> = ({sources, addNewSource, isL
                     <Link
                         className={styles.link}
                         to={getRouteParam(appRoutes.source,source.id)} >
-                        {source.name + ' // ' + source.authorName}
+                        {source.name + ' // ' + authorNameFromObj(source.author)}
                     </Link>
                 </li>)
                 }

@@ -15,7 +15,7 @@ import {
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
 import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { RequestStatus, SourceEditData} from '../../../utils/type'
+import { RequestStatus, SourceEditData, authorNameFromObj} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 
@@ -86,7 +86,7 @@ export const SourceDetails = () => {
             <SourceDetailsUI 
                 id={id?Number(id):null } 
                 values={values} 
-                initialName={currentSource? currentSource.name+' // '+currentSource.authorName:''}
+                initialName={currentSource? (currentSource.name+' // '+authorNameFromObj(currentSource.author)):''}
                 error={error}
                 handleChange={handleChange}
                 handleSubmit={handleSubmit} 

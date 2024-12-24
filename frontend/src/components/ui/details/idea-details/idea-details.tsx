@@ -1,5 +1,5 @@
 import { useState, FC, ChangeEvent, SyntheticEvent } from 'react';
-import { HTMLEditElement, IdeaEditData, SourceExtension, Keyword } from '../../../../utils/type'
+import { HTMLEditElement, IdeaEditData, SourceExtension, Keyword, authorNameFromObj } from '../../../../utils/type'
 import { RecordEditUI } from '../../uni/record-edit/record-edit'
 import styles from './idea-details.module.css'
 import {TopicKeywordsUI} from '../topic-keywords/topic-keywords';
@@ -39,7 +39,7 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
                     selectClassAdd={styles.input}
                     labelClassReplace={styles.label}
                     handleChange={handleChange} 
-                    values={sources.map(el =>({id: el.id, name:el.nameWithAuthor}))}/>
+                    values={sources.map(el =>({id: el.id, name:el.name+'//'+authorNameFromObj(el.author)}))}/>
                 <InputEditUI classAdd={styles.input_block}
                     name="name" label='Название идеи:' value={values.name} 
                     placeholder="Укажите название идеи"
