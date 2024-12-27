@@ -26,7 +26,7 @@ export const SourceDetails = () => {
     const { id } = useParams();
     const { values, handleChange, setValues } = useForm<SourceEditData>({
         name: '',
-        author_id: 0
+        author: {id: 0}
       });
     
     const navigate = useNavigate();
@@ -54,7 +54,7 @@ export const SourceDetails = () => {
 
     useEffect(() => {
         if (currentSource)
-            setValues({name: currentSource.name, author_id: currentSource.author_id})
+            setValues({name: currentSource.name, author:{id: (currentSource.author?currentSource.author.id:0)}})
     },[currentSource]);
 
     
@@ -67,7 +67,7 @@ export const SourceDetails = () => {
         e.preventDefault();
         if (id) {
             const idNumber = Number(id);
-            dispatch(setSource({id: idNumber, author_id: Number(values.author_id), name:values.name}))
+            dispatch(setSource({id: idNumber, name:values.name, author:{id: Number(values.author?values.author.id:0)}}))
         }
         else 
             dispatch(addSource(values));

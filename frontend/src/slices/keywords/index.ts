@@ -39,7 +39,6 @@ const keywordsSlice = createSlice({
       .addCase(fetchKeywords.fulfilled, (state, action) => {
         state.list = action.payload;
         state.status=RequestStatus.Success;
-        console.log('keywordsSlice addCase(fetchKeywords',state.status)
       })
       .addCase(getKeyword.pending, (state) => {
         state.current = null;
@@ -60,7 +59,6 @@ const keywordsSlice = createSlice({
       .addMatcher(isPendingAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
-        console.log('keywordsSlice addMatcher(isPendingAction',state.status)
       })
       .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
         state.status=RequestStatus.Failed;

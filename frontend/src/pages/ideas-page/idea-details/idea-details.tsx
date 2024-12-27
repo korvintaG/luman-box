@@ -31,7 +31,7 @@ export const IdeaDetails = () => {
     const { id } = useParams();
     const { values, handleChange, setValues } = useForm<IdeaEditData>({
         name: '',
-        source_id: 0,
+        source: {id:0},
         original_text: '',
         content: '',
         date_time_create: '',
@@ -67,7 +67,7 @@ export const IdeaDetails = () => {
 
     useEffect(() => {
         if (currentIdea)
-            setValues({...currentIdea, source_id: Number(currentIdea.source_id)})
+            setValues({...currentIdea, source:{id: Number(currentIdea.source.id)}})
     },[currentIdea]);
 
     const deleteIdea = (e: SyntheticEvent) => {
@@ -89,7 +89,7 @@ export const IdeaDetails = () => {
         e.preventDefault();
         if (id) {
             const idNumber = Number(id);
-            dispatch(setIdea({...values, id: idNumber, source_id: Number(values.source_id)}))
+            dispatch(setIdea({...values, id: idNumber, source: {id: Number(values.source.id)}}))
         }
         else 
             dispatch(addIdea(values));

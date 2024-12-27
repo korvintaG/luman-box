@@ -11,7 +11,14 @@ export function useForm<T>(inputValues: T) {
 
   const handleChange = (event: ChangeEvent<HTMLEditElement >) => {
     const { value, name } = event.target;
-    setValues({ ...values, [name]: value });
+    if (name.indexOf('.')>0)
+    {
+      const [a, b] = name.split('.')
+      let cobj={[a]:{[b]:value}};
+      setValues({ ...values, ...cobj });
+    }
+    else
+      setValues({ ...values, [name]: value });
   };
 
   return {

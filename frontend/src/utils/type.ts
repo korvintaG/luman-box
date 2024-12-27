@@ -4,8 +4,8 @@ export type Author = {
 }
 
 export type SourceEditData = {
-    author_id: number;
     name: string;
+    author?:{id: number}
 }
 
 export type Source = SourceEditData & {id: number;}
@@ -22,17 +22,18 @@ export function authorNameFromObj(author?: Author): string {
 }
 
 export type IdeaEditData=  {
-    source_id: number;
+    //source_id: number;
     name: string;
     original_text: string;
     content: string;
     date_time_create: string;
     keywords: number[];
+    source: {id: number; name?: string}
 }
 
 export type Idea= IdeaEditData &  { id: number; }
 
-export type IdeaExtension = Idea & {sourceName: string; user: string};
+export type IdeaExtension = Idea & {user: string};
 
 export type Keyword = {
     id: number,

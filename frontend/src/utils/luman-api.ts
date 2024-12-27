@@ -69,7 +69,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
   export const setSourceAPI = (data: Source)  => {
     return fetch(`${URL_API}/sources/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({data}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
   .then((res)=>res.json())
@@ -78,7 +78,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
   export const addSourceAPI = (data: SourceEditData) => {
     return fetch(`${URL_API}/sources/`, {
       method: 'POST',
-      body: JSON.stringify({data}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
     .then((res)=>res.json())

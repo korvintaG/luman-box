@@ -30,7 +30,7 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = ({id, values, initialNa
                 placeholder="Укажите название источника"
                 inputClassAdd={styles.input}
                 handleChange={handleChange} />
-            <InputSelectUI name="author_id" label="Выберите автора:" value={values.author_id}
+            <InputSelectUI name="author.id" label="Выберите автора:" value={values.author?values.author.id:0}
                 selectClassAdd={styles.input}
                 handleChange={handleChange} values={authors}/>
             <ErrorMessageUI error={error}/>            

@@ -31,7 +31,7 @@ export class IdeasService {
   }
 
   findAll() {
-    return this.ideaRepository.find( { relations: { keywords: true }, order: { name: "ASC" }});
+    return this.ideaRepository.find( { relations: { keywords: true, source: true }, order: { name: "ASC" }});
   }
 
   findOne(id: number) {

@@ -35,7 +35,7 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
                 formClass={styles.form} mainClass={styles.main}>
             <div className={styles.inputs}>
                 <InputSelectUI classAdd={styles.input_block}
-                    name="source_id" label="Источник идеи:" value={values.source_id}
+                    name="source_id" label="Источник идеи:" value={values.source.id}
                     selectClassAdd={styles.input}
                     labelClassReplace={styles.label}
                     handleChange={handleChange} 

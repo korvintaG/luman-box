@@ -22,7 +22,7 @@ export class SourcesService {
   }
 
   findOne(id: number) {
-    return this.sourceRepository.findOneBy({ id });
+    return this.sourceRepository.findOne({where: { id }, relations: { author: true }});
   }
 
   update(id: number, updateSourceDto: UpdateSourceDto) {

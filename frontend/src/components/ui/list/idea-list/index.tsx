@@ -35,8 +35,8 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, addNewIdea, isLoading})
                             </td>
                             <td>
                                     <Link
-                                    to={getRouteParam(appRoutes.source,idea.source_id)} >
-                                    {idea.sourceName }
+                                    to={getRouteParam(appRoutes.source,idea.source.id)} >
+                                    {idea.source.name }
                                     </Link>
                             </td>
                             <td>
