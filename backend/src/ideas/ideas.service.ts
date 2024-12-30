@@ -21,11 +21,11 @@ export class IdeasService {
   ) {}
 
   async create(createIdeaDto: CreateIdeaDto) {
-    const onlyIdea=omit(createIdeaDto, ["keywords"]);
+    const onlyIdea=omit(createIdeaDto, ["keywords", "date_time_create"]);
     let idea=this.ideaRepository.create(onlyIdea);
     if (createIdeaDto.keywords)
       if (createIdeaDto.keywords.length>0) {
-        const keywords = await this.keywordRepository.find({ where: { id: In(createIdeaDto.keywords) }});
+        const keywords = await this.keywordRepository.find({ where: { id: In(createIdeaDto.keywords.map(el=>el.id)) }});
         idea.keywords = keywords;
       }
     return this.ideaRepository.save(idea);
@@ -41,6 +41,7 @@ export class IdeasService {
 
   async update(id: number, updateIdeaDto: UpdateIdeaDto) {
     const onlyIdea=omit(updateIdeaDto, ["keywords"]);
+    //console.log('ideas.service update onlyIdea',onlyIdea)
     if (!isEmpty(onlyIdea)) {
         await this.ideaRepository.update({id}, onlyIdea);
     }
@@ -48,8 +49,10 @@ export class IdeasService {
       where: { id },
       relations: ['keywords'], 
     });
+    //console.log('ideas.service update idea',idea)
     if (updateIdeaDto.keywords && updateIdeaDto.keywords.length>0) {
-        const keywords = await this.keywordRepository.find({ where: { id: In(updateIdeaDto.keywords) }});
+        const keywords = await this.keywordRepository.find({ where: { id: In(updateIdeaDto.keywords.map(el=>el.id)) }});
+        //console.log('ideas.service update keywords',keywords)
         idea.keywords = keywords; 
         return this.ideaRepository.save(idea); 
     }

@@ -29,6 +29,8 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
         setKeywordToAdd(0);
     }
 
+    console.log('TopicKeywordsUI',props.keywordsSelected)
+
     return(<div className={styles.keywords_block}>
             {props.keywordsSelected ?
                 <div className={styles.keywords}>
@@ -47,7 +49,7 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
                 name="keyword_id" 
                 label="Добавить ключевое слово:" 
                 value={keywordToAdd}
-                values={props.keywordsAll.filter((el)=> props.keywordsSelected.find((fel)=>fel.id!==el.id))} // только новые
+                values={props.keywordsAll.filter((el)=> !props.keywordsSelected.find((fel)=>fel.id===el.id))} // только новые
                 selectClassAdd={styles['keywords-select']}
                 handleChange={changeKeywordToAdd} />
     </div>)

@@ -4,13 +4,13 @@ export class CreateSourceDto {
     constructor(
         public id_out: string,
         public name: string,
-        public author_id: number
+        public author: {id: number}
       ) {}
     
       static from = (sourceDocument: ISource): CreateSourceDto =>
         new CreateSourceDto(
             sourceDocument.id_out,
             sourceDocument.name,
-            sourceDocument.author_id
+            {id:sourceDocument.author_id}
         );
 }

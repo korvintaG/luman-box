@@ -108,7 +108,7 @@ export const getIdeaAPI = (id:number) : Promise<Idea> => {
 export const setIdeaAPI = (data: Idea)  => {
     return fetch(`${URL_API}/ideas/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({data}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
   .then((res)=>res.json())
@@ -117,7 +117,7 @@ export const setIdeaAPI = (data: Idea)  => {
 export const addIdeaAPI = (data: IdeaRaw) => {
     return fetch(`${URL_API}/ideas/`, {
       method: 'POST',
-      body: JSON.stringify({data}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
     .then((res)=>res.json())
