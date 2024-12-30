@@ -6,6 +6,7 @@ import { Keyword } from '../keywords/entities/keyword.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { isEmpty, omit }  from "lodash";
+import { Source } from 'src/sources/entities/source.entity';
 
 
 @Injectable()
@@ -31,11 +32,11 @@ export class IdeasService {
   }
 
   findAll() {
-    return this.ideaRepository.find( { relations: { keywords: true, source: true }, order: { name: "ASC" }});
+    return this.ideaRepository.find( { relations: ['source.author'] , order: { name: "ASC" }});
   }
 
   findOne(id: number) {
-    return this.ideaRepository.findOne({where: {id}, relations: ['keywords']});
+    return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author']});
   }
 
   async update(id: number, updateIdeaDto: UpdateIdeaDto) {

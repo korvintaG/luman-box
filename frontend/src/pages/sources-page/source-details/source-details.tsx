@@ -15,7 +15,7 @@ import {
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
 import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { RequestStatus, SourceEditData, authorNameFromObj} from '../../../utils/type'
+import { RequestStatus, SourceRaw, authorNameFromObj} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 
@@ -24,7 +24,7 @@ export const SourceDetails = () => {
     const msgDeleteHook = useMsgModal();
 
     const { id } = useParams();
-    const { values, handleChange, setValues } = useForm<SourceEditData>({
+    const { values, handleChange, setValues } = useForm<SourceRaw>({
         name: '',
         author: {id: 0}
       });
@@ -45,7 +45,7 @@ export const SourceDetails = () => {
             const idNumber = Number(id);
             dispatch(getSource(idNumber))
         }
-    },[]);
+    },[]);  
 
     useEffect(() => {
         if (sliceState===RequestStatus.Updated)
@@ -69,8 +69,12 @@ export const SourceDetails = () => {
             const idNumber = Number(id);
             dispatch(setSource({id: idNumber, name:values.name, author:{id: Number(values.author?values.author.id:0)}}))
         }
-        else 
-            dispatch(addSource(values));
+        else {
+            if (values.author && values.author.id>0) // означен ли автор?
+                dispatch(addSource(values));            
+            else
+                dispatch(addSource({...values,author:undefined}));
+        }
         
     }
     if (isLoading || isALoading )

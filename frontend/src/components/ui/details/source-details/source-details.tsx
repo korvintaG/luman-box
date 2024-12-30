@@ -1,5 +1,5 @@
 import { FC, ChangeEvent, SyntheticEvent } from 'react';
-import { HTMLEditElement, SourceEditData, Author} from '../../../../utils/type'
+import { HTMLEditElement, SourceRaw, Author} from '../../../../utils/type'
 import { RecordEditUI } from '../../uni/record-edit/record-edit'
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {ErrorMessageUI} from '../../uni/error-message/error-message'
@@ -9,7 +9,7 @@ import styles from './source-details.module.css'
 
 export type SourceDetailsUIProps = {
     id: number | null;
-    values: SourceEditData; // карточка исходника
+    values: SourceRaw; // карточка исходника
     initialName: string; // исходное название источника
     error: string;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // изменение элемента ввода

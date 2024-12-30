@@ -22,14 +22,14 @@ import {
   } from '../../../slices/keywords';
 import { appRoutes} from '../../../AppRoutes'
 
-import { RequestStatus, IdeaEditData} from '../../../utils/type'
+import { RequestStatus, IdeaRaw} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 
 
 export const IdeaDetails = () => {
     const msgDeleteHook = useMsgModal();
     const { id } = useParams();
-    const { values, handleChange, setValues } = useForm<IdeaEditData>({
+    const { values, handleChange, setValues } = useForm<IdeaRaw>({
         name: '',
         source: {id:0},
         original_text: '',
@@ -77,11 +77,11 @@ export const IdeaDetails = () => {
 
     const deleteKeyword = (e: SyntheticEvent, id: number) => {
         e.preventDefault();
-        setValues({...values,keywords:values.keywords!.filter((el)=>el!=id)})
+        setValues({...values,keywords:values.keywords!.filter((el)=>el.id!==id)})
     }
 
     const addKeyword = (id: number) => {
-        setValues({...values,keywords:[...values.keywords!, id]})
+        setValues({...values,keywords:[...values.keywords!, {id}]})
     }
 
 

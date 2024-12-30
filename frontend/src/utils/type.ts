@@ -1,49 +1,70 @@
-export type Author = {
+// универсальные типы
+export type IDObject = {
     id: number;
+}
+
+export type NameObject = {
     name: string;
 }
 
-export type SourceEditData = {
-    name: string;
-    author?:{id: number}
+// Авторы
+export type AuthorInner = NameObject;
+export type Author = AuthorInner & IDObject;
+export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
+
+// Источники
+export type SourceInner = NameObject;
+export type SourceRaw = SourceInner & {
+    author?:AuthorPartial;
+}
+export type SourcePartial = Partial<Source> & IDObject;
+export type Source = SourceRaw & IDObject;
+
+export function sourceFullNameFromObj(source?: SourcePartial): string {
+    let name='';
+    if (source) {
+        if (source.name) {
+            name=source.name;
+            if (source.author)
+                if (source.author.name)
+                    name=name+' // '+source.author.name;
+        }
+    }
+    return name;
 }
 
-export type Source = SourceEditData & {id: number;}
-
-export type SourceExtension = Source & {
-    author?: Author;
-};
-
-export function authorNameFromObj(author?: Author): string {
+export function authorNameFromObj(author?: Partial<Author>): string { 
     if (author) 
         if (author.name)
             return author.name;
     return '';
 }
 
-export type IdeaEditData=  {
-    //source_id: number;
-    name: string;
+// ключевые слова
+export type KeywordInner = NameObject;
+export type KeywordRaw = KeywordInner;
+export type Keyword = KeywordRaw & IDObject;
+export type KeywordPartial = Partial<Keyword> & IDObject;
+
+// Идеи
+export type IdeaInner= NameObject & {
     original_text: string;
     content: string;
     date_time_create: string;
-    keywords: number[];
-    source: {id: number; name?: string}
 }
 
-export type Idea= IdeaEditData &  { id: number; }
-
-export type IdeaExtension = Idea & {user: string};
-
-export type Keyword = {
-    id: number,
-    name: string
+export type IdeaRaw= IdeaInner & {
+    source: SourcePartial;
+    keywords?: KeywordPartial[];
 }
 
-export type KeywordsIdea = {
+export type Idea= IdeaRaw &  IDObject
+
+
+/*export type KeywordsIdea = {
     keyword_id: number,
     idea_id: number
-}
+}*/
 
 
 export type HTMLEditElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;

@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { IdeaExtension } from '../../../../utils/type';
+import { Idea , sourceFullNameFromObj} from '../../../../utils/type';
 import { RecordListUI } from '../../uni/record-list';
 import { getRouteParam , appRoutes} from '../../../../AppRoutes'
 import styles from './ideas-list.module.css';
 
 
 export type IdeaListUIProps = {
-    ideas: IdeaExtension[],
+    ideas: Idea[],
     addNewIdea: ()=>void,
     isLoading: boolean
 }
@@ -18,7 +18,7 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, addNewIdea, isLoading})
         skipUl
         header='Список идей' 
         captionAddButton='Добавить идею'
-        addRecord={addNewIdea}
+        addRecord={addNewIdea} 
         isLoading={isLoading}>
             <table className={styles.list}>
                 <thead>
@@ -36,13 +36,13 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, addNewIdea, isLoading})
                             <td>
                                     <Link
                                     to={getRouteParam(appRoutes.source,idea.source.id)} >
-                                    {idea.source.name }
+                                    {sourceFullNameFromObj(idea.source)}
                                     </Link>
                             </td>
                             <td>
                                     <Link
                                     to=''>
-                                    {idea.user }
+                                    {/*idea.user */}
                                     </Link>
                             </td>
                             <td className={styles.date_time}>
@@ -53,4 +53,4 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, addNewIdea, isLoading})
                 </tbody>
             </table>
         </RecordListUI>;
-}
+} 

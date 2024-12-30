@@ -30,7 +30,6 @@ export function isFullFilledAction(action: PayloadAction) {
   return action.type.endsWith('fulfilled');
 } 
 
-
 export function isPendingAction(action: PayloadAction) {
   return action.type.endsWith('pending');
 }  

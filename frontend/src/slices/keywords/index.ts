@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Keyword, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
 import { getKeywordsAPI, setKeywordAPI, getKeywordAPI, addKeywordAPI, delKeywordAPI } from '../../utils/luman-api'
@@ -15,6 +15,15 @@ export const setKeyword = createAsyncThunk('setKeyword', setKeywordAPI);
 export const getKeyword = createAsyncThunk('getKeyword', getKeywordAPI);
 export const addKeyword = createAsyncThunk('addKeyword', addKeywordAPI);
 export const delKeyword = createAsyncThunk('delKeyword', delKeywordAPI);
+
+export function isPendingKeywordAction(action: PayloadAction) {
+  return action.type.endsWith('pending') && action.type.includes('Keyword');
+}  
+
+export function isRejectedKeywordAction(action: PayloadAction) {
+  return action.type.endsWith('rejected')  && action.type.includes('Keyword');
+} 
+
 
 /**
  * Слайс для ключевых слов
@@ -47,20 +56,14 @@ const keywordsSlice = createSlice({
         state.status=RequestStatus.Success;
         state.current = action.payload;
       })
-      .addCase(setKeyword.fulfilled, (state, action) => {
+      .addMatcher(isAnyOf(addKeyword.fulfilled,delKeyword.fulfilled, setKeyword.fulfilled), (state) => {
         state.status = RequestStatus.Updated;
       })
-      .addCase(addKeyword.fulfilled, (state, action) => {
-        state.status = RequestStatus.Updated;
-      })
-      .addCase(delKeyword.fulfilled, (state, action) => {
-        state.status = RequestStatus.Updated;
-      })
-      .addMatcher(isPendingAction, (state) => {
+      .addMatcher(isPendingKeywordAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
       })
-      .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
+      .addMatcher(isRejectedKeywordAction, (state, action: ErrorAction) => {
         state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       });

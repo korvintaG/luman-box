@@ -1,5 +1,5 @@
 import { useState, FC, ChangeEvent, SyntheticEvent } from 'react';
-import { HTMLEditElement, IdeaEditData, SourceExtension, Keyword } from '../../../../utils/type'
+import { HTMLEditElement, IdeaRaw, KeywordPartial, Keyword } from '../../../../utils/type'
 import { KeywordUI } from '../keyword'
 import {InputSelectUI} from '../../uni/input-select/input-select'
 import styles from './topic-keywords.module.css'
@@ -7,7 +7,7 @@ import styles from './topic-keywords.module.css'
 
 export type TopicKeywordsUIProps = {
     keywordsAll: Keyword[]; // ключевые слова для выбора
-    keywordsSelected: number[];
+    keywordsSelected: KeywordPartial[];
     deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
     addKeyword: (id: number) => void; // добавить ключевое слово к идеи
 }
@@ -34,8 +34,8 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
                 <div className={styles.keywords}>
                     {props.keywordsSelected.map((kw) =>
                         <KeywordUI 
-                            id={kw} 
-                            name={getKeywordName(kw)}
+                            id={kw.id} 
+                            name={getKeywordName(kw.id)}
                             deleteKeyword={props.deleteKeyword} />
                     )}
                 </div>
@@ -47,7 +47,7 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
                 name="keyword_id" 
                 label="Добавить ключевое слово:" 
                 value={keywordToAdd}
-                values={props.keywordsAll.filter((el)=> props.keywordsSelected.indexOf(el.id)===-1)}
+                values={props.keywordsAll.filter((el)=> props.keywordsSelected.find((fel)=>fel.id!==el.id))} // только новые
                 selectClassAdd={styles['keywords-select']}
                 handleChange={changeKeywordToAdd} />
     </div>)

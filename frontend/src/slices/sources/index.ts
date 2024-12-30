@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { SourceExtension, RequestStatus } from '../../utils/type'
+import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
+import { Source, RequestStatus } from '../../utils/type'
 import { getSourcesAPI, getSourceAPI, setSourceAPI, addSourceAPI, delSourceAPI } from '../../utils/luman-api'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
 
-export const initialState: ListToWork<SourceExtension> = {
+export const initialState: ListToWork<Source> = {
   list: [],
   current: null,
   status: RequestStatus.Idle,
@@ -15,6 +15,15 @@ export const getSource = createAsyncThunk('getSource', getSourceAPI);
 export const setSource = createAsyncThunk('setSource', setSourceAPI);
 export const addSource = createAsyncThunk('addSource', addSourceAPI);
 export const delSource = createAsyncThunk('delSource', delSourceAPI);
+
+export function isPendingSourceAction(action: PayloadAction) {
+  return action.type.endsWith('pending') && action.type.includes('Source');
+}  
+
+export function isRejectedSourceAction(action: PayloadAction) {
+  return action.type.endsWith('rejected')  && action.type.includes('Source');
+} 
+
 
 /**
  * Слайс для источников
@@ -47,30 +56,17 @@ const sourcesSlice = createSlice({
         state.status=RequestStatus.Success;       
         state.current = action.payload;
       })
-      .addCase(setSource.fulfilled, (state, _) => {
+      .addMatcher(isAnyOf(addSource.fulfilled,setSource.fulfilled,delSource.fulfilled), (state) => {
         state.status=RequestStatus.Updated
       })
-      .addCase(addSource.fulfilled, (state, _) => {
-        state.status=RequestStatus.Updated
-      })
-      .addCase(delSource.fulfilled, (state, _) => {
-        state.status=RequestStatus.Updated
-      })
-      .addMatcher(isPendingAction, (state) => {
+      .addMatcher(isPendingSourceAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
       })
-      .addMatcher(isRejectedAction, (state, action: ErrorAction) => {
+      .addMatcher(isRejectedSourceAction, (state, action: ErrorAction) => {
         state.status=RequestStatus.Failed;
         state.error = action.error.message!;
-      })
-      /*.addMatcher(isFullFilledAction, (state, _) => {
-        console.log('sourcesSlice addMatcher(isFullFilledAction',state.status);
-        if (state.status===RequestStatus.Loading)  {
-          console.log('sourcesSlice addMatcher(isFullFilledAction set',RequestStatus.Success);
-          state.status=RequestStatus.Success;       
-        } 
-      })*/;
+      });
   }
 });
 

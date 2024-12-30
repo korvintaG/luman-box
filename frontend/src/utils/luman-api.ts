@@ -1,4 +1,4 @@
-import { Author, SourceExtension, Source, Idea, IdeaExtension, IdeaEditData, SourceEditData, Keyword } from "./type";
+import { Author, Source, Idea, IdeaRaw, SourceRaw, Keyword } from "./type";
 
 const URL_API='http://localhost:3000'
 
@@ -56,12 +56,12 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
 // * Источники
 // **********************************************
 
-  export const getSourcesAPI = () : Promise<SourceExtension[]> => {
+  export const getSourcesAPI = () : Promise<Source[]> => {
     return fetch(`${URL_API}/sources`)
     .then((res)=>res.json())
-  }; 
+  };  
 
-  export const getSourceAPI = (id:number) : Promise<SourceExtension> => {
+  export const getSourceAPI = (id:number) : Promise<Source> => {
     return fetch(`${URL_API}/sources/${id}`)
     .then((res)=>res.json())
     } 
@@ -75,7 +75,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
   .then((res)=>res.json())
   }; 
 
-  export const addSourceAPI = (data: SourceEditData) => {
+  export const addSourceAPI = (data: SourceRaw) => {
     return fetch(`${URL_API}/sources/`, {
       method: 'POST',
       body: JSON.stringify({...data}),
@@ -95,12 +95,12 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
 // * Идеи
 // **********************************************
 
-export const getIdeasAPI = () : Promise<IdeaExtension[]> => {
+export const getIdeasAPI = () : Promise<Idea[]> => {
     return fetch(`${URL_API}/ideas`)
     .then((res)=>res.json())
 }; 
 
-export const getIdeaAPI = (id:number) : Promise<IdeaExtension> => {
+export const getIdeaAPI = (id:number) : Promise<Idea> => {
     return fetch(`${URL_API}/ideas/${id}`)
     .then((res)=>res.json())
 }; 
@@ -114,7 +114,7 @@ export const setIdeaAPI = (data: Idea)  => {
   .then((res)=>res.json())
 }; 
 
-export const addIdeaAPI = (data: IdeaEditData) => {
+export const addIdeaAPI = (data: IdeaRaw) => {
     return fetch(`${URL_API}/ideas/`, {
       method: 'POST',
       body: JSON.stringify({data}),

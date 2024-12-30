@@ -20,7 +20,7 @@ export const KeywordListUI : FC<KeywordListUIProps> = ({keywords, addNewKeyword,
             {keywords.map((keyword) => (
                 <li key={keyword.id}>
                     <Link
-                        to={getRouteParam(appRoutes.keyword,keyword.id)} >
+                        to={getRouteParam(appRoutes.keyword,keyword.id)} > 
                         {keyword.name}
                     </Link>
                 </li>))

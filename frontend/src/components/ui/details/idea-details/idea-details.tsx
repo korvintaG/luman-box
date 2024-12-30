@@ -1,5 +1,5 @@
 import { useState, FC, ChangeEvent, SyntheticEvent } from 'react';
-import { HTMLEditElement, IdeaEditData, SourceExtension, Keyword, authorNameFromObj } from '../../../../utils/type'
+import { HTMLEditElement, IdeaRaw, Source, Keyword, authorNameFromObj } from '../../../../utils/type'
 import { RecordEditUI } from '../../uni/record-edit/record-edit'
 import styles from './idea-details.module.css'
 import {TopicKeywordsUI} from '../topic-keywords/topic-keywords';
@@ -11,13 +11,13 @@ import {InputTextUI} from '../../uni/input-text/input-text'
 
 export type IdeaDetailsUIProps = {
     id: number | null;
-    values: IdeaEditData; // поля идеи для редактирования
+    values: IdeaRaw; // поля идеи для редактирования
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // действие
     deleteIdea: (e: SyntheticEvent) => void; // удалить текущую идею
     deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
     addKeyword: (id: number) => void; // добавить ключевое слово к идеи
-    sources: SourceExtension[]; // источники для выбора
+    sources: Source[]; // источники для выбора
     keywords: Keyword[]; // ключевые слова для выбора
     initialName: string; // начальное название идеи для отображения
 }
@@ -64,8 +64,9 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
                 handleChange={handleChange}/>
             <TopicKeywordsUI 
                 keywordsAll={keywords}
-                keywordsSelected={values.keywords}
+                keywordsSelected={values.keywords?values.keywords:[]}
                 deleteKeyword={deleteKeyword}
-                addKeyword={addKeyword}/>
+        addKeyword={addKeyword}/>
     </RecordEditUI>
 }
+ 
