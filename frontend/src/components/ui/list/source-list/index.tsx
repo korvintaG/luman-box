@@ -19,7 +19,7 @@ export const SourceListUI : FC<SourceListUIProps> = ({sources, addNewSource, isL
             liMobileAlteration
             isLoading={isLoading}>
                 {sources.map((source) => 
-                <li key={source.id}>
+                <li key={source.id} className={styles.source_li}>
                     <Link
                         className={styles.link}
                         to={getRouteParam(appRoutes.source,source.id)} >

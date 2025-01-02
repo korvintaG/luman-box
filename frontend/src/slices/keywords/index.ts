@@ -56,7 +56,8 @@ const keywordsSlice = createSlice({
         state.status=RequestStatus.Success;
         state.current = action.payload;
       })
-      .addMatcher(isAnyOf(addKeyword.fulfilled,delKeyword.fulfilled, setKeyword.fulfilled), (state) => {
+      .addMatcher(isAnyOf(addKeyword.fulfilled,delKeyword.fulfilled, setKeyword.fulfilled), (state, action) => {
+        console.log('keywordsSlice addMatcher fulfilled',action)
         state.status = RequestStatus.Updated;
       })
       .addMatcher(isPendingKeywordAction, (state) => {

@@ -21,6 +21,7 @@ export const KeywordDetails = () => {
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
     const sliceState = useSelector(selectSliceState);
+    const errorText = useSelector(selectError);
     const msgDeleteHook = useMsgModal();
     const error = useSelector(selectError);
     const currentKeyword = useSelector(selectCurrentKeyword);
@@ -62,6 +63,9 @@ export const KeywordDetails = () => {
 
     if (isLoading)
         return <Preloader/>;
+
+    if (sliceState===RequestStatus.Failed)
+        return <div>{errorText}</div>
 
     const initialName=currentKeyword? currentKeyword.name: '';
 

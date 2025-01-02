@@ -2,6 +2,10 @@
     color: blue;
 }
 
+.source_li {
+  padding-bottom: 7px;    
+}
+
 .list {
     display: flex;
     text-align: left;

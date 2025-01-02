@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,   HttpException, HttpStatus} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
@@ -29,7 +29,11 @@ export class KeywordsService {
     return this.keywordRepository.update({id}, updateKeywordDto);
   }
 
-  remove(id: number) {
-    return this.keywordRepository.delete({ id });
+  async remove(id: number) {
+    return this.keywordRepository.delete({ id }).catch(err => {
+      throw new HttpException({
+        message: err.message
+      }, HttpStatus.BAD_REQUEST);
+    });
   }
 }

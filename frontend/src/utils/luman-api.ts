@@ -167,5 +167,6 @@ export const delKeywordAPI = (id: number) => {
   return fetch(`${URL_API}/keywords/${id}`, {
     method: 'DELETE'
   })
-  .then((res)=>res.json())    
+  .then((res) => checkResponse(res))
+  .then((res)=>res)    
 };   
