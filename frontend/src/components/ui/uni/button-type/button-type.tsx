@@ -4,7 +4,7 @@ import { combineClasses } from '../../../../utils/utils'
 
 
 export type ButtonUIProps = {
-    caption: string;
+    caption?: string;
     action?: (e:SyntheticEvent) => void;
     classReplace?: string;
     classAdd?: string;
@@ -12,17 +12,18 @@ export type ButtonUIProps = {
 }
 
 export const ButtonUI: FC<ButtonUIProps> = ({caption, action, classReplace, classAdd}) => {
+    const newCaption=caption?caption:"OK";
     const classes = combineClasses(styles.button,classReplace,classAdd); 
     if (action)
         return <button 
             className={classes} 
             onClick={action}>
-            {caption}
+            {newCaption}
         </button>
     else
         return <button 
             type='submit'
             className={classes}>
-            {caption}
+            {newCaption}
         </button>
 }    

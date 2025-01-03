@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { KeywordDetailsUI } from '../../../components/ui/details/keyword-details/keyword-details'
 import {Preloader} from '../../../components/ui/uni/preloader';
 import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
+import { ErrorMessageUI } from '../../../components/ui/uni/error-message/error-message'
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
@@ -50,6 +51,15 @@ export const KeywordDetails = () => {
             dispatch(delKeyword(idNumber))
     }
 
+    const handleRefresh = (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (id) {
+            const idNumber = Number(id);
+            dispatch(getKeyword(idNumber))
+        }
+    }
+
+
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id) {
@@ -65,7 +75,7 @@ export const KeywordDetails = () => {
         return <Preloader/>;
 
     if (sliceState===RequestStatus.Failed)
-        return <div>{errorText}</div>
+        return <ErrorMessageUI errorTitle={`Ошибка удаления ключевого слова [${name}]:`}  error={errorText} okAction={handleRefresh}  />
 
     const initialName=currentKeyword? currentKeyword.name: '';
 

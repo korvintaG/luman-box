@@ -5,6 +5,7 @@ import { Preloader } from '../../../components/ui/uni/preloader';
 import { AuthorDetailsUI } from '../../../components/ui/details/author-details/author-details'
 import { useSelector, useDispatch } from '../../../services/store';
 import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
+import { ErrorMessageUI } from '../../../components/ui/uni/error-message/error-message'
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
     setAuthor, selectCurrentAuthor, delAuthor, selectError,
@@ -23,14 +24,16 @@ export const AuthorDetails = () => {
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
     const sliceState = useSelector(selectSliceState);
-    const error = useSelector(selectError);
+    const errorText = useSelector(selectError);
     const currentAuthor = useSelector(selectCurrentAuthor);
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    const fetchAuthor= ()=>{
         if (id)
             dispatch(getAuthor(Number(id)))
-    }, []);
+    }
+
+    useEffect(() => fetchAuthor(), []);
 
     useEffect(() => {
         if (sliceState===RequestStatus.Updated)
@@ -48,6 +51,11 @@ export const AuthorDetails = () => {
         dispatch(delAuthor(Number(id)));
     }
 
+    const handleRefresh = (e: SyntheticEvent) => {
+        e.preventDefault();
+        fetchAuthor();
+    }
+
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id)
@@ -58,6 +66,13 @@ export const AuthorDetails = () => {
 
     if (isLoading)
         return <Preloader />;
+
+    if (sliceState===RequestStatus.Failed)
+        return <ErrorMessageUI 
+                    errorTitle={`Ошибка удаления автора [${name}]:`}  
+                    error={errorText} 
+                    okAction={handleRefresh}  
+                />
 
     const initialName=currentAuthor ? currentAuthor.name : '';
 
@@ -71,7 +86,7 @@ export const AuthorDetails = () => {
                     id={id ? Number(id) : null} 
                     name={name}
                     initialName={initialName}
-                    error={error} 
+                    error={errorText} 
                     setName={setName}
                     handleSubmit={handleSubmit} 
                     deleteAuthor={msgDeleteHook.openDialog} />

@@ -23,7 +23,6 @@ export const getAuthorsAPI = () : Promise<Author[]> => {
 export const getAuthorAPI = (id:number) : Promise<Author> => {
   return fetch(`${URL_API}/authors/${id}`)
   .then((res) => checkResponse<Author>(res))
-  .then((res)=>res)
   }; 
 
 export const setAuthorAPI = (data: {id:number, name: string})  => {
@@ -32,7 +31,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
       body: JSON.stringify({name: data.name}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-  .then((res)=>res.json())
+    .then((res) => checkResponse(res))
   }; 
 
   export const addAuthorAPI = (name: string) => {
@@ -41,14 +40,14 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
       body: JSON.stringify({name}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-    .then((res)=>res.json())
+    .then((res) => checkResponse(res))
   };   
 
   export const delAuthorAPI = (id: number) => {
     return fetch(`${URL_API}/authors/${id}`, {
       method: 'DELETE'
     })
-    .then((res)=>res.json())    
+    .then((res) => checkResponse(res))
   };   
 
   
@@ -58,12 +57,12 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
 
   export const getSourcesAPI = () : Promise<Source[]> => {
     return fetch(`${URL_API}/sources`)
-    .then((res)=>res.json())
+    .then((res) => checkResponse<Source[]>(res))
   };  
 
   export const getSourceAPI = (id:number) : Promise<Source> => {
     return fetch(`${URL_API}/sources/${id}`)
-    .then((res)=>res.json())
+    .then((res) => checkResponse<Source>(res))
     } 
 
   export const setSourceAPI = (data: Source)  => {
@@ -72,7 +71,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
       body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-  .then((res)=>res.json())
+    .then((res) => checkResponse(res))
   }; 
 
   export const addSourceAPI = (data: SourceRaw) => {
@@ -81,14 +80,14 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
       body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-    .then((res)=>res.json())
+    .then((res) => checkResponse(res))
   };   
 
   export const delSourceAPI = (id: number) => {
     return fetch(`${URL_API}/sources/${id}`, {
       method: 'DELETE'
     })
-    .then((res)=>res.json())    
+    .then((res) => checkResponse(res))
   };   
 
 // **********************************************
@@ -97,12 +96,12 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
 
 export const getIdeasAPI = () : Promise<Idea[]> => {
     return fetch(`${URL_API}/ideas`)
-    .then((res)=>res.json())
+    .then((res) => checkResponse<Idea[]>(res))
 }; 
 
 export const getIdeaAPI = (id:number) : Promise<Idea> => {
     return fetch(`${URL_API}/ideas/${id}`)
-    .then((res)=>res.json())
+    .then((res) => checkResponse<Idea>(res))
 }; 
 
 export const setIdeaAPI = (data: Idea)  => {
@@ -111,7 +110,7 @@ export const setIdeaAPI = (data: Idea)  => {
       body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-  .then((res)=>res.json())
+    .then((res) => checkResponse(res))
 }; 
 
 export const addIdeaAPI = (data: IdeaRaw) => {
@@ -120,14 +119,14 @@ export const addIdeaAPI = (data: IdeaRaw) => {
       body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-    .then((res)=>res.json())
+    .then((res) => checkResponse(res))
 };   
 
 export const delIdeaAPI = (id: number) => {
   return fetch(`${URL_API}/ideas/${id}`, {
     method: 'DELETE'
   })
-  .then((res)=>res.json())    
+  .then((res) => checkResponse(res))
 };   
 
 
@@ -137,12 +136,12 @@ export const delIdeaAPI = (id: number) => {
 
 export const getKeywordsAPI = () : Promise<Keyword[]> => {
     return fetch(`${URL_API}/keywords`)
-    .then((res)=>res.json())
-}; 
+    .then((res) => checkResponse<Keyword[]>(res))
+  }; 
 
 export const getKeywordAPI = (id:number) : Promise<Keyword> => {
     return fetch(`${URL_API}/keywords/${id}`)
-    .then((res)=>res.json())
+    .then((res) => checkResponse<Keyword>(res))
 }; 
 
 export const setKeywordAPI = (data: {id:number, name: string})  => {
@@ -151,7 +150,7 @@ export const setKeywordAPI = (data: {id:number, name: string})  => {
       body: JSON.stringify(data),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-  .then((res)=>res.json())
+    .then((res) => checkResponse(res))
 }; 
 
 export const addKeywordAPI = (name: string) => {
@@ -160,7 +159,7 @@ export const addKeywordAPI = (name: string) => {
       body: JSON.stringify({name}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-    .then((res)=>res.json())
+    .then((res) => checkResponse(res))
 };   
 
 export const delKeywordAPI = (id: number) => {
@@ -168,5 +167,4 @@ export const delKeywordAPI = (id: number) => {
     method: 'DELETE'
   })
   .then((res) => checkResponse(res))
-  .then((res)=>res)    
 };   
