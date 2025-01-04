@@ -2,7 +2,6 @@ import { useParams } from 'react-router';
 import { useEffect, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SourceDetailsUI } from '../../../components/ui/details/source-details/source-details'
-import {Preloader} from '../../../components/ui/uni/preloader';
 import { useSelector, useDispatch } from '../../../services/store';
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
@@ -14,9 +13,7 @@ import {
     fetchAuthors, 
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
-import { ErrorMessageUI } from '../../../components/ui/uni/error-message/error-message'
-import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { RequestStatus, SourceRaw, sourceFullNameFromObj, authorNameFromObj} from '../../../utils/type'
+import { RequestStatus, SourceRaw, sourceFullNameFromObj} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
@@ -83,6 +80,7 @@ export const SourceDetails = () => {
     }
 
     return (<EditFormStatus 
+                wasUpdated={sliceState === RequestStatus.Updated}        
                 isLoading={isLoading || isALoading }
                 isError={sliceState===RequestStatus.Failed}
                 errorProps={{

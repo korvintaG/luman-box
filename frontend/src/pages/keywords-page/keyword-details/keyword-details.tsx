@@ -2,9 +2,6 @@ import { useParams } from 'react-router';
 import { useEffect, useState, SyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { KeywordDetailsUI } from '../../../components/ui/details/keyword-details/keyword-details'
-import {Preloader} from '../../../components/ui/uni/preloader';
-import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { ErrorMessageUI } from '../../../components/ui/uni/error-message/error-message'
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
@@ -13,6 +10,7 @@ import {
   } from '../../../slices/keywords';
 import { appRoutes } from '../../../AppRoutes';
 import { RequestStatus} from '../../../utils/type'
+import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 
 
 
@@ -28,12 +26,14 @@ export const KeywordDetails = () => {
     const currentKeyword = useSelector(selectCurrentKeyword);
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    const fetchKeyword= ()=>{
         if (id) {
             const idNumber = Number(id);
             dispatch(getKeyword(idNumber))
         }
-    },[]);
+    }
+
+    useEffect(() => fetchKeyword(),[]);
 
     useEffect(() => {
         if (sliceState===RequestStatus.Updated)
@@ -51,14 +51,6 @@ export const KeywordDetails = () => {
             dispatch(delKeyword(idNumber))
     }
 
-    const handleRefresh = (e: SyntheticEvent) => {
-        e.preventDefault();
-        if (id) {
-            const idNumber = Number(id);
-            dispatch(getKeyword(idNumber))
-        }
-    }
-
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -71,21 +63,24 @@ export const KeywordDetails = () => {
         }
     }
 
-    if (isLoading)
-        return <Preloader/>;
-
-    if (sliceState===RequestStatus.Failed)
-        return <ErrorMessageUI errorTitle={`Ошибка удаления ключевого слова [${name}]:`}  error={errorText} okAction={handleRefresh}  />
-
     const initialName=currentKeyword? currentKeyword.name: '';
 
-    return (<>
-        {msgDeleteHook.dialogWasOpened && 
-            <MsgQuestionUI 
-                question={`Удалить ключевое слово [${initialName}]?`}
-                yesIsAlert
-                action={deleteKeyword} 
-                closeAction={msgDeleteHook.closeDialog} />}
+    return (<EditFormStatus 
+        wasUpdated={sliceState === RequestStatus.Updated}        
+        isLoading={isLoading }
+        isError={sliceState===RequestStatus.Failed}
+        errorProps={{
+            title:`Ошибка удаления ключевого слова [${name}]:`,
+            text:errorText,
+            fetchRecord:fetchKeyword
+        }}
+        isDeleteDialog={msgDeleteHook.dialogWasOpened}
+        deleteDialogProps={{
+            question:`Удалить ключевое слово [${initialName}]?`,
+            action:deleteKeyword ,
+            closeAction:msgDeleteHook.closeDialog
+        }}
+    >
         <KeywordDetailsUI 
             id={id?Number(id):null } 
             name={name}
@@ -94,5 +89,5 @@ export const KeywordDetails = () => {
             setName={setName}
             handleSubmit={handleSubmit} 
             deleteKeyword={msgDeleteHook.openDialog}/>
-        </>);
+        </EditFormStatus>);
 }

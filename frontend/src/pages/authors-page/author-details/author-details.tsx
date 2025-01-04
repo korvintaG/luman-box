@@ -13,6 +13,8 @@ import {
 } from '../../../slices/authors';
 import { appRoutes } from '../../../AppRoutes';
 import { RequestStatus } from '../../../utils/type'
+import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
+
 
 /**
  * Компонент редактирования автора - данные + UI
@@ -51,11 +53,6 @@ export const AuthorDetails = () => {
         dispatch(delAuthor(Number(id)));
     }
 
-    const handleRefresh = (e: SyntheticEvent) => {
-        e.preventDefault();
-        fetchAuthor();
-    }
-
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id)
@@ -64,24 +61,24 @@ export const AuthorDetails = () => {
             dispatch(addAuthor(name));
     }
 
-    if (isLoading)
-        return <Preloader />;
-
-    if (sliceState===RequestStatus.Failed)
-        return <ErrorMessageUI 
-                    errorTitle={`Ошибка удаления автора [${name}]:`}  
-                    error={errorText} 
-                    okAction={handleRefresh}  
-                />
-
     const initialName=currentAuthor ? currentAuthor.name : '';
 
-    return (<>
-                {msgDeleteHook.dialogWasOpened && 
-                    <MsgQuestionUI question={`Удалить автора [${initialName}]?`}
-                        yesIsAlert
-                        action={deleteAuthor} 
-                        closeAction={msgDeleteHook.closeDialog} />}
+    return (<EditFormStatus 
+        wasUpdated={sliceState === RequestStatus.Updated}        
+        isLoading={isLoading }
+        isError={sliceState===RequestStatus.Failed}
+        errorProps={{
+            title:`Ошибка удаления автора [${name}]:`,
+            text:errorText,
+            fetchRecord:fetchAuthor
+        }}
+        isDeleteDialog={msgDeleteHook.dialogWasOpened}
+        deleteDialogProps={{
+            question:`Удалить автора [${initialName}]?`,
+            action:deleteAuthor ,
+            closeAction:msgDeleteHook.closeDialog
+        }}
+        >
                 <AuthorDetailsUI 
                     id={id ? Number(id) : null} 
                     name={name}
@@ -90,6 +87,6 @@ export const AuthorDetails = () => {
                     setName={setName}
                     handleSubmit={handleSubmit} 
                     deleteAuthor={msgDeleteHook.openDialog} />
-            </>)
+            </EditFormStatus>)
             
 }
