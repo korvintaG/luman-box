@@ -4,3 +4,4 @@ build
 .idea
 dist
 package-lock.json 
+arc.bat 

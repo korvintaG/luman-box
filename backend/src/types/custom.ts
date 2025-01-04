@@ -1,27 +1,24 @@
-export interface IAuthor {
-    id: number;
-    id_out: string;
-    name: string;
-  }
-  
-export interface ISource {
-    id: number;
-    id_out: string;
-    name: string;
-    author_id: number;
- }
-  
-export interface IKeyword {
+export interface SimpleEntity {
   id: number;
-  id_out: string;
   name: string;
 }
 
-export type IIdea=  {
-  id: number;
+export interface SimpleEntityWithOutID extends SimpleEntity {
   id_out: string;
+}
+
+export interface IAuthor extends SimpleEntityWithOutID {
+}
+  
+export interface ISource extends SimpleEntityWithOutID {
+    author_id: number;
+ }
+  
+export interface IKeyword extends SimpleEntityWithOutID {
+}
+
+export interface IIdea extends SimpleEntityWithOutID  {
   source_id: number;
-  name: string;
   original_text: string;
   content: string;
   date_time_create: string;

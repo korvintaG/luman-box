@@ -20,7 +20,7 @@ export type SourceRaw = SourceInner & {
 export type SourcePartial = Partial<Source> & IDObject;
 export type Source = SourceRaw & IDObject;
 
-export function sourceFullNameFromObj(source?: SourcePartial): string {
+export function sourceFullNameFromObj(source: SourcePartial | Source | null | undefined): string {
     let name='';
     if (source) {
         if (source.name) {

@@ -11,7 +11,7 @@ export type SourceDetailsUIProps = {
     id: number | null;
     values: SourceRaw; // карточка исходника
     initialName: string; // исходное название источника
-    error: string;
+    error?: string;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // изменение элемента ввода
     handleSubmit: (e: SyntheticEvent) => void; // действия по submit
     deleteSource: (e: SyntheticEvent) => void; // действия по удалению источника
@@ -33,7 +33,7 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = ({id, values, initialNa
             <InputSelectUI name="author.id" label="Выберите автора:" value={values.author?values.author.id:0}
                 selectClassAdd={styles.input}
                 handleChange={handleChange} values={authors}/>
-            <ErrorMessageUI error={error}/>            
+            {error && <ErrorMessageUI error={error}/>}
             <RecordButtonBlockUI id={id} deleteRecord={deleteSource} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить источник' />
     </RecordEditUI>

@@ -14,10 +14,12 @@ import {
     fetchAuthors, 
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
+import { ErrorMessageUI } from '../../../components/ui/uni/error-message/error-message'
 import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { RequestStatus, SourceRaw, authorNameFromObj} from '../../../utils/type'
+import { RequestStatus, SourceRaw, sourceFullNameFromObj, authorNameFromObj} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
+import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 
 
 export const SourceDetails = () => {
@@ -35,16 +37,20 @@ export const SourceDetails = () => {
     const isALoading = useSelector(aLoading);
     const currentSource = useSelector(selectCurrentSource);
     const authors= useSelector(selectAuthors);
-    const error = useSelector(selectError);
+    const errorText = useSelector(selectError);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (authors.length===0)
-            dispatch(fetchAuthors());
+    const fetchSource= ()=>{
         if (id) {
             const idNumber = Number(id);
             dispatch(getSource(idNumber))
         }
+    }
+
+    useEffect(() => {
+        if (authors.length===0)
+            dispatch(fetchAuthors());
+        fetchSource();
     },[]);  
 
     useEffect(() => {
@@ -57,7 +63,6 @@ export const SourceDetails = () => {
             setValues({name: currentSource.name, author:{id: (currentSource.author?currentSource.author.id:0)}})
     },[currentSource]);
 
-    
     const deleteSourceAction = (e: SyntheticEvent) => {
             const idNumber = Number(id);
             dispatch(delSource(idNumber))
@@ -75,26 +80,30 @@ export const SourceDetails = () => {
             else
                 dispatch(addSource({...values,author:undefined}));
         }
-        
     }
-    if (isLoading || isALoading )
-        return <Preloader/>;
 
-    return (<>
-            {msgDeleteHook.dialogWasOpened && 
-                <MsgQuestionUI 
-                    question={`Удалить источник [${values.name}]`}
-                    yesIsAlert
-                    action={deleteSourceAction} 
-                    closeAction={msgDeleteHook.closeDialog} />}
+    return (<EditFormStatus 
+                isLoading={isLoading || isALoading }
+                isError={sliceState===RequestStatus.Failed}
+                errorProps={{
+                    title:`Ошибка удаления источника [${values.name}]:`,
+                    text:errorText,
+                    fetchRecord:fetchSource
+                }}
+                isDeleteDialog={msgDeleteHook.dialogWasOpened}
+                deleteDialogProps={{
+                    question:`Удалить источник [${values.name}]`,
+                    action:deleteSourceAction ,
+                    closeAction:msgDeleteHook.closeDialog
+                }}
+            >
             <SourceDetailsUI 
                 id={id?Number(id):null } 
                 values={values} 
-                initialName={currentSource? (currentSource.name+' // '+authorNameFromObj(currentSource.author)):''}
-                error={error}
+                initialName={sourceFullNameFromObj(currentSource)}
                 handleChange={handleChange}
                 handleSubmit={handleSubmit} 
                 deleteSource={msgDeleteHook.openDialog} 
                 authors={authors}/>
-            </>);
+            </EditFormStatus>);
 }
