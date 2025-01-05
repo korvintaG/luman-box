@@ -1,4 +1,4 @@
-import { ISource } from '../../types/custom'
+import { ISource } from '../../../types/custom'
 
 export class CreateSourceDto {
     constructor(

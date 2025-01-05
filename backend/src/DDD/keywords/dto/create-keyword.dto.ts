@@ -1,4 +1,4 @@
-import { IKeyword } from '../../types/custom';
+import { IKeyword } from '../../../types/custom';
 
 export class CreateKeywordDto {
     constructor(

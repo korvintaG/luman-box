@@ -1,4 +1,4 @@
-import { IAuthor } from '../../types/custom';
+import { IAuthor } from '../../../types/custom';
 
 export class CreateAuthorDto {
     constructor(

@@ -5,10 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Author } from './entities/author.entity';
 import { Source } from '../sources/entities/source.entity';
 import { Idea } from '../ideas/entities/idea.entity';
-import { SourcesService } from 'src/sources/sources.service';
-import { IdeasService } from 'src/ideas/ideas.service';
-import { KeywordsService } from 'src/keywords/keywords.service';
-import { Keyword } from 'src/keywords/entities/keyword.entity';
+import { SourcesService } from '../sources/sources.service';
+import { IdeasService } from '../ideas/ideas.service';
+import { KeywordsService } from '../keywords/keywords.service';
+import { Keyword } from '../keywords/entities/keyword.entity';
 
 
 @Module({

@@ -5,7 +5,7 @@ import { Source } from './entities/source.entity'
 import { IdeasService } from '../ideas/ideas.service'
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { joinSimpleEntityFirst } from '../utils/utils'
+import { joinSimpleEntityFirst } from '../../utils/utils'
 
 @Injectable()
 export class SourcesService {

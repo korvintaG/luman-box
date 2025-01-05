@@ -1,6 +1,7 @@
 import { ManyToMany, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Idea } from '../../ideas/entities/idea.entity'
 
+
 @Entity('keywords')
 export class Keyword {
     @PrimaryGeneratedColumn()

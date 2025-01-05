@@ -2,11 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, FindManyOptions } from 'typeorm';
 import { Idea } from './entities/idea.entity';
-import { Keyword } from '../keywords/entities/keyword.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { isEmpty, omit }  from "lodash";
-import { Source } from 'src/sources/entities/source.entity';
 import {KeywordsService} from '../keywords/keywords.service'
 
 

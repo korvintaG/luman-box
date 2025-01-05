@@ -4,8 +4,8 @@ import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
 import { Repository, FindManyOptions } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
-import { SimpleEntity } from '../types/custom'
-import { joinSimpleEntityFirst } from '../utils/utils'
+import { SimpleEntity } from '../../types/custom'
+import { joinSimpleEntityFirst } from '../../utils/utils'
 
 @Injectable()
 export class KeywordsService {

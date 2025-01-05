@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AuthorsModule } from './authors/authors.module';
+import { AuthorsModule } from './DDD/authors/authors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Author  } from './authors/entities/author.entity';
-import { Source  } from './sources/entities/source.entity';
-import { Keyword  } from './keywords/entities/keyword.entity';
-import { Idea  } from './ideas/entities/idea.entity';
+import { Author  } from './DDD/authors/entities/author.entity';
+import { Source  } from './DDD/sources/entities/source.entity';
+import { Keyword  } from './DDD/keywords/entities/keyword.entity';
+import { Idea  } from './DDD/ideas/entities/idea.entity';
 import { configProvider } from './app.config.provider';
-import { SourcesModule } from './sources/sources.module';
-import { KeywordsModule } from './keywords/keywords.module';
-import { IdeasModule } from './ideas/ideas.module';
+import { SourcesModule } from './DDD/sources/sources.module';
+import { KeywordsModule } from './DDD/keywords/keywords.module';
+import { IdeasModule } from './DDD/ideas/ideas.module';
 
 
 @Module({

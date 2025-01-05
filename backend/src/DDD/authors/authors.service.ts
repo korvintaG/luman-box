@@ -4,8 +4,8 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
-import { SourcesService } from 'src/sources/sources.service';
-import { joinSimpleEntityFirst } from '../utils/utils'
+import { SourcesService } from '../sources/sources.service';
+import { joinSimpleEntityFirst } from '../../utils/utils'
 
 
 @Injectable()

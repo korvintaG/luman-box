@@ -1,4 +1,4 @@
-import { IIdea } from '../../types/custom';
+import { IIdea } from '../../../types/custom';
 export class CreateIdeaDto {
     constructor(
         public id_out: string,
