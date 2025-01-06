@@ -5,11 +5,11 @@ import { KeywordDetailsUI } from '../../../components/ui/details/keyword-details
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
-    setKeyword,selectCurrentKeyword, delKeyword, selectError,
+    setKeyword,selectCurrentKeyword, delKeyword, selectError, setStateSuccess,
     selectIsDataLoading, getKeyword, addKeyword, selectSliceState
   } from '../../../slices/keywords';
 import { appRoutes } from '../../../AppRoutes';
-import { RequestStatus} from '../../../utils/type'
+import { isDMLRequestOK} from '../../../utils/type'
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 
 
@@ -33,10 +33,12 @@ export const KeywordDetails = () => {
         }
     }
 
+    const resetSliceState =()=> dispatch(setStateSuccess());
+
     useEffect(() => fetchKeyword(),[]);
 
-    useEffect(() => {
-        if (sliceState===RequestStatus.Updated)
+    useEffect(() => { 
+        if (isDMLRequestOK(sliceState))
             navigate(appRoutes.keywords);            
     }, [sliceState]);
 
@@ -66,14 +68,11 @@ export const KeywordDetails = () => {
     const initialName=currentKeyword? currentKeyword.name: '';
 
     return (<EditFormStatus 
-        wasUpdated={sliceState === RequestStatus.Updated}        
+        sliceState={sliceState}        
         isLoading={isLoading }
-        isError={sliceState===RequestStatus.Failed}
-        errorProps={{
-            title:`Ошибка удаления ключевого слова [${name}]:`,
-            text:errorText,
-            fetchRecord:fetchKeyword
-        }}
+        error={errorText}
+        fetchRecord={fetchKeyword}
+        resetSliceState={resetSliceState}
         isDeleteDialog={msgDeleteHook.dialogWasOpened}
         deleteDialogProps={{
             question:`Удалить ключевое слово [${initialName}]?`,
@@ -85,7 +84,6 @@ export const KeywordDetails = () => {
             id={id?Number(id):null } 
             name={name}
             initialName={initialName}
-            error={error} 
             setName={setName}
             handleSubmit={handleSubmit} 
             deleteKeyword={msgDeleteHook.openDialog}/>

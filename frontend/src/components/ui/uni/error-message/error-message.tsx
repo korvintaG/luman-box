@@ -6,10 +6,11 @@ import styles from './error-message.module.css'
 export type ErrorMessageUIProps = {
     errorTitle?: string;
     error: string | null;
+    okCaption?: string;
     okAction?:  (e:SyntheticEvent) => void;
 }
 
-export const ErrorMessageUI: FC<ErrorMessageUIProps> = ({errorTitle, error, okAction}) => {
+export const ErrorMessageUI: FC<ErrorMessageUIProps> = ({errorTitle, error, okCaption, okAction}) => {
     if ((!error) || (error ===""))
       return null;
     
@@ -19,6 +20,6 @@ export const ErrorMessageUI: FC<ErrorMessageUIProps> = ({errorTitle, error, okAc
       return  <section className={styles.error_block}>
         {errorTitle?<h2 className={styles.title_error}>{errorTitle}</h2>:null}
         <p className={styles.error}>{error}</p>
-        <ButtonUI action={okAction} />
+        <ButtonUI caption={okCaption?okCaption:"OK"} action={okAction} />
       </section>
 }

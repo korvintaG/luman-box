@@ -35,6 +35,9 @@ const authorsSlice = createSlice({
     clearCurrentAuthor: (state) => {
       state.current = null;
     },
+    setStateSuccess: (state) => {
+      state.status=RequestStatus.Success;
+    },
   },
   selectors: {
     selectAuthors: (sliceState) => sliceState.list, 
@@ -54,28 +57,37 @@ const authorsSlice = createSlice({
       .addCase(getAuthor.fulfilled, (state, action) => {
         state.current = action.payload;
       })
+      .addCase(addAuthor.fulfilled, (state, _) => {
+        state.status=RequestStatus.Added;
+      })
+      .addCase(setAuthor.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addCase(delAuthor.fulfilled, (state, _) => {
+        state.status=RequestStatus.Deleted;
+      })
+      .addCase(addAuthor.rejected, (state, _) => {
+        state.status=RequestStatus.FailedAdd;
+      })
+      .addCase(setAuthor.rejected, (state, _) => {
+        state.status=RequestStatus.FailedUpdate;
+      })
+      .addCase(delAuthor.rejected, (state, _) => {
+        state.status=RequestStatus.FailedDelete;
+      })
       .addMatcher(isAnyOf(getAuthor.fulfilled,fetchAuthors.fulfilled), (state, _) => {
         state.status=RequestStatus.Success;
-      })
-      .addMatcher(isAnyOf(setAuthor.fulfilled,addAuthor.fulfilled,delAuthor.fulfilled), (state, _) => {
-        state.status=RequestStatus.Updated;
       })
       .addMatcher(isPendingAuthorAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedAuthorAction, (state, action: ErrorAction) => {
-        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
-      })
-    /*  .addMatcher(isFullFilledAction, (state, _) => {
-        console.log('authorsSlice isFullFilledAction',state)
-        if (state.status===RequestStatus.Loading)
-          state.status=RequestStatus.Success;
-      })*/;
+      });
   }
 });
 
 export const { selectError, selectAuthors, selectCurrentAuthor, selectSliceState, selectIsDataLoading } = authorsSlice.selectors;
-export const { clearCurrentAuthor } = authorsSlice.actions;
+export const { clearCurrentAuthor, setStateSuccess } = authorsSlice.actions;
 export default authorsSlice.reducer;

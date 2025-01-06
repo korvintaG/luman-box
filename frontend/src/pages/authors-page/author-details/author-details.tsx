@@ -1,18 +1,15 @@
 import { useEffect, useState, SyntheticEvent } from 'react';
-import { useParams, useLocation } from 'react-router';
+import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
-import { Preloader } from '../../../components/ui/uni/preloader';
 import { AuthorDetailsUI } from '../../../components/ui/details/author-details/author-details'
 import { useSelector, useDispatch } from '../../../services/store';
-import { MsgQuestionUI } from '../../../components/ui/uni/msg-question/msg-question'
-import { ErrorMessageUI } from '../../../components/ui/uni/error-message/error-message'
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
-    setAuthor, selectCurrentAuthor, delAuthor, selectError,
+    setAuthor, selectCurrentAuthor, delAuthor, selectError, setStateSuccess,
     selectIsDataLoading, getAuthor, addAuthor, selectSliceState
 } from '../../../slices/authors';
 import { appRoutes } from '../../../AppRoutes';
-import { RequestStatus } from '../../../utils/type'
+import { isDMLRequestOK } from '../../../utils/type'
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 
 
@@ -35,13 +32,14 @@ export const AuthorDetails = () => {
             dispatch(getAuthor(Number(id)))
     }
 
+    const resetSliceState =()=> dispatch(setStateSuccess());
+
     useEffect(() => fetchAuthor(), []);
 
     useEffect(() => {
-        if (sliceState===RequestStatus.Updated)
+        if (isDMLRequestOK(sliceState))
             navigate(appRoutes.authors);            
     }, [sliceState]);
-
 
     useEffect(() => {
         if (currentAuthor)
@@ -64,14 +62,11 @@ export const AuthorDetails = () => {
     const initialName=currentAuthor ? currentAuthor.name : '';
 
     return (<EditFormStatus 
-        wasUpdated={sliceState === RequestStatus.Updated}        
+        sliceState={sliceState}        
         isLoading={isLoading }
-        isError={sliceState===RequestStatus.Failed}
-        errorProps={{
-            title:`Ошибка удаления автора [${name}]:`,
-            text:errorText,
-            fetchRecord:fetchAuthor
-        }}
+        error={errorText}
+        fetchRecord={fetchAuthor}
+        resetSliceState={resetSliceState}
         isDeleteDialog={msgDeleteHook.dialogWasOpened}
         deleteDialogProps={{
             question:`Удалить автора [${initialName}]?`,
@@ -83,10 +78,8 @@ export const AuthorDetails = () => {
                     id={id ? Number(id) : null} 
                     name={name}
                     initialName={initialName}
-                    error={errorText} 
                     setName={setName}
                     handleSubmit={handleSubmit} 
                     deleteAuthor={msgDeleteHook.openDialog} />
             </EditFormStatus>)
-            
 }

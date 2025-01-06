@@ -12,13 +12,12 @@ export type AuthorDetailsUIProps = {
     id: number | null;
     name: string;
     initialName: string; // начальное имя
-    error: string;
     setName: (newName: string) => void; // из useState
     handleSubmit: (e: SyntheticEvent) => void; // сохранить изменения в базе
     deleteAuthor: (e: SyntheticEvent) => void; // функция удаления автора
 }
 
-export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, name, initialName, error, setName, handleSubmit, deleteAuthor}) => {
+export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, name, initialName, setName, handleSubmit, deleteAuthor}) => {
     const header = id ? `Редактирование автора [${initialName}]` : 'Добавление нового автора';
     const btnCaptione = id ? 'Сохранить данные' : 'Добавить автора';
    
@@ -26,7 +25,6 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, name, initialName
             <InputEditUI name="name" label='ФИО автора' value={name} 
                 placeholder="Укажите ФИО автора"
                 handleChange={(e) => setName(e.target.value)} />
-            <ErrorMessageUI error={error}/>
             <RecordButtonBlockUI 
                 id={id} 
                 deleteRecord={deleteAuthor} 

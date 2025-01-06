@@ -36,6 +36,9 @@ const ideasSlice = createSlice({
     clearCurrentIdea: (state) => {
       state.current = null;
     },
+    setStateSuccess: (state) => {
+      state.status=RequestStatus.Success;
+    },
   },
   selectors: {
     selectIdeas: (sliceState) => sliceState.list,
@@ -48,26 +51,44 @@ const ideasSlice = createSlice({
     builder
       .addCase(fetchIdeas.fulfilled, (state, action) => {
         state.list = action.payload;
-        state.status=RequestStatus.Success;
+      })
+      .addCase(getIdea.pending, (state) => {
+        state.current = null;
       })
       .addCase(getIdea.fulfilled, (state, action) => {
         state.current = action.payload;
-        state.status=RequestStatus.Success;
       })
-      .addMatcher(isAnyOf(addIdea.fulfilled,delIdea.fulfilled,setIdea.fulfilled), (state) => {
-        state.status = RequestStatus.Updated;
+      .addCase(addIdea.fulfilled, (state, _) => {
+        state.status=RequestStatus.Added;
+      })
+      .addCase(setIdea.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addCase(delIdea.fulfilled, (state, _) => {
+        state.status=RequestStatus.Deleted;
+      })
+      .addCase(addIdea.rejected, (state, _) => {
+        state.status=RequestStatus.FailedAdd;
+      })
+      .addCase(setIdea.rejected, (state, _) => {
+        state.status=RequestStatus.FailedUpdate;
+      })
+      .addCase(delIdea.rejected, (state, _) => {
+        state.status=RequestStatus.FailedDelete;
+      })
+      .addMatcher(isAnyOf(getIdea.fulfilled,fetchIdeas.fulfilled), (state) => {
+        state.status = RequestStatus.Success;
       })
       .addMatcher(isPendingIdeaAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedIdeaAction, (state, action: ErrorAction) => {
-        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       });
   }
 });
 
 export const { selectError, selectIdeas, selectCurrentIdea, selectSliceState, selectIsDataLoading } = ideasSlice.selectors;
-export const { clearCurrentIdea } = ideasSlice.actions;
+export const { clearCurrentIdea, setStateSuccess } = ideasSlice.actions;
 export default ideasSlice.reducer;

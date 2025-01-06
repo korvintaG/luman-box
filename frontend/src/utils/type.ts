@@ -74,8 +74,27 @@ export const enum RequestStatus {
     Loading = 'loading',
     Success = 'success',
     Failed = 'failed',
-    Updated = 'updated'
+    FailedUpdate = 'failedUpdate',
+    FailedAdd = 'failedAdd',
+    FailedDelete = 'failedDelete',
+    Updated = 'updated',
+    Added = 'added',
+    Deleted = 'deleted'
 }
+
+export function isRequestFailed(request: RequestStatus): boolean {
+    return request===RequestStatus.Failed || request===RequestStatus.FailedAdd 
+        || request===RequestStatus.FailedUpdate || request===RequestStatus.FailedDelete
+}
+
+export function isDMLRequestFailed(request: RequestStatus): boolean {
+    return request===RequestStatus.FailedAdd || request===RequestStatus.FailedUpdate || request===RequestStatus.FailedDelete
+}
+
+export function isDMLRequestOK(request: RequestStatus): boolean {
+    return request===RequestStatus.Added || request===RequestStatus.Updated || request===RequestStatus.Deleted
+}
+
 
 export type RequestStatusKey = keyof typeof RequestStatus;
 export type RequestStatusValue = typeof RequestStatus[RequestStatusKey];

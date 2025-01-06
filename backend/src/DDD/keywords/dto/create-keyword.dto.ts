@@ -1,14 +1,12 @@
-import { IKeyword } from '../../../types/custom';
+import {
+  IsString,
+  IsNotEmpty,
+  Length,
+} from 'class-validator';
 
 export class CreateKeywordDto {
-    constructor(
-        public id_out: string,
-        public name: string
-      ) {}
-    
-      static from = (authorDocument: IKeyword): CreateKeywordDto =>
-        new CreateKeywordDto(
-          authorDocument.id_out,
-          authorDocument.name
-        );
+  @IsNotEmpty({ message: 'Поле [name] не может быть пустым' })
+  @IsString({message: 'Поле [name] должно быть строкой'})
+  @Length(1, 100, {message: 'Ключевое слово должно быть от 1-го до 100 символов длиной'})
+  name: string;
 }

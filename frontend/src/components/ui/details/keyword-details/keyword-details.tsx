@@ -9,13 +9,12 @@ export type KeywordDetailsUIProps = {
     id: number | null;
     name: string;
     initialName: string; // начальное имя
-    error: string;
     setName: (newName: string) => void;
     handleSubmit: (e: SyntheticEvent) => void;
     deleteKeyword: (e: SyntheticEvent) => void;
 }
 
-export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = ({id, name, initialName, error, setName, handleSubmit, deleteKeyword}) => {
+export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = ({id, name, initialName, setName, handleSubmit, deleteKeyword}) => {
     const header= id ? `Редактирование ключевого слова [${initialName}]` : 'Добавление нового автора'; 
     const btnCaptione= id ? 'Сохранить данные' : 'Добавить ключевое слово';
     

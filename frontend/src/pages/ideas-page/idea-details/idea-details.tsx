@@ -16,7 +16,7 @@ import {
 } from "../../../slices/ideas";
 import {
   selectSources,
-  fetchSources,
+  fetchSources, setStateSuccess,
   selectIsDataLoading as sourcesLoading,
 } from "../../../slices/sources";
 import {
@@ -26,7 +26,7 @@ import {
 } from "../../../slices/keywords";
 import { appRoutes } from "../../../AppRoutes";
 
-import { RequestStatus, IdeaRaw } from "../../../utils/type";
+import { RequestStatus, IdeaRaw, isDMLRequestOK } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { EditFormStatus } from "../../../components/ui/uni/edit-form-status/edit-form-status";
 
@@ -60,6 +60,8 @@ export const IdeaDetails = () => {
     }
   };
 
+  const resetSliceState =()=> dispatch(setStateSuccess());
+
   useEffect(() => {
     if (sources.length === 0) dispatch(fetchSources());
     if (keywords.length === 0) dispatch(fetchKeywords());
@@ -67,7 +69,7 @@ export const IdeaDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    if (sliceState === RequestStatus.Updated) navigate(appRoutes.ideas);
+    if (isDMLRequestOK(sliceState)) navigate(appRoutes.ideas);
   }, [sliceState]);
 
   useEffect(() => {
@@ -111,21 +113,18 @@ export const IdeaDetails = () => {
 
   return (
     <EditFormStatus
-      wasUpdated={sliceState === RequestStatus.Updated}
+      sliceState={sliceState}        
       isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
-      isError={sliceState === RequestStatus.Failed}
-      errorProps={{
-        title: `Ошибка удаления идеи [${values.name}]:`,
-        text: errorText,
-        fetchRecord: fetchIdea,
-      }}
+      error={errorText}
+      fetchRecord={fetchIdea}
+      resetSliceState={resetSliceState}
       isDeleteDialog={msgDeleteHook.dialogWasOpened}
       deleteDialogProps={{
         question: `Удалить идею [${values.name}]?`,
         action: deleteIdea,
         closeAction: msgDeleteHook.closeDialog,
       }}
-    >
+    > 
       <IdeaDetailsUI
         id={id ? Number(id) : null}
         values={values}

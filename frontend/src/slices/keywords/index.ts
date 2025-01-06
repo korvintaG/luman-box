@@ -35,6 +35,9 @@ const keywordsSlice = createSlice({
     clearCurrentKeyword: (state) => {
       state.current = null;
     },
+    setStateSuccess: (state) => {
+      state.status=RequestStatus.Success;
+    },
   },
   selectors: {
     selectKeywords: (sliceState) => sliceState.list,
@@ -47,30 +50,44 @@ const keywordsSlice = createSlice({
     builder
       .addCase(fetchKeywords.fulfilled, (state, action) => {
         state.list = action.payload;
-        state.status=RequestStatus.Success;
       })
       .addCase(getKeyword.pending, (state) => {
         state.current = null;
       })
       .addCase(getKeyword.fulfilled, (state, action) => {
-        state.status=RequestStatus.Success;
         state.current = action.payload;
       })
-      .addMatcher(isAnyOf(addKeyword.fulfilled,delKeyword.fulfilled, setKeyword.fulfilled), (state, action) => {
-        console.log('keywordsSlice addMatcher fulfilled',action)
-        state.status = RequestStatus.Updated;
+      .addCase(addKeyword.fulfilled, (state, _) => {
+        state.status=RequestStatus.Added;
+      })
+      .addCase(setKeyword.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addCase(delKeyword.fulfilled, (state, _) => {
+        state.status=RequestStatus.Deleted;
+      })
+      .addCase(addKeyword.rejected, (state, _) => {
+        state.status=RequestStatus.FailedAdd;
+      })
+      .addCase(setKeyword.rejected, (state, _) => {
+        state.status=RequestStatus.FailedUpdate;
+      })
+      .addCase(delKeyword.rejected, (state, _) => {
+        state.status=RequestStatus.FailedDelete;
+      })
+      .addMatcher(isAnyOf(getKeyword.fulfilled,fetchKeywords.fulfilled), (state, _) => {
+        state.status=RequestStatus.Success;
       })
       .addMatcher(isPendingKeywordAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedKeywordAction, (state, action: ErrorAction) => {
-        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       });
   }
 });
 
 export const { selectError, selectKeywords, selectCurrentKeyword, selectSliceState, selectIsDataLoading } = keywordsSlice.selectors;
-export const { clearCurrentKeyword } = keywordsSlice.actions;
+export const { clearCurrentKeyword, setStateSuccess } = keywordsSlice.actions;
 export default keywordsSlice.reducer;

@@ -3,7 +3,14 @@ import { Author, Source, Idea, IdeaRaw, SourceRaw, Keyword } from "./type";
 const URL_API='http://localhost:3000'
 
 const checkResponse = <T>(res: Response): Promise<T> =>
-  res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+  res.ok ? res.json() : res.json().then((err) => {
+    if (err.message) {
+      if (Array.isArray(err.message)) {
+        return Promise.reject({...err, message:err.message.join(';')})    
+      }
+    }
+    return Promise.reject(err)
+  });
 
 
 type TAuthorsResponse = {data: Author[]};

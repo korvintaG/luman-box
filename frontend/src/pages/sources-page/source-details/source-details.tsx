@@ -5,7 +5,7 @@ import { SourceDetailsUI } from '../../../components/ui/details/source-details/s
 import { useSelector, useDispatch } from '../../../services/store';
 import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
-    setSource,selectCurrentSource, delSource, selectError,
+    setSource,selectCurrentSource, delSource, selectError, setStateSuccess,
     selectIsDataLoading, getSource, addSource, selectSliceState
   } from '../../../slices/sources';
 import {
@@ -13,7 +13,7 @@ import {
     fetchAuthors, 
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
-import { RequestStatus, SourceRaw, sourceFullNameFromObj} from '../../../utils/type'
+import { isDMLRequestOK, SourceRaw, sourceFullNameFromObj} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
@@ -44,6 +44,8 @@ export const SourceDetails = () => {
         }
     }
 
+    const resetSliceState =()=> dispatch(setStateSuccess());
+
     useEffect(() => {
         if (authors.length===0)
             dispatch(fetchAuthors());
@@ -51,7 +53,7 @@ export const SourceDetails = () => {
     },[]);  
 
     useEffect(() => {
-        if (sliceState===RequestStatus.Updated)
+        if (isDMLRequestOK(sliceState))
             navigate(appRoutes.sources);            
     }, [sliceState]);
 
@@ -80,14 +82,11 @@ export const SourceDetails = () => {
     }
 
     return (<EditFormStatus 
-                wasUpdated={sliceState === RequestStatus.Updated}        
+                sliceState={sliceState}        
                 isLoading={isLoading || isALoading }
-                isError={sliceState===RequestStatus.Failed}
-                errorProps={{
-                    title:`Ошибка удаления источника [${values.name}]:`,
-                    text:errorText,
-                    fetchRecord:fetchSource
-                }}
+                error={errorText}
+                fetchRecord={fetchSource}
+                resetSliceState={resetSliceState}
                 isDeleteDialog={msgDeleteHook.dialogWasOpened}
                 deleteDialogProps={{
                     question:`Удалить источник [${values.name}]`,

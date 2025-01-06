@@ -35,6 +35,9 @@ const sourcesSlice = createSlice({
     clearCurrentSource: (state) => {
       state.current = null;
     },
+    setStateSuccess: (state) => {
+      state.status=RequestStatus.Success;
+    },
   },
   selectors: {
     selectSources: (sliceState) => sliceState.list,
@@ -46,30 +49,45 @@ const sourcesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchSources.fulfilled, (state, action) => {
-        state.status=RequestStatus.Success;       
         state.list = action.payload;
       })
       .addCase(getSource.pending, (state) => {
         state.current = null;
       })
       .addCase(getSource.fulfilled, (state, action) => {
-        state.status=RequestStatus.Success;       
         state.current = action.payload;
       })
-      .addMatcher(isAnyOf(addSource.fulfilled,setSource.fulfilled,delSource.fulfilled), (state) => {
-        state.status=RequestStatus.Updated
+      .addCase(addSource.fulfilled, (state, _) => {
+        state.status=RequestStatus.Added;
+      })
+      .addCase(setSource.fulfilled, (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addCase(delSource.fulfilled, (state, _) => {
+        state.status=RequestStatus.Deleted;
+      })
+      .addCase(addSource.rejected, (state, _) => {
+        state.status=RequestStatus.FailedAdd;
+      })
+      .addCase(setSource.rejected, (state, _) => {
+        state.status=RequestStatus.FailedUpdate;
+      })
+      .addCase(delSource.rejected, (state, _) => {
+        state.status=RequestStatus.FailedDelete;
+      })
+      .addMatcher(isAnyOf(getSource.fulfilled,fetchSources.fulfilled), (state) => {
+        state.status=RequestStatus.Success
       })
       .addMatcher(isPendingSourceAction, (state) => {
         state.status=RequestStatus.Loading;
         state.error = '';
       })
       .addMatcher(isRejectedSourceAction, (state, action: ErrorAction) => {
-        state.status=RequestStatus.Failed;
         state.error = action.error.message!;
       });
   }
 });
 
 export const { selectSources, selectCurrentSource, selectSliceState, selectIsDataLoading, selectError } = sourcesSlice.selectors;
-export const { clearCurrentSource } = sourcesSlice.actions;
+export const { clearCurrentSource, setStateSuccess } = sourcesSlice.actions;
 export default sourcesSlice.reducer;
