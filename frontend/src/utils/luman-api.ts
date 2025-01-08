@@ -1,4 +1,6 @@
-import { Author, Source, Idea, IdeaRaw, SourceRaw, Keyword } from "./type";
+import { Author, AuthorPartial, AuthorRawPartial, Source, Idea, IdeaRaw, IdeaPartial, IdeaRawPartial,
+  SourceRaw, 
+  Keyword, KeywordRawPartial, SourceRawPartial, SourcePartial, KeywordPartial } from "./type";
 
 const URL_API='http://localhost:3000'
 
@@ -32,19 +34,19 @@ export const getAuthorAPI = (id:number) : Promise<Author> => {
   .then((res) => checkResponse<Author>(res))
   }; 
 
-export const setAuthorAPI = (data: {id:number, name: string})  => {
+export const setAuthorAPI = (data: AuthorPartial)  => {
     return fetch(`${URL_API}/authors/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({name: data.name}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
     .then((res) => checkResponse(res))
   }; 
 
-  export const addAuthorAPI = (name: string) => {
+  export const addAuthorAPI = (data: AuthorRawPartial) => {
     return fetch(`${URL_API}/authors/`, {
       method: 'POST',
-      body: JSON.stringify({name}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
     .then((res) => checkResponse(res))
@@ -72,7 +74,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
     .then((res) => checkResponse<Source>(res))
     } 
 
-  export const setSourceAPI = (data: Source)  => {
+  export const setSourceAPI = (data: SourcePartial)  => {
     return fetch(`${URL_API}/sources/${data.id}`, {
       method: 'PATCH',
       body: JSON.stringify({...data}),
@@ -81,7 +83,7 @@ export const setAuthorAPI = (data: {id:number, name: string})  => {
     .then((res) => checkResponse(res))
   }; 
 
-  export const addSourceAPI = (data: SourceRaw) => {
+  export const addSourceAPI = (data: SourceRawPartial) => {
     return fetch(`${URL_API}/sources/`, {
       method: 'POST',
       body: JSON.stringify({...data}),
@@ -111,7 +113,7 @@ export const getIdeaAPI = (id:number) : Promise<Idea> => {
     .then((res) => checkResponse<Idea>(res))
 }; 
 
-export const setIdeaAPI = (data: Idea)  => {
+export const setIdeaAPI = (data: IdeaPartial)  => {
     return fetch(`${URL_API}/ideas/${data.id}`, {
       method: 'PATCH',
       body: JSON.stringify({...data}),
@@ -120,7 +122,7 @@ export const setIdeaAPI = (data: Idea)  => {
     .then((res) => checkResponse(res))
 }; 
 
-export const addIdeaAPI = (data: IdeaRaw) => {
+export const addIdeaAPI = (data: IdeaRawPartial) => {
     return fetch(`${URL_API}/ideas/`, {
       method: 'POST',
       body: JSON.stringify({...data}),
@@ -151,19 +153,19 @@ export const getKeywordAPI = (id:number) : Promise<Keyword> => {
     .then((res) => checkResponse<Keyword>(res))
 }; 
 
-export const setKeywordAPI = (data: {id:number, name: string})  => {
+export const setKeywordAPI = (data: KeywordPartial)  => {
     return fetch(`${URL_API}/keywords/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify(data),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
     .then((res) => checkResponse(res))
 }; 
 
-export const addKeywordAPI = (name: string) => {
+export const addKeywordAPI = (data: KeywordRawPartial) => {
     return fetch(`${URL_API}/keywords/`, {
       method: 'POST',
-      body: JSON.stringify({name}),
+      body: JSON.stringify({...data}),
       headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
     .then((res) => checkResponse(res))

@@ -11,12 +11,13 @@ import {
   selectError,
   selectIsDataLoading,
   getIdea,
+  setStateSuccess,
   addIdea,
   selectSliceState,
 } from "../../../slices/ideas";
 import {
   selectSources,
-  fetchSources, setStateSuccess,
+  fetchSources, 
   selectIsDataLoading as sourcesLoading,
 } from "../../../slices/sources";
 import {
@@ -26,15 +27,15 @@ import {
 } from "../../../slices/keywords";
 import { appRoutes } from "../../../AppRoutes";
 
-import { RequestStatus, IdeaRaw, isDMLRequestOK } from "../../../utils/type";
+import { KeywordPartial, IdeaRaw, isDMLRequestOK } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { EditFormStatus } from "../../../components/ui/uni/edit-form-status/edit-form-status";
 
 export const IdeaDetails = () => {
   const msgDeleteHook = useMsgModal();
   const { id } = useParams();
-  const { values, handleChange, setValues } = useForm<IdeaRaw>({
-    name: "",
+  const { values, handleChange, setValues, getFormDTO } = useForm<IdeaRaw>({
+    name: "", 
     source: { id: 0 },
     original_text: "",
     content: "",
@@ -62,6 +63,13 @@ export const IdeaDetails = () => {
 
   const resetSliceState =()=> dispatch(setStateSuccess());
 
+  const keywordsDTO= (): KeywordPartial[] => {
+    if (values.keywords)
+      return values.keywords.map(el=>{return {id:el.id}})
+    else
+      return []
+  }
+
   useEffect(() => {
     if (sources.length === 0) dispatch(fetchSources());
     if (keywords.length === 0) dispatch(fetchKeywords());
@@ -73,11 +81,11 @@ export const IdeaDetails = () => {
   }, [sliceState]);
 
   useEffect(() => {
-    if (currentIdea)
-      setValues({
-        ...currentIdea,
-        source: { id: Number(currentIdea.source.id) },
-      });
+    if (currentIdea) 
+        setValues({
+          ...currentIdea,
+          source: { id: currentIdea.source? Number(currentIdea.source.id) :0}
+        })
   }, [currentIdea]);
 
   const deleteIdea = (e: SyntheticEvent) => {
@@ -103,12 +111,11 @@ export const IdeaDetails = () => {
       const idNumber = Number(id);
       dispatch(
         setIdea({
-          ...values,
+          ...getFormDTO(),
           id: idNumber,
-          source: { id: Number(values.source.id) },
-        })
-      );
-    } else dispatch(addIdea(values));
+          keywords: keywordsDTO()}
+      ));
+    } else dispatch(addIdea({...getFormDTO(), keywords: keywordsDTO()}));
   };
 
   return (

@@ -9,6 +9,8 @@ export type NameObject = {
 
 // Авторы
 export type AuthorInner = NameObject;
+export type AuthorRaw = AuthorInner;
+export type AuthorRawPartial = Partial<AuthorRaw>;
 export type Author = AuthorInner & IDObject;
 export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
 
@@ -17,6 +19,7 @@ export type SourceInner = NameObject;
 export type SourceRaw = SourceInner & {
     author?:AuthorPartial;
 }
+export type SourceRawPartial = Partial<SourceRaw>;
 export type SourcePartial = Partial<Source> & IDObject;
 export type Source = SourceRaw & IDObject;
 
@@ -43,6 +46,7 @@ export function authorNameFromObj(author?: Partial<Author>): string {
 // ключевые слова
 export type KeywordInner = NameObject;
 export type KeywordRaw = KeywordInner;
+export type KeywordRawPartial = Partial<KeywordRaw>;
 export type Keyword = KeywordRaw & IDObject;
 export type KeywordPartial = Partial<Keyword> & IDObject;
 
@@ -55,8 +59,12 @@ export type IdeaInner= NameObject & {
 
 export type IdeaRaw= IdeaInner & {
     source: SourcePartial;
-    keywords?: KeywordPartial[];
+    keywords: KeywordPartial[];
 }
+
+export type IdeaRawPartial = Partial<IdeaRaw>;
+export type IdeaPartial = Partial<Idea> & IDObject;
+
 
 export type Idea= IdeaRaw &  IDObject
 

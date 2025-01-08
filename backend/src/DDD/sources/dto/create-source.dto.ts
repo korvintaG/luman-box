@@ -1,10 +1,10 @@
-import { ISource } from '../../../types/custom'
 import {
   IsString,
   IsInt,
   IsNotEmpty,
   Length,
-  ValidateNested
+  ValidateNested,
+  Min
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -12,6 +12,7 @@ import { Type } from 'class-transformer';
 export class CreateSourceAuthorDto {
   @IsNotEmpty({ message: 'Поле ID Автора не может быть пустым' })
   @IsInt({ message: 'Поле ID Автора должно быть целым числом' })
+  @Min(1,{message: 'Поле ID Автора должно быть больше нуля' })
   id: number
 }
 
@@ -25,20 +26,3 @@ export class CreateSourceDto {
   @Type(() => CreateSourceAuthorDto)
   author?: CreateSourceAuthorDto
 }
-
-
-/*export class CreateSourceDto {
-    constructor(
-        public id_out: string,
-        public name: string,
-        public author: {id: number}
-      ) {}
-    
-      static from = (sourceDocument: ISource): CreateSourceDto =>
-        new CreateSourceDto(
-            sourceDocument.id_out,
-            sourceDocument.name,
-            {id:sourceDocument.author_id}
-        );
-}
-*/

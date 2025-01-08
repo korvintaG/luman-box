@@ -9,16 +9,20 @@ import {
     selectIsDataLoading, getAuthor, addAuthor, selectSliceState
 } from '../../../slices/authors';
 import { appRoutes } from '../../../AppRoutes';
-import { isDMLRequestOK } from '../../../utils/type'
+import { isDMLRequestOK, AuthorRaw } from '../../../utils/type'
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
+import { useForm } from "../../../hooks/useForm";
 
 
 /**
  * Компонент редактирования автора - данные + UI
  */
-export const AuthorDetails = () => {
+export const AuthorDetails = () => { 
     const { id } = useParams();
-    const [name, setName] = useState('');
+    const { values, handleChange, setValues, getFormDTO } = useForm<AuthorRaw>({
+        name: ""
+      });
+    
     const msgDeleteHook = useMsgModal();
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
@@ -43,7 +47,9 @@ export const AuthorDetails = () => {
 
     useEffect(() => {
         if (currentAuthor)
-            setName(currentAuthor.name)
+        setValues({
+            ...currentAuthor
+          })
     }, [currentAuthor]);
 
     const deleteAuthor = (e: SyntheticEvent) => {
@@ -54,9 +60,9 @@ export const AuthorDetails = () => {
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id)
-            dispatch(setAuthor({ id: Number(id), name: name }));
+            dispatch(setAuthor({ ...getFormDTO(), id: Number(id)}));
         else
-            dispatch(addAuthor(name));
+            dispatch(addAuthor({...getFormDTO()}));
     }
 
     const initialName=currentAuthor ? currentAuthor.name : '';
@@ -76,9 +82,9 @@ export const AuthorDetails = () => {
         >
                 <AuthorDetailsUI 
                     id={id ? Number(id) : null} 
-                    name={name}
+                    values={values}
                     initialName={initialName}
-                    setName={setName}
+                    handleChange={handleChange}
                     handleSubmit={handleSubmit} 
                     deleteAuthor={msgDeleteHook.openDialog} />
             </EditFormStatus>)

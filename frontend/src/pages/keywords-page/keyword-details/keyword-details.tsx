@@ -9,14 +9,18 @@ import {
     selectIsDataLoading, getKeyword, addKeyword, selectSliceState
   } from '../../../slices/keywords';
 import { appRoutes } from '../../../AppRoutes';
-import { isDMLRequestOK} from '../../../utils/type'
+import { isDMLRequestOK, KeywordRaw} from '../../../utils/type'
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
+import { useForm } from "../../../hooks/useForm";
 
 
 
 export const KeywordDetails = () => {
-    const { id } = useParams();
-    const [name, setName] = useState('');
+    const { id } = useParams(); 
+    const { values, handleChange, setValues, getFormDTO } = useForm<KeywordRaw>({
+        name: ""
+      });
+
     const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
     const sliceState = useSelector(selectSliceState);
@@ -45,7 +49,10 @@ export const KeywordDetails = () => {
 
     useEffect(() => {
         if (currentKeyword)
-            setName(currentKeyword.name)
+            setValues({
+            ...currentKeyword
+              })
+
     },[currentKeyword]);
 
     const deleteKeyword = (e: SyntheticEvent) => {
@@ -58,10 +65,10 @@ export const KeywordDetails = () => {
         e.preventDefault();
         if (id) {
             const idNumber = Number(id);
-            dispatch(setKeyword({id: idNumber, name:name}))
+            dispatch(setKeyword({ ...getFormDTO(), id: Number(id)}));
         }
         else {
-            dispatch(addKeyword(name));
+            dispatch(addKeyword({ ...getFormDTO()}));
         }
     }
 
@@ -82,9 +89,9 @@ export const KeywordDetails = () => {
     >
         <KeywordDetailsUI 
             id={id?Number(id):null } 
-            name={name}
+            values={values}
             initialName={initialName}
-            setName={setName}
+            handleChange={handleChange}
             handleSubmit={handleSubmit} 
             deleteKeyword={msgDeleteHook.openDialog}/>
         </EditFormStatus>);

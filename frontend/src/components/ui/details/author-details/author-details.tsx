@@ -1,6 +1,8 @@
-import { FC, SyntheticEvent } from 'react';
+import { FC, SyntheticEvent,  ChangeEvent } from 'react';
 import { RecordEditUI } from '../../uni/record-edit/record-edit'
 import styles from './author-details.module.css'
+import { HTMLEditElement, AuthorRaw } from '../../../../utils/type'
+
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import {ErrorMessageUI} from '../../uni/error-message/error-message'
@@ -10,21 +12,21 @@ import {ErrorMessageUI} from '../../uni/error-message/error-message'
  */
 export type AuthorDetailsUIProps = {
     id: number | null;
-    name: string;
+    values: AuthorRaw; // поля автора для редактирования
     initialName: string; // начальное имя
-    setName: (newName: string) => void; // из useState
+    handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // сохранить изменения в базе
     deleteAuthor: (e: SyntheticEvent) => void; // функция удаления автора
 }
 
-export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, name, initialName, setName, handleSubmit, deleteAuthor}) => {
+export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, values, initialName, handleChange, handleSubmit, deleteAuthor}) => {
     const header = id ? `Редактирование автора [${initialName}]` : 'Добавление нового автора';
     const btnCaptione = id ? 'Сохранить данные' : 'Добавить автора';
    
     return <RecordEditUI header={header} onSubmit={handleSubmit}>
-            <InputEditUI name="name" label='ФИО автора' value={name} 
+            <InputEditUI name="name" label='ФИО автора' value={values.name} 
                 placeholder="Укажите ФИО автора"
-                handleChange={(e) => setName(e.target.value)} />
+                handleChange={handleChange} />
             <RecordButtonBlockUI 
                 id={id} 
                 deleteRecord={deleteAuthor} 

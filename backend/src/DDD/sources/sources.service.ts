@@ -18,7 +18,6 @@ export class SourcesService {
   ) {}
 
   create(createSourceDto: CreateSourceDto) {
-    console.log('create', createSourceDto)
     return this.sourceRepository.save(createSourceDto);
   }
 

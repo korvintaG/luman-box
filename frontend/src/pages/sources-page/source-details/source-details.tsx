@@ -13,7 +13,7 @@ import {
     fetchAuthors, 
     selectIsDataLoading as aLoading
   } from '../../../slices/authors';
-import { isDMLRequestOK, SourceRaw, sourceFullNameFromObj} from '../../../utils/type'
+import { isDMLRequestOK, Source, SourceRaw, sourceFullNameFromObj, SourceRawPartial} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
@@ -23,7 +23,7 @@ export const SourceDetails = () => {
     const msgDeleteHook = useMsgModal();
 
     const { id } = useParams();
-    const { values, handleChange, setValues } = useForm<SourceRaw>({
+    const { values, handleChange, setValues, getFormDTO } = useForm<SourceRaw>({
         name: '',
         author: {id: 0}
       });
@@ -69,16 +69,10 @@ export const SourceDetails = () => {
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        if (id) {
-            const idNumber = Number(id);
-            dispatch(setSource({id: idNumber, name:values.name, author:{id: Number(values.author?values.author.id:0)}}))
-        }
-        else {
-            if (values.author && values.author.id>0) // означен ли автор?
-                dispatch(addSource(values));            
-            else
-                dispatch(addSource({...values,author:undefined}));
-        }
+        if (id) 
+            dispatch(setSource({...getFormDTO(), id: Number(id) }))
+        else 
+            dispatch(addSource(getFormDTO()));            
     }
 
     return (<EditFormStatus 

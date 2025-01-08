@@ -34,10 +34,12 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, addNewIdea, isLoading})
                                     </Link>
                             </td>
                             <td>
+                                {idea.source &&
                                     <Link
                                     to={getRouteParam(appRoutes.source,idea.source.id)} >
                                     {sourceFullNameFromObj(idea.source)}
                                     </Link>
+                                }
                             </td>
                             <td>
                                     <Link
