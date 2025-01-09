@@ -3,13 +3,12 @@ import { IdeasService } from './ideas.service';
 import { IdeasController } from './ideas.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Idea  } from './entities/idea.entity';
-import { Keyword } from '../keywords/entities/keyword.entity';
-import {KeywordsService} from '../keywords/keywords.service'
-
+import { KeywordsModule} from '../keywords/keywords.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Idea, Keyword])],  
+  imports: [TypeOrmModule.forFeature([Idea]),KeywordsModule],  
   controllers: [IdeasController],
-  providers: [IdeasService, KeywordsService],
+  providers: [IdeasService],
+  exports: [IdeasService]
 })
 export class IdeasModule {}

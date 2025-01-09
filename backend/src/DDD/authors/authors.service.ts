@@ -17,7 +17,6 @@ export class AuthorsService {
   ) {}
 
   create(createAuthorDto: CreateAuthorDto) {
-    console.log('AuthorsService create createAuthorDto',createAuthorDto)
     return this.authorRepository.save(createAuthorDto);
   }
 
