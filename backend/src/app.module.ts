@@ -9,6 +9,8 @@ import { configProvider } from './app.config.provider';
 import { SourcesModule } from './DDD/sources/sources.module';
 import { KeywordsModule } from './DDD/keywords/keywords.module';
 import { IdeasModule } from './DDD/ideas/ideas.module';
+import { User} from './DDD/users/entities/user.entity';
+import { UsersModule } from './DDD/users/users.module';
 
 
 @Module({
@@ -19,9 +21,9 @@ import { IdeasModule } from './DDD/ideas/ideas.module';
     username: configProvider.useValue.database.username,
     password: configProvider.useValue.database.password,
     database: configProvider.useValue.database.databaseName,
-    entities: [Author, Source, Keyword, Idea],
+    entities: [Author, Source, Keyword, Idea, User],
     synchronize: true,
-  }), AuthorsModule, SourcesModule, KeywordsModule, IdeasModule],
+  }), AuthorsModule, SourcesModule, KeywordsModule, IdeasModule, UsersModule],
   providers: [configProvider],
 })
 export class AppModule {}
