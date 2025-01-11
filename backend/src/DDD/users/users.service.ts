@@ -26,7 +26,7 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return id?this.userRepository.findOneBy({ id }):null;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

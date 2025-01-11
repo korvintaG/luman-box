@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
@@ -14,7 +14,7 @@ export class AuthService {
     // See if email is in use
     const users = await this.usersService.find(name);
     if (users.length) {
-      throw new BadRequestException('name in use');
+      throw new BadRequestException('Указанное имя пользователя уже используется');
     }
 
     // Hash the users password
@@ -28,10 +28,28 @@ export class AuthService {
     const result = salt + '.' + hash.toString('hex');
 
     // Create a new user and save it
+    const user = await this.usersService.create({name, password:result});
 
     // return the user
+    return user;
   }
 
-  signin() {}
+  async signin(name: string, password: string) { // логин
+    const [user] = await this.usersService.find(name);
+    if (!user) {
+      throw new NotFoundException('Пользователь не найден');
+    }
+
+    const [salt, storedHash] = user.password.split('.');
+
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+
+    if (storedHash !== hash.toString('hex')) {
+      throw new BadRequestException('Пароль не верен');
+    }
+
+    return user;
+  }
+
 
 }
