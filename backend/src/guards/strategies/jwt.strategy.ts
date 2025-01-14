@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -10,12 +10,15 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy) {
       /* Указываем, что токен будет передаваться в заголовке Authorization в формате Bearer <token> */
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      /* Получаем секрет для подписи JWT токенов из конфигурации */
       secretOrKey: configService.get('JWT_SECRET'), 
     });
   }
 
   async validate(payload: any) {
+    if (!payload.id || !payload.name) {
+      throw new UnauthorizedException('Invalid jwt payload.');
+    }
+
     return { id: payload.id, name: payload.name }
   }
 }
