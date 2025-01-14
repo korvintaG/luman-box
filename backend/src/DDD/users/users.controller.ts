@@ -1,11 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Session} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthService } from './auth.service';
+//import { AuthService } from '../../guards/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
-import { CurrentUser } from '../../decorators/current-user.decorator';
 import { User } from './entities/user.entity';
 
 
@@ -14,19 +13,19 @@ import { User } from './entities/user.entity';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly authService: AuthService
+    //private readonly authService: AuthService
     ) {}
 
-  @Get('/whoami')
-  /*whoAmI(@Session() session: any) {
+  /*@Get('/whoami')
+  whoAmI(@Session() session: any) {
     return this.usersService.findOne(session.userId);
-  }*/
+  }
   whoAmI(@CurrentUser() user: User) {
     return user;
-  }
+  }*/
 
   
-  @Post('/signout')
+  /*@Post('/signout')
   signOut(@Session() session: any) {
     session.userId = null;
   }
@@ -44,7 +43,7 @@ export class UsersController {
       session.userId = user.id;
       return user;
   }
-
+*/
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);

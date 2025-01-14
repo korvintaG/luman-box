@@ -24,3 +24,12 @@ export interface IIdea extends SimpleEntityWithOutID  {
   date_time_create: string;
   keywords: number[];
 }
+
+export type AccessToken = {
+  access_token: string;
+};
+
+export type AccessTokenPayload = {
+  id: number;
+  name: string;
+};

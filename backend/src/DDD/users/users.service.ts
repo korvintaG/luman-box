@@ -4,6 +4,7 @@ import { Repository} from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {User} from './entities/user.entity'
+import { omit }  from "lodash";
 
 @Injectable()
 export class UsersService {
@@ -14,7 +15,8 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     const user = this.userRepository.create(createUserDto);
-    return this.userRepository.save(user);
+    const savedUser= await this.userRepository.save(user);
+    return omit(savedUser,['password', 'id_out']);
   }
 
   findAll() {

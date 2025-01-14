@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthorsModule } from './DDD/authors/authors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Author  } from './DDD/authors/entities/author.entity';
 import { Source  } from './DDD/sources/entities/source.entity';
 import { Keyword  } from './DDD/keywords/entities/keyword.entity';
@@ -11,19 +12,31 @@ import { KeywordsModule } from './DDD/keywords/keywords.module';
 import { IdeasModule } from './DDD/ideas/ideas.module';
 import { User} from './DDD/users/entities/user.entity';
 import { UsersModule } from './DDD/users/users.module';
+import { AuthModule } from './guards/auth/auth.module'
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: configProvider.useValue.database.username,
-    password: configProvider.useValue.database.password,
-    database: configProvider.useValue.database.databaseName,
-    entities: [Author, Source, Keyword, Idea, User],
-    synchronize: true,
-  }), AuthorsModule, SourcesModule, KeywordsModule, IdeasModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => {
+      return {
+        type: 'postgres',
+        host: configService.get('DATABASE_HOST'),
+        port: configService.get('DATABASE_PORT'),
+        username: configService.get('DATABASE_USERNAME'),
+        password: configService.get('DATABASE_PASSWORD'),
+        database: configService.get('DATABASE_NAME'),
+        entities: [Author, Source, Keyword, Idea, User],
+        synchronize: true,
+    }}})
+    , AuthorsModule, SourcesModule, KeywordsModule, IdeasModule, UsersModule, AuthModule,
+],
   providers: [configProvider],
 })
 export class AppModule {}

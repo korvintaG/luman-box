@@ -1,16 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete,   UseGuards} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { AuthGuard } from '../../guards/auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
 
 
 @Controller('authors')
 export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
+  @UseGuards(JwtAuthGuard)  
   @Post()
-  @UseGuards(AuthGuard)
   create(@Body() createAuthorDto: CreateAuthorDto) {
     return this.authorsService.create(createAuthorDto);
   }
@@ -25,14 +25,14 @@ export class AuthorsController {
     return this.authorsService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)  
   @Patch(':id')
-  @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
     return this.authorsService.update(+id, updateAuthorDto);
   }
 
+  @UseGuards(JwtAuthGuard)  
   @Delete(':id')
-  @UseGuards(AuthGuard)
   remove(@Param('id') id: string) {
     return this.authorsService.remove(+id);
   }

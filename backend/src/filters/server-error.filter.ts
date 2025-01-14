@@ -8,7 +8,7 @@ import {
   
   @Catch()
   export class ServerErrorExceptionFilter implements ExceptionFilter {
-    catch(exception, host: ArgumentsHost) {
+    catch(exception: any, host: ArgumentsHost) {
         let { message: errMsg, stack: errStack, name: errName, code } = exception;
 
         let ctx = host.switchToHttp();
