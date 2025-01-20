@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import {IUser} from '../../types/custom'
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy) {
@@ -14,11 +15,10 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: IUser) {
     if (!payload.id || !payload.name) {
       throw new UnauthorizedException('Invalid jwt payload.');
     }
-
-    return { id: payload.id, name: payload.name }
+    return payload
   }
 }

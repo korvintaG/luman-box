@@ -33,3 +33,5 @@ export type AccessTokenPayload = {
   id: number;
   name: string;
 };
+
+export interface IUser extends SimpleEntity{};

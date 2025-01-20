@@ -1,0 +1,33 @@
+.form_login {
+    margin: 20px auto 0;
+    padding: 10px;
+    border: 1px #4e7bf0 solid;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    align-content: center;
+}
+
+.form_logout {
+    margin: 20px auto 0;
+    padding: 10px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.login_inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+}

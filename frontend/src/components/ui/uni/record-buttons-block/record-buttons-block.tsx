@@ -28,7 +28,8 @@ export const RecordButtonBlockUI: FC<RecordButtonBlockUIProps> = (props) => {
     return <div className={props.blockClass? props.blockClass : styles['button-block']}>
         <ButtonUI caption="Назад" action={back}/>
         {!props.readOnly && <>
-            <ButtonAgreeUI caption={props.submitButtonCaption ? props.submitButtonCaption: saveCaption}/>
+            <ButtonAgreeUI 
+                caption={props.submitButtonCaption ? props.submitButtonCaption: saveCaption}/>
             {props.id && <ButtonAlertUI 
                 caption={props.deleteButtonCaption ? props.deleteButtonCaption: 'Удалить запись'}
                 action={props.deleteRecord}/>}

@@ -4,6 +4,9 @@ import { InputEditUI } from '../../../../components/ui/uni/input-edit/input-edit
 import {AuthStatus} from '../../../../slices/auth/index'
 import { Preloader } from '../preloader';
 import { ErrorMessageUI } from '../error-message/error-message'
+import { ButtonAgreeUI } from '../button-type-agree/button-type-agree'
+import { ButtonAlertUI } from '../button-type-alert/button-type-alert'
+import styles from './login-form.module.css';
 
 export type LoginFormProps = {
     values: UserInner; // поля 
@@ -13,7 +16,6 @@ export type LoginFormProps = {
 	resetError:(e:SyntheticEvent) => void;
     handleSubmit: (e:SyntheticEvent<HTMLFormElement>)=>void;
     handleChange: (event: React.ChangeEvent<HTMLEditElement>) => void
-    
 }
 
 export const LoginForm: FC<LoginFormProps> = (props:LoginFormProps) => {
@@ -28,24 +30,23 @@ export const LoginForm: FC<LoginFormProps> = (props:LoginFormProps) => {
 			okAction={props.resetError}
 			/>
 
-    return (
-		<div >
-			<form onSubmit={props.handleSubmit} >
+    return <form onSubmit={props.handleSubmit} 
+				className={props.currentUser?styles.form_logout:styles.form_login} >
 				{props.currentUser?
 				<>
-					<h1>Пользователь {`${props.currentUser.name}`}</h1>
-					<button type="submit">Выйти</button>
+					<h1>Вы вошли как [{`${props.currentUser.name}`}]</h1>
+					<ButtonAlertUI caption="Выйти"/>
 				</>
 				:
 				<>
 					<h1>Вход в систему</h1>
-					<InputEditUI name="name" label='Никнэйм' value={props.values.name} handleChange={props.handleChange}/>
-					<InputEditUI name="password" label='Пароль' value={props.values.password} handleChange={props.handleChange}/>
-					<button type="submit">Войти</button>
+					<section className={styles.login_inputs}>
+						<InputEditUI name="name" label='Никнэйм' value={props.values.name} handleChange={props.handleChange}/>
+						<InputEditUI name="password" isPassword label='Пароль' value={props.values.password} handleChange={props.handleChange}/>
+					</section>
+					<ButtonAgreeUI caption="Войти"/>
 				</>
 				}
 			</form>
-		</div>)
-
 }
 

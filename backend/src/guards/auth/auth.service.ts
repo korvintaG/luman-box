@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { UsersService } from '../../DDD/users/users.service';
 import {User} from '../../DDD/users/entities/user.entity'
+import {IUser} from '../../types/custom'
 import {CreateUserDto} from '../../DDD/users/dto/create-user.dto'
 import { JwtService } from '@nestjs/jwt';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
@@ -19,7 +20,7 @@ export class AuthService {
     private jwtService: JwtService,
     ) {}
 
-  async login(res: Response, user: User) {
+  async login(res: Response, user: IUser) {
       if (!user || !user.id) {
         throw new InternalServerErrorException('User not set in request');
       }
@@ -28,6 +29,7 @@ export class AuthService {
   }
   
   // принимает в качестве входных данных имя пользователя и пароль и проверяет, существует ли пользователь и верен ли пароль
+  // нужно для локальной стратегии
   async validateUser(name: string, password: string) {
     const [user] = await this.usersService.find(name); 
     if (!user) {
@@ -60,7 +62,7 @@ export class AuthService {
       return null;
     }
     const refreshTokenCookie = cookies.find((cookie) =>
-      cookie.startsWith(`${this.cookieConfig().refreshToken.name}=`),
+      cookie.startsWith(`${this.getCookieConfig().refreshToken.name}=`),
     );
     if (!refreshTokenCookie) {
       return null;
@@ -68,8 +70,7 @@ export class AuthService {
     return refreshTokenCookie.split('=')[1] as string;
   };
     
-
-  cookieConfig () {
+  getCookieConfig () {
     return {
     refreshToken: {
       name: 'refreshToken',
@@ -84,23 +85,27 @@ export class AuthService {
     }
   };
 
-  async generateTokenPair(
-    user: Partial<User>,
-    res: Response
-  ) {
+  async generateAccessToken(user: Partial<User>) {
     const payload = { id: user.id, name: user.name };
-    res.cookie(
-      this.cookieConfig().refreshToken.name,
-      await this.generateRefreshToken(user),
-      {...this.cookieConfig().refreshToken.options},
-    );
     return {
       access_token: this.jwtService.sign(payload), // jwt module is configured in auth.module.ts for access token
       success: true
     };
   }
 
-  async register(res: Response,user: CreateUserDto) {
+  async generateTokenPair(
+    user: Partial<User>,
+    res: Response
+  ) {
+    res.cookie(
+      this.getCookieConfig().refreshToken.name,
+      await this.generateRefreshToken(user),
+      {...this.getCookieConfig().refreshToken.options},
+    );
+    return this.generateAccessToken(user)
+  }
+
+  async register(user: CreateUserDto) {
     const [existingUser] = await this.usersService.find(user.name);
     if (existingUser) {
       throw new BadRequestException('name already exists');
@@ -109,11 +114,10 @@ export class AuthService {
     const hashedPassword = await this.hashPasswordWithSalt(user.password, salt);
     const newUser = { ...user, password: `${salt}.${hashedPassword}` };
     const retUser= await this.usersService.create(newUser);
-    const accessToken=await this.generateTokenPair(retUser, res);
-    return {...accessToken, success: true, user: retUser};
+    return {success: true};
   }
 
-  private async hashPasswordWithSalt(password:string, salt:string) {
+  private async hashPasswordWithSalt(password:string, salt:string):Promise<string> {
     return ((await scrypt(password, salt, 32)) as Buffer).toString('hex');
   }
 
