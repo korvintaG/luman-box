@@ -7,13 +7,15 @@ import { getRouteParam , appRoutes} from '../../../../AppRoutes'
 export type AuthorListUIProps = {
     authors: Author[],
     addNewAuthor: ()=>void,
-    isLoading: boolean
+    isLoading: boolean,
+    readOnly?:boolean
 }
 
-export const AuthorListUI : FC<AuthorListUIProps> = ({authors, addNewAuthor, isLoading}) => {
+export const AuthorListUI : FC<AuthorListUIProps> = ({authors, readOnly, addNewAuthor, isLoading}) => {
     return (
         <RecordListUI 
             header='Список авторов' 
+            readOnly={readOnly}
             captionAddButton='Добавить автора'
             addRecord={addNewAuthor}
             isLoading={isLoading}>

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Keyword, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
-import { getKeywordsAPI, setKeywordAPI, getKeywordAPI, addKeywordAPI, delKeywordAPI } from '../../utils/luman-api'
+import LumanAPI from '../../utils/luman-api'
+import {isUnauthorizedError} from '../../utils/utils'
 
 export const initialState: ListToWork<Keyword> = {
   list: [],
@@ -10,11 +11,11 @@ export const initialState: ListToWork<Keyword> = {
   error: ''
 };
 
-export const fetchKeywords = createAsyncThunk('fetchKeywords', getKeywordsAPI);
-export const setKeyword = createAsyncThunk('setKeyword', setKeywordAPI);
-export const getKeyword = createAsyncThunk('getKeyword', getKeywordAPI);
-export const addKeyword = createAsyncThunk('addKeyword', addKeywordAPI);
-export const delKeyword = createAsyncThunk('delKeyword', delKeywordAPI);
+export const fetchKeywords = createAsyncThunk('fetchKeywords', LumanAPI.getKeywords);
+export const setKeyword = createAsyncThunk('setKeyword', LumanAPI.setKeyword);
+export const getKeyword = createAsyncThunk('getKeyword', LumanAPI.getKeyword);
+export const addKeyword = createAsyncThunk('addKeyword', LumanAPI.addKeyword);
+export const delKeyword = createAsyncThunk('delKeyword', LumanAPI.delKeyword);
 
 export function isPendingKeywordAction(action: PayloadAction) {
   return action.type.endsWith('pending') && action.type.includes('Keyword');
@@ -84,6 +85,9 @@ const keywordsSlice = createSlice({
       })
       .addMatcher(isRejectedKeywordAction, (state, action: ErrorAction) => {
         state.error = action.error.message!;
+        if (isUnauthorizedError(state.error))
+          state.status=RequestStatus.FailedUnAuth
+
       });
   }
 });

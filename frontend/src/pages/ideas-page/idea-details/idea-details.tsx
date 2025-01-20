@@ -30,6 +30,7 @@ import { appRoutes } from "../../../AppRoutes";
 import { KeywordPartial, IdeaRaw, isDMLRequestOK } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { EditFormStatus } from "../../../components/ui/uni/edit-form-status/edit-form-status";
+import { selectCurrentUser } from '../../../slices/auth/index';
 
 export const IdeaDetails = () => {
   const msgDeleteHook = useMsgModal();
@@ -48,6 +49,7 @@ export const IdeaDetails = () => {
   const sliceState = useSelector(selectSliceState);
   const isSourcesLoading = useSelector(sourcesLoading);
   const currentIdea = useSelector(selectCurrentIdea);
+  const currentUser = useSelector(selectCurrentUser);
   const sources = useSelector(selectSources);
   const errorText = useSelector(selectError);
   const isKeywordsLoading = useSelector(keywordsLoading);
@@ -126,6 +128,7 @@ export const IdeaDetails = () => {
       fetchRecord={fetchIdea}
       resetSliceState={resetSliceState}
       isDeleteDialog={msgDeleteHook.dialogWasOpened}
+      authPath={appRoutes.auth}
       deleteDialogProps={{
         question: `Удалить идею [${values.name}]?`,
         action: deleteIdea,
@@ -134,6 +137,7 @@ export const IdeaDetails = () => {
     > 
       <IdeaDetailsUI
         id={id ? Number(id) : null}
+        readOnly={!currentUser}
         values={values}
         handleChange={handleChange}
         handleSubmit={handleSubmit}

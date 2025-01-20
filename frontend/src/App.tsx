@@ -13,6 +13,7 @@ import { SourceDetails } from './pages/sources-page/source-details/source-detail
 import { IdeaDetails } from './pages/ideas-page/idea-details/idea-details'
 import { KeywordsPage } from './pages/keywords-page/keywords-page';
 import { KeywordDetails } from './pages/keywords-page/keyword-details/keyword-details'
+import LoginPage from './pages/login-page/login-page'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path={appRoutes.keywords} element={<KeywordsPage />} />
         <Route path={appRoutes.keyword} element={<KeywordDetails />} />
         <Route path={appRoutes.keywordAdd} element={<KeywordDetails />} />
+        <Route path={appRoutes.auth} element={<LoginPage />} />
       </Routes>
       <AppFooterUI />
     </div>

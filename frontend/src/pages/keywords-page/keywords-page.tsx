@@ -9,6 +9,7 @@ import {
     selectIsDataLoading,
     clearCurrentKeyword
   } from '../../slices/keywords';
+import { selectCurrentUser } from '../../slices/auth';
 
 /**
  * Страница список ключевых слов
@@ -16,6 +17,8 @@ import {
 export const KeywordsPage: FC = () => {
     const keywords = useSelector(selectKeywords);
     const isLoading = useSelector(selectIsDataLoading);
+    const currentUser=useSelector(selectCurrentUser)
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -30,6 +33,7 @@ export const KeywordsPage: FC = () => {
 
     return <KeywordListUI 
         keywords={keywords}
+        readOnly={!currentUser}
         addNewKeyword={addNewKeyword}
         isLoading={isLoading}
     />

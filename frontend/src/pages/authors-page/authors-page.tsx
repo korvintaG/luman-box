@@ -9,6 +9,7 @@ import {
     clearCurrentAuthor
 } from '../../slices/authors';
 import { AuthorListUI } from '../../components/ui/list/author-list'
+import { selectCurrentUser } from '../../slices/auth';
 
 
 /**
@@ -17,6 +18,7 @@ import { AuthorListUI } from '../../components/ui/list/author-list'
 export const AuthorsPage: FC = () => {
     const authors = useSelector(selectAuthors);
     const isLoading = useSelector(selectIsDataLoading);
+    const currentUser=useSelector(selectCurrentUser)
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -33,6 +35,7 @@ export const AuthorsPage: FC = () => {
     return (
         <AuthorListUI 
             authors={authors}
+            readOnly={!currentUser}
             addNewAuthor={addNewAuthor}
             isLoading={isLoading}
         />

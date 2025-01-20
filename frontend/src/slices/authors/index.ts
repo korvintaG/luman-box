@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, isAnyOf , PayloadAction } from '@reduxjs/toolkit';
 import { Author, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
-import { getAuthorsAPI, setAuthorAPI, getAuthorAPI, addAuthorAPI, delAuthorAPI } from '../../utils/luman-api'
+import LumanAPI from '../../utils/luman-api'
+import {isUnauthorizedError} from '../../utils/utils'
 
 export const initialState: ListToWork<Author> = {
   list: [],
@@ -10,11 +11,11 @@ export const initialState: ListToWork<Author> = {
   error: ''
 };
 
-export const fetchAuthors = createAsyncThunk('fetchAuthors', getAuthorsAPI);
-export const setAuthor = createAsyncThunk('setAuthor', setAuthorAPI);
-export const getAuthor = createAsyncThunk('getAuthor', getAuthorAPI);
-export const addAuthor = createAsyncThunk('addAuthor', addAuthorAPI);
-export const delAuthor = createAsyncThunk('delAuthor', delAuthorAPI);
+export const fetchAuthors = createAsyncThunk('fetchAuthors', LumanAPI.getAuthors);
+export const setAuthor = createAsyncThunk('setAuthor', LumanAPI.setAuthor);
+export const getAuthor = createAsyncThunk('getAuthor', LumanAPI.getAuthor);
+export const addAuthor = createAsyncThunk('addAuthor', LumanAPI.addAuthor);
+export const delAuthor = createAsyncThunk('delAuthor', LumanAPI.delAuthor);
 
 export function isPendingAuthorAction(action: PayloadAction) {
   return action.type.endsWith('pending') && action.type.includes('Author');
@@ -84,6 +85,8 @@ const authorsSlice = createSlice({
       })
       .addMatcher(isRejectedAuthorAction, (state, action: ErrorAction) => {
         state.error = action.error.message!;
+        if (isUnauthorizedError(state.error))
+          state.status=RequestStatus.FailedUnAuth
       });
   }
 });

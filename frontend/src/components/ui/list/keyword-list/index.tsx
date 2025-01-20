@@ -6,15 +6,17 @@ import { getRouteParam , appRoutes} from '../../../../AppRoutes'
 
 export type KeywordListUIProps = {
     keywords: Keyword[],
+    readOnly?:boolean,
     addNewKeyword: ()=>void,
     isLoading: boolean
 }
 
-export const KeywordListUI : FC<KeywordListUIProps> = ({keywords, addNewKeyword, isLoading}) => {
+export const KeywordListUI : FC<KeywordListUIProps> = ({keywords, readOnly, addNewKeyword, isLoading}) => {
 
     return <RecordListUI 
         header='Список ключевых слов' 
         captionAddButton='Добавить ключевое слово'
+        readOnly={readOnly}
         addRecord={addNewKeyword}
         isLoading={isLoading}>
             {keywords.map((keyword) => (

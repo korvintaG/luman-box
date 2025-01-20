@@ -9,6 +9,7 @@ import {
     clearCurrentSource
 } from '../../slices/sources';
 import {SourceListUI} from '../../components/ui/list/source-list';
+import { selectCurrentUser } from '../../slices/auth';
 
 /**
  * Страница список источников
@@ -16,6 +17,8 @@ import {SourceListUI} from '../../components/ui/list/source-list';
 export const SourcesPage: FC = () => {
     const sources = useSelector(selectSources);
     const isLoading = useSelector(selectIsDataLoading);
+    const currentUser=useSelector(selectCurrentUser)
+
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -32,5 +35,6 @@ export const SourcesPage: FC = () => {
     return <SourceListUI 
                 sources={sources} 
                 isLoading={isLoading} 
+                readOnly={!currentUser}
                 addNewSource={addNewSource}/>
 };

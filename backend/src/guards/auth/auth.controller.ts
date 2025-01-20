@@ -5,7 +5,9 @@ import { LocalAuthGuard } from '../local-auth.guard';
 import { CreateUserDto } from '../../DDD/users/dto/create-user.dto';
 import { Response, Request as Reqe } from 'express';
 import { JwtRefreshAuthGuard } from '../jwt-refresh-auth.guard';
-
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
+import { UserDto } from '../../DDD/users/dto/user.dto';
+import { Serialize } from '../../interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -20,9 +22,11 @@ export class AuthController {
     return this.authService.login(res, req.user);
   }
 
-  @Get('logout')
+  @UseGuards(JwtRefreshAuthGuard) // нет смысла делать выход невошедши
+  @Post('logout')
   clearAuthCookie(@Res({ passthrough: true }) res: Response) {
     res.clearCookie(this.authService.cookieConfig().refreshToken.name);
+    return {success: true}
   }
 
   @Post('register')
@@ -47,4 +51,18 @@ export class AuthController {
       (req.user as any).attributes,
       res);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Serialize(UserDto)
+  @Get('user')
+  async getUser(
+    @Req() req: Reqe,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    res.header('Cache-Control', 'no-store');
+    const curUser=req.user as any
+    return this.usersService.findOne(curUser.id);
+  }
+
+
 }

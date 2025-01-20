@@ -12,7 +12,7 @@ import { appRoutes } from '../../../AppRoutes';
 import { isDMLRequestOK, KeywordRaw} from '../../../utils/type'
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 import { useForm } from "../../../hooks/useForm";
-
+import { selectCurrentUser } from '../../../slices/auth/index';
 
 
 export const KeywordDetails = () => {
@@ -26,6 +26,7 @@ export const KeywordDetails = () => {
     const sliceState = useSelector(selectSliceState);
     const errorText = useSelector(selectError);
     const msgDeleteHook = useMsgModal();
+    const currentUser = useSelector(selectCurrentUser);
     const error = useSelector(selectError);
     const currentKeyword = useSelector(selectCurrentKeyword);
     const dispatch = useDispatch();
@@ -81,6 +82,7 @@ export const KeywordDetails = () => {
         fetchRecord={fetchKeyword}
         resetSliceState={resetSliceState}
         isDeleteDialog={msgDeleteHook.dialogWasOpened}
+        authPath={appRoutes.auth}
         deleteDialogProps={{
             question:`Удалить ключевое слово [${initialName}]?`,
             action:deleteKeyword ,
@@ -89,6 +91,7 @@ export const KeywordDetails = () => {
     >
         <KeywordDetailsUI 
             id={id?Number(id):null } 
+            readOnly={!currentUser}
             values={values}
             initialName={initialName}
             handleChange={handleChange}

@@ -9,15 +9,18 @@ import styles from './ideas-list.module.css';
 export type IdeaListUIProps = {
     ideas: Idea[],
     addNewIdea: ()=>void,
-    isLoading: boolean
+    isLoading: boolean,
+    readOnly?:boolean
+
 }
 
-export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, addNewIdea, isLoading}) => {
+export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, readOnly, addNewIdea, isLoading}) => {
 
     return <RecordListUI 
         skipUl
         header='Список идей' 
         captionAddButton='Добавить идею'
+        readOnly={readOnly}
         addRecord={addNewIdea} 
         isLoading={isLoading}>
             <table className={styles.list}>

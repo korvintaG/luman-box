@@ -12,3 +12,11 @@ export function combineClasses(inherited:classVar, replace: classVar, add: class
         classRes=clsx(add,classRes);
     return classRes;
 }
+
+export function isUnauthorizedError(message: string): boolean {
+    if (!message) 
+        return false;
+    const [errCode]=message.split('.');
+    return errCode==='401';
+
+}

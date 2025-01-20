@@ -7,14 +7,16 @@ import styles from './source-list.module.css';
 
 export type SourceListUIProps = {
     sources: Source[],
+    readOnly?:boolean;
     addNewSource: ()=>void,
     isLoading: boolean
 }
 
-export const SourceListUI : FC<SourceListUIProps> = ({sources, addNewSource, isLoading}) => {
+export const SourceListUI : FC<SourceListUIProps> = ({sources, readOnly, addNewSource, isLoading}) => {
     return <RecordListUI 
             header='Список источников' 
             captionAddButton='Добавить источник'
+            readOnly={readOnly}
             addRecord={addNewSource}
             liMobileAlteration
             isLoading={isLoading}>

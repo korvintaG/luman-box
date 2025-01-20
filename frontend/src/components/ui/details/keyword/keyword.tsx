@@ -8,13 +8,15 @@ export type KeywordUIProps = {
     id: number;
     name: string;
     deleteKeyword: (e: SyntheticEvent, id: number) => void;
+    readOnly?:boolean;
 }
 
-export const KeywordUI: FC<KeywordUIProps> = ({id, name, deleteKeyword}) => {
+export const KeywordUI: FC<KeywordUIProps> = ({id, name, readOnly, deleteKeyword}) => {
    
     return <div className={styles.keyword}>
         <Link to={getRouteParam(appRoutes.keyword,id)}>{'#'+name}</Link>
         <button className={styles.btnClose} 
+            disabled={readOnly}
             onClick={(e:SyntheticEvent)=>deleteKeyword(e,id)}>
             x
         </button>

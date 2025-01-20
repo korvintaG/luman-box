@@ -19,11 +19,9 @@ export class IdeasService {
   ) {}
 
   async create(createIdeaDto: CreateIdeaDto) {
-    console.log('IdeasService create createIdeaDto',createIdeaDto)
     let onlyIdea=omit(createIdeaDto, ["keywords", "date_time_create"]);
     if (onlyIdea.source && onlyIdea.source.id ===0) {
       onlyIdea=omit(onlyIdea, ["source"]);
-      console.log('IdeasService create onlyIdea',onlyIdea)
     }
     let idea=this.ideaRepository.create(onlyIdea);
     if (createIdeaDto.keywords)

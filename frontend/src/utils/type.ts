@@ -85,14 +85,14 @@ export const enum RequestStatus {
     FailedUpdate = 'failedUpdate',
     FailedAdd = 'failedAdd',
     FailedDelete = 'failedDelete',
+    FailedUnAuth = 'failedUnAuth',
     Updated = 'updated',
     Added = 'added',
     Deleted = 'deleted'
 }
 
 export function isRequestFailed(request: RequestStatus): boolean {
-    return request===RequestStatus.Failed || request===RequestStatus.FailedAdd 
-        || request===RequestStatus.FailedUpdate || request===RequestStatus.FailedDelete
+    return request.toString().startsWith('failed')
 }
 
 export function isDMLRequestFailed(request: RequestStatus): boolean {
@@ -103,6 +103,39 @@ export function isDMLRequestOK(request: RequestStatus): boolean {
     return request===RequestStatus.Added || request===RequestStatus.Updated || request===RequestStatus.Deleted
 }
 
-
 export type RequestStatusKey = keyof typeof RequestStatus;
 export type RequestStatusValue = typeof RequestStatus[RequestStatusKey];
+
+export type UserInner = NameObject & {password: string};
+/*export type UserRaw = UserInner;
+export type UserRawPartial = Partial<UserRaw>;
+export type Author = AuthorInner & IDObject;
+export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
+*/
+
+export interface User {
+	name: string;
+    id: number
+}
+
+export type LoginData= {
+	name: string;
+    password: string;
+}
+
+export type Success = {
+    success: boolean;
+}
+
+export type ServerResponse<T> = Success & T;
+
+export type LoginResult ={
+    access_token: string;
+    user: User;
+}
+
+export type UserResponseToken = ServerResponse<{
+	user: User;
+	access_token: string;
+	refreshToken: string;
+}>;

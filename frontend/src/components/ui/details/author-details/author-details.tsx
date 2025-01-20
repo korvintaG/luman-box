@@ -14,21 +14,25 @@ export type AuthorDetailsUIProps = {
     id: number | null;
     values: AuthorRaw; // поля автора для редактирования
     initialName: string; // начальное имя
+    readOnly: boolean;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // сохранить изменения в базе
     deleteAuthor: (e: SyntheticEvent) => void; // функция удаления автора
 }
 
-export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, values, initialName, handleChange, handleSubmit, deleteAuthor}) => {
+export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, readOnly,
+     values, initialName, handleChange, handleSubmit, deleteAuthor}) => {
     const header = id ? `Редактирование автора [${initialName}]` : 'Добавление нового автора';
     const btnCaptione = id ? 'Сохранить данные' : 'Добавить автора';
    
     return <RecordEditUI header={header} onSubmit={handleSubmit}>
             <InputEditUI name="name" label='ФИО автора' value={values.name} 
                 placeholder="Укажите ФИО автора"
+                readOnly={readOnly}
                 handleChange={handleChange} />
             <RecordButtonBlockUI 
                 id={id} 
+                readOnly={readOnly}
                 deleteRecord={deleteAuthor} 
                 submitButtonCaption={btnCaptione} 
                 deleteButtonCaption='Удалить автора' />

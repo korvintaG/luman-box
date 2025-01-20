@@ -96,6 +96,7 @@ export class AuthService {
     );
     return {
       access_token: this.jwtService.sign(payload), // jwt module is configured in auth.module.ts for access token
+      success: true
     };
   }
 

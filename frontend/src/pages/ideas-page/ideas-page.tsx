@@ -9,6 +9,7 @@ import {
     clearCurrentIdea
   } from '../../slices/ideas';
 import { IdeaListUI } from '../../components/ui/list/idea-list'
+import { selectCurrentUser } from '../../slices/auth';
 
 
 /**
@@ -17,6 +18,7 @@ import { IdeaListUI } from '../../components/ui/list/idea-list'
 export const IdeasPage: FC = () => {
     const ideas = useSelector(selectIdeas);
     const isLoading = useSelector(selectIsDataLoading);
+    const currentUser=useSelector(selectCurrentUser)
   
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -32,6 +34,7 @@ export const IdeasPage: FC = () => {
 
     return <IdeaListUI
         ideas={ideas}
+        readOnly={!currentUser}
         addNewIdea={addNewIdea}
         isLoading={isLoading}
     />

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Idea, RequestStatus } from '../../utils/type'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
-import { getIdeasAPI, setIdeaAPI, getIdeaAPI, addIdeaAPI, delIdeaAPI } from '../../utils/luman-api'
+import LumanAPI from '../../utils/luman-api'
+import {isUnauthorizedError} from '../../utils/utils'
 
 export const initialState: ListToWork<Idea> = {
   list: [],
@@ -10,11 +11,11 @@ export const initialState: ListToWork<Idea> = {
   error: ''
 }; 
 
-export const fetchIdeas = createAsyncThunk('fetchIdeas', getIdeasAPI);
-export const setIdea = createAsyncThunk('setIdea', setIdeaAPI);
-export const getIdea = createAsyncThunk('getIdea', getIdeaAPI);
-export const addIdea = createAsyncThunk('addIdea', addIdeaAPI);
-export const delIdea = createAsyncThunk('delIdea', delIdeaAPI);
+export const fetchIdeas = createAsyncThunk('fetchIdeas', LumanAPI.getIdeas);
+export const setIdea = createAsyncThunk('setIdea', LumanAPI.setIdea);
+export const getIdea = createAsyncThunk('getIdea', LumanAPI.getIdea);
+export const addIdea = createAsyncThunk('addIdea', LumanAPI.addIdea);
+export const delIdea = createAsyncThunk('delIdea', LumanAPI.delIdea);
 
 
 export function isPendingIdeaAction(action: PayloadAction) {
@@ -85,6 +86,9 @@ const ideasSlice = createSlice({
       })
       .addMatcher(isRejectedIdeaAction, (state, action: ErrorAction) => {
         state.error = action.error.message!;
+        if (isUnauthorizedError(state.error))
+          state.status=RequestStatus.FailedUnAuth
+
       });
   }
 });

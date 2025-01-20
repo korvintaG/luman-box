@@ -1,179 +1,244 @@
-import { Author, AuthorPartial, AuthorRawPartial, Source, Idea, IdeaRaw, IdeaPartial, IdeaRawPartial,
-  SourceRaw, 
-  Keyword, KeywordRawPartial, SourceRawPartial, SourcePartial, KeywordPartial } from "./type";
+import {
+  Author, AuthorPartial, AuthorRawPartial, Source, Idea, IdeaRaw, IdeaPartial, IdeaRawPartial,
+  SourceRaw, ServerResponse, LoginData, LoginResult, User,
+  Keyword, KeywordRawPartial, SourceRawPartial, SourcePartial, KeywordPartial, Success
+} from "./type";
+import { Api } from './api'
+import { getCookie, setCookie } from './cookie';
 
-const URL_API='http://localhost:3000'
+const URL_API = 'http://localhost:3000'
 
-const checkResponse = <T>(res: Response): Promise<T> =>
-  res.ok ? res.json() : res.json().then((err) => {
-    if (err.message) {
-      if (Array.isArray(err.message)) {
-        return Promise.reject({...err, message:err.message.join(';')})    
+export interface ILumanAPI {
+  // авторы
+  getAuthors: () => Promise<Author[]>;
+  getAuthor: (id: number) => Promise<Author>;
+  setAuthor: (data: AuthorPartial) => any;
+  addAuthor: (data: AuthorRawPartial) => any;
+  delAuthor: (id: number) => any;
+  // источники
+  getSources: () => Promise<Source[]>;
+  getSource: (id: number) => Promise<Source>;
+  setSource: (data: SourcePartial) => any;
+  addSource: (data: SourceRawPartial) => any;
+  delSource: (id: number) => any;
+  // ключевые слова
+  getKeywords: () => Promise<Keyword[]>;
+  getKeyword: (id: number) => Promise<Keyword>;
+  setKeyword: (data: KeywordPartial) => any;
+  addKeyword: (data: KeywordRawPartial) => any;
+  delKeyword: (id: number) => any;
+  // идеи
+  getIdeas: () => Promise<Idea[]>;
+  getIdea: (id: number) => Promise<Idea>;
+  setIdea: (data: IdeaPartial) => any;
+  addIdea: (data: IdeaRawPartial) => any;
+  delIdea: (id: number) => any;
+  // авторизация
+  login: (data: LoginData) => Promise<ServerResponse<LoginResult>>;
+  getUser: () => Promise<User>;
+  logout: () => Promise<Success>;
+}
+
+export class LumanAPI extends Api implements ILumanAPI {
+  constructor(baseUrl: string, options?: RequestInit) {
+    super(baseUrl, options);
+  }
+
+  // **********************************************
+  // * Авторизация
+  // **********************************************
+  login = (data: LoginData): Promise<ServerResponse<LoginResult>> => {
+    return this.request(`/auth/login`, {
+      method: 'POST',
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    });
+  }
+
+  getUser = () : Promise<User> => {
+		return this.requestWithRefresh<User>('/auth/user', {
+			method: 'GET',
+			headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+		});
+  }
+
+  logout = () : Promise<Success> => {
+		return this.request<Success>('/auth/logout', {
+			method: 'POST',
+      credentials: 'include' 
+		});
+  }
+
+
+  // **********************************************
+  // * Авторы 
+  // **********************************************
+
+  getAuthors = (): Promise<Author[]> => {
+    return this.request<Author[]>(`/authors`, { method: 'GET' });
+  };
+
+  getAuthor = (id: number): Promise<Author> => {
+    return this.request<Author>(`/authors/${id}`, { method: 'GET' })
+  };
+
+  addAuthor = (data: AuthorRawPartial) => {
+    return this.requestWithRefresh('/authors/', {
+      method: 'POST',
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
       }
-    }
-    return Promise.reject(err)
-  });
+    });
+  };
 
-
-type TAuthorsResponse = {data: Author[]};
-
-  
-
-// **********************************************
-// * Авторы 
-// **********************************************
-
-export const getAuthorsAPI = () : Promise<Author[]> => {
-    return fetch(`${URL_API}/authors`)
-    .then((res) => checkResponse<Author[]>(res))
-    .then((data) => data);
-  }; 
-
-export const getAuthorAPI = (id:number) : Promise<Author> => {
-  return fetch(`${URL_API}/authors/${id}`)
-  .then((res) => checkResponse<Author>(res))
-  }; 
-
-export const setAuthorAPI = (data: AuthorPartial)  => {
-    return fetch(`${URL_API}/authors/${data.id}`, {
+  setAuthor = (data: AuthorPartial) => {
+    return this.requestWithRefresh(`/authors/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-  }; 
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
 
-  export const addAuthorAPI = (data: AuthorRawPartial) => {
-    return fetch(`${URL_API}/authors/`, {
+  delAuthor = (id: number) => {
+    return this.requestWithRefresh(`/authors/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+    });
+  };
+
+  // **********************************************
+  // * Источники
+  // **********************************************
+
+  getSources = (): Promise<Source[]> => {
+    return this.request<Source[]>(`/sources`, { method: 'GET' })
+  };
+
+  getSource = (id: number): Promise<Source> => {
+    return this.request<Source>(`/sources/${id}`, { method: 'GET' })
+  }
+
+  addSource = (data: SourceRawPartial) => {
+    return this.requestWithRefresh('/sources/', {
       method: 'POST',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-  };   
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  };
 
-  export const delAuthorAPI = (id: number) => {
-    return fetch(`${URL_API}/authors/${id}`, {
-      method: 'DELETE'
-    })
-    .then((res) => checkResponse(res))
-  };   
-
-  
-// **********************************************
-// * Источники
-// **********************************************
-
-  export const getSourcesAPI = () : Promise<Source[]> => {
-    return fetch(`${URL_API}/sources`)
-    .then((res) => checkResponse<Source[]>(res))
-  };  
-
-  export const getSourceAPI = (id:number) : Promise<Source> => {
-    return fetch(`${URL_API}/sources/${id}`)
-    .then((res) => checkResponse<Source>(res))
-    } 
-
-  export const setSourceAPI = (data: SourcePartial)  => {
-    return fetch(`${URL_API}/sources/${data.id}`, {
+  setSource = (data: SourcePartial) => {
+    return this.requestWithRefresh(`/sources/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-  }; 
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  };
 
-  export const addSourceAPI = (data: SourceRawPartial) => {
-    return fetch(`${URL_API}/sources/`, {
+  delSource = (id: number) => {
+    return this.requestWithRefresh(`/sources/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+    });
+  };
+
+  // **********************************************
+  // * Идеи
+  // **********************************************
+
+  getIdeas = (): Promise<Idea[]> => {
+    return this.request<Idea[]>(`/ideas`, { method: 'GET' })
+  };
+
+  getIdea = (id: number): Promise<Idea> => {
+    return this.request<Idea>(`/ideas/${id}`, { method: 'GET' })
+  };
+
+  addIdea = (data: IdeaRawPartial) => {
+    return this.requestWithRefresh('/ideas/', {
       method: 'POST',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-  };   
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  };
 
-  export const delSourceAPI = (id: number) => {
-    return fetch(`${URL_API}/sources/${id}`, {
-      method: 'DELETE'
-    })
-    .then((res) => checkResponse(res))
-  };   
-
-// **********************************************
-// * Идеи
-// **********************************************
-
-export const getIdeasAPI = () : Promise<Idea[]> => {
-    return fetch(`${URL_API}/ideas`)
-    .then((res) => checkResponse<Idea[]>(res))
-}; 
-
-export const getIdeaAPI = (id:number) : Promise<Idea> => {
-    return fetch(`${URL_API}/ideas/${id}`)
-    .then((res) => checkResponse<Idea>(res))
-}; 
-
-export const setIdeaAPI = (data: IdeaPartial)  => {
-    return fetch(`${URL_API}/ideas/${data.id}`, {
+  setIdea = (data: IdeaPartial) => {
+    return this.requestWithRefresh(`/ideas/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-}; 
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  };
 
-export const addIdeaAPI = (data: IdeaRawPartial) => {
-    return fetch(`${URL_API}/ideas/`, {
+  delIdea = (id: number) => {
+    return this.requestWithRefresh(`/ideas/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+    });
+  };
+
+  // **********************************************
+  // * Ключевые слова
+  // **********************************************
+
+  getKeywords = (): Promise<Keyword[]> => {
+    return this.request<Keyword[]>(`/keywords`, { method: 'GET' })
+  };
+
+  getKeyword = (id: number): Promise<Keyword> => {
+    return this.request<Keyword>(`/keywords/${id}`, { method: 'GET' })
+  };
+
+  addKeyword = (data: KeywordRawPartial) => {
+    return this.requestWithRefresh('/keywords/', {
       method: 'POST',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-};   
-
-export const delIdeaAPI = (id: number) => {
-  return fetch(`${URL_API}/ideas/${id}`, {
-    method: 'DELETE'
-  })
-  .then((res) => checkResponse(res))
-};   
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  };
 
 
-// **********************************************
-// * Ключевые слова
-// **********************************************
-
-export const getKeywordsAPI = () : Promise<Keyword[]> => {
-    return fetch(`${URL_API}/keywords`)
-    .then((res) => checkResponse<Keyword[]>(res))
-  }; 
-
-export const getKeywordAPI = (id:number) : Promise<Keyword> => {
-    return fetch(`${URL_API}/keywords/${id}`)
-    .then((res) => checkResponse<Keyword>(res))
-}; 
-
-export const setKeywordAPI = (data: KeywordPartial)  => {
-    return fetch(`${URL_API}/keywords/${data.id}`, {
+  setKeyword = (data: KeywordPartial) => {
+    return this.requestWithRefresh(`/keywords/${data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-}; 
+      body: JSON.stringify({ ...data }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  };
 
-export const addKeywordAPI = (data: KeywordRawPartial) => {
-    return fetch(`${URL_API}/keywords/`, {
-      method: 'POST',
-      body: JSON.stringify({...data}),
-      headers: {"Content-Type": "application/json; charset=UTF-8"}
-    })
-    .then((res) => checkResponse(res))
-};   
+  delKeyword = (id: number) => {
+    return this.requestWithRefresh(`/keywords/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+    });
+  };
+}
 
-export const delKeywordAPI = (id: number) => {
-  return fetch(`${URL_API}/keywords/${id}`, {
-    method: 'DELETE'
-  })
-  .then((res) => checkResponse(res))
-};   
+type TAuthorsResponse = { data: Author[] };
+
+export default new LumanAPI(URL_API);

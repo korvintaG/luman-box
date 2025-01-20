@@ -8,8 +8,9 @@ import {
     setAuthor, selectCurrentAuthor, delAuthor, selectError, setStateSuccess,
     selectIsDataLoading, getAuthor, addAuthor, selectSliceState
 } from '../../../slices/authors';
+import { selectCurrentUser } from '../../../slices/auth/index';
 import { appRoutes } from '../../../AppRoutes';
-import { isDMLRequestOK, AuthorRaw } from '../../../utils/type'
+import { isDMLRequestOK, AuthorRaw, RequestStatus } from '../../../utils/type'
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 import { useForm } from "../../../hooks/useForm";
 
@@ -28,6 +29,7 @@ export const AuthorDetails = () => {
     const isLoading = useSelector(selectIsDataLoading);
     const sliceState = useSelector(selectSliceState);
     const errorText = useSelector(selectError);
+    const currentUser = useSelector(selectCurrentUser);
     const currentAuthor = useSelector(selectCurrentAuthor);
     const dispatch = useDispatch();
 
@@ -74,6 +76,7 @@ export const AuthorDetails = () => {
         fetchRecord={fetchAuthor}
         resetSliceState={resetSliceState}
         isDeleteDialog={msgDeleteHook.dialogWasOpened}
+        authPath={appRoutes.auth}
         deleteDialogProps={{
             question:`Удалить автора [${initialName}]?`,
             action:deleteAuthor ,
@@ -82,6 +85,7 @@ export const AuthorDetails = () => {
         >
                 <AuthorDetailsUI 
                     id={id ? Number(id) : null} 
+                    readOnly={!currentUser}
                     values={values}
                     initialName={initialName}
                     handleChange={handleChange}

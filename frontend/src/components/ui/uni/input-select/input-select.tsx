@@ -22,6 +22,7 @@ export type InputSelectUIProps = {
     selectClassReplace?: string;
     selectClassAdd?: string;
     hideEmpty?: boolean;
+    readOnly?:boolean;
 }
 
 export const InputSelectUI: FC<InputSelectUIProps> = (props) => {
@@ -31,7 +32,9 @@ export const InputSelectUI: FC<InputSelectUIProps> = (props) => {
             className={combineClasses(styles['input-label'],props.labelClassReplace,props.labelClassAdd)}>
             {props.label}
         </label>
-        <select value={props.value} name={props.name} onChange={props.handleChange}
+        <select value={props.value} name={props.name} 
+            disabled={props.readOnly}
+            onChange={props.handleChange}
             className={combineClasses(styles['input-edit'],props.selectClassReplace,props.selectClassAdd)}>
             {props.hideEmpty ? null : <option value='0'></option> }
             {props.values.map((el)=>

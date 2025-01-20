@@ -12,6 +12,7 @@ export type RecordListUIProps = {
     isLoading: boolean;
     skipUl?: boolean; // не писать UL в начале списка
     liMobileAlteration?:boolean; // чередование полос списка в мобильном варианте
+    readOnly?:boolean;
 }
 
 export const RecordListUI: FC<RecordListUIProps> = (props: RecordListUIProps) => {
@@ -32,6 +33,7 @@ export const RecordListUI: FC<RecordListUIProps> = (props: RecordListUIProps) =>
                     }
                     <ButtonAddUI 
                         action={props.addRecord} 
+                        disabled={props.readOnly}
                         caption={props.captionAddButton}/>
                 </>
         }

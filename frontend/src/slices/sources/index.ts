@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Source, RequestStatus } from '../../utils/type'
-import { getSourcesAPI, getSourceAPI, setSourceAPI, addSourceAPI, delSourceAPI } from '../../utils/luman-api'
+import LumanAPI from '../../utils/luman-api'
 import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
+import {isUnauthorizedError} from '../../utils/utils'
 
 export const initialState: ListToWork<Source> = {
   list: [],
@@ -10,11 +11,11 @@ export const initialState: ListToWork<Source> = {
   error: ''
 };
 
-export const fetchSources = createAsyncThunk('fetchSources', getSourcesAPI);
-export const getSource = createAsyncThunk('getSource', getSourceAPI);
-export const setSource = createAsyncThunk('setSource', setSourceAPI);
-export const addSource = createAsyncThunk('addSource', addSourceAPI);
-export const delSource = createAsyncThunk('delSource', delSourceAPI);
+export const fetchSources = createAsyncThunk('fetchSources', LumanAPI.getSources);
+export const getSource = createAsyncThunk('getSource', LumanAPI.getSource);
+export const setSource = createAsyncThunk('setSource', LumanAPI.setSource);
+export const addSource = createAsyncThunk('addSource', LumanAPI.addSource);
+export const delSource = createAsyncThunk('delSource', LumanAPI.delSource);
 
 export function isPendingSourceAction(action: PayloadAction) {
   return action.type.endsWith('pending') && action.type.includes('Source');
@@ -84,6 +85,9 @@ const sourcesSlice = createSlice({
       })
       .addMatcher(isRejectedSourceAction, (state, action: ErrorAction) => {
         state.error = action.error.message!;
+        if (isUnauthorizedError(state.error))
+          state.status=RequestStatus.FailedUnAuth
+
       });
   }
 });

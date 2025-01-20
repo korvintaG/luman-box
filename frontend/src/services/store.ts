@@ -1,8 +1,9 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, Tuple } from '@reduxjs/toolkit';
 import authorsSliceReducer from '../slices/authors';
 import sourcesSliceReducer from '../slices/sources';
 import ideasSliceReducer from '../slices/ideas';
 import keywordsSliceReducer from '../slices/keywords';
+import authSliceReducer from '../slices/auth';
 
 import {
     TypedUseSelectorHook,
@@ -16,13 +17,22 @@ export const rootReducer = combineReducers({
     sources: sourcesSliceReducer,
     ideas: ideasSliceReducer,
     keywords: keywordsSliceReducer,
+    auth: authSliceReducer
 });
     
   export const store = configureStore({
     reducer: rootReducer,
-    devTools: process.env.NODE_ENV !== 'production'
+    devTools: process.env.NODE_ENV !== 'production',
   });
   
+  const logger = (store:any) => (next:any) => (action:any) => {
+    console.group(action.type);
+    console.info('dispatching', action);
+    let result = next(action);
+    console.log('next state', store.getState());
+    console.groupEnd();
+    return result;
+  };  
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

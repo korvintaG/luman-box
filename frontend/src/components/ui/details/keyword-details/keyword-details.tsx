@@ -8,6 +8,7 @@ import styles from './keyword-details.module.css'
 
 export type KeywordDetailsUIProps = {
     id: number | null;
+    readOnly: boolean;
     values: KeywordRaw; // поля ключевого слова для редактирования
     initialName: string; // начальное имя
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
@@ -15,15 +16,19 @@ export type KeywordDetailsUIProps = {
     deleteKeyword: (e: SyntheticEvent) => void;
 }
 
-export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = ({id, values, initialName, handleChange, handleSubmit, deleteKeyword}) => {
+export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = ({id, values, readOnly,
+    initialName, handleChange, handleSubmit, deleteKeyword}) => {
     const header= id ? `Редактирование ключевого слова [${initialName}]` : 'Добавление нового автора'; 
     const btnCaptione= id ? 'Сохранить данные' : 'Добавить ключевое слово';
     
     return <RecordEditUI header={header} onSubmit={handleSubmit}>
             <InputEditUI name="name" label='Ключевое слово:' value={values.name} 
                 placeholder="Введите ключевое слово"
+                readOnly={readOnly}
                 handleChange={handleChange} />
-            <RecordButtonBlockUI id={id} deleteRecord={deleteKeyword} 
+            <RecordButtonBlockUI id={id} 
+                readOnly={readOnly}
+                deleteRecord={deleteKeyword} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить ключевое слово' />
     </RecordEditUI> 
 }

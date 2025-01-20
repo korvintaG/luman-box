@@ -17,6 +17,7 @@ export type InputEditUIProps = {
     labelClassAdd?: string;
     inputClassReplace?: string;
     inputClassAdd?: string;
+    readOnly?: boolean;
 }
 
 // clsx({[props.classAdd!]:props.classAdd},styles['input-block'])
@@ -29,6 +30,7 @@ export const InputEditUI: FC<InputEditUIProps> = (props) => {
         </label>
         <input className={combineClasses(styles['input-edit'],props.inputClassReplace,props.inputClassAdd)}
             value={props.value} name={props.name} placeholder={props.placeholder? props.placeholder :''}
+            readOnly={props.readOnly}
             onChange={props.handleChange}>
         </input>
     </div>

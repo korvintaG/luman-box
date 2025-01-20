@@ -5,4 +5,7 @@
     font-size: 14px;
   }
   
-  
+ .button:disabled {
+    background-color:lightgray;
+    color: white;
+ }

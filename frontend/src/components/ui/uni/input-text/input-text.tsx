@@ -15,6 +15,7 @@ export type InputTextUIProps = {
     labelClassAdd?: string;
     textClassReplace?: string;
     textClassAdd?: string;
+    readOnly?:boolean;
 }
 
 export const InputTextUI: FC<InputTextUIProps> = (props) => {
@@ -22,6 +23,7 @@ export const InputTextUI: FC<InputTextUIProps> = (props) => {
     return <div className={combineClasses(styles.block,props.classReplace,props.classAdd)}>
         <h6 className={combineClasses(styles.header,props.labelClassReplace,props.labelClassAdd)}>{props.label}</h6>
         <textarea 
+            readOnly={props.readOnly}
             className={combineClasses(styles.text,props.textClassReplace, props.textClassAdd)}
             rows={props.rows? props.rows : 15} 
             value={props.value} 

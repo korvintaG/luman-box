@@ -17,7 +17,7 @@ import { isDMLRequestOK, Source, SourceRaw, sourceFullNameFromObj, SourceRawPart
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
-
+import { selectCurrentUser } from '../../../slices/auth/index';
 
 export const SourceDetails = () => {
     const msgDeleteHook = useMsgModal();
@@ -33,6 +33,7 @@ export const SourceDetails = () => {
     const sliceState =  useSelector(selectSliceState);
     const isALoading = useSelector(aLoading);
     const currentSource = useSelector(selectCurrentSource);
+    const currentUser = useSelector(selectCurrentUser);
     const authors= useSelector(selectAuthors);
     const errorText = useSelector(selectError);
     const dispatch = useDispatch();
@@ -82,6 +83,7 @@ export const SourceDetails = () => {
                 fetchRecord={fetchSource}
                 resetSliceState={resetSliceState}
                 isDeleteDialog={msgDeleteHook.dialogWasOpened}
+                authPath={appRoutes.auth}
                 deleteDialogProps={{
                     question:`Удалить источник [${values.name}]`,
                     action:deleteSourceAction ,
@@ -90,6 +92,7 @@ export const SourceDetails = () => {
             >
             <SourceDetailsUI 
                 id={id?Number(id):null } 
+                readOnly={!currentUser}
                 values={values} 
                 initialName={sourceFullNameFromObj(currentSource)}
                 handleChange={handleChange}

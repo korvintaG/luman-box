@@ -8,6 +8,7 @@ import styles from './topic-keywords.module.css'
 export type TopicKeywordsUIProps = {
     keywordsAll: Keyword[]; // ключевые слова для выбора
     keywordsSelected: KeywordPartial[];
+    readOnly?:boolean;
     deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
     addKeyword: (id: number) => void; // добавить ключевое слово к идеи
 }
@@ -29,8 +30,6 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
         setKeywordToAdd(0);
     }
 
-    console.log('TopicKeywordsUI',props.keywordsSelected)
-
     return(<div className={styles.keywords_block}>
             {props.keywordsSelected ?
                 <div className={styles.keywords}>
@@ -38,6 +37,7 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
                         <KeywordUI 
                             id={kw.id} 
                             name={getKeywordName(kw.id)}
+                            readOnly={props.readOnly}
                             deleteKeyword={props.deleteKeyword} />
                     )}
                 </div>
@@ -51,6 +51,7 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
                 value={keywordToAdd}
                 values={props.keywordsAll.filter((el)=> !props.keywordsSelected.find((fel)=>fel.id===el.id))} // только новые
                 selectClassAdd={styles['keywords-select']}
+                readOnly={props.readOnly}
                 handleChange={changeKeywordToAdd} />
     </div>)
 }
