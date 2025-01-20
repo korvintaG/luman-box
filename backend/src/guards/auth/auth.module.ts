@@ -8,6 +8,8 @@ import { AccessTokenStrategy } from '../strategies/jwt.strategy';
 import { JwtRefreshStrategy } from '../strategies/jwt-refresh.strategy';
 import { ConfigService } from '@nestjs/config';
 import {AuthController} from './auth.controller'
+import {LoginRateLimiterService} from '../auth/LoginRateLimiterService'
+
 
 @Module({
   imports: [UsersModule, PassportModule, 
@@ -19,7 +21,7 @@ import {AuthController} from './auth.controller'
       }),
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtRefreshStrategy, AccessTokenStrategy],
+  providers: [AuthService, LocalStrategy, JwtRefreshStrategy, AccessTokenStrategy, LoginRateLimiterService],
   controllers: [AuthController],
   exports: [AuthService],
 })
