@@ -64,7 +64,7 @@ export const AuthorDetails = () => {
         if (id)
             dispatch(setAuthor({ ...getFormDTO(), id: Number(id)}));
         else
-            dispatch(addAuthor({...getFormDTO()}));
+            dispatch(addAuthor({...getFormDTO(), user:{id:currentUser!.id}}));
     }
 
     const initialName=currentAuthor ? currentAuthor.name : '';

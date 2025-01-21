@@ -117,7 +117,8 @@ export const IdeaDetails = () => {
           id: idNumber,
           keywords: keywordsDTO()}
       ));
-    } else dispatch(addIdea({...getFormDTO(), keywords: keywordsDTO()}));
+    } else 
+      dispatch(addIdea({...getFormDTO(), keywords: keywordsDTO(), user: {id: currentUser!.id}}));
   };
 
   return (

@@ -1,5 +1,6 @@
-import { OneToMany, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { OneToMany, ManyToOne, JoinColumn, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Source } from '../../sources/entities/source.entity'
+import { User } from '../../users/entities/user.entity'
 
 @Entity('authors')
 export class Author {
@@ -16,5 +17,9 @@ export class Author {
 
     @OneToMany(() => Source, (source) => source.author)
     sources: Source[];
+
+    @ManyToOne(() => User, (user) => user.name, { nullable: false })
+    @JoinColumn({ name: 'user_id' })
+    user: User;    
  
 }

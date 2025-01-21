@@ -33,7 +33,7 @@ export class IdeasService {
   }
 
   findAll() {
-    return this.ideaRepository.find( { relations: ['source.author'] , order: { name: "ASC" }});
+    return this.ideaRepository.find( { relations: ['source.author', 'user'] , order: { name: "ASC" }});
   }
 
   findByCond(cond:FindManyOptions) {

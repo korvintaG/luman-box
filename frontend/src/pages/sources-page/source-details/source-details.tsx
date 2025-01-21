@@ -73,7 +73,7 @@ export const SourceDetails = () => {
         if (id) 
             dispatch(setSource({...getFormDTO(), id: Number(id) }))
         else 
-            dispatch(addSource(getFormDTO()));            
+            dispatch(addSource({...getFormDTO(), user: {id: currentUser!.id}}));
     }
 
     return (<EditFormStatus 

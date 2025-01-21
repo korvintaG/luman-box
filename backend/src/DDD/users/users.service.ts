@@ -24,7 +24,7 @@ export class UsersService {
   }
 
   find(name: string) {
-    return name ? this.userRepository.find({ where: { name } }) : null;
+    return name ? this.userRepository.find({ where: { name }, select: {id: true, name: true, password: true} }) : null;
   }
 
   findOne(id: number) {

@@ -16,6 +16,13 @@ export class CreateSourceAuthorDto {
   id: number
 }
 
+export class CreateSourceUserDto {
+  @IsNotEmpty({ message: 'Поле ID пользователя не может быть пустым' })
+  @IsInt({ message: 'Поле ID пользователя должно быть целым числом' })
+  @Min(1,{message: 'Поле ID пользователя должно быть больше нуля' })
+  id: number
+}
+
 export class CreateSourceDto {
   @IsNotEmpty({ message: 'Поле [name] не может быть пустым' })
   @IsString({message: 'Поле [name] должно быть строкой'})
@@ -25,4 +32,9 @@ export class CreateSourceDto {
   @ValidateNested({ each: true })
   @Type(() => CreateSourceAuthorDto)
   author?: CreateSourceAuthorDto
+
+  @ValidateNested({ each: true })
+  @Type(() => CreateSourceUserDto)
+  user: CreateSourceUserDto;
+
 }

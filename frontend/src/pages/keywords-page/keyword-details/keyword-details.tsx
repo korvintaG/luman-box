@@ -69,7 +69,7 @@ export const KeywordDetails = () => {
             dispatch(setKeyword({ ...getFormDTO(), id: Number(id)}));
         }
         else {
-            dispatch(addKeyword({ ...getFormDTO()}));
+            dispatch(addKeyword({ ...getFormDTO(), user: {id: currentUser!.id}}));
         }
     }
 

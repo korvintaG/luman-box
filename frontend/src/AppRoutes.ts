@@ -12,7 +12,8 @@ export const appRoutes = {
     ideaAdd: '/ideas/add',
     keywords: '/keywords',
     keyword: '/keywords/:id',
-    keywordAdd: '/keywords/add'
+    keywordAdd: '/keywords/add',
+    user: '/users/:id'
 }
 
 /**

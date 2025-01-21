@@ -24,6 +24,14 @@ export class CreateIdeaKeywordDto {
   id: number
 }
 
+export class CreateIdeaUserDto {
+  @IsNotEmpty({ message: 'Поле ID пользователя не может быть пустым' })
+  @IsInt({ message: 'Поле ID пользователя должно быть целым числом' })
+  @Min(1,{message: 'Поле ID пользователя должно быть больше нуля' })
+  id: number
+}
+
+
 
 export class CreateIdeaDto {
   @IsNotEmpty({ message: 'Поле [name] не может быть пустым' })
@@ -44,6 +52,10 @@ export class CreateIdeaDto {
   @ValidateNested({ each: true })
   @Type(() => CreateIdeaSourceDto)
   source: CreateIdeaSourceDto;
+
+  @ValidateNested({ each: true })
+  @Type(() => CreateIdeaUserDto)
+  user: CreateIdeaUserDto;
 
   @IsArray({message: 'Поле $property должно быть массивом'})
   @ValidateNested({ each: true })

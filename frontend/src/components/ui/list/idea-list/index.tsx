@@ -46,10 +46,10 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, readOnly, addNewIdea, i
                             </td>
                             <td>
                                     <Link
-                                    to=''>
-                                    {/*idea.user */}
+                                    to={idea.user?getRouteParam(appRoutes.user,idea.user.id!):''}>
+                                    {idea.user?idea.user.name:''}
                                     </Link>
-                            </td>
+                            </td> 
                             <td className={styles.date_time}>
                                     {idea.date_time_create }
                             </td>

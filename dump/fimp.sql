@@ -1,511 +1,535 @@
-insert into authors (name, id_out) select 'Зонке Аренс' , 'korvintag_1' where not exists (select * from authors where id_out='korvintag_1');
-update authors set name='Зонке Аренс' where id_out='korvintag_1';
-insert into authors (name, id_out) select 'Я' , 'korvintag_4' where not exists (select * from authors where id_out='korvintag_4');
-update authors set name='Я' where id_out='korvintag_4';
-insert into authors (name, id_out) select 'Карлос Кастанеда' , 'korvintag_6' where not exists (select * from authors where id_out='korvintag_6');
-update authors set name='Карлос Кастанеда' where id_out='korvintag_6';
-insert into authors (name, id_out) select 'Харгадон Эндрю' , 'korvintag_19' where not exists (select * from authors where id_out='korvintag_19');
-update authors set name='Харгадон Эндрю' where id_out='korvintag_19';
-insert into authors (name, id_out) select 'Гуревич Павел Семенович' , 'korvintag_21' where not exists (select * from authors where id_out='korvintag_21');
-update authors set name='Гуревич Павел Семенович' where id_out='korvintag_21';
-insert into authors (name, id_out) select 'Лоулесс Джим' , 'korvintag_24' where not exists (select * from authors where id_out='korvintag_24');
-update authors set name='Лоулесс Джим' where id_out='korvintag_24';
-insert into authors (name, id_out) select 'Пелевин Виктор' , 'korvintag_30' where not exists (select * from authors where id_out='korvintag_30');
-update authors set name='Пелевин Виктор' where id_out='korvintag_30';
-insert into authors (name, id_out) select 'Щепетнов Евгений' , 'korvintag_40' where not exists (select * from authors where id_out='korvintag_40');
-update authors set name='Щепетнов Евгений' where id_out='korvintag_40';
-insert into authors (name, id_out) select 'Поварнин Сергей' , 'korvintag_41' where not exists (select * from authors where id_out='korvintag_41');
-update authors set name='Поварнин Сергей' where id_out='korvintag_41';
-insert into authors (name, id_out) select 'Дас Сатья' , 'korvintag_45' where not exists (select * from authors where id_out='korvintag_45');
-update authors set name='Дас Сатья' where id_out='korvintag_45';
-insert into authors (name, id_out) select 'Рерих Елена' , 'korvintag_85' where not exists (select * from authors where id_out='korvintag_85');
-update authors set name='Рерих Елена' where id_out='korvintag_85';
-insert into authors (name, id_out) select 'Шабанов Сергей' , 'korvintag_106' where not exists (select * from authors where id_out='korvintag_106');
-update authors set name='Шабанов Сергей' where id_out='korvintag_106';
-insert into authors (name, id_out) select 'Алешина Алена' , 'korvintag_107' where not exists (select * from authors where id_out='korvintag_107');
-update authors set name='Алешина Алена' where id_out='korvintag_107';
-insert into authors (name, id_out) select 'Толле Экхарт' , 'korvintag_109' where not exists (select * from authors where id_out='korvintag_109');
-update authors set name='Толле Экхарт' where id_out='korvintag_109';
-insert into authors (name, id_out) select 'Синсеро Джен' , 'korvintag_113' where not exists (select * from authors where id_out='korvintag_113');
-update authors set name='Синсеро Джен' where id_out='korvintag_113';
-insert into authors (name, id_out) select 'Ошо' , 'korvintag_115' where not exists (select * from authors where id_out='korvintag_115');
-update authors set name='Ошо' where id_out='korvintag_115';
-insert into authors (name, id_out) select 'Чалдини Роберт' , 'korvintag_120' where not exists (select * from authors where id_out='korvintag_120');
-update authors set name='Чалдини Роберт' where id_out='korvintag_120';
-insert into authors (name, id_out) select 'Клир Джеймс' , 'korvintag_121' where not exists (select * from authors where id_out='korvintag_121');
-update authors set name='Клир Джеймс' where id_out='korvintag_121';
-insert into authors (name, id_out) select 'Сакс Оливер' , 'korvintag_130' where not exists (select * from authors where id_out='korvintag_130');
-update authors set name='Сакс Оливер' where id_out='korvintag_130';
-insert into authors (name, id_out) select 'Элленхорн Росс' , 'korvintag_131' where not exists (select * from authors where id_out='korvintag_131');
-update authors set name='Элленхорн Росс' where id_out='korvintag_131';
-insert into authors (name, id_out) select 'Гуленко Виктор' , 'korvintag_139' where not exists (select * from authors where id_out='korvintag_139');
-update authors set name='Гуленко Виктор' where id_out='korvintag_139';
-insert into authors (name, id_out) select 'Грин Роберт' , 'korvintag_140' where not exists (select * from authors where id_out='korvintag_140');
-update authors set name='Грин Роберт' where id_out='korvintag_140';
-insert into keywords (name, id_out) select 'Противоречие' , 'korvintag_2' where not exists (select * from keywords where id_out='korvintag_2');
-update keywords set name='Противоречие' where id_out='korvintag_2';
-insert into keywords (name, id_out) select 'Понимание' , 'korvintag_11' where not exists (select * from keywords where id_out='korvintag_11');
-update keywords set name='Понимание' where id_out='korvintag_11';
-insert into keywords (name, id_out) select 'Осознание' , 'korvintag_12' where not exists (select * from keywords where id_out='korvintag_12');
-update keywords set name='Осознание' where id_out='korvintag_12';
-insert into keywords (name, id_out) select 'Ошибки' , 'korvintag_36' where not exists (select * from keywords where id_out='korvintag_36');
-update keywords set name='Ошибки' where id_out='korvintag_36';
-insert into keywords (name, id_out) select 'Решение (процесс принятия)' , 'korvintag_42' where not exists (select * from keywords where id_out='korvintag_42');
-update keywords set name='Решение (процесс принятия)' where id_out='korvintag_42';
-insert into keywords (name, id_out) select 'Пропаганда' , 'korvintag_44' where not exists (select * from keywords where id_out='korvintag_44');
-update keywords set name='Пропаганда' where id_out='korvintag_44';
-insert into keywords (name, id_out) select 'Привычки' , 'korvintag_52' where not exists (select * from keywords where id_out='korvintag_52');
-update keywords set name='Привычки' where id_out='korvintag_52';
-insert into keywords (name, id_out) select 'Сомнение' , 'korvintag_62' where not exists (select * from keywords where id_out='korvintag_62');
-update keywords set name='Сомнение' where id_out='korvintag_62';
-insert into keywords (name, id_out) select 'Глупость' , 'korvintag_63' where not exists (select * from keywords where id_out='korvintag_63');
-update keywords set name='Глупость' where id_out='korvintag_63';
-insert into keywords (name, id_out) select 'Успех' , 'korvintag_70' where not exists (select * from keywords where id_out='korvintag_70');
-update keywords set name='Успех' where id_out='korvintag_70';
-insert into keywords (name, id_out) select 'Сопротивление' , 'korvintag_76' where not exists (select * from keywords where id_out='korvintag_76');
-update keywords set name='Сопротивление' where id_out='korvintag_76';
-insert into keywords (name, id_out) select 'ЧСВ' , 'korvintag_83' where not exists (select * from keywords where id_out='korvintag_83');
-update keywords set name='ЧСВ' where id_out='korvintag_83';
-insert into keywords (name, id_out) select 'Цель' , 'korvintag_106' where not exists (select * from keywords where id_out='korvintag_106');
-update keywords set name='Цель' where id_out='korvintag_106';
-insert into keywords (name, id_out) select 'Путь (дао)' , 'korvintag_126' where not exists (select * from keywords where id_out='korvintag_126');
-update keywords set name='Путь (дао)' where id_out='korvintag_126';
-insert into keywords (name, id_out) select 'Мистика' , 'korvintag_288' where not exists (select * from keywords where id_out='korvintag_288');
-update keywords set name='Мистика' where id_out='korvintag_288';
-insert into keywords (name, id_out) select 'Смерть' , 'korvintag_297' where not exists (select * from keywords where id_out='korvintag_297');
-update keywords set name='Смерть' where id_out='korvintag_297';
-insert into keywords (name, id_out) select 'Условности восприятия' , 'korvintag_298' where not exists (select * from keywords where id_out='korvintag_298');
-update keywords set name='Условности восприятия' where id_out='korvintag_298';
-insert into keywords (name, id_out) select 'Восприятие' , 'korvintag_299' where not exists (select * from keywords where id_out='korvintag_299');
-update keywords set name='Восприятие' where id_out='korvintag_299';
-insert into keywords (name, id_out) select 'Сталкинг' , 'korvintag_302' where not exists (select * from keywords where id_out='korvintag_302');
-update keywords set name='Сталкинг' where id_out='korvintag_302';
-insert into keywords (name, id_out) select 'Сновидение' , 'korvintag_303' where not exists (select * from keywords where id_out='korvintag_303');
-update keywords set name='Сновидение' where id_out='korvintag_303';
-insert into keywords (name, id_out) select 'ЛГБТ-движение' , 'korvintag_304' where not exists (select * from keywords where id_out='korvintag_304');
-update keywords set name='ЛГБТ-движение' where id_out='korvintag_304';
-insert into keywords (name, id_out) select 'Тело человека' , 'korvintag_305' where not exists (select * from keywords where id_out='korvintag_305');
-update keywords set name='Тело человека' where id_out='korvintag_305';
-insert into keywords (name, id_out) select 'Нагваль' , 'korvintag_307' where not exists (select * from keywords where id_out='korvintag_307');
-update keywords set name='Нагваль' where id_out='korvintag_307';
-insert into keywords (name, id_out) select 'Украинцы' , 'korvintag_308' where not exists (select * from keywords where id_out='korvintag_308');
-update keywords set name='Украинцы' where id_out='korvintag_308';
-insert into keywords (name, id_out) select 'Место силы' , 'korvintag_311' where not exists (select * from keywords where id_out='korvintag_311');
-update keywords set name='Место силы' where id_out='korvintag_311';
-insert into keywords (name, id_out) select 'Страх' , 'korvintag_368' where not exists (select * from keywords where id_out='korvintag_368');
-update keywords set name='Страх' where id_out='korvintag_368';
-insert into keywords (name, id_out) select 'Враг' , 'korvintag_386' where not exists (select * from keywords where id_out='korvintag_386');
-update keywords set name='Враг' where id_out='korvintag_386';
-insert into keywords (name, id_out) select 'Внутренний диалог' , 'korvintag_417' where not exists (select * from keywords where id_out='korvintag_417');
-update keywords set name='Внутренний диалог' where id_out='korvintag_417';
-insert into keywords (name, id_out) select 'Мысли' , 'korvintag_525' where not exists (select * from keywords where id_out='korvintag_525');
-update keywords set name='Мысли' where id_out='korvintag_525';
-insert into keywords (name, id_out) select 'Фокусировка внимания' , 'korvintag_574' where not exists (select * from keywords where id_out='korvintag_574');
-update keywords set name='Фокусировка внимания' where id_out='korvintag_574';
-insert into keywords (name, id_out) select 'Сознание' , 'korvintag_590' where not exists (select * from keywords where id_out='korvintag_590');
-update keywords set name='Сознание' where id_out='korvintag_590';
-insert into keywords (name, id_out) select 'Реальность' , 'korvintag_591' where not exists (select * from keywords where id_out='korvintag_591');
-update keywords set name='Реальность' where id_out='korvintag_591';
-insert into keywords (name, id_out) select 'Важность' , 'korvintag_602' where not exists (select * from keywords where id_out='korvintag_602');
-update keywords set name='Важность' where id_out='korvintag_602';
-insert into keywords (name, id_out) select 'Воля' , 'korvintag_687' where not exists (select * from keywords where id_out='korvintag_687');
-update keywords set name='Воля' where id_out='korvintag_687';
-insert into keywords (name, id_out) select 'Действие' , 'korvintag_699' where not exists (select * from keywords where id_out='korvintag_699');
-update keywords set name='Действие' where id_out='korvintag_699';
-insert into keywords (name, id_out) select 'Проблема' , 'korvintag_838' where not exists (select * from keywords where id_out='korvintag_838');
-update keywords set name='Проблема' where id_out='korvintag_838';
-insert into keywords (name, id_out) select 'Необходимость' , 'korvintag_867' where not exists (select * from keywords where id_out='korvintag_867');
-update keywords set name='Необходимость' where id_out='korvintag_867';
-insert into keywords (name, id_out) select 'Знание' , 'korvintag_909' where not exists (select * from keywords where id_out='korvintag_909');
-update keywords set name='Знание' where id_out='korvintag_909';
-insert into keywords (name, id_out) select 'Сила' , 'korvintag_924' where not exists (select * from keywords where id_out='korvintag_924');
-update keywords set name='Сила' where id_out='korvintag_924';
-insert into keywords (name, id_out) select 'Победа' , 'korvintag_950' where not exists (select * from keywords where id_out='korvintag_950');
-update keywords set name='Победа' where id_out='korvintag_950';
-insert into keywords (name, id_out) select 'Саморазвитие' , 'korvintag_958' where not exists (select * from keywords where id_out='korvintag_958');
-update keywords set name='Саморазвитие' where id_out='korvintag_958';
-insert into keywords (name, id_out) select 'Развитие' , 'korvintag_968' where not exists (select * from keywords where id_out='korvintag_968');
-update keywords set name='Развитие' where id_out='korvintag_968';
-insert into keywords (name, id_out) select 'Проигрыш' , 'korvintag_972' where not exists (select * from keywords where id_out='korvintag_972');
-update keywords set name='Проигрыш' where id_out='korvintag_972';
-insert into keywords (name, id_out) select 'Механизм' , 'korvintag_983' where not exists (select * from keywords where id_out='korvintag_983');
-update keywords set name='Механизм' where id_out='korvintag_983';
-insert into keywords (name, id_out) select 'Суть' , 'korvintag_989' where not exists (select * from keywords where id_out='korvintag_989');
-update keywords set name='Суть' where id_out='korvintag_989';
-insert into keywords (name, id_out) select 'Общество' , 'korvintag_998' where not exists (select * from keywords where id_out='korvintag_998');
-update keywords set name='Общество' where id_out='korvintag_998';
-insert into keywords (name, id_out) select 'Жизнь' , 'korvintag_1019' where not exists (select * from keywords where id_out='korvintag_1019');
-update keywords set name='Жизнь' where id_out='korvintag_1019';
-insert into keywords (name, id_out) select 'Слабость' , 'korvintag_1022' where not exists (select * from keywords where id_out='korvintag_1022');
-update keywords set name='Слабость' where id_out='korvintag_1022';
-insert into keywords (name, id_out) select 'Концентрация' , 'korvintag_1027' where not exists (select * from keywords where id_out='korvintag_1027');
-update keywords set name='Концентрация' where id_out='korvintag_1027';
-insert into keywords (name, id_out) select 'Человек' , 'korvintag_1031' where not exists (select * from keywords where id_out='korvintag_1031');
-update keywords set name='Человек' where id_out='korvintag_1031';
-insert into keywords (name, id_out) select 'Разум' , 'korvintag_1037' where not exists (select * from keywords where id_out='korvintag_1037');
-update keywords set name='Разум' where id_out='korvintag_1037';
-insert into keywords (name, id_out) select 'Иллюзия' , 'korvintag_1045' where not exists (select * from keywords where id_out='korvintag_1045');
-update keywords set name='Иллюзия' where id_out='korvintag_1045';
-insert into keywords (name, id_out) select 'Бытие' , 'korvintag_1046' where not exists (select * from keywords where id_out='korvintag_1046');
-update keywords set name='Бытие' where id_out='korvintag_1046';
-insert into keywords (name, id_out) select 'Результат' , 'korvintag_1118' where not exists (select * from keywords where id_out='korvintag_1118');
-update keywords set name='Результат' where id_out='korvintag_1118';
-insert into keywords (name, id_out) select 'Психосоматика' , 'korvintag_1134' where not exists (select * from keywords where id_out='korvintag_1134');
-update keywords set name='Психосоматика' where id_out='korvintag_1134';
-insert into keywords (name, id_out) select 'Болезнь' , 'korvintag_1145' where not exists (select * from keywords where id_out='korvintag_1145');
-update keywords set name='Болезнь' where id_out='korvintag_1145';
-insert into keywords (name, id_out) select 'Лечение' , 'korvintag_1146' where not exists (select * from keywords where id_out='korvintag_1146');
-update keywords set name='Лечение' where id_out='korvintag_1146';
-insert into keywords (name, id_out) select 'Отсутсвие' , 'korvintag_1302' where not exists (select * from keywords where id_out='korvintag_1302');
-update keywords set name='Отсутсвие' where id_out='korvintag_1302';
-insert into keywords (name, id_out) select 'Усталость' , 'korvintag_1337' where not exists (select * from keywords where id_out='korvintag_1337');
-update keywords set name='Усталость' where id_out='korvintag_1337';
-insert into keywords (name, id_out) select 'Преодоление' , 'korvintag_1380' where not exists (select * from keywords where id_out='korvintag_1380');
-update keywords set name='Преодоление' where id_out='korvintag_1380';
-insert into keywords (name, id_out) select 'Потенциал' , 'korvintag_1384' where not exists (select * from keywords where id_out='korvintag_1384');
-update keywords set name='Потенциал' where id_out='korvintag_1384';
-insert into keywords (name, id_out) select 'Получение' , 'korvintag_1419' where not exists (select * from keywords where id_out='korvintag_1419');
-update keywords set name='Получение' where id_out='korvintag_1419';
-insert into keywords (name, id_out) select 'Плато' , 'korvintag_1467' where not exists (select * from keywords where id_out='korvintag_1467');
-update keywords set name='Плато' where id_out='korvintag_1467';
-insert into keywords (name, id_out) select 'Помеха' , 'korvintag_1526' where not exists (select * from keywords where id_out='korvintag_1526');
-update keywords set name='Помеха' where id_out='korvintag_1526';
-insert into keywords (name, id_out) select 'Творец мира' , 'korvintag_1565' where not exists (select * from keywords where id_out='korvintag_1565');
-update keywords set name='Творец мира' where id_out='korvintag_1565';
-insert into keywords (name, id_out) select 'Страдание' , 'korvintag_1600' where not exists (select * from keywords where id_out='korvintag_1600');
-update keywords set name='Страдание' where id_out='korvintag_1600';
-insert into keywords (name, id_out) select 'Уверенность' , 'korvintag_1604' where not exists (select * from keywords where id_out='korvintag_1604');
-update keywords set name='Уверенность' where id_out='korvintag_1604';
-insert into keywords (name, id_out) select 'Принятие' , 'korvintag_1685' where not exists (select * from keywords where id_out='korvintag_1685');
-update keywords set name='Принятие' where id_out='korvintag_1685';
-insert into keywords (name, id_out) select 'Психотерапия' , 'korvintag_1725' where not exists (select * from keywords where id_out='korvintag_1725');
-update keywords set name='Психотерапия' where id_out='korvintag_1725';
-insert into keywords (name, id_out) select 'Формирование' , 'korvintag_1805' where not exists (select * from keywords where id_out='korvintag_1805');
-update keywords set name='Формирование' where id_out='korvintag_1805';
-insert into keywords (name, id_out) select 'Принцип' , 'korvintag_1872' where not exists (select * from keywords where id_out='korvintag_1872');
-update keywords set name='Принцип' where id_out='korvintag_1872';
-insert into keywords (name, id_out) select 'Слово' , 'korvintag_1973' where not exists (select * from keywords where id_out='korvintag_1973');
-update keywords set name='Слово' where id_out='korvintag_1973';
-insert into keywords (name, id_out) select 'Гигиена' , 'korvintag_1974' where not exists (select * from keywords where id_out='korvintag_1974');
-update keywords set name='Гигиена' where id_out='korvintag_1974';
-insert into keywords (name, id_out) select 'Чистота' , 'korvintag_1975' where not exists (select * from keywords where id_out='korvintag_1975');
-update keywords set name='Чистота' where id_out='korvintag_1975';
-insert into keywords (name, id_out) select 'Радость' , 'korvintag_1981' where not exists (select * from keywords where id_out='korvintag_1981');
-update keywords set name='Радость' where id_out='korvintag_1981';
-insert into keywords (name, id_out) select 'Инфаркт' , 'korvintag_2025' where not exists (select * from keywords where id_out='korvintag_2025');
-update keywords set name='Инфаркт' where id_out='korvintag_2025';
-insert into keywords (name, id_out) select 'Ишемия' , 'korvintag_2026' where not exists (select * from keywords where id_out='korvintag_2026');
-update keywords set name='Ишемия' where id_out='korvintag_2026';
-insert into keywords (name, id_out) select 'Колит' , 'korvintag_2027' where not exists (select * from keywords where id_out='korvintag_2027');
-update keywords set name='Колит' where id_out='korvintag_2027';
-insert into keywords (name, id_out) select 'Состояние' , 'korvintag_2077' where not exists (select * from keywords where id_out='korvintag_2077');
-update keywords set name='Состояние' where id_out='korvintag_2077';
-insert into keywords (name, id_out) select 'Чудеса' , 'korvintag_2192' where not exists (select * from keywords where id_out='korvintag_2192');
-update keywords set name='Чудеса' where id_out='korvintag_2192';
-insert into keywords (name, id_out) select 'Повторение' , 'korvintag_2200' where not exists (select * from keywords where id_out='korvintag_2200');
-update keywords set name='Повторение' where id_out='korvintag_2200';
-insert into keywords (name, id_out) select 'Уважение' , 'korvintag_2235' where not exists (select * from keywords where id_out='korvintag_2235');
-update keywords set name='Уважение' where id_out='korvintag_2235';
-insert into keywords (name, id_out) select 'Серьезность' , 'korvintag_2259' where not exists (select * from keywords where id_out='korvintag_2259');
-update keywords set name='Серьезность' where id_out='korvintag_2259';
-insert into keywords (name, id_out) select 'Пробуждение' , 'korvintag_2261' where not exists (select * from keywords where id_out='korvintag_2261');
-update keywords set name='Пробуждение' where id_out='korvintag_2261';
-insert into keywords (name, id_out) select 'Бестолковость' , 'korvintag_2262' where not exists (select * from keywords where id_out='korvintag_2262');
-update keywords set name='Бестолковость' where id_out='korvintag_2262';
-insert into keywords (name, id_out) select 'Сердитость' , 'korvintag_2264' where not exists (select * from keywords where id_out='korvintag_2264');
-update keywords set name='Сердитость' where id_out='korvintag_2264';
-insert into keywords (name, id_out) select 'Люди' , 'korvintag_2265' where not exists (select * from keywords where id_out='korvintag_2265');
-update keywords set name='Люди' where id_out='korvintag_2265';
-insert into keywords (name, id_out) select 'Мгновение' , 'korvintag_2266' where not exists (select * from keywords where id_out='korvintag_2266');
-update keywords set name='Мгновение' where id_out='korvintag_2266';
-insert into keywords (name, id_out) select 'Человек знания' , 'korvintag_2267' where not exists (select * from keywords where id_out='korvintag_2267');
-update keywords set name='Человек знания' where id_out='korvintag_2267';
-insert into keywords (name, id_out) select 'Ясность' , 'korvintag_2268' where not exists (select * from keywords where id_out='korvintag_2268');
-update keywords set name='Ясность' where id_out='korvintag_2268';
-insert into keywords (name, id_out) select 'Порабощение' , 'korvintag_2269' where not exists (select * from keywords where id_out='korvintag_2269');
-update keywords set name='Порабощение' where id_out='korvintag_2269';
-insert into keywords (name, id_out) select 'Самоконтроль' , 'korvintag_2270' where not exists (select * from keywords where id_out='korvintag_2270');
-update keywords set name='Самоконтроль' where id_out='korvintag_2270';
-insert into keywords (name, id_out) select 'Старость' , 'korvintag_2271' where not exists (select * from keywords where id_out='korvintag_2271');
-update keywords set name='Старость' where id_out='korvintag_2271';
-insert into keywords (name, id_out) select 'Отступление' , 'korvintag_2272' where not exists (select * from keywords where id_out='korvintag_2272');
-update keywords set name='Отступление' where id_out='korvintag_2272';
-insert into keywords (name, id_out) select 'Останов' , 'korvintag_2460' where not exists (select * from keywords where id_out='korvintag_2460');
-update keywords set name='Останов' where id_out='korvintag_2460';
-insert into keywords (name, id_out) select 'Избавление' , 'korvintag_2476' where not exists (select * from keywords where id_out='korvintag_2476');
-update keywords set name='Избавление' where id_out='korvintag_2476';
-insert into keywords (name, id_out) select 'Тяжелость' , 'korvintag_2481' where not exists (select * from keywords where id_out='korvintag_2481');
-update keywords set name='Тяжелость' where id_out='korvintag_2481';
-insert into keywords (name, id_out) select 'Неуклюжесть' , 'korvintag_2482' where not exists (select * from keywords where id_out='korvintag_2482');
-update keywords set name='Неуклюжесть' where id_out='korvintag_2482';
-insert into keywords (name, id_out) select 'Самодовольство' , 'korvintag_2483' where not exists (select * from keywords where id_out='korvintag_2483');
-update keywords set name='Самодовольство' where id_out='korvintag_2483';
-insert into keywords (name, id_out) select 'Покой' , 'korvintag_3752' where not exists (select * from keywords where id_out='korvintag_3752');
-update keywords set name='Покой' where id_out='korvintag_3752';
-insert into keywords (name, id_out) select 'Настоящее' , 'korvintag_3754' where not exists (select * from keywords where id_out='korvintag_3754');
-update keywords set name='Настоящее' where id_out='korvintag_3754';
-insert into keywords (name, id_out) select 'Траектория' , 'korvintag_4074' where not exists (select * from keywords where id_out='korvintag_4074');
-update keywords set name='Траектория' where id_out='korvintag_4074';
-insert into keywords (name, id_out) select 'Скрытность' , 'korvintag_4075' where not exists (select * from keywords where id_out='korvintag_4075');
-update keywords set name='Скрытность' where id_out='korvintag_4075';
-insert into keywords (name, id_out) select 'Петля обратной связи' , 'korvintag_4204' where not exists (select * from keywords where id_out='korvintag_4204');
-update keywords set name='Петля обратной связи' where id_out='korvintag_4204';
-insert into sources (name, id_out) select 'Предисловие к книге Карлоса Кастанеды "Учение Дона Хуана: путь знания индейцев Яки"' , 'korvintag_4' where not exists (select * from sources where id_out='korvintag_4');
-update sources set name='Предисловие к книге Карлоса Кастанеды "Учение Дона Хуана: путь знания индейцев Яки"' where id_out='korvintag_4';
-insert into sources (name, id_out) select 'кн. 1 - Учение Дона Хуана: путь знания индейцев Яки' , 'korvintag_28' where not exists (select * from sources where id_out='korvintag_28');
-update sources set name='кн. 1 - Учение Дона Хуана: путь знания индейцев Яки' where id_out='korvintag_28';
-insert into sources (name, id_out) select 'ЭТО РАБОТАЕТ НА 100%! Умнейший Философ Елена Рерих - Как Поменять Мышление' , 'korvintag_270' where not exists (select * from sources where id_out='korvintag_270');
-update sources set name='ЭТО РАБОТАЕТ НА 100%! Умнейший Философ Елена Рерих - Как Поменять Мышление' where id_out='korvintag_270';
-insert into sources (name, id_out) select 'Чикагская семерка психосоматики: большая психосоматическая классическая семерка заболеваний' , 'korvintag_276' where not exists (select * from sources where id_out='korvintag_276');
-update sources set name='Чикагская семерка психосоматики: большая психосоматическая классическая семерка заболеваний' where id_out='korvintag_276';
-insert into sources (name, id_out) select 'кн.2 (1971) «ОТДЕЛЬНАЯ РЕАЛЬНОСТЬ»' , 'korvintag_318' where not exists (select * from sources where id_out='korvintag_318');
-update sources set name='кн.2 (1971) «ОТДЕЛЬНАЯ РЕАЛЬНОСТЬ»' where id_out='korvintag_318';
-insert into sources (name, id_out) select 'Сила настоящего' , 'korvintag_419' where not exists (select * from sources where id_out='korvintag_419');
-update sources set name='Сила настоящего' where id_out='korvintag_419';
-insert into sources (name, id_out) select 'Атомные привычки. Как приобрести хорошие привычки и избавиться от плохих' , 'korvintag_472' where not exists (select * from sources where id_out='korvintag_472');
-update sources set name='Атомные привычки. Как приобрести хорошие привычки и избавиться от плохих' where id_out='korvintag_472';
+insert into users (name, id_out, password) select 'Altay' , 'korvintag_85', '-' where not exists (select * from users where id_out='korvintag_85');
+update users set name='Altay' where id_out='korvintag_85';
+insert into users (name, id_out, password) select 'Budda_from_Dnipro' , 'korvintag_45', '-' where not exists (select * from users where id_out='korvintag_45');
+update users set name='Budda_from_Dnipro' where id_out='korvintag_45';
+insert into users (name, id_out, password) select 'Budda_from_Moscow' , 'korvintag_109', '-' where not exists (select * from users where id_out='korvintag_109');
+update users set name='Budda_from_Moscow' where id_out='korvintag_109';
+insert into users (name, id_out, password) select 'Chtun' , 'korvintag_40', '-' where not exists (select * from users where id_out='korvintag_40');
+update users set name='Chtun' where id_out='korvintag_40';
+insert into users (name, id_out, password) select 'DonJuan' , 'korvintag_6', '-' where not exists (select * from users where id_out='korvintag_6');
+update users set name='DonJuan' where id_out='korvintag_6';
+insert into users (name, id_out, password) select 'Ilonushka' , 'korvintag_19', '-' where not exists (select * from users where id_out='korvintag_19');
+update users set name='Ilonushka' where id_out='korvintag_19';
+insert into users (name, id_out, password) select 'Prince-Gos' , 'korvintag_30', '-' where not exists (select * from users where id_out='korvintag_30');
+update users set name='Prince-Gos' where id_out='korvintag_30';
+insert into users (name, id_out, password) select 'Psychologist' , 'korvintag_57', '-' where not exists (select * from users where id_out='korvintag_57');
+update users set name='Psychologist' where id_out='korvintag_57';
+insert into users (name, id_out, password) select 'RussianZettel' , 'korvintag_1', '-' where not exists (select * from users where id_out='korvintag_1');
+update users set name='RussianZettel' where id_out='korvintag_1';
+insert into users (name, id_out, password) select 'SelfDeveloper' , 'korvintag_24', '-' where not exists (select * from users where id_out='korvintag_24');
+update users set name='SelfDeveloper' where id_out='korvintag_24';
+insert into users (name, id_out, password) select 'Socionics' , 'korvintag_139', '-' where not exists (select * from users where id_out='korvintag_139');
+update users set name='Socionics' where id_out='korvintag_139';
+insert into users (name, id_out, password) select 'Warrior33' , 'korvintag_140', '-' where not exists (select * from users where id_out='korvintag_140');
+update users set name='Warrior33' where id_out='korvintag_140';
+insert into authors (name, id_out, user_id) select 'Р—РѕРЅРєРµ РђСЂРµРЅСЃ' , 'korvintag_1', (select id from users where id_out='korvintag_1') where not exists (select * from authors where id_out='korvintag_1');
+update authors set name='Р—РѕРЅРєРµ РђСЂРµРЅСЃ' where id_out='korvintag_1';
+insert into authors (name, id_out, user_id) select 'РљР°СЂР»РѕСЃ РљР°СЃС‚Р°РЅРµРґР°' , 'korvintag_6', (select id from users where id_out='korvintag_6') where not exists (select * from authors where id_out='korvintag_6');
+update authors set name='РљР°СЂР»РѕСЃ РљР°СЃС‚Р°РЅРµРґР°' where id_out='korvintag_6';
+insert into authors (name, id_out, user_id) select 'РҐР°СЂРіР°РґРѕРЅ Р­РЅРґСЂСЋ' , 'korvintag_19', (select id from users where id_out='korvintag_19') where not exists (select * from authors where id_out='korvintag_19');
+update authors set name='РҐР°СЂРіР°РґРѕРЅ Р­РЅРґСЂСЋ' where id_out='korvintag_19';
+insert into authors (name, id_out, user_id) select 'Р“СѓСЂРµРІРёС‡ РџР°РІРµР» РЎРµРјРµРЅРѕРІРёС‡' , 'korvintag_21', (select id from users where id_out='korvintag_6') where not exists (select * from authors where id_out='korvintag_21');
+update authors set name='Р“СѓСЂРµРІРёС‡ РџР°РІРµР» РЎРµРјРµРЅРѕРІРёС‡' where id_out='korvintag_21';
+insert into authors (name, id_out, user_id) select 'Р›РѕСѓР»РµСЃСЃ Р”Р¶РёРј' , 'korvintag_24', (select id from users where id_out='korvintag_24') where not exists (select * from authors where id_out='korvintag_24');
+update authors set name='Р›РѕСѓР»РµСЃСЃ Р”Р¶РёРј' where id_out='korvintag_24';
+insert into authors (name, id_out, user_id) select 'РџРµР»РµРІРёРЅ Р’РёРєС‚РѕСЂ' , 'korvintag_30', (select id from users where id_out='korvintag_30') where not exists (select * from authors where id_out='korvintag_30');
+update authors set name='РџРµР»РµРІРёРЅ Р’РёРєС‚РѕСЂ' where id_out='korvintag_30';
+insert into authors (name, id_out, user_id) select 'Р©РµРїРµС‚РЅРѕРІ Р•РІРіРµРЅРёР№' , 'korvintag_40', (select id from users where id_out='korvintag_40') where not exists (select * from authors where id_out='korvintag_40');
+update authors set name='Р©РµРїРµС‚РЅРѕРІ Р•РІРіРµРЅРёР№' where id_out='korvintag_40';
+insert into authors (name, id_out, user_id) select 'РџРѕРІР°СЂРЅРёРЅ РЎРµСЂРіРµР№' , 'korvintag_41', (select id from users where id_out='korvintag_1') where not exists (select * from authors where id_out='korvintag_41');
+update authors set name='РџРѕРІР°СЂРЅРёРЅ РЎРµСЂРіРµР№' where id_out='korvintag_41';
+insert into authors (name, id_out, user_id) select 'Р”Р°СЃ РЎР°С‚СЊСЏ' , 'korvintag_45', (select id from users where id_out='korvintag_45') where not exists (select * from authors where id_out='korvintag_45');
+update authors set name='Р”Р°СЃ РЎР°С‚СЊСЏ' where id_out='korvintag_45';
+insert into authors (name, id_out, user_id) select 'РњСѓР¶РёС†РєР°СЏ РўР°С‚СЊСЏРЅР°' , 'korvintag_57', (select id from users where id_out='korvintag_57') where not exists (select * from authors where id_out='korvintag_57');
+update authors set name='РњСѓР¶РёС†РєР°СЏ РўР°С‚СЊСЏРЅР°' where id_out='korvintag_57';
+insert into authors (name, id_out, user_id) select 'Р РµСЂРёС… Р•Р»РµРЅР°' , 'korvintag_85', (select id from users where id_out='korvintag_85') where not exists (select * from authors where id_out='korvintag_85');
+update authors set name='Р РµСЂРёС… Р•Р»РµРЅР°' where id_out='korvintag_85';
+insert into authors (name, id_out, user_id) select 'РЁР°Р±Р°РЅРѕРІ РЎРµСЂРіРµР№' , 'korvintag_106', (select id from users where id_out='korvintag_24') where not exists (select * from authors where id_out='korvintag_106');
+update authors set name='РЁР°Р±Р°РЅРѕРІ РЎРµСЂРіРµР№' where id_out='korvintag_106';
+insert into authors (name, id_out, user_id) select 'РўРѕР»Р»Рµ Р­РєС…Р°СЂС‚' , 'korvintag_109', (select id from users where id_out='korvintag_109') where not exists (select * from authors where id_out='korvintag_109');
+update authors set name='РўРѕР»Р»Рµ Р­РєС…Р°СЂС‚' where id_out='korvintag_109';
+insert into authors (name, id_out, user_id) select 'РЎРёРЅСЃРµСЂРѕ Р”Р¶РµРЅ' , 'korvintag_113', (select id from users where id_out='korvintag_24') where not exists (select * from authors where id_out='korvintag_113');
+update authors set name='РЎРёРЅСЃРµСЂРѕ Р”Р¶РµРЅ' where id_out='korvintag_113';
+insert into authors (name, id_out, user_id) select 'РћС€Рѕ' , 'korvintag_115', (select id from users where id_out='korvintag_109') where not exists (select * from authors where id_out='korvintag_115');
+update authors set name='РћС€Рѕ' where id_out='korvintag_115';
+insert into authors (name, id_out, user_id) select 'РљР»РёСЂ Р”Р¶РµР№РјСЃ' , 'korvintag_121', (select id from users where id_out='korvintag_24') where not exists (select * from authors where id_out='korvintag_121');
+update authors set name='РљР»РёСЂ Р”Р¶РµР№РјСЃ' where id_out='korvintag_121';
+insert into authors (name, id_out, user_id) select 'РЎР°РєСЃ РћР»РёРІРµСЂ' , 'korvintag_130', (select id from users where id_out='korvintag_57') where not exists (select * from authors where id_out='korvintag_130');
+update authors set name='РЎР°РєСЃ РћР»РёРІРµСЂ' where id_out='korvintag_130';
+insert into authors (name, id_out, user_id) select 'Р­Р»Р»РµРЅС…РѕСЂРЅ Р РѕСЃСЃ' , 'korvintag_131', (select id from users where id_out='korvintag_24') where not exists (select * from authors where id_out='korvintag_131');
+update authors set name='Р­Р»Р»РµРЅС…РѕСЂРЅ Р РѕСЃСЃ' where id_out='korvintag_131';
+insert into authors (name, id_out, user_id) select 'Р“СѓР»РµРЅРєРѕ Р’РёРєС‚РѕСЂ' , 'korvintag_139', (select id from users where id_out='korvintag_139') where not exists (select * from authors where id_out='korvintag_139');
+update authors set name='Р“СѓР»РµРЅРєРѕ Р’РёРєС‚РѕСЂ' where id_out='korvintag_139';
+insert into authors (name, id_out, user_id) select 'Р“СЂРёРЅ Р РѕР±РµСЂС‚' , 'korvintag_140', (select id from users where id_out='korvintag_140') where not exists (select * from authors where id_out='korvintag_140');
+update authors set name='Р“СЂРёРЅ Р РѕР±РµСЂС‚' where id_out='korvintag_140';
+insert into authors (name, id_out, user_id) select 'РђР»РµРєСЃР°РЅРґРµСЂ Р¤СЂР°РЅС†' , 'korvintag_153', (select id from users where id_out='korvintag_57') where not exists (select * from authors where id_out='korvintag_153');
+update authors set name='РђР»РµРєСЃР°РЅРґРµСЂ Р¤СЂР°РЅС†' where id_out='korvintag_153';
+insert into keywords (name, id_out, user_id) select 'РџСЂРѕС‚РёРІРѕСЂРµС‡РёРµ' , 'korvintag_2', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_2');
+update keywords set name='РџСЂРѕС‚РёРІРѕСЂРµС‡РёРµ' where id_out='korvintag_2';
+insert into keywords (name, id_out, user_id) select 'РџРѕРЅРёРјР°РЅРёРµ' , 'korvintag_11', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_11');
+update keywords set name='РџРѕРЅРёРјР°РЅРёРµ' where id_out='korvintag_11';
+insert into keywords (name, id_out, user_id) select 'РћСЃРѕР·РЅР°РЅРёРµ' , 'korvintag_12', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_12');
+update keywords set name='РћСЃРѕР·РЅР°РЅРёРµ' where id_out='korvintag_12';
+insert into keywords (name, id_out, user_id) select 'РћС€РёР±РєРё' , 'korvintag_36', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_36');
+update keywords set name='РћС€РёР±РєРё' where id_out='korvintag_36';
+insert into keywords (name, id_out, user_id) select 'Р РµС€РµРЅРёРµ (РїСЂРѕС†РµСЃСЃ РїСЂРёРЅСЏС‚РёСЏ)' , 'korvintag_42', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_42');
+update keywords set name='Р РµС€РµРЅРёРµ (РїСЂРѕС†РµСЃСЃ РїСЂРёРЅСЏС‚РёСЏ)' where id_out='korvintag_42';
+insert into keywords (name, id_out, user_id) select 'РџСЂРѕРїР°РіР°РЅРґР°' , 'korvintag_44', (select id from users where id_out='korvintag_85') where not exists (select * from keywords where id_out='korvintag_44');
+update keywords set name='РџСЂРѕРїР°РіР°РЅРґР°' where id_out='korvintag_44';
+insert into keywords (name, id_out, user_id) select 'РџСЂРёРІС‹С‡РєРё' , 'korvintag_52', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_52');
+update keywords set name='РџСЂРёРІС‹С‡РєРё' where id_out='korvintag_52';
+insert into keywords (name, id_out, user_id) select 'РЎРѕРјРЅРµРЅРёРµ' , 'korvintag_62', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_62');
+update keywords set name='РЎРѕРјРЅРµРЅРёРµ' where id_out='korvintag_62';
+insert into keywords (name, id_out, user_id) select 'Р“Р»СѓРїРѕСЃС‚СЊ' , 'korvintag_63', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_63');
+update keywords set name='Р“Р»СѓРїРѕСЃС‚СЊ' where id_out='korvintag_63';
+insert into keywords (name, id_out, user_id) select 'РЈСЃРїРµС…' , 'korvintag_70', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_70');
+update keywords set name='РЈСЃРїРµС…' where id_out='korvintag_70';
+insert into keywords (name, id_out, user_id) select 'РЎРѕРїСЂРѕС‚РёРІР»РµРЅРёРµ' , 'korvintag_76', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_76');
+update keywords set name='РЎРѕРїСЂРѕС‚РёРІР»РµРЅРёРµ' where id_out='korvintag_76';
+insert into keywords (name, id_out, user_id) select 'Р§РЎР’' , 'korvintag_83', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_83');
+update keywords set name='Р§РЎР’' where id_out='korvintag_83';
+insert into keywords (name, id_out, user_id) select 'Р¦РµР»СЊ' , 'korvintag_106', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_106');
+update keywords set name='Р¦РµР»СЊ' where id_out='korvintag_106';
+insert into keywords (name, id_out, user_id) select 'РџСѓС‚СЊ (РґР°Рѕ)' , 'korvintag_126', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_126');
+update keywords set name='РџСѓС‚СЊ (РґР°Рѕ)' where id_out='korvintag_126';
+insert into keywords (name, id_out, user_id) select 'РњРёСЃС‚РёРєР°' , 'korvintag_288', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_288');
+update keywords set name='РњРёСЃС‚РёРєР°' where id_out='korvintag_288';
+insert into keywords (name, id_out, user_id) select 'РЎРјРµСЂС‚СЊ' , 'korvintag_297', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_297');
+update keywords set name='РЎРјРµСЂС‚СЊ' where id_out='korvintag_297';
+insert into keywords (name, id_out, user_id) select 'РЈСЃР»РѕРІРЅРѕСЃС‚Рё РІРѕСЃРїСЂРёСЏС‚РёСЏ' , 'korvintag_298', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_298');
+update keywords set name='РЈСЃР»РѕРІРЅРѕСЃС‚Рё РІРѕСЃРїСЂРёСЏС‚РёСЏ' where id_out='korvintag_298';
+insert into keywords (name, id_out, user_id) select 'Р’РѕСЃРїСЂРёСЏС‚РёРµ' , 'korvintag_299', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_299');
+update keywords set name='Р’РѕСЃРїСЂРёСЏС‚РёРµ' where id_out='korvintag_299';
+insert into keywords (name, id_out, user_id) select 'РЎС‚Р°Р»РєРёРЅРі' , 'korvintag_302', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_302');
+update keywords set name='РЎС‚Р°Р»РєРёРЅРі' where id_out='korvintag_302';
+insert into keywords (name, id_out, user_id) select 'РЎРЅРѕРІРёРґРµРЅРёРµ' , 'korvintag_303', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_303');
+update keywords set name='РЎРЅРѕРІРёРґРµРЅРёРµ' where id_out='korvintag_303';
+insert into keywords (name, id_out, user_id) select 'Р›Р“Р‘Рў-РґРІРёР¶РµРЅРёРµ' , 'korvintag_304', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_304');
+update keywords set name='Р›Р“Р‘Рў-РґРІРёР¶РµРЅРёРµ' where id_out='korvintag_304';
+insert into keywords (name, id_out, user_id) select 'РўРµР»Рѕ С‡РµР»РѕРІРµРєР°' , 'korvintag_305', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_305');
+update keywords set name='РўРµР»Рѕ С‡РµР»РѕРІРµРєР°' where id_out='korvintag_305';
+insert into keywords (name, id_out, user_id) select 'РќР°РіРІР°Р»СЊ' , 'korvintag_307', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_307');
+update keywords set name='РќР°РіРІР°Р»СЊ' where id_out='korvintag_307';
+insert into keywords (name, id_out, user_id) select 'РЈРєСЂР°РёРЅС†С‹' , 'korvintag_308', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_308');
+update keywords set name='РЈРєСЂР°РёРЅС†С‹' where id_out='korvintag_308';
+insert into keywords (name, id_out, user_id) select 'РњРµСЃС‚Рѕ СЃРёР»С‹' , 'korvintag_311', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_311');
+update keywords set name='РњРµСЃС‚Рѕ СЃРёР»С‹' where id_out='korvintag_311';
+insert into keywords (name, id_out, user_id) select 'РЎС‚СЂР°С…' , 'korvintag_368', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_368');
+update keywords set name='РЎС‚СЂР°С…' where id_out='korvintag_368';
+insert into keywords (name, id_out, user_id) select 'Р’СЂР°Рі' , 'korvintag_386', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_386');
+update keywords set name='Р’СЂР°Рі' where id_out='korvintag_386';
+insert into keywords (name, id_out, user_id) select 'Р’РЅСѓС‚СЂРµРЅРЅРёР№ РґРёР°Р»РѕРі' , 'korvintag_417', (select id from users where id_out='korvintag_30') where not exists (select * from keywords where id_out='korvintag_417');
+update keywords set name='Р’РЅСѓС‚СЂРµРЅРЅРёР№ РґРёР°Р»РѕРі' where id_out='korvintag_417';
+insert into keywords (name, id_out, user_id) select 'РњС‹СЃР»Рё' , 'korvintag_525', (select id from users where id_out='korvintag_30') where not exists (select * from keywords where id_out='korvintag_525');
+update keywords set name='РњС‹СЃР»Рё' where id_out='korvintag_525';
+insert into keywords (name, id_out, user_id) select 'Р¤РѕРєСѓСЃРёСЂРѕРІРєР° РІРЅРёРјР°РЅРёСЏ' , 'korvintag_574', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_574');
+update keywords set name='Р¤РѕРєСѓСЃРёСЂРѕРІРєР° РІРЅРёРјР°РЅРёСЏ' where id_out='korvintag_574';
+insert into keywords (name, id_out, user_id) select 'РЎРѕР·РЅР°РЅРёРµ' , 'korvintag_590', (select id from users where id_out='korvintag_30') where not exists (select * from keywords where id_out='korvintag_590');
+update keywords set name='РЎРѕР·РЅР°РЅРёРµ' where id_out='korvintag_590';
+insert into keywords (name, id_out, user_id) select 'Р РµР°Р»СЊРЅРѕСЃС‚СЊ' , 'korvintag_591', (select id from users where id_out='korvintag_30') where not exists (select * from keywords where id_out='korvintag_591');
+update keywords set name='Р РµР°Р»СЊРЅРѕСЃС‚СЊ' where id_out='korvintag_591';
+insert into keywords (name, id_out, user_id) select 'Р’Р°Р¶РЅРѕСЃС‚СЊ' , 'korvintag_602', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_602');
+update keywords set name='Р’Р°Р¶РЅРѕСЃС‚СЊ' where id_out='korvintag_602';
+insert into keywords (name, id_out, user_id) select 'Р’РѕР»СЏ' , 'korvintag_687', (select id from users where id_out='korvintag_30') where not exists (select * from keywords where id_out='korvintag_687');
+update keywords set name='Р’РѕР»СЏ' where id_out='korvintag_687';
+insert into keywords (name, id_out, user_id) select 'Р”РµР№СЃС‚РІРёРµ' , 'korvintag_699', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_699');
+update keywords set name='Р”РµР№СЃС‚РІРёРµ' where id_out='korvintag_699';
+insert into keywords (name, id_out, user_id) select 'РџСЂРѕР±Р»РµРјР°' , 'korvintag_838', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_838');
+update keywords set name='РџСЂРѕР±Р»РµРјР°' where id_out='korvintag_838';
+insert into keywords (name, id_out, user_id) select 'РќРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ' , 'korvintag_867', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_867');
+update keywords set name='РќРµРѕР±С…РѕРґРёРјРѕСЃС‚СЊ' where id_out='korvintag_867';
+insert into keywords (name, id_out, user_id) select 'Р—РЅР°РЅРёРµ' , 'korvintag_909', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_909');
+update keywords set name='Р—РЅР°РЅРёРµ' where id_out='korvintag_909';
+insert into keywords (name, id_out, user_id) select 'РЎРёР»Р°' , 'korvintag_924', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_924');
+update keywords set name='РЎРёР»Р°' where id_out='korvintag_924';
+insert into keywords (name, id_out, user_id) select 'РџРѕР±РµРґР°' , 'korvintag_950', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_950');
+update keywords set name='РџРѕР±РµРґР°' where id_out='korvintag_950';
+insert into keywords (name, id_out, user_id) select 'РЎР°РјРѕСЂР°Р·РІРёС‚РёРµ' , 'korvintag_958', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_958');
+update keywords set name='РЎР°РјРѕСЂР°Р·РІРёС‚РёРµ' where id_out='korvintag_958';
+insert into keywords (name, id_out, user_id) select 'Р Р°Р·РІРёС‚РёРµ' , 'korvintag_968', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_968');
+update keywords set name='Р Р°Р·РІРёС‚РёРµ' where id_out='korvintag_968';
+insert into keywords (name, id_out, user_id) select 'РџСЂРѕРёРіСЂС‹С€' , 'korvintag_972', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_972');
+update keywords set name='РџСЂРѕРёРіСЂС‹С€' where id_out='korvintag_972';
+insert into keywords (name, id_out, user_id) select 'РњРµС…Р°РЅРёР·Рј' , 'korvintag_983', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_983');
+update keywords set name='РњРµС…Р°РЅРёР·Рј' where id_out='korvintag_983';
+insert into keywords (name, id_out, user_id) select 'РЎСѓС‚СЊ' , 'korvintag_989', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_989');
+update keywords set name='РЎСѓС‚СЊ' where id_out='korvintag_989';
+insert into keywords (name, id_out, user_id) select 'РћР±С‰РµСЃС‚РІРѕ' , 'korvintag_998', (select id from users where id_out='korvintag_40') where not exists (select * from keywords where id_out='korvintag_998');
+update keywords set name='РћР±С‰РµСЃС‚РІРѕ' where id_out='korvintag_998';
+insert into keywords (name, id_out, user_id) select 'Р–РёР·РЅСЊ' , 'korvintag_1019', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_1019');
+update keywords set name='Р–РёР·РЅСЊ' where id_out='korvintag_1019';
+insert into keywords (name, id_out, user_id) select 'РЎР»Р°Р±РѕСЃС‚СЊ' , 'korvintag_1022', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1022');
+update keywords set name='РЎР»Р°Р±РѕСЃС‚СЊ' where id_out='korvintag_1022';
+insert into keywords (name, id_out, user_id) select 'РљРѕРЅС†РµРЅС‚СЂР°С†РёСЏ' , 'korvintag_1027', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_1027');
+update keywords set name='РљРѕРЅС†РµРЅС‚СЂР°С†РёСЏ' where id_out='korvintag_1027';
+insert into keywords (name, id_out, user_id) select 'Р§РµР»РѕРІРµРє' , 'korvintag_1031', (select id from users where id_out='korvintag_30') where not exists (select * from keywords where id_out='korvintag_1031');
+update keywords set name='Р§РµР»РѕРІРµРє' where id_out='korvintag_1031';
+insert into keywords (name, id_out, user_id) select 'Р Р°Р·СѓРј' , 'korvintag_1037', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_1037');
+update keywords set name='Р Р°Р·СѓРј' where id_out='korvintag_1037';
+insert into keywords (name, id_out, user_id) select 'РР»Р»СЋР·РёСЏ' , 'korvintag_1045', (select id from users where id_out='korvintag_1') where not exists (select * from keywords where id_out='korvintag_1045');
+update keywords set name='РР»Р»СЋР·РёСЏ' where id_out='korvintag_1045';
+insert into keywords (name, id_out, user_id) select 'Р‘С‹С‚РёРµ' , 'korvintag_1046', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1046');
+update keywords set name='Р‘С‹С‚РёРµ' where id_out='korvintag_1046';
+insert into keywords (name, id_out, user_id) select 'Р РµР·СѓР»СЊС‚Р°С‚' , 'korvintag_1118', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_1118');
+update keywords set name='Р РµР·СѓР»СЊС‚Р°С‚' where id_out='korvintag_1118';
+insert into keywords (name, id_out, user_id) select 'РџСЃРёС…РѕСЃРѕРјР°С‚РёРєР°' , 'korvintag_1134', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_1134');
+update keywords set name='РџСЃРёС…РѕСЃРѕРјР°С‚РёРєР°' where id_out='korvintag_1134';
+insert into keywords (name, id_out, user_id) select 'Р‘РѕР»РµР·РЅСЊ' , 'korvintag_1145', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_1145');
+update keywords set name='Р‘РѕР»РµР·РЅСЊ' where id_out='korvintag_1145';
+insert into keywords (name, id_out, user_id) select 'Р›РµС‡РµРЅРёРµ' , 'korvintag_1146', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_1146');
+update keywords set name='Р›РµС‡РµРЅРёРµ' where id_out='korvintag_1146';
+insert into keywords (name, id_out, user_id) select 'РћС‚СЃСѓС‚СЃРІРёРµ' , 'korvintag_1302', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_1302');
+update keywords set name='РћС‚СЃСѓС‚СЃРІРёРµ' where id_out='korvintag_1302';
+insert into keywords (name, id_out, user_id) select 'РЈСЃС‚Р°Р»РѕСЃС‚СЊ' , 'korvintag_1337', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1337');
+update keywords set name='РЈСЃС‚Р°Р»РѕСЃС‚СЊ' where id_out='korvintag_1337';
+insert into keywords (name, id_out, user_id) select 'РџСЂРµРѕРґРѕР»РµРЅРёРµ' , 'korvintag_1380', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1380');
+update keywords set name='РџСЂРµРѕРґРѕР»РµРЅРёРµ' where id_out='korvintag_1380';
+insert into keywords (name, id_out, user_id) select 'РџРѕС‚РµРЅС†РёР°Р»' , 'korvintag_1384', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_1384');
+update keywords set name='РџРѕС‚РµРЅС†РёР°Р»' where id_out='korvintag_1384';
+insert into keywords (name, id_out, user_id) select 'РџРѕР»СѓС‡РµРЅРёРµ' , 'korvintag_1419', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_1419');
+update keywords set name='РџРѕР»СѓС‡РµРЅРёРµ' where id_out='korvintag_1419';
+insert into keywords (name, id_out, user_id) select 'РџР»Р°С‚Рѕ' , 'korvintag_1467', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1467');
+update keywords set name='РџР»Р°С‚Рѕ' where id_out='korvintag_1467';
+insert into keywords (name, id_out, user_id) select 'РџРѕРјРµС…Р°' , 'korvintag_1526', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_1526');
+update keywords set name='РџРѕРјРµС…Р°' where id_out='korvintag_1526';
+insert into keywords (name, id_out, user_id) select 'РўРІРѕСЂРµС† РјРёСЂР°' , 'korvintag_1565', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1565');
+update keywords set name='РўРІРѕСЂРµС† РјРёСЂР°' where id_out='korvintag_1565';
+insert into keywords (name, id_out, user_id) select 'РЎС‚СЂР°РґР°РЅРёРµ' , 'korvintag_1600', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_1600');
+update keywords set name='РЎС‚СЂР°РґР°РЅРёРµ' where id_out='korvintag_1600';
+insert into keywords (name, id_out, user_id) select 'РЈРІРµСЂРµРЅРЅРѕСЃС‚СЊ' , 'korvintag_1604', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1604');
+update keywords set name='РЈРІРµСЂРµРЅРЅРѕСЃС‚СЊ' where id_out='korvintag_1604';
+insert into keywords (name, id_out, user_id) select 'РџСЂРёРЅСЏС‚РёРµ' , 'korvintag_1685', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_1685');
+update keywords set name='РџСЂРёРЅСЏС‚РёРµ' where id_out='korvintag_1685';
+insert into keywords (name, id_out, user_id) select 'РџСЃРёС…РѕС‚РµСЂР°РїРёСЏ' , 'korvintag_1725', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_1725');
+update keywords set name='РџСЃРёС…РѕС‚РµСЂР°РїРёСЏ' where id_out='korvintag_1725';
+insert into keywords (name, id_out, user_id) select 'Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ' , 'korvintag_1805', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_1805');
+update keywords set name='Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ' where id_out='korvintag_1805';
+insert into keywords (name, id_out, user_id) select 'РџСЂРёРЅС†РёРї' , 'korvintag_1872', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_1872');
+update keywords set name='РџСЂРёРЅС†РёРї' where id_out='korvintag_1872';
+insert into keywords (name, id_out, user_id) select 'РЎР»РѕРІРѕ' , 'korvintag_1973', (select id from users where id_out='korvintag_85') where not exists (select * from keywords where id_out='korvintag_1973');
+update keywords set name='РЎР»РѕРІРѕ' where id_out='korvintag_1973';
+insert into keywords (name, id_out, user_id) select 'Р“РёРіРёРµРЅР°' , 'korvintag_1974', (select id from users where id_out='korvintag_85') where not exists (select * from keywords where id_out='korvintag_1974');
+update keywords set name='Р“РёРіРёРµРЅР°' where id_out='korvintag_1974';
+insert into keywords (name, id_out, user_id) select 'Р§РёСЃС‚РѕС‚Р°' , 'korvintag_1975', (select id from users where id_out='korvintag_85') where not exists (select * from keywords where id_out='korvintag_1975');
+update keywords set name='Р§РёСЃС‚РѕС‚Р°' where id_out='korvintag_1975';
+insert into keywords (name, id_out, user_id) select 'Р Р°РґРѕСЃС‚СЊ' , 'korvintag_1981', (select id from users where id_out='korvintag_85') where not exists (select * from keywords where id_out='korvintag_1981');
+update keywords set name='Р Р°РґРѕСЃС‚СЊ' where id_out='korvintag_1981';
+insert into keywords (name, id_out, user_id) select 'РРЅС„Р°СЂРєС‚' , 'korvintag_2025', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_2025');
+update keywords set name='РРЅС„Р°СЂРєС‚' where id_out='korvintag_2025';
+insert into keywords (name, id_out, user_id) select 'РС€РµРјРёСЏ' , 'korvintag_2026', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_2026');
+update keywords set name='РС€РµРјРёСЏ' where id_out='korvintag_2026';
+insert into keywords (name, id_out, user_id) select 'РљРѕР»РёС‚' , 'korvintag_2027', (select id from users where id_out='korvintag_57') where not exists (select * from keywords where id_out='korvintag_2027');
+update keywords set name='РљРѕР»РёС‚' where id_out='korvintag_2027';
+insert into keywords (name, id_out, user_id) select 'РЎРѕСЃС‚РѕСЏРЅРёРµ' , 'korvintag_2077', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_2077');
+update keywords set name='РЎРѕСЃС‚РѕСЏРЅРёРµ' where id_out='korvintag_2077';
+insert into keywords (name, id_out, user_id) select 'Р§СѓРґРµСЃР°' , 'korvintag_2192', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2192');
+update keywords set name='Р§СѓРґРµСЃР°' where id_out='korvintag_2192';
+insert into keywords (name, id_out, user_id) select 'РџРѕРІС‚РѕСЂРµРЅРёРµ' , 'korvintag_2200', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_2200');
+update keywords set name='РџРѕРІС‚РѕСЂРµРЅРёРµ' where id_out='korvintag_2200';
+insert into keywords (name, id_out, user_id) select 'РЈРІР°Р¶РµРЅРёРµ' , 'korvintag_2235', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2235');
+update keywords set name='РЈРІР°Р¶РµРЅРёРµ' where id_out='korvintag_2235';
+insert into keywords (name, id_out, user_id) select 'РЎРµСЂСЊРµР·РЅРѕСЃС‚СЊ' , 'korvintag_2259', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2259');
+update keywords set name='РЎРµСЂСЊРµР·РЅРѕСЃС‚СЊ' where id_out='korvintag_2259';
+insert into keywords (name, id_out, user_id) select 'РџСЂРѕР±СѓР¶РґРµРЅРёРµ' , 'korvintag_2261', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2261');
+update keywords set name='РџСЂРѕР±СѓР¶РґРµРЅРёРµ' where id_out='korvintag_2261';
+insert into keywords (name, id_out, user_id) select 'Р‘РµСЃС‚РѕР»РєРѕРІРѕСЃС‚СЊ' , 'korvintag_2262', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2262');
+update keywords set name='Р‘РµСЃС‚РѕР»РєРѕРІРѕСЃС‚СЊ' where id_out='korvintag_2262';
+insert into keywords (name, id_out, user_id) select 'РЎРµСЂРґРёС‚РѕСЃС‚СЊ' , 'korvintag_2264', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2264');
+update keywords set name='РЎРµСЂРґРёС‚РѕСЃС‚СЊ' where id_out='korvintag_2264';
+insert into keywords (name, id_out, user_id) select 'Р›СЋРґРё' , 'korvintag_2265', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2265');
+update keywords set name='Р›СЋРґРё' where id_out='korvintag_2265';
+insert into keywords (name, id_out, user_id) select 'РњРіРЅРѕРІРµРЅРёРµ' , 'korvintag_2266', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2266');
+update keywords set name='РњРіРЅРѕРІРµРЅРёРµ' where id_out='korvintag_2266';
+insert into keywords (name, id_out, user_id) select 'Р§РµР»РѕРІРµРє Р·РЅР°РЅРёСЏ' , 'korvintag_2267', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2267');
+update keywords set name='Р§РµР»РѕРІРµРє Р·РЅР°РЅРёСЏ' where id_out='korvintag_2267';
+insert into keywords (name, id_out, user_id) select 'РЇСЃРЅРѕСЃС‚СЊ' , 'korvintag_2268', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2268');
+update keywords set name='РЇСЃРЅРѕСЃС‚СЊ' where id_out='korvintag_2268';
+insert into keywords (name, id_out, user_id) select 'РџРѕСЂР°Р±РѕС‰РµРЅРёРµ' , 'korvintag_2269', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2269');
+update keywords set name='РџРѕСЂР°Р±РѕС‰РµРЅРёРµ' where id_out='korvintag_2269';
+insert into keywords (name, id_out, user_id) select 'РЎР°РјРѕРєРѕРЅС‚СЂРѕР»СЊ' , 'korvintag_2270', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2270');
+update keywords set name='РЎР°РјРѕРєРѕРЅС‚СЂРѕР»СЊ' where id_out='korvintag_2270';
+insert into keywords (name, id_out, user_id) select 'РЎС‚Р°СЂРѕСЃС‚СЊ' , 'korvintag_2271', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2271');
+update keywords set name='РЎС‚Р°СЂРѕСЃС‚СЊ' where id_out='korvintag_2271';
+insert into keywords (name, id_out, user_id) select 'РћС‚СЃС‚СѓРїР»РµРЅРёРµ' , 'korvintag_2272', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2272');
+update keywords set name='РћС‚СЃС‚СѓРїР»РµРЅРёРµ' where id_out='korvintag_2272';
+insert into keywords (name, id_out, user_id) select 'РћСЃС‚Р°РЅРѕРІ' , 'korvintag_2460', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2460');
+update keywords set name='РћСЃС‚Р°РЅРѕРІ' where id_out='korvintag_2460';
+insert into keywords (name, id_out, user_id) select 'РР·Р±Р°РІР»РµРЅРёРµ' , 'korvintag_2476', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2476');
+update keywords set name='РР·Р±Р°РІР»РµРЅРёРµ' where id_out='korvintag_2476';
+insert into keywords (name, id_out, user_id) select 'РўСЏР¶РµР»РѕСЃС‚СЊ' , 'korvintag_2481', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2481');
+update keywords set name='РўСЏР¶РµР»РѕСЃС‚СЊ' where id_out='korvintag_2481';
+insert into keywords (name, id_out, user_id) select 'РќРµСѓРєР»СЋР¶РµСЃС‚СЊ' , 'korvintag_2482', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2482');
+update keywords set name='РќРµСѓРєР»СЋР¶РµСЃС‚СЊ' where id_out='korvintag_2482';
+insert into keywords (name, id_out, user_id) select 'РЎР°РјРѕРґРѕРІРѕР»СЊСЃС‚РІРѕ' , 'korvintag_2483', (select id from users where id_out='korvintag_6') where not exists (select * from keywords where id_out='korvintag_2483');
+update keywords set name='РЎР°РјРѕРґРѕРІРѕР»СЊСЃС‚РІРѕ' where id_out='korvintag_2483';
+insert into keywords (name, id_out, user_id) select 'РџРѕРєРѕР№' , 'korvintag_3752', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_3752');
+update keywords set name='РџРѕРєРѕР№' where id_out='korvintag_3752';
+insert into keywords (name, id_out, user_id) select 'РќР°СЃС‚РѕСЏС‰РµРµ' , 'korvintag_3754', (select id from users where id_out='korvintag_109') where not exists (select * from keywords where id_out='korvintag_3754');
+update keywords set name='РќР°СЃС‚РѕСЏС‰РµРµ' where id_out='korvintag_3754';
+insert into keywords (name, id_out, user_id) select 'РўСЂР°РµРєС‚РѕСЂРёСЏ' , 'korvintag_4074', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_4074');
+update keywords set name='РўСЂР°РµРєС‚РѕСЂРёСЏ' where id_out='korvintag_4074';
+insert into keywords (name, id_out, user_id) select 'РЎРєСЂС‹С‚РЅРѕСЃС‚СЊ' , 'korvintag_4075', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_4075');
+update keywords set name='РЎРєСЂС‹С‚РЅРѕСЃС‚СЊ' where id_out='korvintag_4075';
+insert into keywords (name, id_out, user_id) select 'РџРµС‚Р»СЏ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё' , 'korvintag_4204', (select id from users where id_out='korvintag_24') where not exists (select * from keywords where id_out='korvintag_4204');
+update keywords set name='РџРµС‚Р»СЏ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё' where id_out='korvintag_4204';
+insert into sources (name, id_out, user_id) select 'РџСЂРµРґРёСЃР»РѕРІРёРµ Рє РєРЅРёРіРµ РљР°СЂР»РѕСЃР° РљР°СЃС‚Р°РЅРµРґС‹ "РЈС‡РµРЅРёРµ Р”РѕРЅР° РҐСѓР°РЅР°: РїСѓС‚СЊ Р·РЅР°РЅРёСЏ РёРЅРґРµР№С†РµРІ РЇРєРё"' , 'korvintag_4', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_4');
+update sources set name='РџСЂРµРґРёСЃР»РѕРІРёРµ Рє РєРЅРёРіРµ РљР°СЂР»РѕСЃР° РљР°СЃС‚Р°РЅРµРґС‹ "РЈС‡РµРЅРёРµ Р”РѕРЅР° РҐСѓР°РЅР°: РїСѓС‚СЊ Р·РЅР°РЅРёСЏ РёРЅРґРµР№С†РµРІ РЇРєРё"' where id_out='korvintag_4';
+insert into sources (name, id_out, user_id) select 'РєРЅ. 1 - РЈС‡РµРЅРёРµ Р”РѕРЅР° РҐСѓР°РЅР°: РїСѓС‚СЊ Р·РЅР°РЅРёСЏ РёРЅРґРµР№С†РµРІ РЇРєРё' , 'korvintag_28', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_28');
+update sources set name='РєРЅ. 1 - РЈС‡РµРЅРёРµ Р”РѕРЅР° РҐСѓР°РЅР°: РїСѓС‚СЊ Р·РЅР°РЅРёСЏ РёРЅРґРµР№С†РµРІ РЇРєРё' where id_out='korvintag_28';
+insert into sources (name, id_out, user_id) select 'Р­РўРћ Р РђР‘РћРўРђР•Рў РќРђ 100%! РЈРјРЅРµР№С€РёР№ Р¤РёР»РѕСЃРѕС„ Р•Р»РµРЅР° Р РµСЂРёС… - РљР°Рє РџРѕРјРµРЅСЏС‚СЊ РњС‹С€Р»РµРЅРёРµ' , 'korvintag_270', (select id from users where id_out='korvintag_85') where not exists (select * from sources where id_out='korvintag_270');
+update sources set name='Р­РўРћ Р РђР‘РћРўРђР•Рў РќРђ 100%! РЈРјРЅРµР№С€РёР№ Р¤РёР»РѕСЃРѕС„ Р•Р»РµРЅР° Р РµСЂРёС… - РљР°Рє РџРѕРјРµРЅСЏС‚СЊ РњС‹С€Р»РµРЅРёРµ' where id_out='korvintag_270';
+insert into sources (name, id_out, user_id) select 'Р§РёРєР°РіСЃРєР°СЏ СЃРµРјРµСЂРєР° РїСЃРёС…РѕСЃРѕРјР°С‚РёРєРё: Р±РѕР»СЊС€Р°СЏ РїСЃРёС…РѕСЃРѕРјР°С‚РёС‡РµСЃРєР°СЏ РєР»Р°СЃСЃРёС‡РµСЃРєР°СЏ СЃРµРјРµСЂРєР° Р·Р°Р±РѕР»РµРІР°РЅРёР№' , 'korvintag_276', (select id from users where id_out='korvintag_57') where not exists (select * from sources where id_out='korvintag_276');
+update sources set name='Р§РёРєР°РіСЃРєР°СЏ СЃРµРјРµСЂРєР° РїСЃРёС…РѕСЃРѕРјР°С‚РёРєРё: Р±РѕР»СЊС€Р°СЏ РїСЃРёС…РѕСЃРѕРјР°С‚РёС‡РµСЃРєР°СЏ РєР»Р°СЃСЃРёС‡РµСЃРєР°СЏ СЃРµРјРµСЂРєР° Р·Р°Р±РѕР»РµРІР°РЅРёР№' where id_out='korvintag_276';
+insert into sources (name, id_out, user_id) select 'РєРЅ.2 (1971)В В«РћРўР”Р•Р›Р¬РќРђРЇ Р Р•РђР›Р¬РќРћРЎРўР¬В»' , 'korvintag_318', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_318');
+update sources set name='РєРЅ.2 (1971)В В«РћРўР”Р•Р›Р¬РќРђРЇ Р Р•РђР›Р¬РќРћРЎРўР¬В»' where id_out='korvintag_318';
+insert into sources (name, id_out, user_id) select 'РЎРёР»Р° РЅР°СЃС‚РѕСЏС‰РµРіРѕ' , 'korvintag_419', (select id from users where id_out='korvintag_109') where not exists (select * from sources where id_out='korvintag_419');
+update sources set name='РЎРёР»Р° РЅР°СЃС‚РѕСЏС‰РµРіРѕ' where id_out='korvintag_419';
+insert into sources (name, id_out, user_id) select 'РђС‚РѕРјРЅС‹Рµ РїСЂРёРІС‹С‡РєРё. РљР°Рє РїСЂРёРѕР±СЂРµСЃС‚Рё С…РѕСЂРѕС€РёРµ РїСЂРёРІС‹С‡РєРё Рё РёР·Р±Р°РІРёС‚СЊСЃСЏ РѕС‚ РїР»РѕС…РёС…' , 'korvintag_472', (select id from users where id_out='korvintag_24') where not exists (select * from sources where id_out='korvintag_472');
+update sources set name='РђС‚РѕРјРЅС‹Рµ РїСЂРёРІС‹С‡РєРё. РљР°Рє РїСЂРёРѕР±СЂРµСЃС‚Рё С…РѕСЂРѕС€РёРµ РїСЂРёРІС‹С‡РєРё Рё РёР·Р±Р°РІРёС‚СЊСЃСЏ РѕС‚ РїР»РѕС…РёС…' where id_out='korvintag_472';
 update sources set author_id=(select id from authors where id_out='korvintag_21') where id_out='korvintag_4';
 update sources set author_id=(select id from authors where id_out='korvintag_6') where id_out='korvintag_28';
 update sources set author_id=(select id from authors where id_out='korvintag_85') where id_out='korvintag_270';
 update sources set author_id=(select id from authors where id_out='korvintag_6') where id_out='korvintag_318';
 update sources set author_id=(select id from authors where id_out='korvintag_109') where id_out='korvintag_419';
 update sources set author_id=(select id from authors where id_out='korvintag_121') where id_out='korvintag_472';
-insert into ideas (name, id_out, original_text, content) select 'Смерть как средство, позволяющее выйти за пределы' , 'korvintag_260' , 'Пожалуй, только люди, возвращенные к жизни после клинической смерти, способны поделиться таким опытом в чистом виде. Они, как свидетельствуют современные исследования, видели себя со стороны и в то же время осознавали, что все это происходит именно с ними.' , 'Видимо, переживание смерти заставляет человека отбросить все принятые ранее условности воприятия, и иногда он может воспринимать перед смертью в более широком диапазоне возможностей.' where not exists (select * from sources where id_out='korvintag_260');
-insert into ideas (name, id_out, original_text, content) select 'Сознание не только отражает реальность, но и творит' , 'korvintag_261' , 'Означает ли это, что Кастанеда интересуется не столько воз¬действием наркотиков на психику, сколько природой сознания как такового? Оно достойно внимания, потому что разорвано, противоречиво... При этом, судя по всему, обладает одним удиви¬тельным свойством. Сознание не только отражает реальность, оно, оказывается, способно творить ее по собственному произво¬лу. “Главный принцип его книг, — пишет о Кастанеде Пол Рис- ман, — в том, что опыт — не то, что просто происходит, а то, что мы создаем преимущественно сами — хотя очень редко осознаем свою созидательную роль”' , 'Мы привыкли, что сознание отражает реальность. Момент же того, как оно и творит эту реальность, ускользает от нашего рационального анализа. Тогда как именно в этом, креативном аспекте сознания, и кроется множество открытий, необходимых для эволюции человечества.' where not exists (select * from sources where id_out='korvintag_261');
-insert into ideas (name, id_out, original_text, content) select 'Перетворение миражей и земная участь' , 'korvintag_262' , '. Творите, творите без стеснения!
-Но какой смысл в этих призрачных картинах? Только ли в раскрытии всепроникающей силы сознания? В книгах Кастанеды ответ в известной мере простодушен: миражи позволяют уйти от самого себя... Каждый человек пожизненно приговорен к конкретной земной участи. Это немножко безрадостно. Так хочется преодолеть свое “Я”. По крайней, мере разломать его жесткое ядро, расширить рамки сугубо индивидуального. Что и говорить, такое стремление оправданно: это глубинная, труднонасыщаемая человеческая потребность.' , 'Люди живут в миражах. И эти миражи позволяют уйти от самого себя. Но если наш приговор земной участи есть такой же мираж, наше творение, то может быть имеет смысл его постичь? И перетворить?
+update sources set author_id=(select id from authors where id_out='korvintag_153') where id_out='korvintag_276';
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРјРµСЂС‚СЊ РєР°Рє СЃСЂРµРґСЃС‚РІРѕ, РїРѕР·РІРѕР»СЏСЋС‰РµРµ РІС‹Р№С‚Рё Р·Р° РїСЂРµРґРµР»С‹' , 'korvintag_260' , 'РџРѕР¶Р°Р»СѓР№, С‚РѕР»СЊРєРѕ Р»СЋРґРё, РІРѕР·РІСЂР°С‰РµРЅРЅС‹Рµ Рє Р¶РёР·РЅРё РїРѕСЃР»Рµ РєР»РёРЅРёС‡РµСЃРєРѕР№ СЃРјРµСЂС‚Рё, СЃРїРѕСЃРѕР±РЅС‹ РїРѕРґРµР»РёС‚СЊСЃСЏ С‚Р°РєРёРј РѕРїС‹С‚РѕРј РІ С‡РёСЃС‚РѕРј РІРёРґРµ. РћРЅРё, РєР°Рє СЃРІРёРґРµС‚РµР»СЊСЃС‚РІСѓСЋС‚ СЃРѕРІСЂРµРјРµРЅРЅС‹Рµ РёСЃСЃР»РµРґРѕРІР°РЅРёСЏ, РІРёРґРµР»Рё СЃРµР±СЏ СЃРѕ СЃС‚РѕСЂРѕРЅС‹ Рё РІ С‚Рѕ Р¶Рµ РІСЂРµРјСЏ РѕСЃРѕР·РЅР°РІР°Р»Рё, С‡С‚Рѕ РІСЃРµ СЌС‚Рѕ РїСЂРѕРёСЃС…РѕРґРёС‚ РёРјРµРЅРЅРѕ СЃ РЅРёРјРё.' , 'Р’РёРґРёРјРѕ, РїРµСЂРµР¶РёРІР°РЅРёРµ СЃРјРµСЂС‚Рё Р·Р°СЃС‚Р°РІР»СЏРµС‚ С‡РµР»РѕРІРµРєР° РѕС‚Р±СЂРѕСЃРёС‚СЊ РІСЃРµ РїСЂРёРЅСЏС‚С‹Рµ СЂР°РЅРµРµ СѓСЃР»РѕРІРЅРѕСЃС‚Рё РІРѕРїСЂРёСЏС‚РёСЏ, Рё РёРЅРѕРіРґР° РѕРЅ РјРѕР¶РµС‚ РІРѕСЃРїСЂРёРЅРёРјР°С‚СЊ РїРµСЂРµРґ СЃРјРµСЂС‚СЊСЋ РІ Р±РѕР»РµРµ С€РёСЂРѕРєРѕРј РґРёР°РїР°Р·РѕРЅРµ РІРѕР·РјРѕР¶РЅРѕСЃС‚РµР№.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_260');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРѕР·РЅР°РЅРёРµ РЅРµ С‚РѕР»СЊРєРѕ РѕС‚СЂР°Р¶Р°РµС‚ СЂРµР°Р»СЊРЅРѕСЃС‚СЊ, РЅРѕ Рё С‚РІРѕСЂРёС‚' , 'korvintag_261' , 'РћР·РЅР°С‡Р°РµС‚ Р»Рё СЌС‚Рѕ, С‡С‚Рѕ РљР°СЃС‚Р°РЅРµРґР° РёРЅС‚РµСЂРµСЃСѓРµС‚СЃСЏ РЅРµ СЃС‚РѕР»СЊРєРѕ РІРѕР·В¬РґРµР№СЃС‚РІРёРµРј РЅР°СЂРєРѕС‚РёРєРѕРІ РЅР° РїСЃРёС…РёРєСѓ, СЃРєРѕР»СЊРєРѕ РїСЂРёСЂРѕРґРѕР№ СЃРѕР·РЅР°РЅРёСЏ РєР°Рє С‚Р°РєРѕРІРѕРіРѕ? РћРЅРѕ РґРѕСЃС‚РѕР№РЅРѕ РІРЅРёРјР°РЅРёСЏ, РїРѕС‚РѕРјСѓ С‡С‚Рѕ СЂР°Р·РѕСЂРІР°РЅРѕ, РїСЂРѕС‚РёРІРѕСЂРµС‡РёРІРѕ... РџСЂРё СЌС‚РѕРј, СЃСѓРґСЏ РїРѕ РІСЃРµРјСѓ, РѕР±Р»Р°РґР°РµС‚ РѕРґРЅРёРј СѓРґРёРІРёВ¬С‚РµР»СЊРЅС‹Рј СЃРІРѕР№СЃС‚РІРѕРј. РЎРѕР·РЅР°РЅРёРµ РЅРµ С‚РѕР»СЊРєРѕ РѕС‚СЂР°Р¶Р°РµС‚ СЂРµР°Р»СЊРЅРѕСЃС‚СЊ, РѕРЅРѕ, РѕРєР°Р·С‹РІР°РµС‚СЃСЏ, СЃРїРѕСЃРѕР±РЅРѕ С‚РІРѕСЂРёС‚СЊ РµРµ РїРѕ СЃРѕР±СЃС‚РІРµРЅРЅРѕРјСѓ РїСЂРѕРёР·РІРѕВ¬Р»Сѓ. вЂњР“Р»Р°РІРЅС‹Р№ РїСЂРёРЅС†РёРї РµРіРѕ РєРЅРёРі, вЂ” РїРёС€РµС‚ Рѕ РљР°СЃС‚Р°РЅРµРґРµ РџРѕР» Р РёСЃ- РјР°РЅ, вЂ” РІ С‚РѕРј, С‡С‚Рѕ РѕРїС‹С‚ вЂ” РЅРµ С‚Рѕ, С‡С‚Рѕ РїСЂРѕСЃС‚Рѕ РїСЂРѕРёСЃС…РѕРґРёС‚, Р° С‚Рѕ, С‡С‚Рѕ РјС‹ СЃРѕР·РґР°РµРј РїСЂРµРёРјСѓС‰РµСЃС‚РІРµРЅРЅРѕ СЃР°РјРё вЂ” С…РѕС‚СЏ РѕС‡РµРЅСЊ СЂРµРґРєРѕ РѕСЃРѕР·РЅР°РµРј СЃРІРѕСЋ СЃРѕР·РёРґР°С‚РµР»СЊРЅСѓСЋ СЂРѕР»СЊвЂќ' , 'РњС‹ РїСЂРёРІС‹РєР»Рё, С‡С‚Рѕ СЃРѕР·РЅР°РЅРёРµ РѕС‚СЂР°Р¶Р°РµС‚ СЂРµР°Р»СЊРЅРѕСЃС‚СЊ. РњРѕРјРµРЅС‚ Р¶Рµ С‚РѕРіРѕ, РєР°Рє РѕРЅРѕ Рё С‚РІРѕСЂРёС‚ СЌС‚Сѓ СЂРµР°Р»СЊРЅРѕСЃС‚СЊ, СѓСЃРєРѕР»СЊР·Р°РµС‚ РѕС‚ РЅР°С€РµРіРѕ СЂР°С†РёРѕРЅР°Р»СЊРЅРѕРіРѕ Р°РЅР°Р»РёР·Р°. РўРѕРіРґР° РєР°Рє РёРјРµРЅРЅРѕ РІ СЌС‚РѕРј, РєСЂРµР°С‚РёРІРЅРѕРј Р°СЃРїРµРєС‚Рµ СЃРѕР·РЅР°РЅРёСЏ, Рё РєСЂРѕРµС‚СЃСЏ РјРЅРѕР¶РµСЃС‚РІРѕ РѕС‚РєСЂС‹С‚РёР№, РЅРµРѕР±С…РѕРґРёРјС‹С… РґР»СЏ СЌРІРѕР»СЋС†РёРё С‡РµР»РѕРІРµС‡РµСЃС‚РІР°.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_261');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РџРµСЂРµС‚РІРѕСЂРµРЅРёРµ РјРёСЂР°Р¶РµР№ Рё Р·РµРјРЅР°СЏ СѓС‡Р°СЃС‚СЊ' , 'korvintag_262' , '. РўРІРѕСЂРёС‚Рµ, С‚РІРѕСЂРёС‚Рµ Р±РµР· СЃС‚РµСЃРЅРµРЅРёСЏ!
+РќРѕ РєР°РєРѕР№ СЃРјС‹СЃР» РІ СЌС‚РёС… РїСЂРёР·СЂР°С‡РЅС‹С… РєР°СЂС‚РёРЅР°С…? РўРѕР»СЊРєРѕ Р»Рё РІ СЂР°СЃРєСЂС‹С‚РёРё РІСЃРµРїСЂРѕРЅРёРєР°СЋС‰РµР№ СЃРёР»С‹ СЃРѕР·РЅР°РЅРёСЏ? Р’ РєРЅРёРіР°С… РљР°СЃС‚Р°РЅРµРґС‹ РѕС‚РІРµС‚ РІ РёР·РІРµСЃС‚РЅРѕР№ РјРµСЂРµ РїСЂРѕСЃС‚РѕРґСѓС€РµРЅ: РјРёСЂР°Р¶Рё РїРѕР·РІРѕР»СЏСЋС‚ СѓР№С‚Рё РѕС‚ СЃР°РјРѕРіРѕ СЃРµР±СЏ... РљР°Р¶РґС‹Р№ С‡РµР»РѕРІРµРє РїРѕР¶РёР·РЅРµРЅРЅРѕ РїСЂРёРіРѕРІРѕСЂРµРЅ Рє РєРѕРЅРєСЂРµС‚РЅРѕР№ Р·РµРјРЅРѕР№ СѓС‡Р°СЃС‚Рё. Р­С‚Рѕ РЅРµРјРЅРѕР¶РєРѕ Р±РµР·СЂР°РґРѕСЃС‚РЅРѕ. РўР°Рє С…РѕС‡РµС‚СЃСЏ РїСЂРµРѕРґРѕР»РµС‚СЊ СЃРІРѕРµ вЂњРЇвЂќ. РџРѕ РєСЂР°Р№РЅРµР№, РјРµСЂРµ СЂР°Р·Р»РѕРјР°С‚СЊ РµРіРѕ Р¶РµСЃС‚РєРѕРµ СЏРґСЂРѕ, СЂР°СЃС€РёСЂРёС‚СЊ СЂР°РјРєРё СЃСѓРіСѓР±Рѕ РёРЅРґРёРІРёРґСѓР°Р»СЊРЅРѕРіРѕ. Р§С‚Рѕ Рё РіРѕРІРѕСЂРёС‚СЊ, С‚Р°РєРѕРµ СЃС‚СЂРµРјР»РµРЅРёРµ РѕРїСЂР°РІРґР°РЅРЅРѕ: СЌС‚Рѕ РіР»СѓР±РёРЅРЅР°СЏ, С‚СЂСѓРґРЅРѕРЅР°СЃС‹С‰Р°РµРјР°СЏ С‡РµР»РѕРІРµС‡РµСЃРєР°СЏ РїРѕС‚СЂРµР±РЅРѕСЃС‚СЊ.' , 'Р›СЋРґРё Р¶РёРІСѓС‚ РІ РјРёСЂР°Р¶Р°С…. Р СЌС‚Рё РјРёСЂР°Р¶Рё РїРѕР·РІРѕР»СЏСЋС‚ СѓР№С‚Рё РѕС‚ СЃР°РјРѕРіРѕ СЃРµР±СЏ. РќРѕ РµСЃР»Рё РЅР°С€ РїСЂРёРіРѕРІРѕСЂ Р·РµРјРЅРѕР№ СѓС‡Р°СЃС‚Рё РµСЃС‚СЊ С‚Р°РєРѕР№ Р¶Рµ РјРёСЂР°Р¶, РЅР°С€Рµ С‚РІРѕСЂРµРЅРёРµ, С‚Рѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ РёРјРµРµС‚ СЃРјС‹СЃР» РµРіРѕ РїРѕСЃС‚РёС‡СЊ? Р РїРµСЂРµС‚РІРѕСЂРёС‚СЊ?
 
-И где границы этих миражей, точнее говоря границы перетворения своей жизни через изменение миражей?' where not exists (select * from sources where id_out='korvintag_262');
-insert into ideas (name, id_out, original_text, content) select 'Противоречие' , 'korvintag_263' , 'С одной стороны, человек изо всех сил старается закрепиться в собственной психологической нише, обжить ее. А с другой — сам же ее взрывает. И наше столетие наглядно демонстрирует эту потребность. Молодые радикалы 60-х годов во многих западных странах представляли индивидуальную жизнь как смену карна¬вальных масок. Хватит быть клерком, поеду в индейскую резер¬вацию. И наркотики пришлись ко времени... Другой пример этого же феномена — желание с помощью хирурга сменить пол. Рожда¬ется мода. Человек изо всех сил старается выскочить из самого себя.' , 'С одной стороны человек очень много тратит сил на обживание в своей психологической нише. С другой стороны не меньше сил тратит на то, чтобы взорвать ее. Какой то странный процесс, в котором смешиваются абсолютно противоречивые желания. Сталкинг и сновидение?' where not exists (select * from sources where id_out='korvintag_263');
-insert into ideas (name, id_out, original_text, content) select 'Тело как инструмент познания' , 'korvintag_264' , 'душа человека — целая вселенная. Но почему только душа? Тело, со¬гласно Кастанеде, тоже обладает способностью познавать. Это зависит от того, как оно дышит, как человек стоит или бежит, как направляет глаза на объект. Для многих из нас, как оказывается, тела несут в себе нечто интеллектуальное. У них свой язык, дру¬гие знаки. Телесность помогает преодолеть диктат сознания. Зна¬ние вообще призвано устранить “разномыслие” рассудка и тела. Тут, разумеется, выстраивается своеобразная антропология. Ста¬ло быть, правы те исследователи, которые полагают, что Кастане¬да всю свою жизнь, том за томом, наращивал некое антропологи¬ческое знание?' , 'Не только разум, но и тело человека может наращивать знание. Как дышит, двигается, смотрит.' where not exists (select * from sources where id_out='korvintag_264');
-insert into ideas (name, id_out, original_text, content) select 'Роль сомнения в разрушении догмата реальности' , 'korvintag_265' , 'реальность — не что иное, как порождение определенного способа описания мира. Его навязывают нам с младых ногтей. Мы как бы сообща включаемся в сотворение действительности, и она стано¬вится для нас одинаковой. Создающие мир восприятия образуют сплошной, непроницаемый поток. Истинность возникшего мира никогда не подвергается сомнению. Но стоит изменить практиче¬скую установку (забегая вперед, скажем: у Кастанеды это назы¬вается “точкой сборки”) — и откроется неизведанное... “Большая часть критиков Кастанеды признали, — пишет Ричард Де- Миль, — кто нехотя, а кто и с восторгом, что его усилиями наш мир стал чуть интереснее, не сделавшись от этого хуже, чем он есть на самом деле. Те же, кто оказался в дураках, должны винить в этом только себя самих. И если так посмотреть, сам Кастанеда — Кой¬от, настоящий индейский шаман. Он трикстер, тот, кто, злоупот¬ребляя доверчивостью людей, внушает им ценнейшие уроки”' , 'Окружающий нас мир стоит подвергать сомнению. Тогда может открыться неизведанное.' where not exists (select * from sources where id_out='korvintag_265');
-insert into ideas (name, id_out, original_text, content) select 'Псевдореальность' , 'korvintag_268' , 'Что делает псевдореальными наше креативная часть осознания' , 'И ежу понятно, что именно наше осознанание формирует реальность на какой-то процент. Засчет креативной части сознания. Но вопрос - как наше сознание фантомное представление водружает внутри себя на место реальности? 
+Р РіРґРµ РіСЂР°РЅРёС†С‹ СЌС‚РёС… РјРёСЂР°Р¶РµР№, С‚РѕС‡РЅРµРµ РіРѕРІРѕСЂСЏ РіСЂР°РЅРёС†С‹ РїРµСЂРµС‚РІРѕСЂРµРЅРёСЏ СЃРІРѕРµР№ Р¶РёР·РЅРё С‡РµСЂРµР· РёР·РјРµРЅРµРЅРёРµ РјРёСЂР°Р¶РµР№?', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_262');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РџСЂРѕС‚РёРІРѕСЂРµС‡РёРµ' , 'korvintag_263' , 'РЎ РѕРґРЅРѕР№ СЃС‚РѕСЂРѕРЅС‹, С‡РµР»РѕРІРµРє РёР·Рѕ РІСЃРµС… СЃРёР» СЃС‚Р°СЂР°РµС‚СЃСЏ Р·Р°РєСЂРµРїРёС‚СЊСЃСЏ РІ СЃРѕР±СЃС‚РІРµРЅРЅРѕР№ РїСЃРёС…РѕР»РѕРіРёС‡РµСЃРєРѕР№ РЅРёС€Рµ, РѕР±Р¶РёС‚СЊ РµРµ. Рђ СЃ РґСЂСѓРіРѕР№ вЂ” СЃР°Рј Р¶Рµ РµРµ РІР·СЂС‹РІР°РµС‚. Р РЅР°С€Рµ СЃС‚РѕР»РµС‚РёРµ РЅР°РіР»СЏРґРЅРѕ РґРµРјРѕРЅСЃС‚СЂРёСЂСѓРµС‚ СЌС‚Сѓ РїРѕС‚СЂРµР±РЅРѕСЃС‚СЊ. РњРѕР»РѕРґС‹Рµ СЂР°РґРёРєР°Р»С‹ 60-С… РіРѕРґРѕРІ РІРѕ РјРЅРѕРіРёС… Р·Р°РїР°РґРЅС‹С… СЃС‚СЂР°РЅР°С… РїСЂРµРґСЃС‚Р°РІР»СЏР»Рё РёРЅРґРёРІРёРґСѓР°Р»СЊРЅСѓСЋ Р¶РёР·РЅСЊ РєР°Рє СЃРјРµРЅСѓ РєР°СЂРЅР°В¬РІР°Р»СЊРЅС‹С… РјР°СЃРѕРє. РҐРІР°С‚РёС‚ Р±С‹С‚СЊ РєР»РµСЂРєРѕРј, РїРѕРµРґСѓ РІ РёРЅРґРµР№СЃРєСѓСЋ СЂРµР·РµСЂВ¬РІР°С†РёСЋ. Р РЅР°СЂРєРѕС‚РёРєРё РїСЂРёС€Р»РёСЃСЊ РєРѕ РІСЂРµРјРµРЅРё... Р”СЂСѓРіРѕР№ РїСЂРёРјРµСЂ СЌС‚РѕРіРѕ Р¶Рµ С„РµРЅРѕРјРµРЅР° вЂ” Р¶РµР»Р°РЅРёРµ СЃ РїРѕРјРѕС‰СЊСЋ С…РёСЂСѓСЂРіР° СЃРјРµРЅРёС‚СЊ РїРѕР». Р РѕР¶РґР°В¬РµС‚СЃСЏ РјРѕРґР°. Р§РµР»РѕРІРµРє РёР·Рѕ РІСЃРµС… СЃРёР» СЃС‚Р°СЂР°РµС‚СЃСЏ РІС‹СЃРєРѕС‡РёС‚СЊ РёР· СЃР°РјРѕРіРѕ СЃРµР±СЏ.' , 'РЎ РѕРґРЅРѕР№ СЃС‚РѕСЂРѕРЅС‹ С‡РµР»РѕРІРµРє РѕС‡РµРЅСЊ РјРЅРѕРіРѕ С‚СЂР°С‚РёС‚ СЃРёР» РЅР° РѕР±Р¶РёРІР°РЅРёРµ РІ СЃРІРѕРµР№ РїСЃРёС…РѕР»РѕРіРёС‡РµСЃРєРѕР№ РЅРёС€Рµ. РЎ РґСЂСѓРіРѕР№ СЃС‚РѕСЂРѕРЅС‹ РЅРµ РјРµРЅСЊС€Рµ СЃРёР» С‚СЂР°С‚РёС‚ РЅР° С‚Рѕ, С‡С‚РѕР±С‹ РІР·РѕСЂРІР°С‚СЊ РµРµ. РљР°РєРѕР№ С‚Рѕ СЃС‚СЂР°РЅРЅС‹Р№ РїСЂРѕС†РµСЃСЃ, РІ РєРѕС‚РѕСЂРѕРј СЃРјРµС€РёРІР°СЋС‚СЃСЏ Р°Р±СЃРѕР»СЋС‚РЅРѕ РїСЂРѕС‚РёРІРѕСЂРµС‡РёРІС‹Рµ Р¶РµР»Р°РЅРёСЏ. РЎС‚Р°Р»РєРёРЅРі Рё СЃРЅРѕРІРёРґРµРЅРёРµ?', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_263');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РўРµР»Рѕ РєР°Рє РёРЅСЃС‚СЂСѓРјРµРЅС‚ РїРѕР·РЅР°РЅРёСЏ' , 'korvintag_264' , 'РґСѓС€Р° С‡РµР»РѕРІРµРєР° вЂ” С†РµР»Р°СЏ РІСЃРµР»РµРЅРЅР°СЏ. РќРѕ РїРѕС‡РµРјСѓ С‚РѕР»СЊРєРѕ РґСѓС€Р°? РўРµР»Рѕ, СЃРѕВ¬РіР»Р°СЃРЅРѕ РљР°СЃС‚Р°РЅРµРґРµ, С‚РѕР¶Рµ РѕР±Р»Р°РґР°РµС‚ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊСЋ РїРѕР·РЅР°РІР°С‚СЊ. Р­С‚Рѕ Р·Р°РІРёСЃРёС‚ РѕС‚ С‚РѕРіРѕ, РєР°Рє РѕРЅРѕ РґС‹С€РёС‚, РєР°Рє С‡РµР»РѕРІРµРє СЃС‚РѕРёС‚ РёР»Рё Р±РµР¶РёС‚, РєР°Рє РЅР°РїСЂР°РІР»СЏРµС‚ РіР»Р°Р·Р° РЅР° РѕР±СЉРµРєС‚. Р”Р»СЏ РјРЅРѕРіРёС… РёР· РЅР°СЃ, РєР°Рє РѕРєР°Р·С‹РІР°РµС‚СЃСЏ, С‚РµР»Р° РЅРµСЃСѓС‚ РІ СЃРµР±Рµ РЅРµС‡С‚Рѕ РёРЅС‚РµР»Р»РµРєС‚СѓР°Р»СЊРЅРѕРµ. РЈ РЅРёС… СЃРІРѕР№ СЏР·С‹Рє, РґСЂСѓВ¬РіРёРµ Р·РЅР°РєРё. РўРµР»РµСЃРЅРѕСЃС‚СЊ РїРѕРјРѕРіР°РµС‚ РїСЂРµРѕРґРѕР»РµС‚СЊ РґРёРєС‚Р°С‚ СЃРѕР·РЅР°РЅРёСЏ. Р—РЅР°В¬РЅРёРµ РІРѕРѕР±С‰Рµ РїСЂРёР·РІР°РЅРѕ СѓСЃС‚СЂР°РЅРёС‚СЊ вЂњСЂР°Р·РЅРѕРјС‹СЃР»РёРµвЂќ СЂР°СЃСЃСѓРґРєР° Рё С‚РµР»Р°. РўСѓС‚, СЂР°Р·СѓРјРµРµС‚СЃСЏ, РІС‹СЃС‚СЂР°РёРІР°РµС‚СЃСЏ СЃРІРѕРµРѕР±СЂР°Р·РЅР°СЏ Р°РЅС‚СЂРѕРїРѕР»РѕРіРёСЏ. РЎС‚Р°В¬Р»Рѕ Р±С‹С‚СЊ, РїСЂР°РІС‹ С‚Рµ РёСЃСЃР»РµРґРѕРІР°С‚РµР»Рё, РєРѕС‚РѕСЂС‹Рµ РїРѕР»Р°РіР°СЋС‚, С‡С‚Рѕ РљР°СЃС‚Р°РЅРµВ¬РґР° РІСЃСЋ СЃРІРѕСЋ Р¶РёР·РЅСЊ, С‚РѕРј Р·Р° С‚РѕРјРѕРј, РЅР°СЂР°С‰РёРІР°Р» РЅРµРєРѕРµ Р°РЅС‚СЂРѕРїРѕР»РѕРіРёВ¬С‡РµСЃРєРѕРµ Р·РЅР°РЅРёРµ?' , 'РќРµ С‚РѕР»СЊРєРѕ СЂР°Р·СѓРј, РЅРѕ Рё С‚РµР»Рѕ С‡РµР»РѕРІРµРєР° РјРѕР¶РµС‚ РЅР°СЂР°С‰РёРІР°С‚СЊ Р·РЅР°РЅРёРµ. РљР°Рє РґС‹С€РёС‚, РґРІРёРіР°РµС‚СЃСЏ, СЃРјРѕС‚СЂРёС‚.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_264');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р РѕР»СЊ СЃРѕРјРЅРµРЅРёСЏ РІ СЂР°Р·СЂСѓС€РµРЅРёРё РґРѕРіРјР°С‚Р° СЂРµР°Р»СЊРЅРѕСЃС‚Рё' , 'korvintag_265' , 'СЂРµР°Р»СЊРЅРѕСЃС‚СЊ вЂ” РЅРµ С‡С‚Рѕ РёРЅРѕРµ, РєР°Рє РїРѕСЂРѕР¶РґРµРЅРёРµ РѕРїСЂРµРґРµР»РµРЅРЅРѕРіРѕ СЃРїРѕСЃРѕР±Р° РѕРїРёСЃР°РЅРёСЏ РјРёСЂР°. Р•РіРѕ РЅР°РІСЏР·С‹РІР°СЋС‚ РЅР°Рј СЃ РјР»Р°РґС‹С… РЅРѕРіС‚РµР№. РњС‹ РєР°Рє Р±С‹ СЃРѕРѕР±С‰Р° РІРєР»СЋС‡Р°РµРјСЃСЏ РІ СЃРѕС‚РІРѕСЂРµРЅРёРµ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚Рё, Рё РѕРЅР° СЃС‚Р°РЅРѕВ¬РІРёС‚СЃСЏ РґР»СЏ РЅР°СЃ РѕРґРёРЅР°РєРѕРІРѕР№. РЎРѕР·РґР°СЋС‰РёРµ РјРёСЂ РІРѕСЃРїСЂРёСЏС‚РёСЏ РѕР±СЂР°Р·СѓСЋС‚ СЃРїР»РѕС€РЅРѕР№, РЅРµРїСЂРѕРЅРёС†Р°РµРјС‹Р№ РїРѕС‚РѕРє. РСЃС‚РёРЅРЅРѕСЃС‚СЊ РІРѕР·РЅРёРєС€РµРіРѕ РјРёСЂР° РЅРёРєРѕРіРґР° РЅРµ РїРѕРґРІРµСЂРіР°РµС‚СЃСЏ СЃРѕРјРЅРµРЅРёСЋ. РќРѕ СЃС‚РѕРёС‚ РёР·РјРµРЅРёС‚СЊ РїСЂР°РєС‚РёС‡РµВ¬СЃРєСѓСЋ СѓСЃС‚Р°РЅРѕРІРєСѓ (Р·Р°Р±РµРіР°СЏ РІРїРµСЂРµРґ, СЃРєР°Р¶РµРј: Сѓ РљР°СЃС‚Р°РЅРµРґС‹ СЌС‚Рѕ РЅР°Р·С‹В¬РІР°РµС‚СЃСЏ вЂњС‚РѕС‡РєРѕР№ СЃР±РѕСЂРєРёвЂќ) вЂ” Рё РѕС‚РєСЂРѕРµС‚СЃСЏ РЅРµРёР·РІРµРґР°РЅРЅРѕРµ... вЂњР‘РѕР»СЊС€Р°СЏ С‡Р°СЃС‚СЊ РєСЂРёС‚РёРєРѕРІ РљР°СЃС‚Р°РЅРµРґС‹ РїСЂРёР·РЅР°Р»Рё, вЂ” РїРёС€РµС‚ Р РёС‡Р°СЂРґ Р”Рµ- РњРёР»СЊ, вЂ” РєС‚Рѕ РЅРµС…РѕС‚СЏ, Р° РєС‚Рѕ Рё СЃ РІРѕСЃС‚РѕСЂРіРѕРј, С‡С‚Рѕ РµРіРѕ СѓСЃРёР»РёСЏРјРё РЅР°С€ РјРёСЂ СЃС‚Р°Р» С‡СѓС‚СЊ РёРЅС‚РµСЂРµСЃРЅРµРµ, РЅРµ СЃРґРµР»Р°РІС€РёСЃСЊ РѕС‚ СЌС‚РѕРіРѕ С…СѓР¶Рµ, С‡РµРј РѕРЅ РµСЃС‚СЊ РЅР° СЃР°РјРѕРј РґРµР»Рµ. РўРµ Р¶Рµ, РєС‚Рѕ РѕРєР°Р·Р°Р»СЃСЏ РІ РґСѓСЂР°РєР°С…, РґРѕР»Р¶РЅС‹ РІРёРЅРёС‚СЊ РІ СЌС‚РѕРј С‚РѕР»СЊРєРѕ СЃРµР±СЏ СЃР°РјРёС…. Р РµСЃР»Рё С‚Р°Рє РїРѕСЃРјРѕС‚СЂРµС‚СЊ, СЃР°Рј РљР°СЃС‚Р°РЅРµРґР° вЂ” РљРѕР№В¬РѕС‚, РЅР°СЃС‚РѕСЏС‰РёР№ РёРЅРґРµР№СЃРєРёР№ С€Р°РјР°РЅ. РћРЅ С‚СЂРёРєСЃС‚РµСЂ, С‚РѕС‚, РєС‚Рѕ, Р·Р»РѕСѓРїРѕС‚В¬СЂРµР±Р»СЏСЏ РґРѕРІРµСЂС‡РёРІРѕСЃС‚СЊСЋ Р»СЋРґРµР№, РІРЅСѓС€Р°РµС‚ РёРј С†РµРЅРЅРµР№С€РёРµ СѓСЂРѕРєРёвЂќ' , 'РћРєСЂСѓР¶Р°СЋС‰РёР№ РЅР°СЃ РјРёСЂ СЃС‚РѕРёС‚ РїРѕРґРІРµСЂРіР°С‚СЊ СЃРѕРјРЅРµРЅРёСЋ. РўРѕРіРґР° РјРѕР¶РµС‚ РѕС‚РєСЂС‹С‚СЊСЃСЏ РЅРµРёР·РІРµРґР°РЅРЅРѕРµ.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_265');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РџСЃРµРІРґРѕСЂРµР°Р»СЊРЅРѕСЃС‚СЊ' , 'korvintag_268' , 'Р§С‚Рѕ РґРµР»Р°РµС‚ РїСЃРµРІРґРѕСЂРµР°Р»СЊРЅС‹РјРё РЅР°С€Рµ РєСЂРµР°С‚РёРІРЅР°СЏ С‡Р°СЃС‚СЊ РѕСЃРѕР·РЅР°РЅРёСЏ' , 'Р РµР¶Сѓ РїРѕРЅСЏС‚РЅРѕ, С‡С‚Рѕ РёРјРµРЅРЅРѕ РЅР°С€Рµ РѕСЃРѕР·РЅР°РЅР°РЅРёРµ С„РѕСЂРјРёСЂСѓРµС‚ СЂРµР°Р»СЊРЅРѕСЃС‚СЊ РЅР° РєР°РєРѕР№-С‚Рѕ РїСЂРѕС†РµРЅС‚. Р—Р°СЃС‡РµС‚ РєСЂРµР°С‚РёРІРЅРѕР№ С‡Р°СЃС‚Рё СЃРѕР·РЅР°РЅРёСЏ. РќРѕ РІРѕРїСЂРѕСЃ - РєР°Рє РЅР°С€Рµ СЃРѕР·РЅР°РЅРёРµ С„Р°РЅС‚РѕРјРЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ РІРѕРґСЂСѓР¶Р°РµС‚ РІРЅСѓС‚СЂРё СЃРµР±СЏ РЅР° РјРµСЃС‚Рѕ СЂРµР°Р»СЊРЅРѕСЃС‚Рё? 
 
-К примеру, как украинцы внутри своего сознания за 30 лет сделали новый миф, ставшей для них реальностью?
+Рљ РїСЂРёРјРµСЂСѓ, РєР°Рє СѓРєСЂР°РёРЅС†С‹ РІРЅСѓС‚СЂРё СЃРІРѕРµРіРѕ СЃРѕР·РЅР°РЅРёСЏ Р·Р° 30 Р»РµС‚ СЃРґРµР»Р°Р»Рё РЅРѕРІС‹Р№ РјРёС„, СЃС‚Р°РІС€РµР№ РґР»СЏ РЅРёС… СЂРµР°Р»СЊРЅРѕСЃС‚СЊСЋ?
 
-Как женщина, которую изнасиловали, делает реальность, что все мужики садисты? И т.д.' where not exists (select * from sources where id_out='korvintag_268');
-insert into ideas (name, id_out, original_text, content) select 'Нагваль' , 'korvintag_270' , '? Каждый индивид состоит, по дону Хуану, из двух сущностей — тонали и нагвали. Тональ — это все, что мы есть, то, что мы знаем. Это не только мы, люди, но и весь наш мир. В известном смысле тональ — это все видимое, окружающее нас. Эта сущность человека приводит хаос мира в состояние упорядо¬ченности, помогает обозначить и описать его. Тональ начинается с рождения и заканчивается смертью. Она творит мир в соответ¬ствии со своими законами. Тональ составляет правила, посредст¬вом которых она способна понимать окружающее.
-Но тональю не исчерпывается человек. В нем есть и другая сущность — нагваль. Так Кастанеда называет часть нас самих, с которой мы вообще не вступаем в контакт. Это нечто, не имеющее определения (ни слов, ни имен, ни ощущений, ни значения), но тем не менее неотторжимый компонент нас самих. Можно ока¬заться свидетелем нагвали, но определить ее невозможно. Ее спо¬собно наблюдать только тело, отнюдь не разум. Нагваль обнару¬живается в непостижимых проявлениях.' , 'Проявления Нагваля можно заметить только через тело. Через разум, тональ, нагваля не видно. Его как бы нет.' where not exists (select * from sources where id_out='korvintag_270');
-insert into ideas (name, id_out, original_text, content) select 'Место силы' , 'korvintag_274' , 'мне надо найти на полу пятно, где я мог бы сидеть без усталости.
+РљР°Рє Р¶РµРЅС‰РёРЅР°, РєРѕС‚РѕСЂСѓСЋ РёР·РЅР°СЃРёР»РѕРІР°Р»Рё, РґРµР»Р°РµС‚ СЂРµР°Р»СЊРЅРѕСЃС‚СЊ, С‡С‚Рѕ РІСЃРµ РјСѓР¶РёРєРё СЃР°РґРёСЃС‚С‹? Р С‚.Рґ.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_268');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РќР°РіРІР°Р»СЊ' , 'korvintag_270' , '? РљР°Р¶РґС‹Р№ РёРЅРґРёРІРёРґ СЃРѕСЃС‚РѕРёС‚, РїРѕ РґРѕРЅСѓ РҐСѓР°РЅСѓ, РёР· РґРІСѓС… СЃСѓС‰РЅРѕСЃС‚РµР№ вЂ” С‚РѕРЅР°Р»Рё Рё РЅР°РіРІР°Р»Рё. РўРѕРЅР°Р»СЊ вЂ” СЌС‚Рѕ РІСЃРµ, С‡С‚Рѕ РјС‹ РµСЃС‚СЊ, С‚Рѕ, С‡С‚Рѕ РјС‹ Р·РЅР°РµРј. Р­С‚Рѕ РЅРµ С‚РѕР»СЊРєРѕ РјС‹, Р»СЋРґРё, РЅРѕ Рё РІРµСЃСЊ РЅР°С€ РјРёСЂ. Р’ РёР·РІРµСЃС‚РЅРѕРј СЃРјС‹СЃР»Рµ С‚РѕРЅР°Р»СЊ вЂ” СЌС‚Рѕ РІСЃРµ РІРёРґРёРјРѕРµ, РѕРєСЂСѓР¶Р°СЋС‰РµРµ РЅР°СЃ. Р­С‚Р° СЃСѓС‰РЅРѕСЃС‚СЊ С‡РµР»РѕРІРµРєР° РїСЂРёРІРѕРґРёС‚ С…Р°РѕСЃ РјРёСЂР° РІ СЃРѕСЃС‚РѕСЏРЅРёРµ СѓРїРѕСЂСЏРґРѕВ¬С‡РµРЅРЅРѕСЃС‚Рё, РїРѕРјРѕРіР°РµС‚ РѕР±РѕР·РЅР°С‡РёС‚СЊ Рё РѕРїРёСЃР°С‚СЊ РµРіРѕ. РўРѕРЅР°Р»СЊ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ СЂРѕР¶РґРµРЅРёСЏ Рё Р·Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ СЃРјРµСЂС‚СЊСЋ. РћРЅР° С‚РІРѕСЂРёС‚ РјРёСЂ РІ СЃРѕРѕС‚РІРµС‚В¬СЃС‚РІРёРё СЃРѕ СЃРІРѕРёРјРё Р·Р°РєРѕРЅР°РјРё. РўРѕРЅР°Р»СЊ СЃРѕСЃС‚Р°РІР»СЏРµС‚ РїСЂР°РІРёР»Р°, РїРѕСЃСЂРµРґСЃС‚В¬РІРѕРј РєРѕС‚РѕСЂС‹С… РѕРЅР° СЃРїРѕСЃРѕР±РЅР° РїРѕРЅРёРјР°С‚СЊ РѕРєСЂСѓР¶Р°СЋС‰РµРµ.
+РќРѕ С‚РѕРЅР°Р»СЊСЋ РЅРµ РёСЃС‡РµСЂРїС‹РІР°РµС‚СЃСЏ С‡РµР»РѕРІРµРє. Р’ РЅРµРј РµСЃС‚СЊ Рё РґСЂСѓРіР°СЏ СЃСѓС‰РЅРѕСЃС‚СЊ вЂ” РЅР°РіРІР°Р»СЊ. РўР°Рє РљР°СЃС‚Р°РЅРµРґР° РЅР°Р·С‹РІР°РµС‚ С‡Р°СЃС‚СЊ РЅР°СЃ СЃР°РјРёС…, СЃ РєРѕС‚РѕСЂРѕР№ РјС‹ РІРѕРѕР±С‰Рµ РЅРµ РІСЃС‚СѓРїР°РµРј РІ РєРѕРЅС‚Р°РєС‚. Р­С‚Рѕ РЅРµС‡С‚Рѕ, РЅРµ РёРјРµСЋС‰РµРµ РѕРїСЂРµРґРµР»РµРЅРёСЏ (РЅРё СЃР»РѕРІ, РЅРё РёРјРµРЅ, РЅРё РѕС‰СѓС‰РµРЅРёР№, РЅРё Р·РЅР°С‡РµРЅРёСЏ), РЅРѕ С‚РµРј РЅРµ РјРµРЅРµРµ РЅРµРѕС‚С‚РѕСЂР¶РёРјС‹Р№ РєРѕРјРїРѕРЅРµРЅС‚ РЅР°СЃ СЃР°РјРёС…. РњРѕР¶РЅРѕ РѕРєР°В¬Р·Р°С‚СЊСЃСЏ СЃРІРёРґРµС‚РµР»РµРј РЅР°РіРІР°Р»Рё, РЅРѕ РѕРїСЂРµРґРµР»РёС‚СЊ РµРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ. Р•Рµ СЃРїРѕВ¬СЃРѕР±РЅРѕ РЅР°Р±Р»СЋРґР°С‚СЊ С‚РѕР»СЊРєРѕ С‚РµР»Рѕ, РѕС‚РЅСЋРґСЊ РЅРµ СЂР°Р·СѓРј. РќР°РіРІР°Р»СЊ РѕР±РЅР°СЂСѓВ¬Р¶РёРІР°РµС‚СЃСЏ РІ РЅРµРїРѕСЃС‚РёР¶РёРјС‹С… РїСЂРѕСЏРІР»РµРЅРёСЏС….' , 'РџСЂРѕСЏРІР»РµРЅРёСЏ РќР°РіРІР°Р»СЏ РјРѕР¶РЅРѕ Р·Р°РјРµС‚РёС‚СЊ С‚РѕР»СЊРєРѕ С‡РµСЂРµР· С‚РµР»Рѕ. Р§РµСЂРµР· СЂР°Р·СѓРј, С‚РѕРЅР°Р»СЊ, РЅР°РіРІР°Р»СЏ РЅРµ РІРёРґРЅРѕ. Р•РіРѕ РєР°Рє Р±С‹ РЅРµС‚.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_270');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РњРµСЃС‚Рѕ СЃРёР»С‹' , 'korvintag_274' , 'РјРЅРµ РЅР°РґРѕ РЅР°Р№С‚Рё РЅР° РїРѕР»Сѓ РїСЏС‚РЅРѕ, РіРґРµ СЏ РјРѕРі Р±С‹ СЃРёРґРµС‚СЊ Р±РµР· СѓСЃС‚Р°Р»РѕСЃС‚Рё.
 
-и наставительно проговорил, что пятно — это место, где человек естественным образом чувствует себя счастливым и сильным.
+Рё РЅР°СЃС‚Р°РІРёС‚РµР»СЊРЅРѕ РїСЂРѕРіРѕРІРѕСЂРёР», С‡С‚Рѕ РїСЏС‚РЅРѕ вЂ” СЌС‚Рѕ РјРµСЃС‚Рѕ, РіРґРµ С‡РµР»РѕРІРµРє РµСЃС‚РµСЃС‚РІРµРЅРЅС‹Рј РѕР±СЂР°Р·РѕРј С‡СѓРІСЃС‚РІСѓРµС‚ СЃРµР±СЏ СЃС‡Р°СЃС‚Р»РёРІС‹Рј Рё СЃРёР»СЊРЅС‹Рј.
 
-Он предложил мне ходить по веранде, пока пятно не найдется.
+РћРЅ РїСЂРµРґР»РѕР¶РёР» РјРЅРµ С…РѕРґРёС‚СЊ РїРѕ РІРµСЂР°РЅРґРµ, РїРѕРєР° РїСЏС‚РЅРѕ РЅРµ РЅР°Р№РґРµС‚СЃСЏ.
 
-и объяснил, что не на всяком месте хорошо сидеть или вообще находиться и что в пределах веранды обязательно есть одно уникальное место, самое лучшее для меня «пятно». Мне нужно разыскать его среди всех остальных мест. По общей схеме, я должен «прочувствовать» все возможные места, пока без всяких сомнений смогу определить, какое из них правильное.
 
-Должно быть, я проходил около часа или более того, но не случилось ничего, что подсказало бы мне местонахождение пятна. Я устал шагать и сел. Через несколько минут пересаживался на другое место, а затем еще на одно, пока таким полусистематическим образом не покрыл весь пол. Я старательно пытался «чувствовать» разницу между местами, но у меня не было критерия для их различения.
+Рё РѕР±СЉСЏСЃРЅРёР», С‡С‚Рѕ РЅРµ РЅР° РІСЃСЏРєРѕРј РјРµСЃС‚Рµ С…РѕСЂРѕС€Рѕ СЃРёРґРµС‚СЊ РёР»Рё РІРѕРѕР±С‰Рµ РЅР°С…РѕРґРёС‚СЊСЃСЏ Рё С‡С‚Рѕ РІ РїСЂРµРґРµР»Р°С… РІРµСЂР°РЅРґС‹ РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РµСЃС‚СЊ РѕРґРЅРѕ СѓРЅРёРєР°Р»СЊРЅРѕРµ РјРµСЃС‚Рѕ, СЃР°РјРѕРµ Р»СѓС‡С€РµРµ РґР»СЏ РјРµРЅСЏ В«РїСЏС‚РЅРѕВ». РњРЅРµ РЅСѓР¶РЅРѕ СЂР°Р·С‹СЃРєР°С‚СЊ РµРіРѕ СЃСЂРµРґРё РІСЃРµС… РѕСЃС‚Р°Р»СЊРЅС‹С… РјРµСЃС‚. РџРѕ РѕР±С‰РµР№ СЃС…РµРјРµ, СЏ РґРѕР»Р¶РµРЅ В«РїСЂРѕС‡СѓРІСЃС‚РІРѕРІР°С‚СЊВ» РІСЃРµ РІРѕР·РјРѕР¶РЅС‹Рµ РјРµСЃС‚Р°, РїРѕРєР° Р±РµР· РІСЃСЏРєРёС… СЃРѕРјРЅРµРЅРёР№ СЃРјРѕРіСѓ РѕРїСЂРµРґРµР»РёС‚СЊ, РєР°РєРѕРµ РёР· РЅРёС… РїСЂР°РІРёР»СЊРЅРѕРµ.
 
-И я лег на спину, подложил руку под голову, вместо подушки, а затем перекатился на живот и полежал некоторое время. Так перекатывался по всему полу. Впервые мне показалось, что нашелся хоть какой-то критерий. Я чувствовал себя теплее, лежа на спине.
+Р”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ, СЏ РїСЂРѕС…РѕРґРёР» РѕРєРѕР»Рѕ С‡Р°СЃР° РёР»Рё Р±РѕР»РµРµ С‚РѕРіРѕ, РЅРѕ РЅРµ СЃР»СѓС‡РёР»РѕСЃСЊ РЅРёС‡РµРіРѕ, С‡С‚Рѕ РїРѕРґСЃРєР°Р·Р°Р»Рѕ Р±С‹ РјРЅРµ РјРµСЃС‚РѕРЅР°С…РѕР¶РґРµРЅРёРµ РїСЏС‚РЅР°. РЇ СѓСЃС‚Р°Р» С€Р°РіР°С‚СЊ Рё СЃРµР». Р§РµСЂРµР· РЅРµСЃРєРѕР»СЊРєРѕ РјРёРЅСѓС‚ РїРµСЂРµСЃР°Р¶РёРІР°Р»СЃСЏ РЅР° РґСЂСѓРіРѕРµ РјРµСЃС‚Рѕ, Р° Р·Р°С‚РµРј РµС‰Рµ РЅР° РѕРґРЅРѕ, РїРѕРєР° С‚Р°РєРёРј РїРѕР»СѓСЃРёСЃС‚РµРјР°С‚РёС‡РµСЃРєРёРј РѕР±СЂР°Р·РѕРј РЅРµ РїРѕРєСЂС‹Р» РІРµСЃСЊ РїРѕР». РЇ СЃС‚Р°СЂР°С‚РµР»СЊРЅРѕ РїС‹С‚Р°Р»СЃСЏ В«С‡СѓРІСЃС‚РІРѕРІР°С‚СЊВ» СЂР°Р·РЅРёС†Сѓ РјРµР¶РґСѓ РјРµСЃС‚Р°РјРё, РЅРѕ Сѓ РјРµРЅСЏ РЅРµ Р±С‹Р»Рѕ РєСЂРёС‚РµСЂРёСЏ РґР»СЏ РёС… СЂР°Р·Р»РёС‡РµРЅРёСЏ.
 
-и сообщил, что его это не удивляет, потому что действовал я неправильно — не пользовался глазами. Это было так, но ведь я был вполне уверен, что мне нужно — по его словам — «ощутить» разницу. Я упомянул об этом, но он возразил, что ощущать можно и глазами — когда не вглядываешься в предметы прямо. Что касается меня, сказал он, то нет другого средства решить эту задачу, как только пользуясь единственным, что у меня есть, — моими глазами.
+Р СЏ Р»РµРі РЅР° СЃРїРёРЅСѓ, РїРѕРґР»РѕР¶РёР» СЂСѓРєСѓ РїРѕРґ РіРѕР»РѕРІСѓ, РІРјРµСЃС‚Рѕ РїРѕРґСѓС€РєРё, Р° Р·Р°С‚РµРј РїРµСЂРµРєР°С‚РёР»СЃСЏ РЅР° Р¶РёРІРѕС‚ Рё РїРѕР»РµР¶Р°Р» РЅРµРєРѕС‚РѕСЂРѕРµ РІСЂРµРјСЏ. РўР°Рє РїРµСЂРµРєР°С‚С‹РІР°Р»СЃСЏ РїРѕ РІСЃРµРјСѓ РїРѕР»Сѓ. Р’РїРµСЂРІС‹Рµ РјРЅРµ РїРѕРєР°Р·Р°Р»РѕСЃСЊ, С‡С‚Рѕ РЅР°С€РµР»СЃСЏ С…РѕС‚СЊ РєР°РєРѕР№-С‚Рѕ РєСЂРёС‚РµСЂРёР№. РЇ С‡СѓРІСЃС‚РІРѕРІР°Р» СЃРµР±СЏ С‚РµРїР»РµРµ, Р»РµР¶Р° РЅР° СЃРїРёРЅРµ.
 
-Я снова начал кататься, так как эта процедура была самой удобной. Но на этот раз я клал подбородок на руки и всматривался в каждую деталь.
-Через некоторое время темнота вокруг меня изменилась. Когда я фокусировал взгляд в точке прямо перед глазами, вся периферийная зона моего поля зрения однообразно окрашивалась сверкающим зеленовато-желтым цветом. Эффект был поразителен. Удерживая глаза скошенными в точку прямо перед собой, я начал отползать на животе в сторону, передвигаясь на фут примерно за один раз.
+Рё СЃРѕРѕР±С‰РёР», С‡С‚Рѕ РµРіРѕ СЌС‚Рѕ РЅРµ СѓРґРёРІР»СЏРµС‚, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РґРµР№СЃС‚РІРѕРІР°Р» СЏ РЅРµРїСЂР°РІРёР»СЊРЅРѕ вЂ” РЅРµ РїРѕР»СЊР·РѕРІР°Р»СЃСЏ РіР»Р°Р·Р°РјРё. Р­С‚Рѕ Р±С‹Р»Рѕ С‚Р°Рє, РЅРѕ РІРµРґСЊ СЏ Р±С‹Р» РІРїРѕР»РЅРµ СѓРІРµСЂРµРЅ, С‡С‚Рѕ РјРЅРµ РЅСѓР¶РЅРѕ вЂ” РїРѕ РµРіРѕ СЃР»РѕРІР°Рј вЂ” В«РѕС‰СѓС‚РёС‚СЊВ» СЂР°Р·РЅРёС†Сѓ. РЇ СѓРїРѕРјСЏРЅСѓР» РѕР± СЌС‚РѕРј, РЅРѕ РѕРЅ РІРѕР·СЂР°Р·РёР», С‡С‚Рѕ РѕС‰СѓС‰Р°С‚СЊ РјРѕР¶РЅРѕ Рё РіР»Р°Р·Р°РјРё вЂ” РєРѕРіРґР° РЅРµ РІРіР»СЏРґС‹РІР°РµС€СЊСЃСЏ РІ РїСЂРµРґРјРµС‚С‹ РїСЂСЏРјРѕ. Р§С‚Рѕ РєР°СЃР°РµС‚СЃСЏ РјРµРЅСЏ, СЃРєР°Р·Р°Р» РѕРЅ, С‚Рѕ РЅРµС‚ РґСЂСѓРіРѕРіРѕ СЃСЂРµРґСЃС‚РІР° СЂРµС€РёС‚СЊ СЌС‚Сѓ Р·Р°РґР°С‡Сѓ, РєР°Рє С‚РѕР»СЊРєРѕ РїРѕР»СЊР·СѓСЏСЃСЊ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Рј, С‡С‚Рѕ Сѓ РјРµРЅСЏ РµСЃС‚СЊ,В вЂ” РјРѕРёРјРё РіР»Р°Р·Р°РјРё.
 
-Внезапно я осознал перемену оттенка в точке, находящейся примерно на середине пола. Справа от меня, по-прежнему на периферии поля зрения, зеленовато-желтый оттенок стал ярко-пурпурным. Я переключил внимание туда. Пурпур поблек, но был все еще блестящим и оставался таким постоянно, пока я удерживал на нем свое внимание.
+РЇ СЃРЅРѕРІР° РЅР°С‡Р°Р» РєР°С‚Р°С‚СЊСЃСЏ, С‚Р°Рє РєР°Рє СЌС‚Р° РїСЂРѕС†РµРґСѓСЂР° Р±С‹Р»Р° СЃР°РјРѕР№ СѓРґРѕР±РЅРѕР№. РќРѕ РЅР° СЌС‚РѕС‚ СЂР°Р· СЏ РєР»Р°Р» РїРѕРґР±РѕСЂРѕРґРѕРє РЅР° СЂСѓРєРё Рё РІСЃРјР°С‚СЂРёРІР°Р»СЃСЏ РІ РєР°Р¶РґСѓСЋ РґРµС‚Р°Р»СЊ.
+Р§РµСЂРµР· РЅРµРєРѕС‚РѕСЂРѕРµ РІСЂРµРјСЏ С‚РµРјРЅРѕС‚Р° РІРѕРєСЂСѓРі РјРµРЅСЏ РёР·РјРµРЅРёР»Р°СЃСЊ. РљРѕРіРґР° СЏ С„РѕРєСѓСЃРёСЂРѕРІР°Р» РІР·РіР»СЏРґ РІ С‚РѕС‡РєРµ РїСЂСЏРјРѕ РїРµСЂРµРґ РіР»Р°Р·Р°РјРё, РІСЃСЏ РїРµСЂРёС„РµСЂРёР№РЅР°СЏ Р·РѕРЅР° РјРѕРµРіРѕ РїРѕР»СЏ Р·СЂРµРЅРёСЏ РѕРґРЅРѕРѕР±СЂР°Р·РЅРѕ РѕРєСЂР°С€РёРІР°Р»Р°СЃСЊ СЃРІРµСЂРєР°СЋС‰РёРј Р·РµР»РµРЅРѕРІР°С‚Рѕ-Р¶РµР»С‚С‹Рј С†РІРµС‚РѕРј. Р­С„С„РµРєС‚ Р±С‹Р» РїРѕСЂР°Р·РёС‚РµР»РµРЅ. РЈРґРµСЂР¶РёРІР°СЏ РіР»Р°Р·Р° СЃРєРѕС€РµРЅРЅС‹РјРё РІ С‚РѕС‡РєСѓ РїСЂСЏРјРѕ РїРµСЂРµРґ СЃРѕР±РѕР№, СЏ РЅР°С‡Р°Р» РѕС‚РїРѕР»Р·Р°С‚СЊ РЅР° Р¶РёРІРѕС‚Рµ РІ СЃС‚РѕСЂРѕРЅСѓ, РїРµСЂРµРґРІРёРіР°СЏСЃСЊ РЅР° С„СѓС‚ РїСЂРёРјРµСЂРЅРѕ Р·Р° РѕРґРёРЅ СЂР°Р·.
 
-На этот раз я быстро передвигался с места на место, минуя точку дона Хуана, до края пола, затем развернулся, чтобы захватить и внешний его край. Попав в центр, я понял, что произошло еще одно изменение в окраске, опять на периферии поля моего зрения. Однообразный зеленовато-желтый цвет, который я видел повсюду, превратился в одном месте, справа от меня, в яркий серо-зеленый. Какое-то мгновение этот оттенок держался, а затем внезапно переменился на другой постоянный оттенок, отличный от того, что я видел раньше. Сняв один ботинок, я отметил эту точку и продолжал кататься, пока не покрыл пол во всех возможных направлениях. Больше никаких изменений окраски не было.
+Р’РЅРµР·Р°РїРЅРѕ СЏ РѕСЃРѕР·РЅР°Р» РїРµСЂРµРјРµРЅСѓ РѕС‚С‚РµРЅРєР° РІ С‚РѕС‡РєРµ, РЅР°С…РѕРґСЏС‰РµР№СЃСЏ РїСЂРёРјРµСЂРЅРѕ РЅР° СЃРµСЂРµРґРёРЅРµ РїРѕР»Р°. РЎРїСЂР°РІР° РѕС‚ РјРµРЅСЏ, РїРѕ-РїСЂРµР¶РЅРµРјСѓ РЅР° РїРµСЂРёС„РµСЂРёРё РїРѕР»СЏ Р·СЂРµРЅРёСЏ, Р·РµР»РµРЅРѕРІР°С‚Рѕ-Р¶РµР»С‚С‹Р№ РѕС‚С‚РµРЅРѕРє СЃС‚Р°Р» СЏСЂРєРѕ-РїСѓСЂРїСѓСЂРЅС‹Рј. РЇ РїРµСЂРµРєР»СЋС‡РёР» РІРЅРёРјР°РЅРёРµ С‚СѓРґР°. РџСѓСЂРїСѓСЂ РїРѕР±Р»РµРє, РЅРѕ Р±С‹Р» РІСЃРµ РµС‰Рµ Р±Р»РµСЃС‚СЏС‰РёРј Рё РѕСЃС‚Р°РІР°Р»СЃСЏ С‚Р°РєРёРј РїРѕСЃС‚РѕСЏРЅРЅРѕ, РїРѕРєР° СЏ СѓРґРµСЂР¶РёРІР°Р» РЅР° РЅРµРј СЃРІРѕРµ РІРЅРёРјР°РЅРёРµ.
 
-Вернувшись к точке, отмеченной ботинком, я осмотрел ее. Она находилась в пяти-шести футах на юго-восток от той, где лежал пиджак. Рядом был большой камень. Совсем ненадолго я прилег рядом, пытаясь найти отгадку, приглядываясь к каждой детали, но не чувствовал никакой разницы.
+РќР° СЌС‚РѕС‚ СЂР°Р· СЏ Р±С‹СЃС‚СЂРѕ РїРµСЂРµРґРІРёРіР°Р»СЃСЏ СЃ РјРµСЃС‚Р° РЅР° РјРµСЃС‚Рѕ, РјРёРЅСѓСЏ С‚РѕС‡РєСѓ РґРѕРЅР° РҐСѓР°РЅР°, РґРѕ РєСЂР°СЏ РїРѕР»Р°, Р·Р°С‚РµРј СЂР°Р·РІРµСЂРЅСѓР»СЃСЏ, С‡С‚РѕР±С‹ Р·Р°С…РІР°С‚РёС‚СЊ Рё РІРЅРµС€РЅРёР№ РµРіРѕ РєСЂР°Р№. РџРѕРїР°РІ РІ С†РµРЅС‚СЂ, СЏ РїРѕРЅСЏР», С‡С‚Рѕ РїСЂРѕРёР·РѕС€Р»Рѕ РµС‰Рµ РѕРґРЅРѕ РёР·РјРµРЅРµРЅРёРµ РІ РѕРєСЂР°СЃРєРµ, РѕРїСЏС‚СЊ РЅР° РїРµСЂРёС„РµСЂРёРё РїРѕР»СЏ РјРѕРµРіРѕ Р·СЂРµРЅРёСЏ. РћРґРЅРѕРѕР±СЂР°Р·РЅС‹Р№ Р·РµР»РµРЅРѕРІР°С‚Рѕ-Р¶РµР»С‚С‹Р№ С†РІРµС‚, РєРѕС‚РѕСЂС‹Р№ СЏ РІРёРґРµР» РїРѕРІСЃСЋРґСѓ, РїСЂРµРІСЂР°С‚РёР»СЃСЏ РІ РѕРґРЅРѕРј РјРµСЃС‚Рµ, СЃРїСЂР°РІР° РѕС‚ РјРµРЅСЏ, РІ СЏСЂРєРёР№ СЃРµСЂРѕ-Р·РµР»РµРЅС‹Р№. РљР°РєРѕРµ-С‚Рѕ РјРіРЅРѕРІРµРЅРёРµ СЌС‚РѕС‚ РѕС‚С‚РµРЅРѕРє РґРµСЂР¶Р°Р»СЃСЏ, Р° Р·Р°С‚РµРј РІРЅРµР·Р°РїРЅРѕ РїРµСЂРµРјРµРЅРёР»СЃСЏ РЅР° РґСЂСѓРіРѕР№ РїРѕСЃС‚РѕСЏРЅРЅС‹Р№ РѕС‚С‚РµРЅРѕРє, РѕС‚Р»РёС‡РЅС‹Р№ РѕС‚ С‚РѕРіРѕ, С‡С‚Рѕ СЏ РІРёРґРµР» СЂР°РЅСЊС€Рµ. РЎРЅСЏРІ РѕРґРёРЅ Р±РѕС‚РёРЅРѕРє, СЏ РѕС‚РјРµС‚РёР» СЌС‚Сѓ С‚РѕС‡РєСѓ Рё РїСЂРѕРґРѕР»Р¶Р°Р» РєР°С‚Р°С‚СЊСЃСЏ, РїРѕРєР° РЅРµ РїРѕРєСЂС‹Р» РїРѕР» РІРѕ РІСЃРµС… РІРѕР·РјРѕР¶РЅС‹С… РЅР°РїСЂР°РІР»РµРЅРёСЏС…. Р‘РѕР»СЊС€Рµ РЅРёРєР°РєРёС… РёР·РјРµРЅРµРЅРёР№ РѕРєСЂР°СЃРєРё РЅРµ Р±С‹Р»Рѕ.
 
-Я решил опробовать другую точку. Быстро опустившись на колени, я уже собирался лечь на свой пиджак, но внезапно испытал нечто необычное. Больше всего это было похоже на физическое ощущение чего-то, давящего мне в живот. Я отскочил одним махом. Почувствовал, как поднялись волосы на шее. Ноги подогнулись, туловище наклонилось вперед, руки напряженно поднялись, а пальцы согнулись как клешни. Я заметил странность своей позы и еще больше испугался.' , 'Алгоритм поиска места силы:
-- пятно, где можно сидеть без усталости, ощущая себя счастливым и сильным
-- попробывать разные позы сидения - лежания для активации чувств
-- ощущать разницу глазами, не вглядываясь в предметы прямо
-- замирать и вглядываться в каждую деталь
-- фокусировать взгляд в точке прямо перед глазами, обращать внимание на переферию
-- смена позиции на фут (0,3 м) за каждую итерацию
-- в фоне идет зелваното-желтый свет
-- во враждебном пятне оттенок становится ярко-пурупурным
-- на своем месте свет серо-зеленый разных оттенков
-- во враждебном пятне тело особым образом реагирует
-  - давит на живот что-то
-  - волосы дыбом на шее 
-  - ноги подгинаются
-  - пальцы сгинаются' where not exists (select * from sources where id_out='korvintag_274');
-insert into ideas (name, id_out, original_text, content) select 'Важность мелких мыслей' , 'korvintag_1895' , '1:21
-человек произносит одно слово в его
+Р’РµСЂРЅСѓРІС€РёСЃСЊ Рє С‚РѕС‡РєРµ, РѕС‚РјРµС‡РµРЅРЅРѕР№ Р±РѕС‚РёРЅРєРѕРј, СЏ РѕСЃРјРѕС‚СЂРµР» РµРµ. РћРЅР° РЅР°С…РѕРґРёР»Р°СЃСЊ РІ РїСЏС‚Рё-С€РµСЃС‚Рё С„СѓС‚Р°С… РЅР° СЋРіРѕ-РІРѕСЃС‚РѕРє РѕС‚ С‚РѕР№, РіРґРµ Р»РµР¶Р°Р» РїРёРґР¶Р°Рє. Р СЏРґРѕРј Р±С‹Р» Р±РѕР»СЊС€РѕР№ РєР°РјРµРЅСЊ. РЎРѕРІСЃРµРј РЅРµРЅР°РґРѕР»РіРѕ СЏ РїСЂРёР»РµРі СЂСЏРґРѕРј, РїС‹С‚Р°СЏСЃСЊ РЅР°Р№С‚Рё РѕС‚РіР°РґРєСѓ, РїСЂРёРіР»СЏРґС‹РІР°СЏСЃСЊ Рє РєР°Р¶РґРѕР№ РґРµС‚Р°Р»Рё, РЅРѕ РЅРµ С‡СѓРІСЃС‚РІРѕРІР°Р» РЅРёРєР°РєРѕР№ СЂР°Р·РЅРёС†С‹.
+
+РЇ СЂРµС€РёР» РѕРїСЂРѕР±РѕРІР°С‚СЊ РґСЂСѓРіСѓСЋ С‚РѕС‡РєСѓ. Р‘С‹СЃС‚СЂРѕ РѕРїСѓСЃС‚РёРІС€РёСЃСЊ РЅР° РєРѕР»РµРЅРё, СЏ СѓР¶Рµ СЃРѕР±РёСЂР°Р»СЃСЏ Р»РµС‡СЊ РЅР° СЃРІРѕР№ РїРёРґР¶Р°Рє, РЅРѕ РІРЅРµР·Р°РїРЅРѕ РёСЃРїС‹С‚Р°Р» РЅРµС‡С‚Рѕ РЅРµРѕР±С‹С‡РЅРѕРµ. Р‘РѕР»СЊС€Рµ РІСЃРµРіРѕ СЌС‚Рѕ Р±С‹Р»Рѕ РїРѕС…РѕР¶Рµ РЅР° С„РёР·РёС‡РµСЃРєРѕРµ РѕС‰СѓС‰РµРЅРёРµ С‡РµРіРѕ-С‚Рѕ, РґР°РІСЏС‰РµРіРѕ РјРЅРµ РІ Р¶РёРІРѕС‚. РЇ РѕС‚СЃРєРѕС‡РёР» РѕРґРЅРёРј РјР°С…РѕРј. РџРѕС‡СѓРІСЃС‚РІРѕРІР°Р», РєР°Рє РїРѕРґРЅСЏР»РёСЃСЊ РІРѕР»РѕСЃС‹ РЅР° С€РµРµ. РќРѕРіРё РїРѕРґРѕРіРЅСѓР»РёСЃСЊ, С‚СѓР»РѕРІРёС‰Рµ РЅР°РєР»РѕРЅРёР»РѕСЃСЊ РІРїРµСЂРµРґ, СЂСѓРєРё РЅР°РїСЂСЏР¶РµРЅРЅРѕ РїРѕРґРЅСЏР»РёСЃСЊ, Р° РїР°Р»СЊС†С‹ СЃРѕРіРЅСѓР»РёСЃСЊ РєР°Рє РєР»РµС€РЅРё. РЇ Р·Р°РјРµС‚РёР» СЃС‚СЂР°РЅРЅРѕСЃС‚СЊ СЃРІРѕРµР№ РїРѕР·С‹ Рё РµС‰Рµ Р±РѕР»СЊС€Рµ РёСЃРїСѓРіР°Р»СЃСЏ.' , 'РђР»РіРѕСЂРёС‚Рј РїРѕРёСЃРєР° РјРµСЃС‚Р° СЃРёР»С‹:
+- РїСЏС‚РЅРѕ, РіРґРµ РјРѕР¶РЅРѕ СЃРёРґРµС‚СЊ Р±РµР· СѓСЃС‚Р°Р»РѕСЃС‚Рё, РѕС‰СѓС‰Р°СЏ СЃРµР±СЏ СЃС‡Р°СЃС‚Р»РёРІС‹Рј Рё СЃРёР»СЊРЅС‹Рј
+- РїРѕРїСЂРѕР±С‹РІР°С‚СЊ СЂР°Р·РЅС‹Рµ РїРѕР·С‹ СЃРёРґРµРЅРёСЏ - Р»РµР¶Р°РЅРёСЏ РґР»СЏ Р°РєС‚РёРІР°С†РёРё С‡СѓРІСЃС‚РІ
+- РѕС‰СѓС‰Р°С‚СЊ СЂР°Р·РЅРёС†Сѓ РіР»Р°Р·Р°РјРё, РЅРµ РІРіР»СЏРґС‹РІР°СЏСЃСЊ РІ РїСЂРµРґРјРµС‚С‹ РїСЂСЏРјРѕ
+- Р·Р°РјРёСЂР°С‚СЊ Рё РІРіР»СЏРґС‹РІР°С‚СЊСЃСЏ РІ РєР°Р¶РґСѓСЋ РґРµС‚Р°Р»СЊ
+- С„РѕРєСѓСЃРёСЂРѕРІР°С‚СЊ РІР·РіР»СЏРґ РІ С‚РѕС‡РєРµ РїСЂСЏРјРѕ РїРµСЂРµРґ РіР»Р°Р·Р°РјРё, РѕР±СЂР°С‰Р°С‚СЊ РІРЅРёРјР°РЅРёРµ РЅР° РїРµСЂРµС„РµСЂРёСЋ
+- СЃРјРµРЅР° РїРѕР·РёС†РёРё РЅР° С„СѓС‚ (0,3 Рј) Р·Р° РєР°Р¶РґСѓСЋ РёС‚РµСЂР°С†РёСЋ
+- РІ С„РѕРЅРµ РёРґРµС‚ Р·РµР»РІР°РЅРѕС‚Рѕ-Р¶РµР»С‚С‹Р№ СЃРІРµС‚
+- РІРѕ РІСЂР°Р¶РґРµР±РЅРѕРј РїСЏС‚РЅРµ РѕС‚С‚РµРЅРѕРє СЃС‚Р°РЅРѕРІРёС‚СЃСЏ СЏСЂРєРѕ-РїСѓСЂСѓРїСѓСЂРЅС‹Рј
+- РЅР° СЃРІРѕРµРј РјРµСЃС‚Рµ СЃРІРµС‚ СЃРµСЂРѕ-Р·РµР»РµРЅС‹Р№ СЂР°Р·РЅС‹С… РѕС‚С‚РµРЅРєРѕРІ
+- РІРѕ РІСЂР°Р¶РґРµР±РЅРѕРј РїСЏС‚РЅРµ С‚РµР»Рѕ РѕСЃРѕР±С‹Рј РѕР±СЂР°Р·РѕРј СЂРµР°РіРёСЂСѓРµС‚
+  - РґР°РІРёС‚ РЅР° Р¶РёРІРѕС‚ С‡С‚Рѕ-С‚Рѕ
+  - РІРѕР»РѕСЃС‹ РґС‹Р±РѕРј РЅР° С€РµРµ 
+  - РЅРѕРіРё РїРѕРґРіРёРЅР°СЋС‚СЃСЏ
+  - РїР°Р»СЊС†С‹ СЃРіРёРЅР°СЋС‚СЃСЏ', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_274');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р’Р°Р¶РЅРѕСЃС‚СЊ РјРµР»РєРёС… РјС‹СЃР»РµР№' , 'korvintag_1895' , '1:21
+С‡РµР»РѕРІРµРє РїСЂРѕРёР·РЅРѕСЃРёС‚ РѕРґРЅРѕ СЃР»РѕРІРѕ РІ РµРіРѕ
 1:23
-голове рождается 10 мелких мыслей но не
+РіРѕР»РѕРІРµ СЂРѕР¶РґР°РµС‚СЃСЏ 10 РјРµР»РєРёС… РјС‹СЃР»РµР№ РЅРѕ РЅРµ
 1:27
-стоит заблуждаться в том что эти мелкие
+СЃС‚РѕРёС‚ Р·Р°Р±Р»СѓР¶РґР°С‚СЊСЃСЏ РІ С‚РѕРј С‡С‚Рѕ СЌС‚Рё РјРµР»РєРёРµ
 1:29
-мысли не имеют никакой силы
+РјС‹СЃР»Рё РЅРµ РёРјРµСЋС‚ РЅРёРєР°РєРѕР№ СЃРёР»С‹
 1:32
-мыслительница сравнивала мелкие мысли с
+РјС‹СЃР»РёС‚РµР»СЊРЅРёС†Р° СЃСЂР°РІРЅРёРІР°Р»Р° РјРµР»РєРёРµ РјС‹СЃР»Рё СЃ
 1:35
-камнями из которых складывается Мостовая
+РєР°РјРЅСЏРјРё РёР· РєРѕС‚РѕСЂС‹С… СЃРєР»Р°РґС‹РІР°РµС‚СЃСЏ РњРѕСЃС‚РѕРІР°СЏ
 1:37
-каждый камень усиливает ее поверхность
+РєР°Р¶РґС‹Р№ РєР°РјРµРЅСЊ СѓСЃРёР»РёРІР°РµС‚ РµРµ РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ
 1:40
-из таких же мелких мыслей строится и
+РёР· С‚Р°РєРёС… Р¶Рµ РјРµР»РєРёС… РјС‹СЃР»РµР№ СЃС‚СЂРѕРёС‚СЃСЏ Рё
 1:43
-путь мышления человека который
+РїСѓС‚СЊ РјС‹С€Р»РµРЅРёСЏ С‡РµР»РѕРІРµРєР° РєРѕС‚РѕСЂС‹Р№
 1:45
-укрепляется с каждым мельчайшим камешком
-1:48' , 'На одно слово приходится 10 мелких мыслей, из которых складывается наше сознание.' where not exists (select * from sources where id_out='korvintag_1895');
-insert into ideas (name, id_out, original_text, content) select 'Величайшие преступления рождаются из самых маленьких дум' , 'korvintag_1896' , '1:48
-поэтому Елена рери считала что нет
+СѓРєСЂРµРїР»СЏРµС‚СЃСЏ СЃ РєР°Р¶РґС‹Рј РјРµР»СЊС‡Р°Р№С€РёРј РєР°РјРµС€РєРѕРј
+1:48' , 'РќР° РѕРґРЅРѕ СЃР»РѕРІРѕ РїСЂРёС…РѕРґРёС‚СЃСЏ 10 РјРµР»РєРёС… РјС‹СЃР»РµР№, РёР· РєРѕС‚РѕСЂС‹С… СЃРєР»Р°РґС‹РІР°РµС‚СЃСЏ РЅР°С€Рµ СЃРѕР·РЅР°РЅРёРµ.', (select id from users where id_out='korvintag_85') where not exists (select * from sources where id_out='korvintag_1895');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р’РµР»РёС‡Р°Р№С€РёРµ РїСЂРµСЃС‚СѓРїР»РµРЅРёСЏ СЂРѕР¶РґР°СЋС‚СЃСЏ РёР· СЃР°РјС‹С… РјР°Р»РµРЅСЊРєРёС… РґСѓРј' , 'korvintag_1896' , '1:48
+РїРѕСЌС‚РѕРјСѓ Р•Р»РµРЅР° СЂРµСЂРё СЃС‡РёС‚Р°Р»Р° С‡С‚Рѕ РЅРµС‚
 1:52
-преувеличения в том суждении что
+РїСЂРµСѓРІРµР»РёС‡РµРЅРёСЏ РІ С‚РѕРј СЃСѓР¶РґРµРЅРёРё С‡С‚Рѕ
 1:54
-величайшие преступления рождаются и
+РІРµР»РёС‡Р°Р№С€РёРµ РїСЂРµСЃС‚СѓРїР»РµРЅРёСЏ СЂРѕР¶РґР°СЋС‚СЃСЏ Рё
 1:57
-самых маленьких дум каждый человек не
+СЃР°РјС‹С… РјР°Р»РµРЅСЊРєРёС… РґСѓРј РєР°Р¶РґС‹Р№ С‡РµР»РѕРІРµРє РЅРµ
 2:00
-может найти эту связь если научатся
+РјРѕР¶РµС‚ РЅР°Р№С‚Рё СЌС‚Сѓ СЃРІСЏР·СЊ РµСЃР»Рё РЅР°СѓС‡Р°С‚СЃСЏ
 2:02
-осознавать последовательность мелких
+РѕСЃРѕР·РЅР°РІР°С‚СЊ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РјРµР»РєРёС…
 2:05
-мыслей которые создают основу для
+РјС‹СЃР»РµР№ РєРѕС‚РѕСЂС‹Рµ СЃРѕР·РґР°СЋС‚ РѕСЃРЅРѕРІСѓ РґР»СЏ
 2:07
-больших действий наши мысли порождают не
+Р±РѕР»СЊС€РёС… РґРµР№СЃС‚РІРёР№ РЅР°С€Рё РјС‹СЃР»Рё РїРѕСЂРѕР¶РґР°СЋС‚ РЅРµ
 2:11
-только действия но и создают
+С‚РѕР»СЊРєРѕ РґРµР№СЃС‚РІРёСЏ РЅРѕ Рё СЃРѕР·РґР°СЋС‚
 2:13
-действительность вокруг нас низшие мысли
-2:16' , 'Величайшие преступления рождаются из самых маленьких дум. Именно маленькие мысли приводят к действиям. В том числе к тем действиям, которые ведут к серьезным последствиям.' where not exists (select * from sources where id_out='korvintag_1896');
-insert into ideas (name, id_out, original_text, content) select 'Держать мысли в чистоте' , 'korvintag_1897' , '2:19
-материи злые помыслы как бацилы которые
+РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ РІРѕРєСЂСѓРі РЅР°СЃ РЅРёР·С€РёРµ РјС‹СЃР»Рё
+2:16' , 'Р’РµР»РёС‡Р°Р№С€РёРµ РїСЂРµСЃС‚СѓРїР»РµРЅРёСЏ СЂРѕР¶РґР°СЋС‚СЃСЏ РёР· СЃР°РјС‹С… РјР°Р»РµРЅСЊРєРёС… РґСѓРј. РРјРµРЅРЅРѕ РјР°Р»РµРЅСЊРєРёРµ РјС‹СЃР»Рё РїСЂРёРІРѕРґСЏС‚ Рє РґРµР№СЃС‚РІРёСЏРј. Р’ С‚РѕРј С‡РёСЃР»Рµ Рє С‚РµРј РґРµР№СЃС‚РІРёСЏРј, РєРѕС‚РѕСЂС‹Рµ РІРµРґСѓС‚ Рє СЃРµСЂСЊРµР·РЅС‹Рј РїРѕСЃР»РµРґСЃС‚РІРёСЏРј.', (select id from users where id_out='korvintag_85') where not exists (select * from sources where id_out='korvintag_1896');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р”РµСЂР¶Р°С‚СЊ РјС‹СЃР»Рё РІ С‡РёСЃС‚РѕС‚Рµ' , 'korvintag_1897' , '2:19
+РјР°С‚РµСЂРёРё Р·Р»С‹Рµ РїРѕРјС‹СЃР»С‹ РєР°Рє Р±Р°С†РёР»С‹ РєРѕС‚РѕСЂС‹Рµ
 2:22
-заранее и опаснее всех болезней говорила
+Р·Р°СЂР°РЅРµРµ Рё РѕРїР°СЃРЅРµРµ РІСЃРµС… Р±РѕР»РµР·РЅРµР№ РіРѕРІРѕСЂРёР»Р°
 2:25
-Елена Рерих чтобы защититься от них свои
+Р•Р»РµРЅР° Р РµСЂРёС… С‡С‚РѕР±С‹ Р·Р°С‰РёС‚РёС‚СЊСЃСЏ РѕС‚ РЅРёС… СЃРІРѕРё
 2:29
-мысли нужно держать чистоте это не
+РјС‹СЃР»Рё РЅСѓР¶РЅРѕ РґРµСЂР¶Р°С‚СЊ С‡РёСЃС‚РѕС‚Рµ СЌС‚Рѕ РЅРµ
 2:32
-только лучшая дезинфекция но и
-2:34' , 'Предлагается мыслегигиена. Держать мысли в чистоте, чтоб там не поселились вредные мысли.' where not exists (select * from sources where id_out='korvintag_1897');
-insert into ideas (name, id_out, original_text, content) select '«Чикагская семёрка»' , 'korvintag_1949' , 'Большая психосоматическая «семёрка» включила в себя заболевания, которые наиболее часто регистрировались у пациентов по психосоматическим причинам, и лечение которых, по мнению Франца Александера, должно осуществляться в первую очередь психотерапевтом, и только потом — доктором узкого медицинского профиля.' , 'Эти болезни предлагается лечить психотерапией' where not exists (select * from sources where id_out='korvintag_1949');
-insert into ideas (name, id_out, original_text, content) select 'Коронарный синдром' , 'korvintag_1956' , 'Эта болезнь больше известна современных читателям, как болезнь менеджера — предрасположенность к инфарктам, ишемии. Развивается у целеустремлённых и активных людей, сосредоточенных на своём деле, регулярно справляющихся с тяжёлой усталостью. Они постоянно находятся на острие событий, напряжены, имеют одно или несколько хронических заболеваний. Не жалеют других и себя, не любят себя, а лишь соперничают.
+С‚РѕР»СЊРєРѕ Р»СѓС‡С€Р°СЏ РґРµР·РёРЅС„РµРєС†РёСЏ РЅРѕ Рё
+2:34' , 'РџСЂРµРґР»Р°РіР°РµС‚СЃСЏ РјС‹СЃР»РµРіРёРіРёРµРЅР°. Р”РµСЂР¶Р°С‚СЊ РјС‹СЃР»Рё РІ С‡РёСЃС‚РѕС‚Рµ, С‡С‚РѕР± С‚Р°Рј РЅРµ РїРѕСЃРµР»РёР»РёСЃСЊ РІСЂРµРґРЅС‹Рµ РјС‹СЃР»Рё.', (select id from users where id_out='korvintag_85') where not exists (select * from sources where id_out='korvintag_1897');
+insert into ideas (name, id_out, original_text, content, user_id) select 'В«Р§РёРєР°РіСЃРєР°СЏ СЃРµРјС‘СЂРєР°В»' , 'korvintag_1949' , 'Р‘РѕР»СЊС€Р°СЏ РїСЃРёС…РѕСЃРѕРјР°С‚РёС‡РµСЃРєР°СЏ В«СЃРµРјС‘СЂРєР°В» РІРєР»СЋС‡РёР»Р° РІ СЃРµР±СЏ Р·Р°Р±РѕР»РµРІР°РЅРёСЏ, РєРѕС‚РѕСЂС‹Рµ РЅР°РёР±РѕР»РµРµ С‡Р°СЃС‚Рѕ СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»РёСЃСЊ Сѓ РїР°С†РёРµРЅС‚РѕРІ РїРѕ РїСЃРёС…РѕСЃРѕРјР°С‚РёС‡РµСЃРєРёРј РїСЂРёС‡РёРЅР°Рј, Рё Р»РµС‡РµРЅРёРµ РєРѕС‚РѕСЂС‹С…, РїРѕ РјРЅРµРЅРёСЋ Р¤СЂР°РЅС†Р° РђР»РµРєСЃР°РЅРґРµСЂР°, РґРѕР»Р¶РЅРѕ РѕСЃСѓС‰РµСЃС‚РІР»СЏС‚СЊСЃСЏ РІ РїРµСЂРІСѓСЋ РѕС‡РµСЂРµРґСЊ РїСЃРёС…РѕС‚РµСЂР°РїРµРІС‚РѕРј, Рё С‚РѕР»СЊРєРѕ РїРѕС‚РѕРј вЂ” РґРѕРєС‚РѕСЂРѕРј СѓР·РєРѕРіРѕ РјРµРґРёС†РёРЅСЃРєРѕРіРѕ РїСЂРѕС„РёР»СЏ.' , 'Р­С‚Рё Р±РѕР»РµР·РЅРё РїСЂРµРґР»Р°РіР°РµС‚СЃСЏ Р»РµС‡РёС‚СЊ РїСЃРёС…РѕС‚РµСЂР°РїРёРµР№', (select id from users where id_out='korvintag_57') where not exists (select * from sources where id_out='korvintag_1949');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РљРѕСЂРѕРЅР°СЂРЅС‹Р№ СЃРёРЅРґСЂРѕРј' , 'korvintag_1956' , 'Р­С‚Р° Р±РѕР»РµР·РЅСЊ Р±РѕР»СЊС€Рµ РёР·РІРµСЃС‚РЅР° СЃРѕРІСЂРµРјРµРЅРЅС‹С… С‡РёС‚Р°С‚РµР»СЏРј, РєР°Рє Р±РѕР»РµР·РЅСЊ РјРµРЅРµРґР¶РµСЂР° вЂ” РїСЂРµРґСЂР°СЃРїРѕР»РѕР¶РµРЅРЅРѕСЃС‚СЊ Рє РёРЅС„Р°СЂРєС‚Р°Рј, РёС€РµРјРёРё. Р Р°Р·РІРёРІР°РµС‚СЃСЏ Сѓ С†РµР»РµСѓСЃС‚СЂРµРјР»С‘РЅРЅС‹С… Рё Р°РєС‚РёРІРЅС‹С… Р»СЋРґРµР№, СЃРѕСЃСЂРµРґРѕС‚РѕС‡РµРЅРЅС‹С… РЅР° СЃРІРѕС‘Рј РґРµР»Рµ, СЂРµРіСѓР»СЏСЂРЅРѕ СЃРїСЂР°РІР»СЏСЋС‰РёС…СЃСЏ СЃ С‚СЏР¶С‘Р»РѕР№ СѓСЃС‚Р°Р»РѕСЃС‚СЊСЋ. РћРЅРё РїРѕСЃС‚РѕСЏРЅРЅРѕ РЅР°С…РѕРґСЏС‚СЃСЏ РЅР° РѕСЃС‚СЂРёРµ СЃРѕР±С‹С‚РёР№, РЅР°РїСЂСЏР¶РµРЅС‹, РёРјРµСЋС‚ РѕРґРЅРѕ РёР»Рё РЅРµСЃРєРѕР»СЊРєРѕ С…СЂРѕРЅРёС‡РµСЃРєРёС… Р·Р°Р±РѕР»РµРІР°РЅРёР№. РќРµ Р¶Р°Р»РµСЋС‚ РґСЂСѓРіРёС… Рё СЃРµР±СЏ, РЅРµ Р»СЋР±СЏС‚ СЃРµР±СЏ, Р° Р»РёС€СЊ СЃРѕРїРµСЂРЅРёС‡Р°СЋС‚.
 
-Если появляется ситуация, в которой контроль оказывается несоответствующим или несвоевременным, человек, ощущая, что проигрывает, напрягается сильнее обычного, что и приводит к ишемии и приступу.
+Р•СЃР»Рё РїРѕСЏРІР»СЏРµС‚СЃСЏ СЃРёС‚СѓР°С†РёСЏ, РІ РєРѕС‚РѕСЂРѕР№ РєРѕРЅС‚СЂРѕР»СЊ РѕРєР°Р·С‹РІР°РµС‚СЃСЏ РЅРµСЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј РёР»Рё РЅРµСЃРІРѕРµРІСЂРµРјРµРЅРЅС‹Рј, С‡РµР»РѕРІРµРє, РѕС‰СѓС‰Р°СЏ, С‡С‚Рѕ РїСЂРѕРёРіСЂС‹РІР°РµС‚, РЅР°РїСЂСЏРіР°РµС‚СЃСЏ СЃРёР»СЊРЅРµРµ РѕР±С‹С‡РЅРѕРіРѕ, С‡С‚Рѕ Рё РїСЂРёРІРѕРґРёС‚ Рє РёС€РµРјРёРё Рё РїСЂРёСЃС‚СѓРїСѓ.
 
-Помогает смена рода деятельности, релаксационная терапия, пересмотр системы ценностей, перераспределение внимания на другие сферы жизни.' , 'Суть - постоянные супернагрузки. лечение - изменение стиля жизни.' where not exists (select * from sources where id_out='korvintag_1956');
-insert into ideas (name, id_out, original_text, content) select 'Неспецифический язвенный колит' , 'korvintag_1957' , '3. Неспецифический язвенный колит. Неотреагированные эмоции – обида, незащищенность, эмоциональная нестабильность.
+РџРѕРјРѕРіР°РµС‚ СЃРјРµРЅР° СЂРѕРґР° РґРµСЏС‚РµР»СЊРЅРѕСЃС‚Рё, СЂРµР»Р°РєСЃР°С†РёРѕРЅРЅР°СЏ С‚РµСЂР°РїРёСЏ, РїРµСЂРµСЃРјРѕС‚СЂ СЃРёСЃС‚РµРјС‹ С†РµРЅРЅРѕСЃС‚РµР№, РїРµСЂРµСЂР°СЃРїСЂРµРґРµР»РµРЅРёРµ РІРЅРёРјР°РЅРёСЏ РЅР° РґСЂСѓРіРёРµ СЃС„РµСЂС‹ Р¶РёР·РЅРё.' , 'РЎСѓС‚СЊ - РїРѕСЃС‚РѕСЏРЅРЅС‹Рµ СЃСѓРїРµСЂРЅР°РіСЂСѓР·РєРё. Р»РµС‡РµРЅРёРµ - РёР·РјРµРЅРµРЅРёРµ СЃС‚РёР»СЏ Р¶РёР·РЅРё.', (select id from users where id_out='korvintag_57') where not exists (select * from sources where id_out='korvintag_1956');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РќРµСЃРїРµС†РёС„РёС‡РµСЃРєРёР№ СЏР·РІРµРЅРЅС‹Р№ РєРѕР»РёС‚' , 'korvintag_1957' , '3. РќРµСЃРїРµС†РёС„РёС‡РµСЃРєРёР№ СЏР·РІРµРЅРЅС‹Р№ РєРѕР»РёС‚. РќРµРѕС‚СЂРµР°РіРёСЂРѕРІР°РЅРЅС‹Рµ СЌРјРѕС†РёРё вЂ“ РѕР±РёРґР°, РЅРµР·Р°С‰РёС‰РµРЅРЅРѕСЃС‚СЊ, СЌРјРѕС†РёРѕРЅР°Р»СЊРЅР°СЏ РЅРµСЃС‚Р°Р±РёР»СЊРЅРѕСЃС‚СЊ.
 
-Человек глубоко уязвлен. То есть какая-то ситуация настолько задела и обидела человека, что он ушел в себя, закрылся, почувствовал, что потерял надежду. Как будто получил рану и захлопнул створки. А рана периодически дает о себе знать.
+Р§РµР»РѕРІРµРє РіР»СѓР±РѕРєРѕ СѓСЏР·РІР»РµРЅ. РўРѕ РµСЃС‚СЊ РєР°РєР°СЏ-С‚Рѕ СЃРёС‚СѓР°С†РёСЏ РЅР°СЃС‚РѕР»СЊРєРѕ Р·Р°РґРµР»Р° Рё РѕР±РёРґРµР»Р° С‡РµР»РѕРІРµРєР°, С‡С‚Рѕ РѕРЅ СѓС€РµР» РІ СЃРµР±СЏ, Р·Р°РєСЂС‹Р»СЃСЏ, РїРѕС‡СѓРІСЃС‚РІРѕРІР°Р», С‡С‚Рѕ РїРѕС‚РµСЂСЏР» РЅР°РґРµР¶РґСѓ. РљР°Рє Р±СѓРґС‚Рѕ РїРѕР»СѓС‡РёР» СЂР°РЅСѓ Рё Р·Р°С…Р»РѕРїРЅСѓР» СЃС‚РІРѕСЂРєРё. Рђ СЂР°РЅР° РїРµСЂРёРѕРґРёС‡РµСЃРєРё РґР°РµС‚ Рѕ СЃРµР±Рµ Р·РЅР°С‚СЊ.
 
-На что обратить внимание: на повышение самооценки.' , 'Суть - уязвленность, потеря надежды. Лечение - повышение самооценки.' where not exists (select * from sources where id_out='korvintag_1957');
-insert into ideas (name, id_out, original_text, content) select 'Серьезность к нашим действиям и к миру' , 'korvintag_2252' , ' Ты единственный, которого я видел играющим с Мескалито. Ты не привык к такой жизни. Поэтому указания (omens) прошли мимо тебя. Да, ты серьезный человек, но твоя серьезность привязана к тому, что ты делаешь, а не к тому, что происходит вне тебя. Ты слишком застреваешь на самом себе. В этом беда. И это порождает ужасную усталость.
+РќР° С‡С‚Рѕ РѕР±СЂР°С‚РёС‚СЊ РІРЅРёРјР°РЅРёРµ: РЅР° РїРѕРІС‹С€РµРЅРёРµ СЃР°РјРѕРѕС†РµРЅРєРё.' , 'РЎСѓС‚СЊ - СѓСЏР·РІР»РµРЅРЅРѕСЃС‚СЊ, РїРѕС‚РµСЂСЏ РЅР°РґРµР¶РґС‹. Р›РµС‡РµРЅРёРµ - РїРѕРІС‹С€РµРЅРёРµ СЃР°РјРѕРѕС†РµРЅРєРё.', (select id from users where id_out='korvintag_57') where not exists (select * from sources where id_out='korvintag_1957');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРµСЂСЊРµР·РЅРѕСЃС‚СЊ Рє РЅР°С€РёРј РґРµР№СЃС‚РІРёСЏРј Рё Рє РјРёСЂСѓ' , 'korvintag_2252' , 'В РўС‹ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Р№, РєРѕС‚РѕСЂРѕРіРѕ СЏ РІРёРґРµР» РёРіСЂР°СЋС‰РёРј СЃ РњРµСЃРєР°Р»РёС‚Рѕ. РўС‹ РЅРµ РїСЂРёРІС‹Рє Рє С‚Р°РєРѕР№ Р¶РёР·РЅРё. РџРѕСЌС‚РѕРјСѓ СѓРєР°Р·Р°РЅРёСЏ (omens) РїСЂРѕС€Р»Рё РјРёРјРѕ С‚РµР±СЏ. Р”Р°, С‚С‹ СЃРµСЂСЊРµР·РЅС‹Р№ С‡РµР»РѕРІРµРє, РЅРѕ С‚РІРѕСЏ СЃРµСЂСЊРµР·РЅРѕСЃС‚СЊ РїСЂРёРІСЏР·Р°РЅР° Рє С‚РѕРјСѓ, С‡С‚Рѕ С‚С‹ РґРµР»Р°РµС€СЊ, Р° РЅРµ Рє С‚РѕРјСѓ, С‡С‚Рѕ РїСЂРѕРёСЃС…РѕРґРёС‚ РІРЅРµ С‚РµР±СЏ. РўС‹ СЃР»РёС€РєРѕРј Р·Р°СЃС‚СЂРµРІР°РµС€СЊ РЅР° СЃР°РјРѕРј СЃРµР±Рµ. Р’ СЌС‚РѕРј Р±РµРґР°. Р СЌС‚Рѕ РїРѕСЂРѕР¶РґР°РµС‚ СѓР¶Р°СЃРЅСѓСЋ СѓСЃС‚Р°Р»РѕСЃС‚СЊ.
 
- Ищи чудес повсюду вокруг себя и смотри на них. Ты устаешь от глядения на одного себя, и эта усталость делает тебя глухим и слепым ко всему остальному.
-— Ты попал в точку, дон Хуан. Но как мне измениться?' , 'Серьезность не должна быть привязана только к тому, что мы делаем. Серьезно нужно относиться ит к тому, что происходит вне нас. Односторонняя серьезность порождает сильную усталость.
-Именно усталость не дает нам замечать чудеса.' where not exists (select * from sources where id_out='korvintag_2252');
-insert into ideas (name, id_out, original_text, content) select 'Как нужно идти к знанию?' , 'korvintag_2254' , 'Человек идет к знанию так же, как идет на войну: полностью проснувшись, со страхом, с уважением и с абсолютной уверенностью. Идти к знанию или идти на войну как-либо иначе — ошибка; тот, кто совершает ее, будет всю жизнь сожалеть о сделанных шагах.' , '- полностью проснувшись
-- со страхом
-- с уважением
-- с абсолютной уверенностью' where not exists (select * from sources where id_out='korvintag_2254');
-insert into ideas (name, id_out, original_text, content) select 'Преодоление бестолковости' , 'korvintag_2255' , 'Я спросил, почему это так, и он ответил, что при соблюдении человеком этих четырех требований любую ошибку можно принять в расчет, в таких условиях его действия теряют бестолковый характер действий дурака. Если такой человек терпит неудачу или поражение, то проигрывает только битву — и тогда ему не о чем сожалеть.' , 'Только соблюдая 4 принципа похода за знаниями можно преодолеть бестолковость дурака.' where not exists (select * from sources where id_out='korvintag_2255');
-insert into ideas (name, id_out, original_text, content) select 'Сердиться' , 'korvintag_2257' , '— Ты не сердишься на меня, дон Хуан? — спросил я, когда он вернулся. Его, по-видимому, удивил мой вопрос.
-— Нет, я никогда ни на кого не сержусь. Никому из людей не удастся сделать что-то, достаточно для этого важное. На людей сердишься, когда веришь, что их поступки важны. Ничему подобному я больше не верю.' , 'Если ты сердишься на людей, то это значит, что ты веришь, что их поступки важны.' where not exists (select * from sources where id_out='korvintag_2257');
-insert into ideas (name, id_out, original_text, content) select 'Страх - первый природный враг' , 'korvintag_2259' , '— Когда человек начинает учиться, он никогда не знает ясно своих целей. Его замысел ошибочен, а намерение смутно. Он надеется на вознаграждения, которых никогда не получит, потому что еще ничего не знает о тяготах учения.
-Он медленно начинает учиться — сначала понемногу, шаг за шагом, а потом большими скачками. И скоро у него ум зайдет за разум. То, что он узнает, всегда оказывается не тем, что он себе рисовал или воображал, и поэтому он начинает пугаться. Учение никогда не даст того, чего от него ожидают. Каждый шаг — это новая задача, и страх, испытываемый человеком, накапливается безжалостно и неуклонно. Замысел оказывается полем битвы.
-И таким образом он натыкается на первого из своих природных врагов. Страх! Ужасный враг — вероломный и трудноодолимый. Он таится на каждом повороте пути, маскируется, выжидает. И если человек, испугавшись непосредственной близости страха, побежит прочь, враг положит конец его поискам.
+В РС‰Рё С‡СѓРґРµСЃ РїРѕРІСЃСЋРґСѓ РІРѕРєСЂСѓРі СЃРµР±СЏ Рё СЃРјРѕС‚СЂРё РЅР° РЅРёС…. РўС‹ СѓСЃС‚Р°РµС€СЊ РѕС‚ РіР»СЏРґРµРЅРёСЏ РЅР° РѕРґРЅРѕРіРѕ СЃРµР±СЏ, Рё СЌС‚Р° СѓСЃС‚Р°Р»РѕСЃС‚СЊ РґРµР»Р°РµС‚ С‚РµР±СЏ РіР»СѓС…РёРј Рё СЃР»РµРїС‹Рј РєРѕ РІСЃРµРјСѓ РѕСЃС‚Р°Р»СЊРЅРѕРјСѓ.
+вЂ”В РўС‹ РїРѕРїР°Р» РІ С‚РѕС‡РєСѓ, РґРѕРЅ РҐСѓР°РЅ. РќРѕ РєР°Рє РјРЅРµ РёР·РјРµРЅРёС‚СЊСЃСЏ?' , 'РЎРµСЂСЊРµР·РЅРѕСЃС‚СЊ РЅРµ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РїСЂРёРІСЏР·Р°РЅР° С‚РѕР»СЊРєРѕ Рє С‚РѕРјСѓ, С‡С‚Рѕ РјС‹ РґРµР»Р°РµРј. РЎРµСЂСЊРµР·РЅРѕ РЅСѓР¶РЅРѕ РѕС‚РЅРѕСЃРёС‚СЊСЃСЏ РёС‚ Рє С‚РѕРјСѓ, С‡С‚Рѕ РїСЂРѕРёСЃС…РѕРґРёС‚ РІРЅРµ РЅР°СЃ. РћРґРЅРѕСЃС‚РѕСЂРѕРЅРЅСЏСЏ СЃРµСЂСЊРµР·РЅРѕСЃС‚СЊ РїРѕСЂРѕР¶РґР°РµС‚ СЃРёР»СЊРЅСѓСЋ СѓСЃС‚Р°Р»РѕСЃС‚СЊ.
+РРјРµРЅРЅРѕ СѓСЃС‚Р°Р»РѕСЃС‚СЊ РЅРµ РґР°РµС‚ РЅР°Рј Р·Р°РјРµС‡Р°С‚СЊ С‡СѓРґРµСЃР°.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2252');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РљР°Рє РЅСѓР¶РЅРѕ РёРґС‚Рё Рє Р·РЅР°РЅРёСЋ?' , 'korvintag_2254' , 'Р§РµР»РѕРІРµРє РёРґРµС‚ Рє Р·РЅР°РЅРёСЋ С‚Р°Рє Р¶Рµ, РєР°Рє РёРґРµС‚ РЅР° РІРѕР№РЅСѓ: РїРѕР»РЅРѕСЃС‚СЊСЋ РїСЂРѕСЃРЅСѓРІС€РёСЃСЊ, СЃРѕ СЃС‚СЂР°С…РѕРј, СЃ СѓРІР°Р¶РµРЅРёРµРј Рё СЃ Р°Р±СЃРѕР»СЋС‚РЅРѕР№ СѓРІРµСЂРµРЅРЅРѕСЃС‚СЊСЋ. РРґС‚Рё Рє Р·РЅР°РЅРёСЋ РёР»Рё РёРґС‚Рё РЅР° РІРѕР№РЅСѓ РєР°Рє-Р»РёР±Рѕ РёРЅР°С‡Рµ вЂ” РѕС€РёР±РєР°; С‚РѕС‚, РєС‚Рѕ СЃРѕРІРµСЂС€Р°РµС‚ РµРµ, Р±СѓРґРµС‚ РІСЃСЋ Р¶РёР·РЅСЊ СЃРѕР¶Р°Р»РµС‚СЊ Рѕ СЃРґРµР»Р°РЅРЅС‹С… С€Р°РіР°С….' , '- РїРѕР»РЅРѕСЃС‚СЊСЋ РїСЂРѕСЃРЅСѓРІС€РёСЃСЊ
+- СЃРѕ СЃС‚СЂР°С…РѕРј
+- СЃ СѓРІР°Р¶РµРЅРёРµРј
+- СЃ Р°Р±СЃРѕР»СЋС‚РЅРѕР№ СѓРІРµСЂРµРЅРЅРѕСЃС‚СЊСЋ', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2254');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РџСЂРµРѕРґРѕР»РµРЅРёРµ Р±РµСЃС‚РѕР»РєРѕРІРѕСЃС‚Рё' , 'korvintag_2255' , 'РЇ СЃРїСЂРѕСЃРёР», РїРѕС‡РµРјСѓ СЌС‚Рѕ С‚Р°Рє, Рё РѕРЅ РѕС‚РІРµС‚РёР», С‡С‚Рѕ РїСЂРё СЃРѕР±Р»СЋРґРµРЅРёРё С‡РµР»РѕРІРµРєРѕРј СЌС‚РёС… С‡РµС‚С‹СЂРµС… С‚СЂРµР±РѕРІР°РЅРёР№ Р»СЋР±СѓСЋ РѕС€РёР±РєСѓ РјРѕР¶РЅРѕ РїСЂРёРЅСЏС‚СЊ РІ СЂР°СЃС‡РµС‚, РІ С‚Р°РєРёС… СѓСЃР»РѕРІРёСЏС… РµРіРѕ РґРµР№СЃС‚РІРёСЏ С‚РµСЂСЏСЋС‚ Р±РµСЃС‚РѕР»РєРѕРІС‹Р№ С…Р°СЂР°РєС‚РµСЂ РґРµР№СЃС‚РІРёР№ РґСѓСЂР°РєР°. Р•СЃР»Рё С‚Р°РєРѕР№ С‡РµР»РѕРІРµРє С‚РµСЂРїРёС‚ РЅРµСѓРґР°С‡Сѓ РёР»Рё РїРѕСЂР°Р¶РµРЅРёРµ, С‚Рѕ РїСЂРѕРёРіСЂС‹РІР°РµС‚ С‚РѕР»СЊРєРѕ Р±РёС‚РІСѓ вЂ” Рё С‚РѕРіРґР° РµРјСѓ РЅРµ Рѕ С‡РµРј СЃРѕР¶Р°Р»РµС‚СЊ.' , 'РўРѕР»СЊРєРѕ СЃРѕР±Р»СЋРґР°СЏ 4 РїСЂРёРЅС†РёРїР° РїРѕС…РѕРґР° Р·Р° Р·РЅР°РЅРёСЏРјРё РјРѕР¶РЅРѕ РїСЂРµРѕРґРѕР»РµС‚СЊ Р±РµСЃС‚РѕР»РєРѕРІРѕСЃС‚СЊ РґСѓСЂР°РєР°.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2255');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРµСЂРґРёС‚СЊСЃСЏ' , 'korvintag_2257' , 'вЂ”В РўС‹ РЅРµ СЃРµСЂРґРёС€СЊСЃСЏ РЅР° РјРµРЅСЏ, РґРѕРЅ РҐСѓР°РЅ?В вЂ” СЃРїСЂРѕСЃРёР» СЏ, РєРѕРіРґР° РѕРЅ РІРµСЂРЅСѓР»СЃСЏ. Р•РіРѕ, РїРѕ-РІРёРґРёРјРѕРјСѓ, СѓРґРёРІРёР» РјРѕР№ РІРѕРїСЂРѕСЃ.
+вЂ”В РќРµС‚, СЏ РЅРёРєРѕРіРґР° РЅРё РЅР° РєРѕРіРѕ РЅРµ СЃРµСЂР¶СѓСЃСЊ. РќРёРєРѕРјСѓ РёР· Р»СЋРґРµР№ РЅРµ СѓРґР°СЃС‚СЃСЏ СЃРґРµР»Р°С‚СЊ С‡С‚Рѕ-С‚Рѕ, РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР»СЏ СЌС‚РѕРіРѕ РІР°Р¶РЅРѕРµ. РќР° Р»СЋРґРµР№ СЃРµСЂРґРёС€СЊСЃСЏ, РєРѕРіРґР° РІРµСЂРёС€СЊ, С‡С‚Рѕ РёС… РїРѕСЃС‚СѓРїРєРё РІР°Р¶РЅС‹. РќРёС‡РµРјСѓ РїРѕРґРѕР±РЅРѕРјСѓ СЏ Р±РѕР»СЊС€Рµ РЅРµ РІРµСЂСЋ.' , 'Р•СЃР»Рё С‚С‹ СЃРµСЂРґРёС€СЊСЃСЏ РЅР° Р»СЋРґРµР№, С‚Рѕ СЌС‚Рѕ Р·РЅР°С‡РёС‚, С‡С‚Рѕ С‚С‹ РІРµСЂРёС€СЊ, С‡С‚Рѕ РёС… РїРѕСЃС‚СѓРїРєРё РІР°Р¶РЅС‹.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2257');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎС‚СЂР°С… - РїРµСЂРІС‹Р№ РїСЂРёСЂРѕРґРЅС‹Р№ РІСЂР°Рі' , 'korvintag_2259' , 'вЂ”В РљРѕРіРґР° С‡РµР»РѕРІРµРє РЅР°С‡РёРЅР°РµС‚ СѓС‡РёС‚СЊСЃСЏ, РѕРЅ РЅРёРєРѕРіРґР° РЅРµ Р·РЅР°РµС‚ СЏСЃРЅРѕ СЃРІРѕРёС… С†РµР»РµР№. Р•РіРѕ Р·Р°РјС‹СЃРµР» РѕС€РёР±РѕС‡РµРЅ, Р° РЅР°РјРµСЂРµРЅРёРµ СЃРјСѓС‚РЅРѕ. РћРЅ РЅР°РґРµРµС‚СЃСЏ РЅР° РІРѕР·РЅР°РіСЂР°Р¶РґРµРЅРёСЏ, РєРѕС‚РѕСЂС‹С… РЅРёРєРѕРіРґР° РЅРµ РїРѕР»СѓС‡РёС‚, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РµС‰Рµ РЅРёС‡РµРіРѕ РЅРµ Р·РЅР°РµС‚ Рѕ С‚СЏРіРѕС‚Р°С… СѓС‡РµРЅРёСЏ.
+РћРЅ РјРµРґР»РµРЅРЅРѕ РЅР°С‡РёРЅР°РµС‚ СѓС‡РёС‚СЊСЃСЏ вЂ” СЃРЅР°С‡Р°Р»Р° РїРѕРЅРµРјРЅРѕРіСѓ, С€Р°Рі Р·Р° С€Р°РіРѕРј, Р° РїРѕС‚РѕРј Р±РѕР»СЊС€РёРјРё СЃРєР°С‡РєР°РјРё. Р СЃРєРѕСЂРѕ Сѓ РЅРµРіРѕ СѓРј Р·Р°Р№РґРµС‚ Р·Р° СЂР°Р·СѓРј. РўРѕ, С‡С‚Рѕ РѕРЅ СѓР·РЅР°РµС‚, РІСЃРµРіРґР° РѕРєР°Р·С‹РІР°РµС‚СЃСЏ РЅРµ С‚РµРј, С‡С‚Рѕ РѕРЅ СЃРµР±Рµ СЂРёСЃРѕРІР°Р» РёР»Рё РІРѕРѕР±СЂР°Р¶Р°Р», Рё РїРѕСЌС‚РѕРјСѓ РѕРЅ РЅР°С‡РёРЅР°РµС‚ РїСѓРіР°С‚СЊСЃСЏ. РЈС‡РµРЅРёРµ РЅРёРєРѕРіРґР° РЅРµ РґР°СЃС‚ С‚РѕРіРѕ, С‡РµРіРѕ РѕС‚ РЅРµРіРѕ РѕР¶РёРґР°СЋС‚. РљР°Р¶РґС‹Р№ С€Р°Рі вЂ” СЌС‚Рѕ РЅРѕРІР°СЏ Р·Р°РґР°С‡Р°, Рё СЃС‚СЂР°С…, РёСЃРїС‹С‚С‹РІР°РµРјС‹Р№ С‡РµР»РѕРІРµРєРѕРј, РЅР°РєР°РїР»РёРІР°РµС‚СЃСЏ Р±РµР·Р¶Р°Р»РѕСЃС‚РЅРѕ Рё РЅРµСѓРєР»РѕРЅРЅРѕ. Р—Р°РјС‹СЃРµР» РѕРєР°Р·С‹РІР°РµС‚СЃСЏ РїРѕР»РµРј Р±РёС‚РІС‹.
+Р С‚Р°РєРёРј РѕР±СЂР°Р·РѕРј РѕРЅ РЅР°С‚С‹РєР°РµС‚СЃСЏ РЅР° РїРµСЂРІРѕРіРѕ РёР· СЃРІРѕРёС… РїСЂРёСЂРѕРґРЅС‹С… РІСЂР°РіРѕРІ. РЎС‚СЂР°С…! РЈР¶Р°СЃРЅС‹Р№ РІСЂР°Рі вЂ” РІРµСЂРѕР»РѕРјРЅС‹Р№ Рё С‚СЂСѓРґРЅРѕРѕРґРѕР»РёРјС‹Р№. РћРЅ С‚Р°РёС‚СЃСЏ РЅР° РєР°Р¶РґРѕРј РїРѕРІРѕСЂРѕС‚Рµ РїСѓС‚Рё, РјР°СЃРєРёСЂСѓРµС‚СЃСЏ, РІС‹Р¶РёРґР°РµС‚. Р РµСЃР»Рё С‡РµР»РѕРІРµРє, РёСЃРїСѓРіР°РІС€РёСЃСЊ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕР№ Р±Р»РёР·РѕСЃС‚Рё СЃС‚СЂР°С…Р°, РїРѕР±РµР¶РёС‚ РїСЂРѕС‡СЊ, РІСЂР°Рі РїРѕР»РѕР¶РёС‚ РєРѕРЅРµС† РµРіРѕ РїРѕРёСЃРєР°Рј.
 
-— И что же делать, чтобы одолеть страх?
-— Ответ очень прост. Он не должен убегать. Он должен победить свой страх и вопреки ему сделать следующий шаг в учении, еще шаг и еще. Будучи всецело во власти страха, он все же не должен останавливаться. Таково правило! И придет миг, когда его первый враг отступит. Человек начнет чувствовать уверенность в себе. Его намерение крепнет. Учение — уже не пугающая задача. В этот радостный миг человек может сказать без колебаний, что он победил своего первого природного врага.
+вЂ”В Р С‡С‚Рѕ Р¶Рµ РґРµР»Р°С‚СЊ, С‡С‚РѕР±С‹ РѕРґРѕР»РµС‚СЊ СЃС‚СЂР°С…?
+вЂ”В РћС‚РІРµС‚ РѕС‡РµРЅСЊ РїСЂРѕСЃС‚. РћРЅ РЅРµ РґРѕР»Р¶РµРЅ СѓР±РµРіР°С‚СЊ. РћРЅ РґРѕР»Р¶РµРЅ РїРѕР±РµРґРёС‚СЊ СЃРІРѕР№ СЃС‚СЂР°С… Рё РІРѕРїСЂРµРєРё РµРјСѓ СЃРґРµР»Р°С‚СЊ СЃР»РµРґСѓСЋС‰РёР№ С€Р°Рі РІ СѓС‡РµРЅРёРё, РµС‰Рµ С€Р°Рі Рё РµС‰Рµ. Р‘СѓРґСѓС‡Рё РІСЃРµС†РµР»Рѕ РІРѕ РІР»Р°СЃС‚Рё СЃС‚СЂР°С…Р°, РѕРЅ РІСЃРµ Р¶Рµ РЅРµ РґРѕР»Р¶РµРЅ РѕСЃС‚Р°РЅР°РІР»РёРІР°С‚СЊСЃСЏ. РўР°РєРѕРІРѕ РїСЂР°РІРёР»Рѕ! Р РїСЂРёРґРµС‚ РјРёРі, РєРѕРіРґР° РµРіРѕ РїРµСЂРІС‹Р№ РІСЂР°Рі РѕС‚СЃС‚СѓРїРёС‚. Р§РµР»РѕРІРµРє РЅР°С‡РЅРµС‚ С‡СѓРІСЃС‚РІРѕРІР°С‚СЊ СѓРІРµСЂРµРЅРЅРѕСЃС‚СЊ РІ СЃРµР±Рµ. Р•РіРѕ РЅР°РјРµСЂРµРЅРёРµ РєСЂРµРїРЅРµС‚. РЈС‡РµРЅРёРµ вЂ” СѓР¶Рµ РЅРµ РїСѓРіР°СЋС‰Р°СЏ Р·Р°РґР°С‡Р°. Р’ СЌС‚РѕС‚ СЂР°РґРѕСЃС‚РЅС‹Р№ РјРёРі С‡РµР»РѕРІРµРє РјРѕР¶РµС‚ СЃРєР°Р·Р°С‚СЊ Р±РµР· РєРѕР»РµР±Р°РЅРёР№, С‡С‚Рѕ РѕРЅ РїРѕР±РµРґРёР» СЃРІРѕРµРіРѕ РїРµСЂРІРѕРіРѕ РїСЂРёСЂРѕРґРЅРѕРіРѕ РІСЂР°РіР°.
 
-— Это произойдет сразу, дон Хуан, или мало-помалу?
-— Это произойдет мало-помалу, но страх исчезнет внезапно и быстро.' , 'Страх - первый враг. 
-Нужно идти дальше невзирая на страх. И он уйдет. И появится уверенность.' where not exists (select * from sources where id_out='korvintag_2259');
-insert into ideas (name, id_out, original_text, content) select 'Ясность' , 'korvintag_2260' , '— Нет, однажды уничтожив страх, он свободен от него до конца своей жизни, потому что вместо страха он приобрел ясность — ясность ума, которая рассеивает страх. К этому времени человек знает свои желания, знает, как удовлетворить эти желания. Он умеет предвидеть новые шаги в учении, и острая ясность сознавания сопутствует всему, что он делает. Человек понимает, что нет ничего скрытого.
-И вот так он встречает своего второго врага: ясность! Эта ясность сознания, которую так трудно достичь, рассеивает страх, но вместе с тем ослепляет.
-Она заставляет человека никогда не сомневаться в себе. Она дает ему уверенность, что можно делать все, что ему нравится, — потому что он все видит ясно, насквозь. И он храбр — ибо ясно видит, и он ни перед чем не остановится — ибо ясно видит. Но все это — ошибка; в этом есть что-то незавершенное. Если человек поддается этому мнимому могуществу, значит, он побежден своим вторым врагом и будет топтаться на месте, когда надо быть стремительным. И он будет мямлей в учении, пока не выдохнется, неспособный научиться чему бы то ни было.
-— Что случится с человеком, который побежден таким образом, дон Хуан? Он что, в результате умрет?
-— Нет, не умрет. Второй враг просто остановил его на месте и охладил его попытки стать человеком знания. Вместо этого он обратится в бодрого воина или в клоуна. Но ясность ума, за которую он так дорого заплатил, никогда уже не сменится тьмой и страхом. Он будет ясен до конца своих дней, но никогда не будет учиться чему-нибудь или томиться по чему-то.
-— Но что же он должен делать, чтобы избежать поражения?
-— Он должен делать то же самое, что делал со страхом. Он должен победить свою ясность мысли и использовать ее лишь для того, чтобы видеть, терпеливо ждать, тщательно все измерять и взвешивать, прежде чем сделать новый шаг. И главное, он должен думать, что ясность его ума — это почти ошибка. И придет мгновение, когда он поймет, что его ясность была лишь точкой перед глазами. Так он одолеет своего второго природного врага и займет позицию, где ничто уже не сможет ему повредить. Это не будет ошибкой. Это не будет точкой перед глазами. Это будет истинной силой.' , 'После победы над страхом приходит ясность. Которая есть ошибка. И которую нужно преодолеть.' where not exists (select * from sources where id_out='korvintag_2260');
-insert into ideas (name, id_out, original_text, content) select 'Сила' , 'korvintag_2261' , 'Вот тут он узнает, что сила, за которой он так долго гонялся, наконец принадлежит ему. Он сможет делать с ней все, что захочет. Союзник в его подчинении. Его желание — закон. Он видит все, что есть вокруг. Но он наткнулся вместе с тем на своего третьего врага: Силу!
-Сила — самый могущественный из всех врагов. И естественно, самое легкое, что можно сделать, — это уступить ей. В конце концов, человек действительно неуязвим. Он командует, он начинает с того, что идет на рассчитанный риск, а кончает тем, что устанавливает законы, потому что он — мастер.
-Человек на этой стадии вряд ли замечает третьего врага, что надвигается на него. И внезапно, сам того не замечая, он проигрывает битву. Враг превратит его в жестокого и капризного воина.
+вЂ”В Р­С‚Рѕ РїСЂРѕРёР·РѕР№РґРµС‚ СЃСЂР°Р·Сѓ, РґРѕРЅ РҐСѓР°РЅ, РёР»Рё РјР°Р»Рѕ-РїРѕРјР°Р»Сѓ?
+вЂ”В Р­С‚Рѕ РїСЂРѕРёР·РѕР№РґРµС‚ РјР°Р»Рѕ-РїРѕРјР°Р»Сѓ, РЅРѕ СЃС‚СЂР°С… РёСЃС‡РµР·РЅРµС‚ РІРЅРµР·Р°РїРЅРѕ Рё Р±С‹СЃС‚СЂРѕ.' , 'РЎС‚СЂР°С… - РїРµСЂРІС‹Р№ РІСЂР°Рі. 
+РќСѓР¶РЅРѕ РёРґС‚Рё РґР°Р»СЊС€Рµ РЅРµРІР·РёСЂР°СЏ РЅР° СЃС‚СЂР°С…. Р РѕРЅ СѓР№РґРµС‚. Р РїРѕСЏРІРёС‚СЃСЏ СѓРІРµСЂРµРЅРЅРѕСЃС‚СЊ.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2259');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЇСЃРЅРѕСЃС‚СЊ' , 'korvintag_2260' , 'вЂ”В РќРµС‚, РѕРґРЅР°Р¶РґС‹ СѓРЅРёС‡С‚РѕР¶РёРІ СЃС‚СЂР°С…, РѕРЅ СЃРІРѕР±РѕРґРµРЅ РѕС‚ РЅРµРіРѕ РґРѕ РєРѕРЅС†Р° СЃРІРѕРµР№ Р¶РёР·РЅРё, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РІРјРµСЃС‚Рѕ СЃС‚СЂР°С…Р° РѕРЅ РїСЂРёРѕР±СЂРµР» СЏСЃРЅРѕСЃС‚СЊ вЂ” СЏСЃРЅРѕСЃС‚СЊ СѓРјР°, РєРѕС‚РѕСЂР°СЏ СЂР°СЃСЃРµРёРІР°РµС‚ СЃС‚СЂР°С…. Рљ СЌС‚РѕРјСѓ РІСЂРµРјРµРЅРё С‡РµР»РѕРІРµРє Р·РЅР°РµС‚ СЃРІРѕРё Р¶РµР»Р°РЅРёСЏ, Р·РЅР°РµС‚, РєР°Рє СѓРґРѕРІР»РµС‚РІРѕСЂРёС‚СЊ СЌС‚Рё Р¶РµР»Р°РЅРёСЏ. РћРЅ СѓРјРµРµС‚ РїСЂРµРґРІРёРґРµС‚СЊ РЅРѕРІС‹Рµ С€Р°РіРё РІ СѓС‡РµРЅРёРё, Рё РѕСЃС‚СЂР°СЏ СЏСЃРЅРѕСЃС‚СЊ СЃРѕР·РЅР°РІР°РЅРёСЏ СЃРѕРїСѓС‚СЃС‚РІСѓРµС‚ РІСЃРµРјСѓ, С‡С‚Рѕ РѕРЅ РґРµР»Р°РµС‚. Р§РµР»РѕРІРµРє РїРѕРЅРёРјР°РµС‚, С‡С‚Рѕ РЅРµС‚ РЅРёС‡РµРіРѕ СЃРєСЂС‹С‚РѕРіРѕ.
+Р РІРѕС‚ С‚Р°Рє РѕРЅ РІСЃС‚СЂРµС‡Р°РµС‚ СЃРІРѕРµРіРѕ РІС‚РѕСЂРѕРіРѕ РІСЂР°РіР°: СЏСЃРЅРѕСЃС‚СЊ! Р­С‚Р° СЏСЃРЅРѕСЃС‚СЊ СЃРѕР·РЅР°РЅРёСЏ, РєРѕС‚РѕСЂСѓСЋ С‚Р°Рє С‚СЂСѓРґРЅРѕ РґРѕСЃС‚РёС‡СЊ, СЂР°СЃСЃРµРёРІР°РµС‚ СЃС‚СЂР°С…, РЅРѕ РІРјРµСЃС‚Рµ СЃ С‚РµРј РѕСЃР»РµРїР»СЏРµС‚.
+РћРЅР° Р·Р°СЃС‚Р°РІР»СЏРµС‚ С‡РµР»РѕРІРµРєР° РЅРёРєРѕРіРґР° РЅРµ СЃРѕРјРЅРµРІР°С‚СЊСЃСЏ РІ СЃРµР±Рµ. РћРЅР° РґР°РµС‚ РµРјСѓ СѓРІРµСЂРµРЅРЅРѕСЃС‚СЊ, С‡С‚Рѕ РјРѕР¶РЅРѕ РґРµР»Р°С‚СЊ РІСЃРµ, С‡С‚Рѕ РµРјСѓ РЅСЂР°РІРёС‚СЃСЏ,В вЂ” РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРЅ РІСЃРµ РІРёРґРёС‚ СЏСЃРЅРѕ, РЅР°СЃРєРІРѕР·СЊ. Р РѕРЅ С…СЂР°Р±СЂ вЂ” РёР±Рѕ СЏСЃРЅРѕ РІРёРґРёС‚, Рё РѕРЅ РЅРё РїРµСЂРµРґ С‡РµРј РЅРµ РѕСЃС‚Р°РЅРѕРІРёС‚СЃСЏ вЂ” РёР±Рѕ СЏСЃРЅРѕ РІРёРґРёС‚. РќРѕ РІСЃРµ СЌС‚Рѕ вЂ” РѕС€РёР±РєР°; РІ СЌС‚РѕРј РµСЃС‚СЊ С‡С‚Рѕ-С‚Рѕ РЅРµР·Р°РІРµСЂС€РµРЅРЅРѕРµ. Р•СЃР»Рё С‡РµР»РѕРІРµРє РїРѕРґРґР°РµС‚СЃСЏ СЌС‚РѕРјСѓ РјРЅРёРјРѕРјСѓ РјРѕРіСѓС‰РµСЃС‚РІСѓ, Р·РЅР°С‡РёС‚, РѕРЅ РїРѕР±РµР¶РґРµРЅ СЃРІРѕРёРј РІС‚РѕСЂС‹Рј РІСЂР°РіРѕРј Рё Р±СѓРґРµС‚ С‚РѕРїС‚Р°С‚СЊСЃСЏ РЅР° РјРµСЃС‚Рµ, РєРѕРіРґР° РЅР°РґРѕ Р±С‹С‚СЊ СЃС‚СЂРµРјРёС‚РµР»СЊРЅС‹Рј. Р РѕРЅ Р±СѓРґРµС‚ РјСЏРјР»РµР№ РІ СѓС‡РµРЅРёРё, РїРѕРєР° РЅРµ РІС‹РґРѕС…РЅРµС‚СЃСЏ, РЅРµСЃРїРѕСЃРѕР±РЅС‹Р№ РЅР°СѓС‡РёС‚СЊСЃСЏ С‡РµРјСѓ Р±С‹ С‚Рѕ РЅРё Р±С‹Р»Рѕ.
+вЂ”В Р§С‚Рѕ СЃР»СѓС‡РёС‚СЃСЏ СЃ С‡РµР»РѕРІРµРєРѕРј, РєРѕС‚РѕСЂС‹Р№ РїРѕР±РµР¶РґРµРЅ С‚Р°РєРёРј РѕР±СЂР°Р·РѕРј, РґРѕРЅ РҐСѓР°РЅ? РћРЅ С‡С‚Рѕ, РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ СѓРјСЂРµС‚?
+вЂ”В РќРµС‚, РЅРµ СѓРјСЂРµС‚. Р’С‚РѕСЂРѕР№ РІСЂР°Рі РїСЂРѕСЃС‚Рѕ РѕСЃС‚Р°РЅРѕРІРёР» РµРіРѕ РЅР° РјРµСЃС‚Рµ Рё РѕС…Р»Р°РґРёР» РµРіРѕ РїРѕРїС‹С‚РєРё СЃС‚Р°С‚СЊ С‡РµР»РѕРІРµРєРѕРј Р·РЅР°РЅРёСЏ. Р’РјРµСЃС‚Рѕ СЌС‚РѕРіРѕ РѕРЅ РѕР±СЂР°С‚РёС‚СЃСЏ РІ Р±РѕРґСЂРѕРіРѕ РІРѕРёРЅР° РёР»Рё РІ РєР»РѕСѓРЅР°. РќРѕ СЏСЃРЅРѕСЃС‚СЊ СѓРјР°, Р·Р° РєРѕС‚РѕСЂСѓСЋ РѕРЅ С‚Р°Рє РґРѕСЂРѕРіРѕ Р·Р°РїР»Р°С‚РёР», РЅРёРєРѕРіРґР° СѓР¶Рµ РЅРµ СЃРјРµРЅРёС‚СЃСЏ С‚СЊРјРѕР№ Рё СЃС‚СЂР°С…РѕРј. РћРЅ Р±СѓРґРµС‚ СЏСЃРµРЅ РґРѕ РєРѕРЅС†Р° СЃРІРѕРёС… РґРЅРµР№, РЅРѕ РЅРёРєРѕРіРґР° РЅРµ Р±СѓРґРµС‚ СѓС‡РёС‚СЊСЃСЏ С‡РµРјСѓ-РЅРёР±СѓРґСЊ РёР»Рё С‚РѕРјРёС‚СЊСЃСЏ РїРѕ С‡РµРјСѓ-С‚Рѕ.
+вЂ”В РќРѕ С‡С‚Рѕ Р¶Рµ РѕРЅ РґРѕР»Р¶РµРЅ РґРµР»Р°С‚СЊ, С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ РїРѕСЂР°Р¶РµРЅРёСЏ?
+вЂ”В РћРЅ РґРѕР»Р¶РµРЅ РґРµР»Р°С‚СЊ С‚Рѕ Р¶Рµ СЃР°РјРѕРµ, С‡С‚Рѕ РґРµР»Р°Р» СЃРѕ СЃС‚СЂР°С…РѕРј. РћРЅ РґРѕР»Р¶РµРЅ РїРѕР±РµРґРёС‚СЊ СЃРІРѕСЋ СЏСЃРЅРѕСЃС‚СЊ РјС‹СЃР»Рё Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РµРµ Р»РёС€СЊ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РІРёРґРµС‚СЊ, С‚РµСЂРїРµР»РёРІРѕ Р¶РґР°С‚СЊ, С‚С‰Р°С‚РµР»СЊРЅРѕ РІСЃРµ РёР·РјРµСЂСЏС‚СЊ Рё РІР·РІРµС€РёРІР°С‚СЊ, РїСЂРµР¶РґРµ С‡РµРј СЃРґРµР»Р°С‚СЊ РЅРѕРІС‹Р№ С€Р°Рі. Р РіР»Р°РІРЅРѕРµ, РѕРЅ РґРѕР»Р¶РµРЅ РґСѓРјР°С‚СЊ, С‡С‚Рѕ СЏСЃРЅРѕСЃС‚СЊ РµРіРѕ СѓРјР° вЂ” СЌС‚Рѕ РїРѕС‡С‚Рё РѕС€РёР±РєР°. Р РїСЂРёРґРµС‚ РјРіРЅРѕРІРµРЅРёРµ, РєРѕРіРґР° РѕРЅ РїРѕР№РјРµС‚, С‡С‚Рѕ РµРіРѕ СЏСЃРЅРѕСЃС‚СЊ Р±С‹Р»Р° Р»РёС€СЊ С‚РѕС‡РєРѕР№ РїРµСЂРµРґ РіР»Р°Р·Р°РјРё. РўР°Рє РѕРЅ РѕРґРѕР»РµРµС‚ СЃРІРѕРµРіРѕ РІС‚РѕСЂРѕРіРѕ РїСЂРёСЂРѕРґРЅРѕРіРѕ РІСЂР°РіР° Рё Р·Р°Р№РјРµС‚ РїРѕР·РёС†РёСЋ, РіРґРµ РЅРёС‡С‚Рѕ СѓР¶Рµ РЅРµ СЃРјРѕР¶РµС‚ РµРјСѓ РїРѕРІСЂРµРґРёС‚СЊ. Р­С‚Рѕ РЅРµ Р±СѓРґРµС‚ РѕС€РёР±РєРѕР№. Р­С‚Рѕ РЅРµ Р±СѓРґРµС‚ С‚РѕС‡РєРѕР№ РїРµСЂРµРґ РіР»Р°Р·Р°РјРё. Р­С‚Рѕ Р±СѓРґРµС‚ РёСЃС‚РёРЅРЅРѕР№ СЃРёР»РѕР№.' , 'РџРѕСЃР»Рµ РїРѕР±РµРґС‹ РЅР°Рґ СЃС‚СЂР°С…РѕРј РїСЂРёС…РѕРґРёС‚ СЏСЃРЅРѕСЃС‚СЊ. РљРѕС‚РѕСЂР°СЏ РµСЃС‚СЊ РѕС€РёР±РєР°. Р РєРѕС‚РѕСЂСѓСЋ РЅСѓР¶РЅРѕ РїСЂРµРѕРґРѕР»РµС‚СЊ.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2260');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРёР»Р°' , 'korvintag_2261' , 'Р’РѕС‚ С‚СѓС‚ РѕРЅ СѓР·РЅР°РµС‚, С‡С‚Рѕ СЃРёР»Р°, Р·Р° РєРѕС‚РѕСЂРѕР№ РѕРЅ С‚Р°Рє РґРѕР»РіРѕ РіРѕРЅСЏР»СЃСЏ, РЅР°РєРѕРЅРµС† РїСЂРёРЅР°РґР»РµР¶РёС‚ РµРјСѓ. РћРЅ СЃРјРѕР¶РµС‚ РґРµР»Р°С‚СЊ СЃ РЅРµР№ РІСЃРµ, С‡С‚Рѕ Р·Р°С…РѕС‡РµС‚. РЎРѕСЋР·РЅРёРє РІ РµРіРѕ РїРѕРґС‡РёРЅРµРЅРёРё. Р•РіРѕ Р¶РµР»Р°РЅРёРµ вЂ” Р·Р°РєРѕРЅ. РћРЅ РІРёРґРёС‚ РІСЃРµ, С‡С‚Рѕ РµСЃС‚СЊ РІРѕРєСЂСѓРі. РќРѕ РѕРЅ РЅР°С‚РєРЅСѓР»СЃСЏ РІРјРµСЃС‚Рµ СЃ С‚РµРј РЅР° СЃРІРѕРµРіРѕ С‚СЂРµС‚СЊРµРіРѕ РІСЂР°РіР°: РЎРёР»Сѓ!
+РЎРёР»Р° вЂ” СЃР°РјС‹Р№ РјРѕРіСѓС‰РµСЃС‚РІРµРЅРЅС‹Р№ РёР· РІСЃРµС… РІСЂР°РіРѕРІ. Р РµСЃС‚РµСЃС‚РІРµРЅРЅРѕ, СЃР°РјРѕРµ Р»РµРіРєРѕРµ, С‡С‚Рѕ РјРѕР¶РЅРѕ СЃРґРµР»Р°С‚СЊ,В вЂ” СЌС‚Рѕ СѓСЃС‚СѓРїРёС‚СЊ РµР№. Р’ РєРѕРЅС†Рµ РєРѕРЅС†РѕРІ, С‡РµР»РѕРІРµРє РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ РЅРµСѓСЏР·РІРёРј. РћРЅ РєРѕРјР°РЅРґСѓРµС‚, РѕРЅ РЅР°С‡РёРЅР°РµС‚ СЃ С‚РѕРіРѕ, С‡С‚Рѕ РёРґРµС‚ РЅР° СЂР°СЃСЃС‡РёС‚Р°РЅРЅС‹Р№ СЂРёСЃРє, Р° РєРѕРЅС‡Р°РµС‚ С‚РµРј, С‡С‚Рѕ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·Р°РєРѕРЅС‹, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРЅ вЂ” РјР°СЃС‚РµСЂ.
+Р§РµР»РѕРІРµРє РЅР° СЌС‚РѕР№ СЃС‚Р°РґРёРё РІСЂСЏРґ Р»Рё Р·Р°РјРµС‡Р°РµС‚ С‚СЂРµС‚СЊРµРіРѕ РІСЂР°РіР°, С‡С‚Рѕ РЅР°РґРІРёРіР°РµС‚СЃСЏ РЅР° РЅРµРіРѕ. Р РІРЅРµР·Р°РїРЅРѕ, СЃР°Рј С‚РѕРіРѕ РЅРµ Р·Р°РјРµС‡Р°СЏ, РѕРЅ РїСЂРѕРёРіСЂС‹РІР°РµС‚ Р±РёС‚РІСѓ. Р’СЂР°Рі РїСЂРµРІСЂР°С‚РёС‚ РµРіРѕ РІ Р¶РµСЃС‚РѕРєРѕРіРѕ Рё РєР°РїСЂРёР·РЅРѕРіРѕ РІРѕРёРЅР°.
 
-— Человек, побежденный силой, так и умрет, не узнав на самом деле, как с этой силой обращаться. Сила — лишь бремя в его судьбе. Такой человек не имеет власти над самим собой и не умеет сказать, когда и как использовать силу.' , 'Сила тоже становится врагом. Порабощая человека.' where not exists (select * from sources where id_out='korvintag_2261');
-insert into ideas (name, id_out, original_text, content) select 'Когда человек побежден?' , 'korvintag_2262' , '— Конечно, оно окончательно. Раз уж какой-нибудь из этих врагов пересилил человека, то тому уже ничем нельзя помочь.
-— Возможно ли, например, чтобы человек; побежденный силой, увидел свою ошибку и исправил свой путь?
-— Нет, раз человек сдался, с ним покончено.
-— Ну а что, если он лишь на время ослеплен силой и потом откажется от нее?
-— Это значит, что его битва все еще не проиграна и продолжается. Это значит, что он все еще пытается стать человеком знания. Человек побежден лишь тогда, когда больше не пытается и отказывается от самого себя.' , 'Человек проигрывает тогда, когда:
-- больше не пытается
-- отказывается от самого себя' where not exists (select * from sources where id_out='korvintag_2262');
-insert into ideas (name, id_out, original_text, content) select 'Силу можно преодолеть пониманием' , 'korvintag_2263' , '— Как можно победить своего третьего врага, дон Хуан?
-— Его нужно победить пониманием. Человек должен прийти к пониманию того, что сила, которую он, казалось бы, покорил, в действительности никогда ему не принадлежала. Он все время должен придерживаться своей линии, обращаясь осторожно и добросовестно со всем, что узнал. Если он сумеет увидеть, что ясность и сила без контроля над самим собой еще хуже, чем ошибки, достигнет такой точки, где все схвачено. Тут он будет знать, когда и как использовать свою силу. И таким образом победит своего третьего врага.' , 'Своеволие силы можно победить лишь пониманием. Того, что сила ему не принадлежит. Нужен самоконтроль!' where not exists (select * from sources where id_out='korvintag_2263');
-insert into ideas (name, id_out, original_text, content) select 'Старость' , 'korvintag_2264' , 'К тому времени человек будет завершать свой путь учения и почти без предупреждения столкнется со своим последним врагом. Старость! Этот враг — самый жестокий из всех. Враг, которого никогда не победить полностью, можно лишь заставить его отступить.
+вЂ”В Р§РµР»РѕРІРµРє, РїРѕР±РµР¶РґРµРЅРЅС‹Р№ СЃРёР»РѕР№, С‚Р°Рє Рё СѓРјСЂРµС‚, РЅРµ СѓР·РЅР°РІ РЅР° СЃР°РјРѕРј РґРµР»Рµ, РєР°Рє СЃ СЌС‚РѕР№ СЃРёР»РѕР№ РѕР±СЂР°С‰Р°С‚СЊСЃСЏ. РЎРёР»Р° вЂ” Р»РёС€СЊ Р±СЂРµРјСЏ РІ РµРіРѕ СЃСѓРґСЊР±Рµ. РўР°РєРѕР№ С‡РµР»РѕРІРµРє РЅРµ РёРјРµРµС‚ РІР»Р°СЃС‚Рё РЅР°Рґ СЃР°РјРёРј СЃРѕР±РѕР№ Рё РЅРµ СѓРјРµРµС‚ СЃРєР°Р·Р°С‚СЊ, РєРѕРіРґР° Рё РєР°Рє РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРёР»Сѓ.' , 'РЎРёР»Р° С‚РѕР¶Рµ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ РІСЂР°РіРѕРј. РџРѕСЂР°Р±РѕС‰Р°СЏ С‡РµР»РѕРІРµРєР°.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2261');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РљРѕРіРґР° С‡РµР»РѕРІРµРє РїРѕР±РµР¶РґРµРЅ?' , 'korvintag_2262' , 'вЂ”В РљРѕРЅРµС‡РЅРѕ, РѕРЅРѕ РѕРєРѕРЅС‡Р°С‚РµР»СЊРЅРѕ. Р Р°Р· СѓР¶ РєР°РєРѕР№-РЅРёР±СѓРґСЊ РёР· СЌС‚РёС… РІСЂР°РіРѕРІ РїРµСЂРµСЃРёР»РёР» С‡РµР»РѕРІРµРєР°, С‚Рѕ С‚РѕРјСѓ СѓР¶Рµ РЅРёС‡РµРј РЅРµР»СЊР·СЏ РїРѕРјРѕС‡СЊ.
+вЂ”В Р’РѕР·РјРѕР¶РЅРѕ Р»Рё, РЅР°РїСЂРёРјРµСЂ, С‡С‚РѕР±С‹ С‡РµР»РѕРІРµРє; РїРѕР±РµР¶РґРµРЅРЅС‹Р№ СЃРёР»РѕР№, СѓРІРёРґРµР» СЃРІРѕСЋ РѕС€РёР±РєСѓ Рё РёСЃРїСЂР°РІРёР» СЃРІРѕР№ РїСѓС‚СЊ?
+вЂ”В РќРµС‚, СЂР°Р· С‡РµР»РѕРІРµРє СЃРґР°Р»СЃСЏ, СЃ РЅРёРј РїРѕРєРѕРЅС‡РµРЅРѕ.
+вЂ”В РќСѓ Р° С‡С‚Рѕ, РµСЃР»Рё РѕРЅ Р»РёС€СЊ РЅР° РІСЂРµРјСЏ РѕСЃР»РµРїР»РµРЅ СЃРёР»РѕР№ Рё РїРѕС‚РѕРј РѕС‚РєР°Р¶РµС‚СЃСЏ РѕС‚ РЅРµРµ?
+вЂ”В Р­С‚Рѕ Р·РЅР°С‡РёС‚, С‡С‚Рѕ РµРіРѕ Р±РёС‚РІР° РІСЃРµ РµС‰Рµ РЅРµ РїСЂРѕРёРіСЂР°РЅР° Рё РїСЂРѕРґРѕР»Р¶Р°РµС‚СЃСЏ. Р­С‚Рѕ Р·РЅР°С‡РёС‚, С‡С‚Рѕ РѕРЅ РІСЃРµ РµС‰Рµ РїС‹С‚Р°РµС‚СЃСЏ СЃС‚Р°С‚СЊ С‡РµР»РѕРІРµРєРѕРј Р·РЅР°РЅРёСЏ. Р§РµР»РѕРІРµРє РїРѕР±РµР¶РґРµРЅ Р»РёС€СЊ С‚РѕРіРґР°, РєРѕРіРґР° Р±РѕР»СЊС€Рµ РЅРµ РїС‹С‚Р°РµС‚СЃСЏ Рё РѕС‚РєР°Р·С‹РІР°РµС‚СЃСЏ РѕС‚ СЃР°РјРѕРіРѕ СЃРµР±СЏ.' , 'Р§РµР»РѕРІРµРє РїСЂРѕРёРіСЂС‹РІР°РµС‚ С‚РѕРіРґР°, РєРѕРіРґР°:
+- Р±РѕР»СЊС€Рµ РЅРµ РїС‹С‚Р°РµС‚СЃСЏ
+- РѕС‚РєР°Р·С‹РІР°РµС‚СЃСЏ РѕС‚ СЃР°РјРѕРіРѕ СЃРµР±СЏ', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2262');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРёР»Сѓ РјРѕР¶РЅРѕ РїСЂРµРѕРґРѕР»РµС‚СЊ РїРѕРЅРёРјР°РЅРёРµРј' , 'korvintag_2263' , 'вЂ”В РљР°Рє РјРѕР¶РЅРѕ РїРѕР±РµРґРёС‚СЊ СЃРІРѕРµРіРѕ С‚СЂРµС‚СЊРµРіРѕ РІСЂР°РіР°, РґРѕРЅ РҐСѓР°РЅ?
+вЂ”В Р•РіРѕ РЅСѓР¶РЅРѕ РїРѕР±РµРґРёС‚СЊ РїРѕРЅРёРјР°РЅРёРµРј. Р§РµР»РѕРІРµРє РґРѕР»Р¶РµРЅ РїСЂРёР№С‚Рё Рє РїРѕРЅРёРјР°РЅРёСЋ С‚РѕРіРѕ, С‡С‚Рѕ СЃРёР»Р°, РєРѕС‚РѕСЂСѓСЋ РѕРЅ, РєР°Р·Р°Р»РѕСЃСЊ Р±С‹, РїРѕРєРѕСЂРёР», РІ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚Рё РЅРёРєРѕРіРґР° РµРјСѓ РЅРµ РїСЂРёРЅР°РґР»РµР¶Р°Р»Р°. РћРЅ РІСЃРµ РІСЂРµРјСЏ РґРѕР»Р¶РµРЅ РїСЂРёРґРµСЂР¶РёРІР°С‚СЊСЃСЏ СЃРІРѕРµР№ Р»РёРЅРёРё, РѕР±СЂР°С‰Р°СЏСЃСЊ РѕСЃС‚РѕСЂРѕР¶РЅРѕ Рё РґРѕР±СЂРѕСЃРѕРІРµСЃС‚РЅРѕ СЃРѕ РІСЃРµРј, С‡С‚Рѕ СѓР·РЅР°Р». Р•СЃР»Рё РѕРЅ СЃСѓРјРµРµС‚ СѓРІРёРґРµС‚СЊ, С‡С‚Рѕ СЏСЃРЅРѕСЃС‚СЊ Рё СЃРёР»Р° Р±РµР· РєРѕРЅС‚СЂРѕР»СЏ РЅР°Рґ СЃР°РјРёРј СЃРѕР±РѕР№ РµС‰Рµ С…СѓР¶Рµ, С‡РµРј РѕС€РёР±РєРё, РґРѕСЃС‚РёРіРЅРµС‚ С‚Р°РєРѕР№ С‚РѕС‡РєРё, РіРґРµ РІСЃРµ СЃС…РІР°С‡РµРЅРѕ. РўСѓС‚ РѕРЅ Р±СѓРґРµС‚ Р·РЅР°С‚СЊ, РєРѕРіРґР° Рё РєР°Рє РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃРІРѕСЋ СЃРёР»Сѓ. Р С‚Р°РєРёРј РѕР±СЂР°Р·РѕРј РїРѕР±РµРґРёС‚ СЃРІРѕРµРіРѕ С‚СЂРµС‚СЊРµРіРѕ РІСЂР°РіР°.' , 'РЎРІРѕРµРІРѕР»РёРµ СЃРёР»С‹ РјРѕР¶РЅРѕ РїРѕР±РµРґРёС‚СЊ Р»РёС€СЊ РїРѕРЅРёРјР°РЅРёРµРј. РўРѕРіРѕ, С‡С‚Рѕ СЃРёР»Р° РµРјСѓ РЅРµ РїСЂРёРЅР°РґР»РµР¶РёС‚. РќСѓР¶РµРЅ СЃР°РјРѕРєРѕРЅС‚СЂРѕР»СЊ!', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2263');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎС‚Р°СЂРѕСЃС‚СЊ' , 'korvintag_2264' , 'Рљ С‚РѕРјСѓ РІСЂРµРјРµРЅРё С‡РµР»РѕРІРµРє Р±СѓРґРµС‚ Р·Р°РІРµСЂС€Р°С‚СЊ СЃРІРѕР№ РїСѓС‚СЊ СѓС‡РµРЅРёСЏ Рё РїРѕС‡С‚Рё Р±РµР· РїСЂРµРґСѓРїСЂРµР¶РґРµРЅРёСЏ СЃС‚РѕР»РєРЅРµС‚СЃСЏ СЃРѕ СЃРІРѕРёРј РїРѕСЃР»РµРґРЅРёРј РІСЂР°РіРѕРј. РЎС‚Р°СЂРѕСЃС‚СЊ! Р­С‚РѕС‚ РІСЂР°Рі вЂ” СЃР°РјС‹Р№ Р¶РµСЃС‚РѕРєРёР№ РёР· РІСЃРµС…. Р’СЂР°Рі, РєРѕС‚РѕСЂРѕРіРѕ РЅРёРєРѕРіРґР° РЅРµ РїРѕР±РµРґРёС‚СЊ РїРѕР»РЅРѕСЃС‚СЊСЋ, РјРѕР¶РЅРѕ Р»РёС€СЊ Р·Р°СЃС‚Р°РІРёС‚СЊ РµРіРѕ РѕС‚СЃС‚СѓРїРёС‚СЊ.
 
-К этому времени у человека нет больше страхов, нет больше терпеливой ясности ума. Тогда вся его сила при нем, но тогда же возникает неотступное желание отдохнуть. Если он целиком поддается своему желанию лечь и забыться, если потакает себе в своей усталости — он проиграет свою последнюю битву, и враг обратит его в старое слабое существо. Желание уступить пересилит всю его ясность, всю его силу и все его знание.' , 'Старость невозможно победить, можно лишь заставить отступить.
-Нельзя сдаваться своей усталости!' where not exists (select * from sources where id_out='korvintag_2264');
-insert into ideas (name, id_out, original_text, content) select 'Цель' , 'korvintag_2265' , 'Но если человек преодолеет свою усталость и проживет свою судьбу полностью — тогда его можно назвать человеком знания. Если хотя бы на одно краткое мгновение он отобьется от своего последнего, непобедимого врага! Этого мгновения ясности, силы и знания достаточно.' , 'Цель - мгновения ясности, силы и знания.' where not exists (select * from sources where id_out='korvintag_2265');
-insert into ideas (name, id_out, original_text, content) select 'Слабое и ошибающее создание' , 'korvintag_2496' , 'Одно только его общество заставило меня произвести глубокую переоценку моих моделей поведения. Я был приучен — как, пожалуй, любой другой — видеть в человеке слабое по сути своей и ошибающееся создание. Меня поражало, что дон Хуан не оставлял ни малейшего впечатления слабости и бессилия, и, просто находясь с ним рядом, я видел, что сравнение его поведения с моим будет не в мою пользу.' , 'Кастанеда как антрополог паривык, что человек - слабое и все время ошибающееся создание. Он удивился, когда увидел, что Дона Хуан принцпипально иной.' where not exists (select * from sources where id_out='korvintag_2496');
-insert into ideas (name, id_out, original_text, content) select 'Странная усталость' , 'korvintag_2498' , '— Ты слишком много думаешь о себе, — сказал он и улыбнулся. — А это приводит к странной усталости, которая заставляет тебя отгораживаться от окружающего мира и цепляться за собственные рассуждения. Поэтому проблемы — это единственное, что у тебя есть. Я тоже всего лишь человек, но я вкладываю в это совсем другой смысл.
-— Что ты имеешь в виду?
-— Я избавился от своих проблем. Очень плохо, что моя жизнь слишком коротка и я не могу взяться за все то, за что мне хотелось бы. Но это не проблема. Это просто сожаление.
-Мне понравился тон его высказывания. В нем не было отчаяния или жалости к самому себе.' , 'У людей есть странная усталость, возникающая из-за постоянной концентрации на проблемах. 
-Можно избавиться от всех проблем.' where not exists (select * from sources where id_out='korvintag_2498');
-insert into ideas (name, id_out, original_text, content) select 'ЧСВ' , 'korvintag_2501' , '— Ты испугался и удрал из-за того, что чувствуешь себя чертовски важным, — сказал он, объясняя мой предыдущий уход. — Чувство важности делает человека тяжелым, неуклюжим и самодовольным. А чтобы стать человеком знания, надо быть легким и текучим.' , 'Важность делает человека тяжелым, неуклюжим и самодовольным.' where not exists (select * from sources where id_out='korvintag_2501');
-insert into ideas (name, id_out, original_text, content) select 'Остановить человека своей волей' , 'korvintag_2505' , 'Судя по всему, Сакатека узнал меня.
-— О, это вы, — сказал он улыбаясь. — Как Хуан?
-— У него все в порядке. А как ваши дела, дон Элиас?
-Он не отвечал. Казалось, он нервничает. Внешне он был очень спокоен, но я чувствовал, что он не в своей тарелке.
-— Хуан прислал тебя с каким-то поручением?
-— Нет, я сам приехал.
-— Но чего же ради? — Его вопрос выдал самое искреннее удивление.
-— Просто хотелось побеседовать с вами, — сказал я, стараясь говорить как можно естественнее. — Дон Хуан рассказывал мне о вас чудесные вещи, я заинтересовался и захотел вас немного расспросить.
-Сакатека стоял прямо передо мной. Тело его было тощим и жилистым. Он был одет в рубашку и штаны цвета хаки. Его глаза были прищурены, и он казался сонным или, может быть, пьяным. Его рот был слегка приоткрыт, и нижняя губа отвисла. Я заметил, что он глубоко дышит и вроде бы даже похрапывает. Мне пришла в голову мысль, что Сакатека пьян до одури. Но она была нелепой, потому что всего несколько минут назад, выходя из дома, он был настороже и внимательно смотрел на меня.
-— О чем ты хочешь говорить? — сказал он наконец.
-У него был очень усталый голос — он словно выдавливал из себя каждое слово. Мне стало очень неловко. Его усталость как будто передалась мне.
-— Ни о чем особенном, — ответил я. — Просто приехал поболтать с вами по-дружески. Вы ведь как-то приглашали меня к себе домой.
-— Да, приглашал, но сейчас все иначе.
-— Почему все иначе?
-— Разве ты не говоришь с Хуаном?
-— Говорю.
-— Так что же ты хочешь от меня?
-— Я думал, что смогу задать вам несколько вопросов.
-— Спроси Хуана. Разве он не учит тебя?
-— Он учит, но все равно мне хотелось бы спросить вас о том, чему он учит, и узнать ваше мнение. Тогда бы я понял, что делать.
-— Зачем тебе это? Ты не веришь Хуану?
-— Верю.
-— Тогда почему ты не попросишь его рассказать о том, что ты хочешь знать?
-— Я так и делаю. И он мне рассказывает. Но если бы вы тоже рассказали мне о том, чему он меня учит, я, возможно, лучше бы это понял.
-— Хуан может рассказать тебе все. Он может сделать это один. Неужели тебе это не ясно?
-— Понимаю. Но я также хочу говорить с людьми вроде вас, дон Элиас. Не каждый день встречаешься с человеком знания.
-— Хуан — человек знания.
-— Я знаю.
-— Тогда почему ты говоришь со мной?
-— Я же сказал, что приехал как друг.
-— Нет, это не так. На этот раз в тебе есть что-то еще.
-Я хотел объясниться, но, кроме несвязного бормотания, ничего не вышло. Сакатека молчал. Казалось, он внимательно слушает. Его глаза опять наполовину закрылись, но я чувствовал, что он всматривается в меня. Он едва уловимо кивнул. Затем его веки раскрылись, и я увидел его глаза. Он смотрел как бы мимо меня и небрежно притоптывал носком правой ноги как раз позади левой пятки. Его ноги были слегка согнуты; руки расслабленно висели вдоль тела. Затем он поднял правую руку — ее открытая ладонь была повернута перпендикулярно земле, а пальцы вытянуты и направлены на меня. Он позволил своей руке пару раз качнуться, а потом поднял ее на высоту моего лица. В таком положении он задержал ее на секунду, а потом сказал мне несколько слов. Его голос был очень ясным, и все же речь нельзя было разобрать.
-Через секунду он уронил руку вдоль тела и замер в странной позе — он стоял на носке левой ноги, а его правая нога заходила за пятку левой, мягко и ритмично постукивая носком по полу.
-Я ощутил что-то неприятное, своего рода беспокойство. Мои мысли стали бессвязными. Я думал о вещах, не связанных с происходящим. Заметив это, я попытался вернуть свои мысли к действительности, но не мог этого сделать, несмотря на огромные усилия. Словно какая-то сила мешала мне сосредоточиться, мешала думать связно.
-Сакатека не сказал ни слова, и я не знал, что еще сказать или сделать. Совершенно автоматически я повернулся и ушел.
-Позднее я счел себя обязанным рассказать дону Хуану о своей встрече с Сакатекой. Дон Хуан расхохотался.
-— Что же в действительности произошло? — спросил я.
-— Сакатека танцевал! Он увидел тебя, а затем танцевал.
-— Что он сделал со мной? Я чувствовал холод, и у меня все плыло перед глазами.
-— Очевидно, ты ему не понравился, и он остановил тебя, бросив на тебя слово.
-— Каким образом он мог это сделать? — недоверчиво воскликнул я.
-— Очень просто — остановил тебя своей волей.
-— Как ты сказал?
-— Он остановил тебя своей волей.' , 'Человек знания может остановить волей другого человека. вмешавшись в ход его мыслей и во внутренний диалог.' where not exists (select * from sources where id_out='korvintag_2505');
-insert into ideas (name, id_out, original_text, content) select 'Нюанс жизни просвещенного в обществе' , 'korvintag_3850' , 'Следующие пять месяцев я прожил в состоянии непрерывного глубокого покоя и блаженства. Затем эти ощущения немного потеряли яркость; а может быть, мне так только казалось, потому что я к ним привык. Я по-прежнему мог функционировать в обществе, хотя и сознавал: всё, что я делаю, не способно ничего прибавить к тому, что у меня уже есть.' , 'То, что нам реально нужно, не в состоянии дать никакая деятельность в обществе.' where not exists (select * from sources where id_out='korvintag_3850');
-insert into ideas (name, id_out, original_text, content) select 'Сильнейшая радость' , 'korvintag_3852' , 'Я провёл почти 2 года, сидя в парках на скамейках в состоянии сильнейшей радости.
-Но даже самый прекрасный опыт начинается и заканчивается. Пожалуй, крепче любого пережитого мной опыта оказалось постоянное ощущение покоя, которое меня больше не покидало. Иногда оно настолько ощутимо, почти осязаемо, что его чувствуют и другие люди.
+Рљ СЌС‚РѕРјСѓ РІСЂРµРјРµРЅРё Сѓ С‡РµР»РѕРІРµРєР° РЅРµС‚ Р±РѕР»СЊС€Рµ СЃС‚СЂР°С…РѕРІ, РЅРµС‚ Р±РѕР»СЊС€Рµ С‚РµСЂРїРµР»РёРІРѕР№ СЏСЃРЅРѕСЃС‚Рё СѓРјР°. РўРѕРіРґР° РІСЃСЏ РµРіРѕ СЃРёР»Р° РїСЂРё РЅРµРј, РЅРѕ С‚РѕРіРґР° Р¶Рµ РІРѕР·РЅРёРєР°РµС‚ РЅРµРѕС‚СЃС‚СѓРїРЅРѕРµ Р¶РµР»Р°РЅРёРµ РѕС‚РґРѕС…РЅСѓС‚СЊ. Р•СЃР»Рё РѕРЅ С†РµР»РёРєРѕРј РїРѕРґРґР°РµС‚СЃСЏ СЃРІРѕРµРјСѓ Р¶РµР»Р°РЅРёСЋ Р»РµС‡СЊ Рё Р·Р°Р±С‹С‚СЊСЃСЏ, РµСЃР»Рё РїРѕС‚Р°РєР°РµС‚ СЃРµР±Рµ РІ СЃРІРѕРµР№ СѓСЃС‚Р°Р»РѕСЃС‚Рё вЂ” РѕРЅ РїСЂРѕРёРіСЂР°РµС‚ СЃРІРѕСЋ РїРѕСЃР»РµРґРЅСЋСЋ Р±РёС‚РІСѓ, Рё РІСЂР°Рі РѕР±СЂР°С‚РёС‚ РµРіРѕ РІ СЃС‚Р°СЂРѕРµ СЃР»Р°Р±РѕРµ СЃСѓС‰РµСЃС‚РІРѕ. Р–РµР»Р°РЅРёРµ СѓСЃС‚СѓРїРёС‚СЊ РїРµСЂРµСЃРёР»РёС‚ РІСЃСЋ РµРіРѕ СЏСЃРЅРѕСЃС‚СЊ, РІСЃСЋ РµРіРѕ СЃРёР»Сѓ Рё РІСЃРµ РµРіРѕ Р·РЅР°РЅРёРµ.' , 'РЎС‚Р°СЂРѕСЃС‚СЊ РЅРµРІРѕР·РјРѕР¶РЅРѕ РїРѕР±РµРґРёС‚СЊ, РјРѕР¶РЅРѕ Р»РёС€СЊ Р·Р°СЃС‚Р°РІРёС‚СЊ РѕС‚СЃС‚СѓРїРёС‚СЊ.
+РќРµР»СЊР·СЏ СЃРґР°РІР°С‚СЊСЃСЏ СЃРІРѕРµР№ СѓСЃС‚Р°Р»РѕСЃС‚Рё!', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2264');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р¦РµР»СЊ' , 'korvintag_2265' , 'РќРѕ РµСЃР»Рё С‡РµР»РѕРІРµРє РїСЂРµРѕРґРѕР»РµРµС‚ СЃРІРѕСЋ СѓСЃС‚Р°Р»РѕСЃС‚СЊ Рё РїСЂРѕР¶РёРІРµС‚ СЃРІРѕСЋ СЃСѓРґСЊР±Сѓ РїРѕР»РЅРѕСЃС‚СЊСЋ вЂ” С‚РѕРіРґР° РµРіРѕ РјРѕР¶РЅРѕ РЅР°Р·РІР°С‚СЊ С‡РµР»РѕРІРµРєРѕРј Р·РЅР°РЅРёСЏ. Р•СЃР»Рё С…РѕС‚СЏ Р±С‹ РЅР° РѕРґРЅРѕ РєСЂР°С‚РєРѕРµ РјРіРЅРѕРІРµРЅРёРµ РѕРЅ РѕС‚РѕР±СЊРµС‚СЃСЏ РѕС‚ СЃРІРѕРµРіРѕ РїРѕСЃР»РµРґРЅРµРіРѕ, РЅРµРїРѕР±РµРґРёРјРѕРіРѕ РІСЂР°РіР°! Р­С‚РѕРіРѕ РјРіРЅРѕРІРµРЅРёСЏ СЏСЃРЅРѕСЃС‚Рё, СЃРёР»С‹ Рё Р·РЅР°РЅРёСЏ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ.' , 'Р¦РµР»СЊ - РјРіРЅРѕРІРµРЅРёСЏ СЏСЃРЅРѕСЃС‚Рё, СЃРёР»С‹ Рё Р·РЅР°РЅРёСЏ.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2265');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎР»Р°Р±РѕРµ Рё РѕС€РёР±Р°СЋС‰РµРµ СЃРѕР·РґР°РЅРёРµ' , 'korvintag_2496' , 'РћРґРЅРѕ С‚РѕР»СЊРєРѕ РµРіРѕ РѕР±С‰РµСЃС‚РІРѕ Р·Р°СЃС‚Р°РІРёР»Рѕ РјРµРЅСЏ РїСЂРѕРёР·РІРµСЃС‚Рё РіР»СѓР±РѕРєСѓСЋ РїРµСЂРµРѕС†РµРЅРєСѓ РјРѕРёС… РјРѕРґРµР»РµР№ РїРѕРІРµРґРµРЅРёСЏ. РЇ Р±С‹Р» РїСЂРёСѓС‡РµРЅ вЂ” РєР°Рє, РїРѕР¶Р°Р»СѓР№, Р»СЋР±РѕР№ РґСЂСѓРіРѕР№ вЂ” РІРёРґРµС‚СЊ РІ С‡РµР»РѕРІРµРєРµ СЃР»Р°Р±РѕРµ РїРѕ СЃСѓС‚Рё СЃРІРѕРµР№ Рё РѕС€РёР±Р°СЋС‰РµРµСЃСЏ СЃРѕР·РґР°РЅРёРµ. РњРµРЅСЏ РїРѕСЂР°Р¶Р°Р»Рѕ, С‡С‚Рѕ РґРѕРЅ РҐСѓР°РЅ РЅРµ РѕСЃС‚Р°РІР»СЏР» РЅРё РјР°Р»РµР№С€РµРіРѕ РІРїРµС‡Р°С‚Р»РµРЅРёСЏ СЃР»Р°Р±РѕСЃС‚Рё Рё Р±РµСЃСЃРёР»РёСЏ, Рё, РїСЂРѕСЃС‚Рѕ РЅР°С…РѕРґСЏСЃСЊ СЃ РЅРёРј СЂСЏРґРѕРј, СЏ РІРёРґРµР», С‡С‚Рѕ СЃСЂР°РІРЅРµРЅРёРµ РµРіРѕ РїРѕРІРµРґРµРЅРёСЏ СЃ РјРѕРёРј Р±СѓРґРµС‚ РЅРµ РІ РјРѕСЋ РїРѕР»СЊР·Сѓ.' , 'РљР°СЃС‚Р°РЅРµРґР° РєР°Рє Р°РЅС‚СЂРѕРїРѕР»РѕРі РїР°СЂРёРІС‹Рє, С‡С‚Рѕ С‡РµР»РѕРІРµРє - СЃР»Р°Р±РѕРµ Рё РІСЃРµ РІСЂРµРјСЏ РѕС€РёР±Р°СЋС‰РµРµСЃСЏ СЃРѕР·РґР°РЅРёРµ. РћРЅ СѓРґРёРІРёР»СЃСЏ, РєРѕРіРґР° СѓРІРёРґРµР», С‡С‚Рѕ Р”РѕРЅР° РҐСѓР°РЅ РїСЂРёРЅС†РїРёРїР°Р»СЊРЅРѕ РёРЅРѕР№.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2496');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎС‚СЂР°РЅРЅР°СЏ СѓСЃС‚Р°Р»РѕСЃС‚СЊ' , 'korvintag_2498' , 'вЂ”В РўС‹ СЃР»РёС€РєРѕРј РјРЅРѕРіРѕ РґСѓРјР°РµС€СЊ Рѕ СЃРµР±Рµ,В вЂ” СЃРєР°Р·Р°Р» РѕРЅ Рё СѓР»С‹Р±РЅСѓР»СЃСЏ.В вЂ” Рђ СЌС‚Рѕ РїСЂРёРІРѕРґРёС‚ Рє СЃС‚СЂР°РЅРЅРѕР№ СѓСЃС‚Р°Р»РѕСЃС‚Рё, РєРѕС‚РѕСЂР°СЏ Р·Р°СЃС‚Р°РІР»СЏРµС‚ С‚РµР±СЏ РѕС‚РіРѕСЂР°Р¶РёРІР°С‚СЊСЃСЏ РѕС‚ РѕРєСЂСѓР¶Р°СЋС‰РµРіРѕ РјРёСЂР° Рё С†РµРїР»СЏС‚СЊСЃСЏ Р·Р° СЃРѕР±СЃС‚РІРµРЅРЅС‹Рµ СЂР°СЃСЃСѓР¶РґРµРЅРёСЏ. РџРѕСЌС‚РѕРјСѓ РїСЂРѕР±Р»РµРјС‹ вЂ” СЌС‚Рѕ РµРґРёРЅСЃС‚РІРµРЅРЅРѕРµ, С‡С‚Рѕ Сѓ С‚РµР±СЏ РµСЃС‚СЊ. РЇ С‚РѕР¶Рµ РІСЃРµРіРѕ Р»РёС€СЊ С‡РµР»РѕРІРµРє, РЅРѕ СЏ РІРєР»Р°РґС‹РІР°СЋ РІ СЌС‚Рѕ СЃРѕРІСЃРµРј РґСЂСѓРіРѕР№ СЃРјС‹СЃР».
+вЂ”В Р§С‚Рѕ С‚С‹ РёРјРµРµС€СЊ РІ РІРёРґСѓ?
+вЂ”В РЇ РёР·Р±Р°РІРёР»СЃСЏ РѕС‚ СЃРІРѕРёС… РїСЂРѕР±Р»РµРј. РћС‡РµРЅСЊ РїР»РѕС…Рѕ, С‡С‚Рѕ РјРѕСЏ Р¶РёР·РЅСЊ СЃР»РёС€РєРѕРј РєРѕСЂРѕС‚РєР° Рё СЏ РЅРµ РјРѕРіСѓ РІР·СЏС‚СЊСЃСЏ Р·Р° РІСЃРµ С‚Рѕ, Р·Р° С‡С‚Рѕ РјРЅРµ С…РѕС‚РµР»РѕСЃСЊ Р±С‹. РќРѕ СЌС‚Рѕ РЅРµ РїСЂРѕР±Р»РµРјР°. Р­С‚Рѕ РїСЂРѕСЃС‚Рѕ СЃРѕР¶Р°Р»РµРЅРёРµ.
+РњРЅРµ РїРѕРЅСЂР°РІРёР»СЃСЏ С‚РѕРЅ РµРіРѕ РІС‹СЃРєР°Р·С‹РІР°РЅРёСЏ. Р’ РЅРµРј РЅРµ Р±С‹Р»Рѕ РѕС‚С‡Р°СЏРЅРёСЏ РёР»Рё Р¶Р°Р»РѕСЃС‚Рё Рє СЃР°РјРѕРјСѓ СЃРµР±Рµ.' , 'РЈ Р»СЋРґРµР№ РµСЃС‚СЊ СЃС‚СЂР°РЅРЅР°СЏ СѓСЃС‚Р°Р»РѕСЃС‚СЊ, РІРѕР·РЅРёРєР°СЋС‰Р°СЏ РёР·-Р·Р° РїРѕСЃС‚РѕСЏРЅРЅРѕР№ РєРѕРЅС†РµРЅС‚СЂР°С†РёРё РЅР° РїСЂРѕР±Р»РµРјР°С…. 
+РњРѕР¶РЅРѕ РёР·Р±Р°РІРёС‚СЊСЃСЏ РѕС‚ РІСЃРµС… РїСЂРѕР±Р»РµРј.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2498');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р§РЎР’' , 'korvintag_2501' , 'вЂ”В РўС‹ РёСЃРїСѓРіР°Р»СЃСЏ Рё СѓРґСЂР°Р» РёР·-Р·Р° С‚РѕРіРѕ, С‡С‚Рѕ С‡СѓРІСЃС‚РІСѓРµС€СЊ СЃРµР±СЏ С‡РµСЂС‚РѕРІСЃРєРё РІР°Р¶РЅС‹Рј,В вЂ” СЃРєР°Р·Р°Р» РѕРЅ, РѕР±СЉСЏСЃРЅСЏСЏ РјРѕР№ РїСЂРµРґС‹РґСѓС‰РёР№ СѓС…РѕРґ.В вЂ” Р§СѓРІСЃС‚РІРѕ РІР°Р¶РЅРѕСЃС‚Рё РґРµР»Р°РµС‚ С‡РµР»РѕРІРµРєР° С‚СЏР¶РµР»С‹Рј, РЅРµСѓРєР»СЋР¶РёРј Рё СЃР°РјРѕРґРѕРІРѕР»СЊРЅС‹Рј. Рђ С‡С‚РѕР±С‹ СЃС‚Р°С‚СЊ С‡РµР»РѕРІРµРєРѕРј Р·РЅР°РЅРёСЏ, РЅР°РґРѕ Р±С‹С‚СЊ Р»РµРіРєРёРј Рё С‚РµРєСѓС‡РёРј.' , 'Р’Р°Р¶РЅРѕСЃС‚СЊ РґРµР»Р°РµС‚ С‡РµР»РѕРІРµРєР° С‚СЏР¶РµР»С‹Рј, РЅРµСѓРєР»СЋР¶РёРј Рё СЃР°РјРѕРґРѕРІРѕР»СЊРЅС‹Рј.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2501');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РћСЃС‚Р°РЅРѕРІРёС‚СЊ С‡РµР»РѕРІРµРєР° СЃРІРѕРµР№ РІРѕР»РµР№' , 'korvintag_2505' , 'РЎСѓРґСЏ РїРѕ РІСЃРµРјСѓ, РЎР°РєР°С‚РµРєР° СѓР·РЅР°Р» РјРµРЅСЏ.
+вЂ”В Рћ, СЌС‚Рѕ РІС‹,В вЂ” СЃРєР°Р·Р°Р» РѕРЅ СѓР»С‹Р±Р°СЏСЃСЊ.В вЂ” РљР°Рє РҐСѓР°РЅ?
+вЂ”В РЈ РЅРµРіРѕ РІСЃРµ РІ РїРѕСЂСЏРґРєРµ. Рђ РєР°Рє РІР°С€Рё РґРµР»Р°, РґРѕРЅ Р­Р»РёР°СЃ?
+РћРЅ РЅРµ РѕС‚РІРµС‡Р°Р». РљР°Р·Р°Р»РѕСЃСЊ, РѕРЅ РЅРµСЂРІРЅРёС‡Р°РµС‚. Р’РЅРµС€РЅРµ РѕРЅ Р±С‹Р» РѕС‡РµРЅСЊ СЃРїРѕРєРѕРµРЅ, РЅРѕ СЏ С‡СѓРІСЃС‚РІРѕРІР°Р», С‡С‚Рѕ РѕРЅ РЅРµ РІ СЃРІРѕРµР№ С‚Р°СЂРµР»РєРµ.
+вЂ”В РҐСѓР°РЅ РїСЂРёСЃР»Р°Р» С‚РµР±СЏ СЃ РєР°РєРёРј-С‚Рѕ РїРѕСЂСѓС‡РµРЅРёРµРј?
+вЂ”В РќРµС‚, СЏ СЃР°Рј РїСЂРёРµС…Р°Р».
+вЂ”В РќРѕ С‡РµРіРѕ Р¶Рµ СЂР°РґРё?В вЂ” Р•РіРѕ РІРѕРїСЂРѕСЃ РІС‹РґР°Р» СЃР°РјРѕРµ РёСЃРєСЂРµРЅРЅРµРµ СѓРґРёРІР»РµРЅРёРµ.
+вЂ”В РџСЂРѕСЃС‚Рѕ С…РѕС‚РµР»РѕСЃСЊ РїРѕР±РµСЃРµРґРѕРІР°С‚СЊ СЃ РІР°РјРё,В вЂ” СЃРєР°Р·Р°Р» СЏ, СЃС‚Р°СЂР°СЏСЃСЊ РіРѕРІРѕСЂРёС‚СЊ РєР°Рє РјРѕР¶РЅРѕ РµСЃС‚РµСЃС‚РІРµРЅРЅРµРµ.В вЂ” Р”РѕРЅ РҐСѓР°РЅ СЂР°СЃСЃРєР°Р·С‹РІР°Р» РјРЅРµ Рѕ РІР°СЃ С‡СѓРґРµСЃРЅС‹Рµ РІРµС‰Рё, СЏ Р·Р°РёРЅС‚РµСЂРµСЃРѕРІР°Р»СЃСЏ Рё Р·Р°С…РѕС‚РµР» РІР°СЃ РЅРµРјРЅРѕРіРѕ СЂР°СЃСЃРїСЂРѕСЃРёС‚СЊ.
+РЎР°РєР°С‚РµРєР° СЃС‚РѕСЏР» РїСЂСЏРјРѕ РїРµСЂРµРґРѕ РјРЅРѕР№. РўРµР»Рѕ РµРіРѕ Р±С‹Р»Рѕ С‚РѕС‰РёРј Рё Р¶РёР»РёСЃС‚С‹Рј. РћРЅ Р±С‹Р» РѕРґРµС‚ РІ СЂСѓР±Р°С€РєСѓ Рё С€С‚Р°РЅС‹ С†РІРµС‚Р° С…Р°РєРё. Р•РіРѕ РіР»Р°Р·Р° Р±С‹Р»Рё РїСЂРёС‰СѓСЂРµРЅС‹, Рё РѕРЅ РєР°Р·Р°Р»СЃСЏ СЃРѕРЅРЅС‹Рј РёР»Рё, РјРѕР¶РµС‚ Р±С‹С‚СЊ, РїСЊСЏРЅС‹Рј. Р•РіРѕ СЂРѕС‚ Р±С‹Р» СЃР»РµРіРєР° РїСЂРёРѕС‚РєСЂС‹С‚, Рё РЅРёР¶РЅСЏСЏ РіСѓР±Р° РѕС‚РІРёСЃР»Р°. РЇ Р·Р°РјРµС‚РёР», С‡С‚Рѕ РѕРЅ РіР»СѓР±РѕРєРѕ РґС‹С€РёС‚ Рё РІСЂРѕРґРµ Р±С‹ РґР°Р¶Рµ РїРѕС…СЂР°РїС‹РІР°РµС‚. РњРЅРµ РїСЂРёС€Р»Р° РІ РіРѕР»РѕРІСѓ РјС‹СЃР»СЊ, С‡С‚Рѕ РЎР°РєР°С‚РµРєР° РїСЊСЏРЅ РґРѕ РѕРґСѓСЂРё. РќРѕ РѕРЅР° Р±С‹Р»Р° РЅРµР»РµРїРѕР№, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РІСЃРµРіРѕ РЅРµСЃРєРѕР»СЊРєРѕ РјРёРЅСѓС‚ РЅР°Р·Р°Рґ, РІС‹С…РѕРґСЏ РёР· РґРѕРјР°, РѕРЅ Р±С‹Р» РЅР°СЃС‚РѕСЂРѕР¶Рµ Рё РІРЅРёРјР°С‚РµР»СЊРЅРѕ СЃРјРѕС‚СЂРµР» РЅР° РјРµРЅСЏ.
+вЂ”В Рћ С‡РµРј С‚С‹ С…РѕС‡РµС€СЊ РіРѕРІРѕСЂРёС‚СЊ?В вЂ” СЃРєР°Р·Р°Р» РѕРЅ РЅР°РєРѕРЅРµС†.
+РЈ РЅРµРіРѕ Р±С‹Р» РѕС‡РµРЅСЊ СѓСЃС‚Р°Р»С‹Р№ РіРѕР»РѕСЃ вЂ” РѕРЅ СЃР»РѕРІРЅРѕ РІС‹РґР°РІР»РёРІР°Р» РёР· СЃРµР±СЏ РєР°Р¶РґРѕРµ СЃР»РѕРІРѕ. РњРЅРµ СЃС‚Р°Р»Рѕ РѕС‡РµРЅСЊ РЅРµР»РѕРІРєРѕ. Р•РіРѕ СѓСЃС‚Р°Р»РѕСЃС‚СЊ РєР°Рє Р±СѓРґС‚Рѕ РїРµСЂРµРґР°Р»Р°СЃСЊ РјРЅРµ.
+вЂ”В РќРё Рѕ С‡РµРј РѕСЃРѕР±РµРЅРЅРѕРј,В вЂ” РѕС‚РІРµС‚РёР» СЏ.В вЂ” РџСЂРѕСЃС‚Рѕ РїСЂРёРµС…Р°Р» РїРѕР±РѕР»С‚Р°С‚СЊ СЃ РІР°РјРё РїРѕ-РґСЂСѓР¶РµСЃРєРё. Р’С‹ РІРµРґСЊ РєР°Рє-С‚Рѕ РїСЂРёРіР»Р°С€Р°Р»Рё РјРµРЅСЏ Рє СЃРµР±Рµ РґРѕРјРѕР№.
+вЂ”В Р”Р°, РїСЂРёРіР»Р°С€Р°Р», РЅРѕ СЃРµР№С‡Р°СЃ РІСЃРµ РёРЅР°С‡Рµ.
+вЂ”В РџРѕС‡РµРјСѓ РІСЃРµ РёРЅР°С‡Рµ?
+вЂ”В Р Р°Р·РІРµ С‚С‹ РЅРµ РіРѕРІРѕСЂРёС€СЊ СЃ РҐСѓР°РЅРѕРј?
+вЂ”В Р“РѕРІРѕСЂСЋ.
+вЂ”В РўР°Рє С‡С‚Рѕ Р¶Рµ С‚С‹ С…РѕС‡РµС€СЊ РѕС‚ РјРµРЅСЏ?
+вЂ”В РЇ РґСѓРјР°Р», С‡С‚Рѕ СЃРјРѕРіСѓ Р·Р°РґР°С‚СЊ РІР°Рј РЅРµСЃРєРѕР»СЊРєРѕ РІРѕРїСЂРѕСЃРѕРІ.
+вЂ”В РЎРїСЂРѕСЃРё РҐСѓР°РЅР°. Р Р°Р·РІРµ РѕРЅ РЅРµ СѓС‡РёС‚ С‚РµР±СЏ?
+вЂ”В РћРЅ СѓС‡РёС‚, РЅРѕ РІСЃРµ СЂР°РІРЅРѕ РјРЅРµ С…РѕС‚РµР»РѕСЃСЊ Р±С‹ СЃРїСЂРѕСЃРёС‚СЊ РІР°СЃ Рѕ С‚РѕРј, С‡РµРјСѓ РѕРЅ СѓС‡РёС‚, Рё СѓР·РЅР°С‚СЊ РІР°С€Рµ РјРЅРµРЅРёРµ. РўРѕРіРґР° Р±С‹ СЏ РїРѕРЅСЏР», С‡С‚Рѕ РґРµР»Р°С‚СЊ.
+вЂ”В Р—Р°С‡РµРј С‚РµР±Рµ СЌС‚Рѕ? РўС‹ РЅРµ РІРµСЂРёС€СЊ РҐСѓР°РЅСѓ?
+вЂ”В Р’РµСЂСЋ.
+вЂ”В РўРѕРіРґР° РїРѕС‡РµРјСѓ С‚С‹ РЅРµ РїРѕРїСЂРѕСЃРёС€СЊ РµРіРѕ СЂР°СЃСЃРєР°Р·Р°С‚СЊ Рѕ С‚РѕРј, С‡С‚Рѕ С‚С‹ С…РѕС‡РµС€СЊ Р·РЅР°С‚СЊ?
+вЂ”В РЇ С‚Р°Рє Рё РґРµР»Р°СЋ. Р РѕРЅ РјРЅРµ СЂР°СЃСЃРєР°Р·С‹РІР°РµС‚. РќРѕ РµСЃР»Рё Р±С‹ РІС‹ С‚РѕР¶Рµ СЂР°СЃСЃРєР°Р·Р°Р»Рё РјРЅРµ Рѕ С‚РѕРј, С‡РµРјСѓ РѕРЅ РјРµРЅСЏ СѓС‡РёС‚, СЏ, РІРѕР·РјРѕР¶РЅРѕ, Р»СѓС‡С€Рµ Р±С‹ СЌС‚Рѕ РїРѕРЅСЏР».
+вЂ”В РҐСѓР°РЅ РјРѕР¶РµС‚ СЂР°СЃСЃРєР°Р·Р°С‚СЊ С‚РµР±Рµ РІСЃРµ. РћРЅ РјРѕР¶РµС‚ СЃРґРµР»Р°С‚СЊ СЌС‚Рѕ РѕРґРёРЅ. РќРµСѓР¶РµР»Рё С‚РµР±Рµ СЌС‚Рѕ РЅРµ СЏСЃРЅРѕ?
+вЂ”В РџРѕРЅРёРјР°СЋ. РќРѕ СЏ С‚Р°РєР¶Рµ С…РѕС‡Сѓ РіРѕРІРѕСЂРёС‚СЊ СЃ Р»СЋРґСЊРјРё РІСЂРѕРґРµ РІР°СЃ, РґРѕРЅ Р­Р»РёР°СЃ. РќРµ РєР°Р¶РґС‹Р№ РґРµРЅСЊ РІСЃС‚СЂРµС‡Р°РµС€СЊСЃСЏ СЃ С‡РµР»РѕРІРµРєРѕРј Р·РЅР°РЅРёСЏ.
+вЂ”В РҐСѓР°РЅ вЂ” С‡РµР»РѕРІРµРє Р·РЅР°РЅРёСЏ.
+вЂ”В РЇ Р·РЅР°СЋ.
+вЂ”В РўРѕРіРґР° РїРѕС‡РµРјСѓ С‚С‹ РіРѕРІРѕСЂРёС€СЊ СЃРѕ РјРЅРѕР№?
+вЂ”В РЇ Р¶Рµ СЃРєР°Р·Р°Р», С‡С‚Рѕ РїСЂРёРµС…Р°Р» РєР°Рє РґСЂСѓРі.
+вЂ”В РќРµС‚, СЌС‚Рѕ РЅРµ С‚Р°Рє. РќР° СЌС‚РѕС‚ СЂР°Р· РІ С‚РµР±Рµ РµСЃС‚СЊ С‡С‚Рѕ-С‚Рѕ РµС‰Рµ.
+РЇ С…РѕС‚РµР» РѕР±СЉСЏСЃРЅРёС‚СЊСЃСЏ, РЅРѕ, РєСЂРѕРјРµ РЅРµСЃРІСЏР·РЅРѕРіРѕ Р±РѕСЂРјРѕС‚Р°РЅРёСЏ, РЅРёС‡РµРіРѕ РЅРµ РІС‹С€Р»Рѕ. РЎР°РєР°С‚РµРєР° РјРѕР»С‡Р°Р». РљР°Р·Р°Р»РѕСЃСЊ, РѕРЅ РІРЅРёРјР°С‚РµР»СЊРЅРѕ СЃР»СѓС€Р°РµС‚. Р•РіРѕ РіР»Р°Р·Р° РѕРїСЏС‚СЊ РЅР°РїРѕР»РѕРІРёРЅСѓ Р·Р°РєСЂС‹Р»РёСЃСЊ, РЅРѕ СЏ С‡СѓРІСЃС‚РІРѕРІР°Р», С‡С‚Рѕ РѕРЅ РІСЃРјР°С‚СЂРёРІР°РµС‚СЃСЏ РІ РјРµРЅСЏ. РћРЅ РµРґРІР° СѓР»РѕРІРёРјРѕ РєРёРІРЅСѓР». Р—Р°С‚РµРј РµРіРѕ РІРµРєРё СЂР°СЃРєСЂС‹Р»РёСЃСЊ, Рё СЏ СѓРІРёРґРµР» РµРіРѕ РіР»Р°Р·Р°. РћРЅ СЃРјРѕС‚СЂРµР» РєР°Рє Р±С‹ РјРёРјРѕ РјРµРЅСЏ Рё РЅРµР±СЂРµР¶РЅРѕ РїСЂРёС‚РѕРїС‚С‹РІР°Р» РЅРѕСЃРєРѕРј РїСЂР°РІРѕР№ РЅРѕРіРё РєР°Рє СЂР°Р· РїРѕР·Р°РґРё Р»РµРІРѕР№ РїСЏС‚РєРё. Р•РіРѕ РЅРѕРіРё Р±С‹Р»Рё СЃР»РµРіРєР° СЃРѕРіРЅСѓС‚С‹; СЂСѓРєРё СЂР°СЃСЃР»Р°Р±Р»РµРЅРЅРѕ РІРёСЃРµР»Рё РІРґРѕР»СЊ С‚РµР»Р°. Р—Р°С‚РµРј РѕРЅ РїРѕРґРЅСЏР» РїСЂР°РІСѓСЋ СЂСѓРєСѓ вЂ” РµРµ РѕС‚РєСЂС‹С‚Р°СЏ Р»Р°РґРѕРЅСЊ Р±С‹Р»Р° РїРѕРІРµСЂРЅСѓС‚Р° РїРµСЂРїРµРЅРґРёРєСѓР»СЏСЂРЅРѕ Р·РµРјР»Рµ, Р° РїР°Р»СЊС†С‹ РІС‹С‚СЏРЅСѓС‚С‹ Рё РЅР°РїСЂР°РІР»РµРЅС‹ РЅР° РјРµРЅСЏ. РћРЅ РїРѕР·РІРѕР»РёР» СЃРІРѕРµР№ СЂСѓРєРµ РїР°СЂСѓ СЂР°Р· РєР°С‡РЅСѓС‚СЊСЃСЏ, Р° РїРѕС‚РѕРј РїРѕРґРЅСЏР» РµРµ РЅР° РІС‹СЃРѕС‚Сѓ РјРѕРµРіРѕ Р»РёС†Р°. Р’ С‚Р°РєРѕРј РїРѕР»РѕР¶РµРЅРёРё РѕРЅ Р·Р°РґРµСЂР¶Р°Р» РµРµ РЅР° СЃРµРєСѓРЅРґСѓ, Р° РїРѕС‚РѕРј СЃРєР°Р·Р°Р» РјРЅРµ РЅРµСЃРєРѕР»СЊРєРѕ СЃР»РѕРІ. Р•РіРѕ РіРѕР»РѕСЃ Р±С‹Р» РѕС‡РµРЅСЊ СЏСЃРЅС‹Рј, Рё РІСЃРµ Р¶Рµ СЂРµС‡СЊ РЅРµР»СЊР·СЏ Р±С‹Р»Рѕ СЂР°Р·РѕР±СЂР°С‚СЊ.
+Р§РµСЂРµР· СЃРµРєСѓРЅРґСѓ РѕРЅ СѓСЂРѕРЅРёР» СЂСѓРєСѓ РІРґРѕР»СЊ С‚РµР»Р° Рё Р·Р°РјРµСЂ РІ СЃС‚СЂР°РЅРЅРѕР№ РїРѕР·Рµ вЂ” РѕРЅ СЃС‚РѕСЏР» РЅР° РЅРѕСЃРєРµ Р»РµРІРѕР№ РЅРѕРіРё, Р° РµРіРѕ РїСЂР°РІР°СЏ РЅРѕРіР° Р·Р°С…РѕРґРёР»Р° Р·Р° РїСЏС‚РєСѓ Р»РµРІРѕР№, РјСЏРіРєРѕ Рё СЂРёС‚РјРёС‡РЅРѕ РїРѕСЃС‚СѓРєРёРІР°СЏ РЅРѕСЃРєРѕРј РїРѕ РїРѕР»Сѓ.
+РЇ РѕС‰СѓС‚РёР» С‡С‚Рѕ-С‚Рѕ РЅРµРїСЂРёСЏС‚РЅРѕРµ, СЃРІРѕРµРіРѕ СЂРѕРґР° Р±РµСЃРїРѕРєРѕР№СЃС‚РІРѕ. РњРѕРё РјС‹СЃР»Рё СЃС‚Р°Р»Рё Р±РµСЃСЃРІСЏР·РЅС‹РјРё. РЇ РґСѓРјР°Р» Рѕ РІРµС‰Р°С…, РЅРµ СЃРІСЏР·Р°РЅРЅС‹С… СЃ РїСЂРѕРёСЃС…РѕРґСЏС‰РёРј. Р—Р°РјРµС‚РёРІ СЌС‚Рѕ, СЏ РїРѕРїС‹С‚Р°Р»СЃСЏ РІРµСЂРЅСѓС‚СЊ СЃРІРѕРё РјС‹СЃР»Рё Рє РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚Рё, РЅРѕ РЅРµ РјРѕРі СЌС‚РѕРіРѕ СЃРґРµР»Р°С‚СЊ, РЅРµСЃРјРѕС‚СЂСЏ РЅР° РѕРіСЂРѕРјРЅС‹Рµ СѓСЃРёР»РёСЏ. РЎР»РѕРІРЅРѕ РєР°РєР°СЏ-С‚Рѕ СЃРёР»Р° РјРµС€Р°Р»Р° РјРЅРµ СЃРѕСЃСЂРµРґРѕС‚РѕС‡РёС‚СЊСЃСЏ, РјРµС€Р°Р»Р° РґСѓРјР°С‚СЊ СЃРІСЏР·РЅРѕ.
+РЎР°РєР°С‚РµРєР° РЅРµ СЃРєР°Р·Р°Р» РЅРё СЃР»РѕРІР°, Рё СЏ РЅРµ Р·РЅР°Р», С‡С‚Рѕ РµС‰Рµ СЃРєР°Р·Р°С‚СЊ РёР»Рё СЃРґРµР»Р°С‚СЊ. РЎРѕРІРµСЂС€РµРЅРЅРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё СЏ РїРѕРІРµСЂРЅСѓР»СЃСЏ Рё СѓС€РµР».
+РџРѕР·РґРЅРµРµ СЏ СЃС‡РµР» СЃРµР±СЏ РѕР±СЏР·Р°РЅРЅС‹Рј СЂР°СЃСЃРєР°Р·Р°С‚СЊ РґРѕРЅСѓ РҐСѓР°РЅСѓ Рѕ СЃРІРѕРµР№ РІСЃС‚СЂРµС‡Рµ СЃ РЎР°РєР°С‚РµРєРѕР№. Р”РѕРЅ РҐСѓР°РЅ СЂР°СЃС…РѕС…РѕС‚Р°Р»СЃСЏ.
+вЂ”В Р§С‚Рѕ Р¶Рµ РІ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚Рё РїСЂРѕРёР·РѕС€Р»Рѕ?В вЂ” СЃРїСЂРѕСЃРёР» СЏ.
+вЂ”В РЎР°РєР°С‚РµРєР° С‚Р°РЅС†РµРІР°Р»! РћРЅ СѓРІРёРґРµР» С‚РµР±СЏ, Р° Р·Р°С‚РµРј С‚Р°РЅС†РµРІР°Р».
+вЂ”В Р§С‚Рѕ РѕРЅ СЃРґРµР»Р°Р» СЃРѕ РјРЅРѕР№? РЇ С‡СѓРІСЃС‚РІРѕРІР°Р» С…РѕР»РѕРґ, Рё Сѓ РјРµРЅСЏ РІСЃРµ РїР»С‹Р»Рѕ РїРµСЂРµРґ РіР»Р°Р·Р°РјРё.
+вЂ”В РћС‡РµРІРёРґРЅРѕ, С‚С‹ РµРјСѓ РЅРµ РїРѕРЅСЂР°РІРёР»СЃСЏ, Рё РѕРЅ РѕСЃС‚Р°РЅРѕРІРёР» С‚РµР±СЏ, Р±СЂРѕСЃРёРІ РЅР° С‚РµР±СЏ СЃР»РѕРІРѕ.
+вЂ”В РљР°РєРёРј РѕР±СЂР°Р·РѕРј РѕРЅ РјРѕРі СЌС‚Рѕ СЃРґРµР»Р°С‚СЊ?В вЂ” РЅРµРґРѕРІРµСЂС‡РёРІРѕ РІРѕСЃРєР»РёРєРЅСѓР» СЏ.
+вЂ”В РћС‡РµРЅСЊ РїСЂРѕСЃС‚Рѕ вЂ” РѕСЃС‚Р°РЅРѕРІРёР» С‚РµР±СЏ СЃРІРѕРµР№ РІРѕР»РµР№.
+вЂ”В РљР°Рє С‚С‹ СЃРєР°Р·Р°Р»?
+вЂ”В РћРЅ РѕСЃС‚Р°РЅРѕРІРёР» С‚РµР±СЏ СЃРІРѕРµР№ РІРѕР»РµР№.' , 'Р§РµР»РѕРІРµРє Р·РЅР°РЅРёСЏ РјРѕР¶РµС‚ РѕСЃС‚Р°РЅРѕРІРёС‚СЊ РІРѕР»РµР№ РґСЂСѓРіРѕРіРѕ С‡РµР»РѕРІРµРєР°. РІРјРµС€Р°РІС€РёСЃСЊ РІ С…РѕРґ РµРіРѕ РјС‹СЃР»РµР№ Рё РІРѕ РІРЅСѓС‚СЂРµРЅРЅРёР№ РґРёР°Р»РѕРі.', (select id from users where id_out='korvintag_6') where not exists (select * from sources where id_out='korvintag_2505');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РќСЋР°РЅСЃ Р¶РёР·РЅРё РїСЂРѕСЃРІРµС‰РµРЅРЅРѕРіРѕ РІ РѕР±С‰РµСЃС‚РІРµ' , 'korvintag_3850' , 'РЎР»РµРґСѓСЋС‰РёРµ РїСЏС‚СЊ РјРµСЃСЏС†РµРІ СЏ РїСЂРѕР¶РёР» РІ СЃРѕСЃС‚РѕСЏРЅРёРё РЅРµРїСЂРµСЂС‹РІРЅРѕРіРѕ РіР»СѓР±РѕРєРѕРіРѕ РїРѕРєРѕСЏ Рё Р±Р»Р°Р¶РµРЅСЃС‚РІР°. Р—Р°С‚РµРј СЌС‚Рё РѕС‰СѓС‰РµРЅРёСЏ РЅРµРјРЅРѕРіРѕ РїРѕС‚РµСЂСЏР»Рё СЏСЂРєРѕСЃС‚СЊ; Р° РјРѕР¶РµС‚ Р±С‹С‚СЊ, РјРЅРµ С‚Р°Рє С‚РѕР»СЊРєРѕ РєР°Р·Р°Р»РѕСЃСЊ, РїРѕС‚РѕРјСѓ С‡С‚Рѕ СЏ Рє РЅРёРј РїСЂРёРІС‹Рє. РЇ РїРѕ-РїСЂРµР¶РЅРµРјСѓ РјРѕРі С„СѓРЅРєС†РёРѕРЅРёСЂРѕРІР°С‚СЊ РІ РѕР±С‰РµСЃС‚РІРµ, С…РѕС‚СЏ Рё СЃРѕР·РЅР°РІР°Р»: РІСЃС‘, С‡С‚Рѕ СЏ РґРµР»Р°СЋ, РЅРµ СЃРїРѕСЃРѕР±РЅРѕ РЅРёС‡РµРіРѕ РїСЂРёР±Р°РІРёС‚СЊ Рє С‚РѕРјСѓ, С‡С‚Рѕ Сѓ РјРµРЅСЏ СѓР¶Рµ РµСЃС‚СЊ.' , 'РўРѕ, С‡С‚Рѕ РЅР°Рј СЂРµР°Р»СЊРЅРѕ РЅСѓР¶РЅРѕ, РЅРµ РІ СЃРѕСЃС‚РѕСЏРЅРёРё РґР°С‚СЊ РЅРёРєР°РєР°СЏ РґРµСЏС‚РµР»СЊРЅРѕСЃС‚СЊ РІ РѕР±С‰РµСЃС‚РІРµ.', (select id from users where id_out='korvintag_109') where not exists (select * from sources where id_out='korvintag_3850');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎРёР»СЊРЅРµР№С€Р°СЏ СЂР°РґРѕСЃС‚СЊ' , 'korvintag_3852' , 'РЇ РїСЂРѕРІС‘Р» РїРѕС‡С‚Рё 2 РіРѕРґР°, СЃРёРґСЏ РІ РїР°СЂРєР°С… РЅР° СЃРєР°РјРµР№РєР°С… РІ СЃРѕСЃС‚РѕСЏРЅРёРё СЃРёР»СЊРЅРµР№С€РµР№ СЂР°РґРѕСЃС‚Рё.
+РќРѕ РґР°Р¶Рµ СЃР°РјС‹Р№ РїСЂРµРєСЂР°СЃРЅС‹Р№ РѕРїС‹С‚ РЅР°С‡РёРЅР°РµС‚СЃСЏ Рё Р·Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ. РџРѕР¶Р°Р»СѓР№, РєСЂРµРїС‡Рµ Р»СЋР±РѕРіРѕ РїРµСЂРµР¶РёС‚РѕРіРѕ РјРЅРѕР№ РѕРїС‹С‚Р° РѕРєР°Р·Р°Р»РѕСЃСЊ РїРѕСЃС‚РѕСЏРЅРЅРѕРµ РѕС‰СѓС‰РµРЅРёРµ РїРѕРєРѕСЏ, РєРѕС‚РѕСЂРѕРµ РјРµРЅСЏ Р±РѕР»СЊС€Рµ РЅРµ РїРѕРєРёРґР°Р»Рѕ. РРЅРѕРіРґР° РѕРЅРѕ РЅР°СЃС‚РѕР»СЊРєРѕ РѕС‰СѓС‚РёРјРѕ, РїРѕС‡С‚Рё РѕСЃСЏР·Р°РµРјРѕ, С‡С‚Рѕ РµРіРѕ С‡СѓРІСЃС‚РІСѓСЋС‚ Рё РґСЂСѓРіРёРµ Р»СЋРґРё.
 
-Позднее люди стали подходить ко мне и говорить: «Я тоже хочу то, что есть у тебя. Ты можешь мне это как-то дать или показать, как это получить?» Я отвечал им: «У вас это уже есть. Вы просто этого не чувствуете, потому что ваш разум слишком громко шумит». Со временем из этого ответа выросла книга, которую вы читаете.' , 'Есть внутреннее состояние, в котором мы можем находиться. Радости и покоя. И попадание в это состояние может быть целью.
+РџРѕР·РґРЅРµРµ Р»СЋРґРё СЃС‚Р°Р»Рё РїРѕРґС…РѕРґРёС‚СЊ РєРѕ РјРЅРµ Рё РіРѕРІРѕСЂРёС‚СЊ: В«РЇ С‚РѕР¶Рµ С…РѕС‡Сѓ С‚Рѕ, С‡С‚Рѕ РµСЃС‚СЊ Сѓ С‚РµР±СЏ. РўС‹ РјРѕР¶РµС€СЊ РјРЅРµ СЌС‚Рѕ РєР°Рє-С‚Рѕ РґР°С‚СЊ РёР»Рё РїРѕРєР°Р·Р°С‚СЊ, РєР°Рє СЌС‚Рѕ РїРѕР»СѓС‡РёС‚СЊ?В» РЇ РѕС‚РІРµС‡Р°Р» РёРј: В«РЈ РІР°СЃ СЌС‚Рѕ СѓР¶Рµ РµСЃС‚СЊ. Р’С‹ РїСЂРѕСЃС‚Рѕ СЌС‚РѕРіРѕ РЅРµ С‡СѓРІСЃС‚РІСѓРµС‚Рµ, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РІР°С€ СЂР°Р·СѓРј СЃР»РёС€РєРѕРј РіСЂРѕРјРєРѕ С€СѓРјРёС‚В». РЎРѕ РІСЂРµРјРµРЅРµРј РёР· СЌС‚РѕРіРѕ РѕС‚РІРµС‚Р° РІС‹СЂРѕСЃР»Р° РєРЅРёРіР°, РєРѕС‚РѕСЂСѓСЋ РІС‹ С‡РёС‚Р°РµС‚Рµ.' , 'Р•СЃС‚СЊ РІРЅСѓС‚СЂРµРЅРЅРµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ, РІ РєРѕС‚РѕСЂРѕРј РјС‹ РјРѕР¶РµРј РЅР°С…РѕРґРёС‚СЊСЃСЏ. Р Р°РґРѕСЃС‚Рё Рё РїРѕРєРѕСЏ. Р РїРѕРїР°РґР°РЅРёРµ РІ СЌС‚Рѕ СЃРѕСЃС‚РѕСЏРЅРёРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ С†РµР»СЊСЋ.
 
-Попасть в это состояние нам мешает разум, поскольку он очень громкий.' where not exists (select * from sources where id_out='korvintag_3852');
-insert into ideas (name, id_out, original_text, content) select 'Страданию необходимо время' , 'korvintag_4038' , 'Вся суть учения дзен состоит в том, чтобы постоянно балансировать на острие Настоящего, присутствовать в Настоящем так глубоко, так полно, чтобы изжить все свои проблемы и страдания, всё, что не является вашей сутью. В Настоящем, где нет времени, все наши проблемы исчезают. Страданию необходимо время, оно не способно выжить в Настоящем.' , 'Чтобы страдать, нам нужно понятие времени. В настоящем нет страдания.' where not exists (select * from sources where id_out='korvintag_4038');
-insert into ideas (name, id_out, original_text, content) select 'Обязательно примите всё, что есть' , 'korvintag_4083' , 'Старайтесь уделять больше внимания самому деланию, а не результату, которого вы хотите добиться. Полностью погрузитесь во всё, что дарит вам настоящий момент. При этом обязательно примите всё, что есть, потому что вы не можете полностью погрузиться в то, чему сопротивляйтесь.' , 'Нужно фокусироваться на действии, а не на ожидании результата. При этом нужно принимать настоящее, а не сопротивляться ему.' where not exists (select * from sources where id_out='korvintag_4083');
-insert into ideas (name, id_out, original_text, content) select 'Важнее не состояние, а траектория развития' , 'korvintag_4456' , 'Исходя их этого, не очень важно, насколько вы успешны или неуспешны в данный момент. Самое важное – это то, насколько привычки способны привести вас на путь успеха. Вы должны в гораздо большей степени беспокоиться о траектории развития, а не о достигнутых на данный момент результатах. Если вы миллионер, но при этом ваши ежемесячные траты превышают доходы, то вы находитесь на неправильной траектории развития. Если ваши привычки тратить деньги не изменятся, вы придете к плохому результату. И наоборот, если вы изменитесь и начнете каждый месяц экономить даже небольшую сумму, то встанете на путь, который приведет к финансовой свободе, даже если вы будете двигаться медленнее, чем хотелось бы.' , 'Важнее не состояние, а траектория развития.' where not exists (select * from sources where id_out='korvintag_4456');
-insert into ideas (name, id_out, original_text, content) select 'Мы получаем то, что регулярно повторяем' , 'korvintag_4457' , 'Достижения представляют собой отложенную проекцию привычек. Ваше финансовое состояние – результат привычек в отношении денег. Ваш вес – результат пищевых привычек. Ваши знания – результат привычек в отношении обучения. Беспорядок и хаос в доме – результат привычек в отношении уборки. Вы получаете то, что регулярно повторяете.' , 'Мы получаем в результате то, что регулярно повторяем.' where not exists (select * from sources where id_out='korvintag_4457');
-insert into ideas (name, id_out, original_text, content) select 'Плато скрытого потенциала' , 'korvintag_4459' , 'Люди совершают некоторое количество небольших изменений, но не видят осязаемого результата и решают прекратить эксперимент. Но для того чтобы привести к существенным изменениям, привычки должны существовать в течение достаточно длительного времени – тогда вы сможете преодолеть это плато, которое я назвал Плато скрытого потенциала.
+РџРѕРїР°СЃС‚СЊ РІ СЌС‚Рѕ СЃРѕСЃС‚РѕСЏРЅРёРµ РЅР°Рј РјРµС€Р°РµС‚ СЂР°Р·СѓРј, РїРѕСЃРєРѕР»СЊРєСѓ РѕРЅ РѕС‡РµРЅСЊ РіСЂРѕРјРєРёР№.', (select id from users where id_out='korvintag_109') where not exists (select * from sources where id_out='korvintag_3852');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РЎС‚СЂР°РґР°РЅРёСЋ РЅРµРѕР±С…РѕРґРёРјРѕ РІСЂРµРјСЏ' , 'korvintag_4038' , 'Р’СЃСЏ СЃСѓС‚СЊ СѓС‡РµРЅРёСЏ РґР·РµРЅ СЃРѕСЃС‚РѕРёС‚ РІ С‚РѕРј, С‡С‚РѕР±С‹ РїРѕСЃС‚РѕСЏРЅРЅРѕ Р±Р°Р»Р°РЅСЃРёСЂРѕРІР°С‚СЊ РЅР° РѕСЃС‚СЂРёРµ РќР°СЃС‚РѕСЏС‰РµРіРѕ, РїСЂРёСЃСѓС‚СЃС‚РІРѕРІР°С‚СЊ РІ РќР°СЃС‚РѕСЏС‰РµРј С‚Р°Рє РіР»СѓР±РѕРєРѕ, С‚Р°Рє РїРѕР»РЅРѕ, С‡С‚РѕР±С‹ РёР·Р¶РёС‚СЊ РІСЃРµ СЃРІРѕРё РїСЂРѕР±Р»РµРјС‹ Рё СЃС‚СЂР°РґР°РЅРёСЏ, РІСЃС‘, С‡С‚Рѕ РЅРµ СЏРІР»СЏРµС‚СЃСЏ РІР°С€РµР№ СЃСѓС‚СЊСЋ. Р’ РќР°СЃС‚РѕСЏС‰РµРј, РіРґРµ РЅРµС‚ РІСЂРµРјРµРЅРё, РІСЃРµ РЅР°С€Рё РїСЂРѕР±Р»РµРјС‹ РёСЃС‡РµР·Р°СЋС‚. РЎС‚СЂР°РґР°РЅРёСЋ РЅРµРѕР±С…РѕРґРёРјРѕ РІСЂРµРјСЏ, РѕРЅРѕ РЅРµ СЃРїРѕСЃРѕР±РЅРѕ РІС‹Р¶РёС‚СЊ РІ РќР°СЃС‚РѕСЏС‰РµРј.' , 'Р§С‚РѕР±С‹ СЃС‚СЂР°РґР°С‚СЊ, РЅР°Рј РЅСѓР¶РЅРѕ РїРѕРЅСЏС‚РёРµ РІСЂРµРјРµРЅРё. Р’ РЅР°СЃС‚РѕСЏС‰РµРј РЅРµС‚ СЃС‚СЂР°РґР°РЅРёСЏ.', (select id from users where id_out='korvintag_109') where not exists (select * from sources where id_out='korvintag_4038');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РћР±СЏР·Р°С‚РµР»СЊРЅРѕ РїСЂРёРјРёС‚Рµ РІСЃС‘, С‡С‚Рѕ РµСЃС‚СЊ' , 'korvintag_4083' , 'РЎС‚Р°СЂР°Р№С‚РµСЃСЊ СѓРґРµР»СЏС‚СЊ Р±РѕР»СЊС€Рµ РІРЅРёРјР°РЅРёСЏ СЃР°РјРѕРјСѓ РґРµР»Р°РЅРёСЋ, Р° РЅРµ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ, РєРѕС‚РѕСЂРѕРіРѕ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±РёС‚СЊСЃСЏ. РџРѕР»РЅРѕСЃС‚СЊСЋ РїРѕРіСЂСѓР·РёС‚РµСЃСЊ РІРѕ РІСЃС‘, С‡С‚Рѕ РґР°СЂРёС‚ РІР°Рј РЅР°СЃС‚РѕСЏС‰РёР№ РјРѕРјРµРЅС‚. РџСЂРё СЌС‚РѕРј РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РїСЂРёРјРёС‚Рµ РІСЃС‘, С‡С‚Рѕ РµСЃС‚СЊ, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РІС‹ РЅРµ РјРѕР¶РµС‚Рµ РїРѕР»РЅРѕСЃС‚СЊСЋ РїРѕРіСЂСѓР·РёС‚СЊСЃСЏ РІ С‚Рѕ, С‡РµРјСѓ СЃРѕРїСЂРѕС‚РёРІР»СЏР№С‚РµСЃСЊ.' , 'РќСѓР¶РЅРѕ С„РѕРєСѓСЃРёСЂРѕРІР°С‚СЊСЃСЏ РЅР° РґРµР№СЃС‚РІРёРё, Р° РЅРµ РЅР° РѕР¶РёРґР°РЅРёРё СЂРµР·СѓР»СЊС‚Р°С‚Р°. РџСЂРё СЌС‚РѕРј РЅСѓР¶РЅРѕ РїСЂРёРЅРёРјР°С‚СЊ РЅР°СЃС‚РѕСЏС‰РµРµ, Р° РЅРµ СЃРѕРїСЂРѕС‚РёРІР»СЏС‚СЊСЃСЏ РµРјСѓ.', (select id from users where id_out='korvintag_109') where not exists (select * from sources where id_out='korvintag_4083');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р’Р°Р¶РЅРµРµ РЅРµ СЃРѕСЃС‚РѕСЏРЅРёРµ, Р° С‚СЂР°РµРєС‚РѕСЂРёСЏ СЂР°Р·РІРёС‚РёСЏ' , 'korvintag_4456' , 'РСЃС…РѕРґСЏ РёС… СЌС‚РѕРіРѕ, РЅРµ РѕС‡РµРЅСЊ РІР°Р¶РЅРѕ, РЅР°СЃРєРѕР»СЊРєРѕ РІС‹ СѓСЃРїРµС€РЅС‹ РёР»Рё РЅРµСѓСЃРїРµС€РЅС‹ РІ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚. РЎР°РјРѕРµ РІР°Р¶РЅРѕРµ вЂ“ СЌС‚Рѕ С‚Рѕ, РЅР°СЃРєРѕР»СЊРєРѕ РїСЂРёРІС‹С‡РєРё СЃРїРѕСЃРѕР±РЅС‹ РїСЂРёРІРµСЃС‚Рё РІР°СЃ РЅР° РїСѓС‚СЊ СѓСЃРїРµС…Р°. Р’С‹ РґРѕР»Р¶РЅС‹ РІ РіРѕСЂР°Р·РґРѕ Р±РѕР»СЊС€РµР№ СЃС‚РµРїРµРЅРё Р±РµСЃРїРѕРєРѕРёС‚СЊСЃСЏ Рѕ С‚СЂР°РµРєС‚РѕСЂРёРё СЂР°Р·РІРёС‚РёСЏ, Р° РЅРµ Рѕ РґРѕСЃС‚РёРіРЅСѓС‚С‹С… РЅР° РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ СЂРµР·СѓР»СЊС‚Р°С‚Р°С…. Р•СЃР»Рё РІС‹ РјРёР»Р»РёРѕРЅРµСЂ, РЅРѕ РїСЂРё СЌС‚РѕРј РІР°С€Рё РµР¶РµРјРµСЃСЏС‡РЅС‹Рµ С‚СЂР°С‚С‹ РїСЂРµРІС‹С€Р°СЋС‚ РґРѕС…РѕРґС‹, С‚Рѕ РІС‹ РЅР°С…РѕРґРёС‚РµСЃСЊ РЅР° РЅРµРїСЂР°РІРёР»СЊРЅРѕР№ С‚СЂР°РµРєС‚РѕСЂРёРё СЂР°Р·РІРёС‚РёСЏ. Р•СЃР»Рё РІР°С€Рё РїСЂРёРІС‹С‡РєРё С‚СЂР°С‚РёС‚СЊ РґРµРЅСЊРіРё РЅРµ РёР·РјРµРЅСЏС‚СЃСЏ, РІС‹ РїСЂРёРґРµС‚Рµ Рє РїР»РѕС…РѕРјСѓ СЂРµР·СѓР»СЊС‚Р°С‚Сѓ. Р РЅР°РѕР±РѕСЂРѕС‚, РµСЃР»Рё РІС‹ РёР·РјРµРЅРёС‚РµСЃСЊ Рё РЅР°С‡РЅРµС‚Рµ РєР°Р¶РґС‹Р№ РјРµСЃСЏС† СЌРєРѕРЅРѕРјРёС‚СЊ РґР°Р¶Рµ РЅРµР±РѕР»СЊС€СѓСЋ СЃСѓРјРјСѓ, С‚Рѕ РІСЃС‚Р°РЅРµС‚Рµ РЅР° РїСѓС‚СЊ, РєРѕС‚РѕСЂС‹Р№ РїСЂРёРІРµРґРµС‚ Рє С„РёРЅР°РЅСЃРѕРІРѕР№ СЃРІРѕР±РѕРґРµ, РґР°Р¶Рµ РµСЃР»Рё РІС‹ Р±СѓРґРµС‚Рµ РґРІРёРіР°С‚СЊСЃСЏ РјРµРґР»РµРЅРЅРµРµ, С‡РµРј С…РѕС‚РµР»РѕСЃСЊ Р±С‹.' , 'Р’Р°Р¶РЅРµРµ РЅРµ СЃРѕСЃС‚РѕСЏРЅРёРµ, Р° С‚СЂР°РµРєС‚РѕСЂРёСЏ СЂР°Р·РІРёС‚РёСЏ.', (select id from users where id_out='korvintag_24') where not exists (select * from sources where id_out='korvintag_4456');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РњС‹ РїРѕР»СѓС‡Р°РµРј С‚Рѕ, С‡С‚Рѕ СЂРµРіСѓР»СЏСЂРЅРѕ РїРѕРІС‚РѕСЂСЏРµРј' , 'korvintag_4457' , 'Р”РѕСЃС‚РёР¶РµРЅРёСЏ РїСЂРµРґСЃС‚Р°РІР»СЏСЋС‚ СЃРѕР±РѕР№ РѕС‚Р»РѕР¶РµРЅРЅСѓСЋ РїСЂРѕРµРєС†РёСЋ РїСЂРёРІС‹С‡РµРє. Р’Р°С€Рµ С„РёРЅР°РЅСЃРѕРІРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ вЂ“ СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРёРІС‹С‡РµРє РІ РѕС‚РЅРѕС€РµРЅРёРё РґРµРЅРµРі. Р’Р°С€ РІРµСЃ вЂ“ СЂРµР·СѓР»СЊС‚Р°С‚ РїРёС‰РµРІС‹С… РїСЂРёРІС‹С‡РµРє. Р’Р°С€Рё Р·РЅР°РЅРёСЏ вЂ“ СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРёРІС‹С‡РµРє РІ РѕС‚РЅРѕС€РµРЅРёРё РѕР±СѓС‡РµРЅРёСЏ. Р‘РµСЃРїРѕСЂСЏРґРѕРє Рё С…Р°РѕСЃ РІ РґРѕРјРµ вЂ“ СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРёРІС‹С‡РµРє РІ РѕС‚РЅРѕС€РµРЅРёРё СѓР±РѕСЂРєРё. Р’С‹ РїРѕР»СѓС‡Р°РµС‚Рµ С‚Рѕ, С‡С‚Рѕ СЂРµРіСѓР»СЏСЂРЅРѕ РїРѕРІС‚РѕСЂСЏРµС‚Рµ.' , 'РњС‹ РїРѕР»СѓС‡Р°РµРј РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ С‚Рѕ, С‡С‚Рѕ СЂРµРіСѓР»СЏСЂРЅРѕ РїРѕРІС‚РѕСЂСЏРµРј.', (select id from users where id_out='korvintag_24') where not exists (select * from sources where id_out='korvintag_4457');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РџР»Р°С‚Рѕ СЃРєСЂС‹С‚РѕРіРѕ РїРѕС‚РµРЅС†РёР°Р»Р°' , 'korvintag_4459' , 'Р›СЋРґРё СЃРѕРІРµСЂС€Р°СЋС‚ РЅРµРєРѕС‚РѕСЂРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРµР±РѕР»СЊС€РёС… РёР·РјРµРЅРµРЅРёР№, РЅРѕ РЅРµ РІРёРґСЏС‚ РѕСЃСЏР·Р°РµРјРѕРіРѕ СЂРµР·СѓР»СЊС‚Р°С‚Р° Рё СЂРµС€Р°СЋС‚ РїСЂРµРєСЂР°С‚РёС‚СЊ СЌРєСЃРїРµСЂРёРјРµРЅС‚. РќРѕ РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РїСЂРёРІРµСЃС‚Рё Рє СЃСѓС‰РµСЃС‚РІРµРЅРЅС‹Рј РёР·РјРµРЅРµРЅРёСЏРј, РїСЂРёРІС‹С‡РєРё РґРѕР»Р¶РЅС‹ СЃСѓС‰РµСЃС‚РІРѕРІР°С‚СЊ РІ С‚РµС‡РµРЅРёРµ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР»РёС‚РµР»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё вЂ“ С‚РѕРіРґР° РІС‹ СЃРјРѕР¶РµС‚Рµ РїСЂРµРѕРґРѕР»РµС‚СЊ СЌС‚Рѕ РїР»Р°С‚Рѕ, РєРѕС‚РѕСЂРѕРµ СЏ РЅР°Р·РІР°Р» РџР»Р°С‚Рѕ СЃРєСЂС‹С‚РѕРіРѕ РїРѕС‚РµРЅС†РёР°Р»Р°.
 
-Часто это связано с тем, что вы еще не пересекли Плато скрытого потенциала. Жалобы на то, что вы не добились успеха, несмотря на напряженную работу, подобны переживаниям по поводу того, что кубик льда не тает при температуре от двадцати пяти до тридцати одного градуса. Ваша напряженная работа не напрасна; она постепенно накапливается. Все изменения станут заметны после достижения температуры тридцать два градуса.
+Р§Р°СЃС‚Рѕ СЌС‚Рѕ СЃРІСЏР·Р°РЅРѕ СЃ С‚РµРј, С‡С‚Рѕ РІС‹ РµС‰Рµ РЅРµ РїРµСЂРµСЃРµРєР»Рё РџР»Р°С‚Рѕ СЃРєСЂС‹С‚РѕРіРѕ РїРѕС‚РµРЅС†РёР°Р»Р°. Р–Р°Р»РѕР±С‹ РЅР° С‚Рѕ, С‡С‚Рѕ РІС‹ РЅРµ РґРѕР±РёР»РёСЃСЊ СѓСЃРїРµС…Р°, РЅРµСЃРјРѕС‚СЂСЏ РЅР° РЅР°РїСЂСЏР¶РµРЅРЅСѓСЋ СЂР°Р±РѕС‚Сѓ, РїРѕРґРѕР±РЅС‹ РїРµСЂРµР¶РёРІР°РЅРёСЏРј РїРѕ РїРѕРІРѕРґСѓ С‚РѕРіРѕ, С‡С‚Рѕ РєСѓР±РёРє Р»СЊРґР° РЅРµ С‚Р°РµС‚ РїСЂРё С‚РµРјРїРµСЂР°С‚СѓСЂРµ РѕС‚ РґРІР°РґС†Р°С‚Рё РїСЏС‚Рё РґРѕ С‚СЂРёРґС†Р°С‚Рё РѕРґРЅРѕРіРѕ РіСЂР°РґСѓСЃР°. Р’Р°С€Р° РЅР°РїСЂСЏР¶РµРЅРЅР°СЏ СЂР°Р±РѕС‚Р° РЅРµ РЅР°РїСЂР°СЃРЅР°; РѕРЅР° РїРѕСЃС‚РµРїРµРЅРЅРѕ РЅР°РєР°РїР»РёРІР°РµС‚СЃСЏ. Р’СЃРµ РёР·РјРµРЅРµРЅРёСЏ СЃС‚Р°РЅСѓС‚ Р·Р°РјРµС‚РЅС‹ РїРѕСЃР»Рµ РґРѕСЃС‚РёР¶РµРЅРёСЏ С‚РµРјРїРµСЂР°С‚СѓСЂС‹ С‚СЂРёРґС†Р°С‚СЊ РґРІР° РіСЂР°РґСѓСЃР°.
 
-Когда вы, наконец, преодолеете Плато скрытого потенциала, окружающие будут говорить о вашем мгновенном успехе.' , 'Плато скрытого потенциала - это когда Вы работаете, долго, а результата нет.' where not exists (select * from sources where id_out='korvintag_4459');
-insert into ideas (name, id_out, original_text, content) select 'Петля обратной связи' , 'korvintag_4740' , 'После того как вы получите неожиданное вознаграждение, вы измените свою стратегию на будущее. Мозг незамедлительно начнет фиксировать те события, которые предшествовали вознаграждению. Погоди-ка – это было приятно. Что я делал непосредственно перед этим моментом?
-Это и есть та самая петля обратной связи, которая стоит за всеми поступками человека: пробовать, ошибаться, учиться, пробовать иным образом. С практикой бесполезные действия прекращаются, а полезные действия закрепляются. Это и есть формирование привычки.' , 'Привычки формируются под воздействием т.н. петли обратной связи. Когда мы что-то сделали удачное, наш мозг получает гормоны. А гормоны заставляют мозг запомнить хорошее.' where not exists (select * from sources where id_out='korvintag_4740');
-insert into ideas (name, id_out, original_text, content) select 'Зачем мозг формирует привычки?' , 'korvintag_4782' , 'Привычка – это поведение, которое повторилось достаточное количество раз для того, чтобы стать автоматическим. Процесс ее формирования начинается со стадии проб и ошибок. Каждый раз, когда вы сталкиваетесь с новой жизненной ситуацией, мозгу приходится принимать решение. Как реагировать на эту ситуацию? Когда вы впервые сталкиваетесь с проблемой, то не уверены в том, каким образом ее следует решать. Подобно кошке Торндайка, вы сначала испытываете все предметы, чтобы проверить, что сработает.' , 'Чтобы найти решение данной проблемы, которое легко будет повторять потом.' where not exists (select * from sources where id_out='korvintag_4782');
+РљРѕРіРґР° РІС‹, РЅР°РєРѕРЅРµС†, РїСЂРµРѕРґРѕР»РµРµС‚Рµ РџР»Р°С‚Рѕ СЃРєСЂС‹С‚РѕРіРѕ РїРѕС‚РµРЅС†РёР°Р»Р°, РѕРєСЂСѓР¶Р°СЋС‰РёРµ Р±СѓРґСѓС‚ РіРѕРІРѕСЂРёС‚СЊ Рѕ РІР°С€РµРј РјРіРЅРѕРІРµРЅРЅРѕРј СѓСЃРїРµС…Рµ.' , 'РџР»Р°С‚Рѕ СЃРєСЂС‹С‚РѕРіРѕ РїРѕС‚РµРЅС†РёР°Р»Р° - СЌС‚Рѕ РєРѕРіРґР° Р’С‹ СЂР°Р±РѕС‚Р°РµС‚Рµ, РґРѕР»РіРѕ, Р° СЂРµР·СѓР»СЊС‚Р°С‚Р° РЅРµС‚.', (select id from users where id_out='korvintag_24') where not exists (select * from sources where id_out='korvintag_4459');
+insert into ideas (name, id_out, original_text, content, user_id) select 'РџРµС‚Р»СЏ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё' , 'korvintag_4740' , 'РџРѕСЃР»Рµ С‚РѕРіРѕ РєР°Рє РІС‹ РїРѕР»СѓС‡РёС‚Рµ РЅРµРѕР¶РёРґР°РЅРЅРѕРµ РІРѕР·РЅР°РіСЂР°Р¶РґРµРЅРёРµ, РІС‹ РёР·РјРµРЅРёС‚Рµ СЃРІРѕСЋ СЃС‚СЂР°С‚РµРіРёСЋ РЅР° Р±СѓРґСѓС‰РµРµ. РњРѕР·Рі РЅРµР·Р°РјРµРґР»РёС‚РµР»СЊРЅРѕ РЅР°С‡РЅРµС‚ С„РёРєСЃРёСЂРѕРІР°С‚СЊ С‚Рµ СЃРѕР±С‹С‚РёСЏ, РєРѕС‚РѕСЂС‹Рµ РїСЂРµРґС€РµСЃС‚РІРѕРІР°Р»Рё РІРѕР·РЅР°РіСЂР°Р¶РґРµРЅРёСЋ. РџРѕРіРѕРґРё-РєР° вЂ“ СЌС‚Рѕ Р±С‹Р»Рѕ РїСЂРёСЏС‚РЅРѕ. Р§С‚Рѕ СЏ РґРµР»Р°Р» РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РїРµСЂРµРґ СЌС‚РёРј РјРѕРјРµРЅС‚РѕРј?
+Р­С‚Рѕ Рё РµСЃС‚СЊ С‚Р° СЃР°РјР°СЏ РїРµС‚Р»СЏ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё, РєРѕС‚РѕСЂР°СЏ СЃС‚РѕРёС‚ Р·Р° РІСЃРµРјРё РїРѕСЃС‚СѓРїРєР°РјРё С‡РµР»РѕРІРµРєР°: РїСЂРѕР±РѕРІР°С‚СЊ, РѕС€РёР±Р°С‚СЊСЃСЏ, СѓС‡РёС‚СЊСЃСЏ, РїСЂРѕР±РѕРІР°С‚СЊ РёРЅС‹Рј РѕР±СЂР°Р·РѕРј. РЎ РїСЂР°РєС‚РёРєРѕР№ Р±РµСЃРїРѕР»РµР·РЅС‹Рµ РґРµР№СЃС‚РІРёСЏ РїСЂРµРєСЂР°С‰Р°СЋС‚СЃСЏ, Р° РїРѕР»РµР·РЅС‹Рµ РґРµР№СЃС‚РІРёСЏ Р·Р°РєСЂРµРїР»СЏСЋС‚СЃСЏ. Р­С‚Рѕ Рё РµСЃС‚СЊ С„РѕСЂРјРёСЂРѕРІР°РЅРёРµ РїСЂРёРІС‹С‡РєРё.' , 'РџСЂРёРІС‹С‡РєРё С„РѕСЂРјРёСЂСѓСЋС‚СЃСЏ РїРѕРґ РІРѕР·РґРµР№СЃС‚РІРёРµРј С‚.РЅ. РїРµС‚Р»Рё РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё. РљРѕРіРґР° РјС‹ С‡С‚Рѕ-С‚Рѕ СЃРґРµР»Р°Р»Рё СѓРґР°С‡РЅРѕРµ, РЅР°С€ РјРѕР·Рі РїРѕР»СѓС‡Р°РµС‚ РіРѕСЂРјРѕРЅС‹. Рђ РіРѕСЂРјРѕРЅС‹ Р·Р°СЃС‚Р°РІР»СЏСЋС‚ РјРѕР·Рі Р·Р°РїРѕРјРЅРёС‚СЊ С…РѕСЂРѕС€РµРµ.', (select id from users where id_out='korvintag_24') where not exists (select * from sources where id_out='korvintag_4740');
+insert into ideas (name, id_out, original_text, content, user_id) select 'Р—Р°С‡РµРј РјРѕР·Рі С„РѕСЂРјРёСЂСѓРµС‚ РїСЂРёРІС‹С‡РєРё?' , 'korvintag_4782' , 'РџСЂРёРІС‹С‡РєР° вЂ“ СЌС‚Рѕ РїРѕРІРµРґРµРЅРёРµ, РєРѕС‚РѕСЂРѕРµ РїРѕРІС‚РѕСЂРёР»РѕСЃСЊ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЂР°Р· РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ СЃС‚Р°С‚СЊ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРёРј. РџСЂРѕС†РµСЃСЃ РµРµ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃРѕ СЃС‚Р°РґРёРё РїСЂРѕР± Рё РѕС€РёР±РѕРє. РљР°Р¶РґС‹Р№ СЂР°Р·, РєРѕРіРґР° РІС‹ СЃС‚Р°Р»РєРёРІР°РµС‚РµСЃСЊ СЃ РЅРѕРІРѕР№ Р¶РёР·РЅРµРЅРЅРѕР№ СЃРёС‚СѓР°С†РёРµР№, РјРѕР·РіСѓ РїСЂРёС…РѕРґРёС‚СЃСЏ РїСЂРёРЅРёРјР°С‚СЊ СЂРµС€РµРЅРёРµ. РљР°Рє СЂРµР°РіРёСЂРѕРІР°С‚СЊ РЅР° СЌС‚Сѓ СЃРёС‚СѓР°С†РёСЋ? РљРѕРіРґР° РІС‹ РІРїРµСЂРІС‹Рµ СЃС‚Р°Р»РєРёРІР°РµС‚РµСЃСЊ СЃ РїСЂРѕР±Р»РµРјРѕР№, С‚Рѕ РЅРµ СѓРІРµСЂРµРЅС‹ РІ С‚РѕРј, РєР°РєРёРј РѕР±СЂР°Р·РѕРј РµРµ СЃР»РµРґСѓРµС‚ СЂРµС€Р°С‚СЊ. РџРѕРґРѕР±РЅРѕ РєРѕС€РєРµ РўРѕСЂРЅРґР°Р№РєР°, РІС‹ СЃРЅР°С‡Р°Р»Р° РёСЃРїС‹С‚С‹РІР°РµС‚Рµ РІСЃРµ РїСЂРµРґРјРµС‚С‹, С‡С‚РѕР±С‹ РїСЂРѕРІРµСЂРёС‚СЊ, С‡С‚Рѕ СЃСЂР°Р±РѕС‚Р°РµС‚.' , 'Р§С‚РѕР±С‹ РЅР°Р№С‚Рё СЂРµС€РµРЅРёРµ РґР°РЅРЅРѕР№ РїСЂРѕР±Р»РµРјС‹, РєРѕС‚РѕСЂРѕРµ Р»РµРіРєРѕ Р±СѓРґРµС‚ РїРѕРІС‚РѕСЂСЏС‚СЊ РїРѕС‚РѕРј.', (select id from users where id_out='korvintag_24') where not exists (select * from sources where id_out='korvintag_4782');
 update ideas set source_id=(select id from sources where id_out='korvintag_4') where id_out='korvintag_260';
 update ideas set source_id=(select id from sources where id_out='korvintag_4') where id_out='korvintag_261';
 update ideas set source_id=(select id from sources where id_out='korvintag_4') where id_out='korvintag_262';
