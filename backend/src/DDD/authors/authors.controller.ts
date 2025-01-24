@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
+import { Req, Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
+import { Request  } from 'express';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
@@ -27,13 +28,16 @@ export class AuthorsController {
 
   @UseGuards(JwtAuthGuard)  
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
-    return this.authorsService.update(+id, updateAuthorDto);
+  update(@Param('id') id: string, 
+         @Req() req: Request,
+         @Body() updateAuthorDto: UpdateAuthorDto) {
+    return this.authorsService.update(+id, req.user, updateAuthorDto);
   }
 
   @UseGuards(JwtAuthGuard)  
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authorsService.remove(+id);
+  remove(@Param('id') id: string,
+         @Req() req: Request) {
+    return this.authorsService.remove(+id, req.user);
   }
 }

@@ -28,6 +28,15 @@
     text-align: right;
 }
 
+.label_info {
+    min-width: 140px;
+    font-family: 'Montserrat';
+    display: inline-block;
+    text-align: right;
+    font-size: 10px;    
+}
+
+
 .buttons {
     width: 500px;
 }
@@ -56,9 +65,9 @@
 
 
 .inputs {
-    height: 10vh;
+    height: 12vh;
     width: 45vw;
-    min-height: 75px;
+    min-height: 95px;
 }
 
 

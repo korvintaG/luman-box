@@ -31,7 +31,7 @@ export class SourcesService {
 
 
   findOne(id: number) {
-    return this.sourceRepository.findOne({where: { id }, relations: { author: true }});
+    return this.sourceRepository.findOne({where: { id }, relations: { author: true, user: true }});
   }
 
   update(id: number, updateSourceDto: UpdateSourceDto) {

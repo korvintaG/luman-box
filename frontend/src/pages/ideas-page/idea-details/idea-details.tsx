@@ -1,12 +1,10 @@
 import { useParams } from "react-router";
-import { useEffect, SyntheticEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { IdeaDetailsUI } from "../../../components/ui/details/idea-details/idea-details";
+import { useMemo, useEffect, SyntheticEvent } from "react";
+import { IdeaDetailsUIFC } from "../../../components/ui/details/idea-details/idea-details";
 import { useSelector, useDispatch } from "../../../services/store";
-import { useMsgModal } from "../../../hooks/useMsgModal";
 import {
   setIdea,
-  selectCurrentIdea,
+  selectCurrentIdea, 
   delIdea,
   selectError,
   selectIsDataLoading,
@@ -26,14 +24,15 @@ import {
   selectIsDataLoading as keywordsLoading,
 } from "../../../slices/keywords";
 import { appRoutes } from "../../../AppRoutes";
+import {withFormStatus} from '../../../components/hocs/with-form-status'
+import { omit }  from "lodash";
+import { allowEdit, getUserCreator } from '../../../utils/utils';
 
-import { KeywordPartial, IdeaRaw, isDMLRequestOK } from "../../../utils/type";
+import { KeywordPartial, IdeaRaw } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
-import { EditFormStatus } from "../../../components/ui/uni/edit-form-status/edit-form-status";
 import { selectCurrentUser } from '../../../slices/auth/index';
 
 export const IdeaDetails = () => {
-  const msgDeleteHook = useMsgModal();
   const { id } = useParams();
   const { values, handleChange, setValues, getFormDTO } = useForm<IdeaRaw>({
     name: "", 
@@ -44,7 +43,6 @@ export const IdeaDetails = () => {
     keywords: [],
   });
 
-  const navigate = useNavigate();
   const isLoading = useSelector(selectIsDataLoading);
   const sliceState = useSelector(selectSliceState);
   const isSourcesLoading = useSelector(sourcesLoading);
@@ -79,13 +77,9 @@ export const IdeaDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    if (isDMLRequestOK(sliceState)) navigate(appRoutes.ideas);
-  }, [sliceState]);
-
-  useEffect(() => {
     if (currentIdea) 
         setValues({
-          ...currentIdea,
+          ...omit(currentIdea,'user'),
           source: { id: currentIdea.source? Number(currentIdea.source.id) :0}
         })
   }, [currentIdea]);
@@ -121,34 +115,30 @@ export const IdeaDetails = () => {
       dispatch(addIdea({...getFormDTO(), keywords: keywordsDTO(), user: {id: currentUser!.id}}));
   };
 
-  return (
-    <EditFormStatus
-      sliceState={sliceState}        
-      isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
-      error={errorText}
-      fetchRecord={fetchIdea}
-      resetSliceState={resetSliceState}
-      isDeleteDialog={msgDeleteHook.dialogWasOpened}
-      authPath={appRoutes.auth}
-      deleteDialogProps={{
-        question: `Удалить идею [${values.name}]?`,
-        action: deleteIdea,
-        closeAction: msgDeleteHook.closeDialog,
-      }}
-    > 
-      <IdeaDetailsUI
-        id={id ? Number(id) : null}
-        readOnly={!currentUser}
+  const initialName=currentIdea ? currentIdea.name : '';
+  const IdeaForm = useMemo(()=>withFormStatus(IdeaDetailsUIFC),[setValues]);
+
+  return ( 
+    <IdeaForm
+        listPath={appRoutes.ideas}
+        id={id ? Number(id) : null} 
+        fetchRecord={fetchIdea}
+        isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
+        sliceState={sliceState}
+        error={errorText}
+        readOnly={!allowEdit(id,currentUser,currentIdea)}
         values={values}
+        initialName={initialName}
         handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        deleteIdea={msgDeleteHook.openDialog}
+        handleSubmit={handleSubmit} 
+        deleteQuestion={`Удалить идею [${initialName}]?`}
+        deleteRecord={deleteIdea}
+        resetSliceState={resetSliceState}
         sources={sources}
         keywords={keywords}
         addKeyword={addKeyword}
         deleteKeyword={deleteKeyword}
-        initialName={currentIdea ? currentIdea.name : ""}
-      />
-    </EditFormStatus>
-  );
+        userName={getUserCreator(currentIdea, currentUser)}
+        />
+  )
 };

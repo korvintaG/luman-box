@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
 import { joinSimpleEntityFirst } from '../../utils/utils'
-
+import {IUser} from '../../types/custom'
 
 @Injectable()
 export class AuthorsService {
@@ -25,14 +25,28 @@ export class AuthorsService {
   }
 
   findOne(id: number) {
-    return this.authorRepository.findOneBy({ id });
+    return this.authorRepository.findOne({where: { id }, relations: { user: true }});
   }
 
-  update(id: number, updateAuthorDto: UpdateAuthorDto) {
+  async checkAccess(id: number, user:IUser) {
+    const [authorOld]=await this.authorRepository.find({where: {id}, relations:['user']});
+    if (!authorOld)
+      throw new HttpException({
+        message: "Не найден автор для операции"
+        }, HttpStatus.BAD_REQUEST);
+    if (authorOld.user.id!==user.id)
+      throw new UnauthorizedException({
+        message: "У Вас нет прав на редактирование авторов, добавленных не Вами"
+        });
+  }
+
+  async update(id: number, user:IUser, updateAuthorDto: UpdateAuthorDto) {
+    await this.checkAccess(id, user);
     return this.authorRepository.update({id}, updateAuthorDto);
   }
 
-  async remove(id: number) {
+  async remove(id: number, user:IUser) {
+    await this.checkAccess(id, user);
     try {
       return await this.authorRepository.delete({ id });
     }

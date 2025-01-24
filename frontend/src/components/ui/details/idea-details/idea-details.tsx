@@ -1,12 +1,14 @@
-import { useState, FC, ChangeEvent, SyntheticEvent } from 'react';
+import { FC, ChangeEvent, SyntheticEvent } from 'react';
 import { HTMLEditElement, IdeaRaw, Source, Keyword, authorNameFromObj } from '../../../../utils/type'
 import { RecordEditUI } from '../../uni/record-edit/record-edit'
-import styles from './idea-details.module.css'
 import {TopicKeywordsUI} from '../topic-keywords/topic-keywords';
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import {InputSelectUI} from '../../uni/input-select/input-select'
 import {InputTextUI} from '../../uni/input-text/input-text'
+import {genHeaderText} from '../../../../utils/utils' 
+import {InfoFieldUI} from '../../uni/info-field/info-field'
+import styles from './idea-details.module.css'
 
 
 export type IdeaDetailsUIProps = {
@@ -15,27 +17,32 @@ export type IdeaDetailsUIProps = {
     readOnly: boolean;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // действие
-    deleteIdea: (e: SyntheticEvent) => void; // удалить текущую идею
+    deleteRecord: (e: SyntheticEvent) => void; // удалить текущую идею
     deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
     addKeyword: (id: number) => void; // добавить ключевое слово к идеи
     sources: Source[]; // источники для выбора
     keywords: Keyword[]; // ключевые слова для выбора
     initialName: string; // начальное название идеи для отображения
+    userName: string;    
 }
 
 /**
  * Компонент редактирования идеи чистый 
  */
 export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
-    { id, values, handleChange, handleSubmit, deleteIdea, sources, keywords, initialName, 
-        readOnly,
+    { id, values, handleChange, handleSubmit, deleteRecord, sources, keywords, initialName, 
+        readOnly,userName,
         addKeyword, deleteKeyword }) => {
-    const header = id ? `Редактирование идеи [${initialName}]` : 'Добавление новой идеи';
+    const header= genHeaderText(readOnly,id,initialName,'идеи','жен'); 
     const btnCaptione = id ? 'Сохранить данные' : 'Добавить идею';
-
+ 
     return <RecordEditUI header={header} onSubmit={handleSubmit} 
                 formClass={styles.form} mainClass={styles.main}>
             <div className={styles.inputs}>
+                <InfoFieldUI label='Запись добавил:' text={userName} 
+                    classAdd={styles.input_block}
+                    textClassAdd={styles.input}
+                    labelClassReplace={styles.label_info}/>
                 <InputSelectUI classAdd={styles.input_block}
                     name="source.id" label="Источник идеи:" value={values.source.id}
                     readOnly={readOnly}
@@ -53,7 +60,7 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
             </div>
             <RecordButtonBlockUI id={id} 
                 readOnly={readOnly}
-                deleteRecord={deleteIdea} blockClass={styles.buttons}
+                deleteRecord={deleteRecord} blockClass={styles.buttons}
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить идею' />
             <InputTextUI 
                 classAdd={styles.original} 
@@ -79,3 +86,8 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
     </RecordEditUI>
 }
  
+export function IdeaDetailsUIFC (props:IdeaDetailsUIProps) {
+    return (
+                <IdeaDetailsUI {...props}/>
+    ) 
+}

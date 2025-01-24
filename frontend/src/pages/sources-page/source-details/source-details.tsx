@@ -1,26 +1,25 @@
 import { useParams } from 'react-router';
-import { useEffect, SyntheticEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SourceDetailsUI } from '../../../components/ui/details/source-details/source-details'
+import { useMemo, useEffect, SyntheticEvent } from 'react';
+import { SourceDetailsUIFC } from '../../../components/ui/details/source-details/source-details'
 import { useSelector, useDispatch } from '../../../services/store';
-import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
     setSource,selectCurrentSource, delSource, selectError, setStateSuccess,
     selectIsDataLoading, getSource, addSource, selectSliceState
   } from '../../../slices/sources';
 import {
-    selectAuthors,
+    selectAuthors, 
     fetchAuthors, 
-    selectIsDataLoading as aLoading
+    selectIsDataLoading as selectIsAuthorLoading
   } from '../../../slices/authors';
-import { isDMLRequestOK, Source, SourceRaw, sourceFullNameFromObj, SourceRawPartial} from '../../../utils/type'
+import { SourceRaw} from '../../../utils/type'
 import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
-import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
 import { selectCurrentUser } from '../../../slices/auth/index';
+import {withFormStatus} from '../../../components/hocs/with-form-status'
+import { omit }  from "lodash";
+import { allowEdit, getUserCreator } from '../../../utils/utils';
 
 export const SourceDetails = () => {
-    const msgDeleteHook = useMsgModal();
 
     const { id } = useParams();
     const { values, handleChange, setValues, getFormDTO } = useForm<SourceRaw>({
@@ -28,10 +27,9 @@ export const SourceDetails = () => {
         author: {id: 0}
       });
     
-    const navigate = useNavigate();
     const isLoading = useSelector(selectIsDataLoading);
     const sliceState =  useSelector(selectSliceState);
-    const isALoading = useSelector(aLoading);
+    const isAuthorLoading = useSelector(selectIsAuthorLoading);
     const currentSource = useSelector(selectCurrentSource);
     const currentUser = useSelector(selectCurrentUser);
     const authors= useSelector(selectAuthors);
@@ -54,13 +52,8 @@ export const SourceDetails = () => {
     },[]);  
 
     useEffect(() => {
-        if (isDMLRequestOK(sliceState))
-            navigate(appRoutes.sources);            
-    }, [sliceState]);
-
-    useEffect(() => {
         if (currentSource)
-            setValues({name: currentSource.name, author:{id: (currentSource.author?currentSource.author.id:0)}})
+            setValues({...omit(currentSource, ['user']), author:{id: (currentSource.author?currentSource.author.id:0)}})
     },[currentSource]);
 
     const deleteSourceAction = (e: SyntheticEvent) => {
@@ -76,28 +69,33 @@ export const SourceDetails = () => {
             dispatch(addSource({...getFormDTO(), user: {id: currentUser!.id}}));
     }
 
-    return (<EditFormStatus 
-                sliceState={sliceState}        
-                isLoading={isLoading || isALoading }
-                error={errorText}
-                fetchRecord={fetchSource}
-                resetSliceState={resetSliceState}
-                isDeleteDialog={msgDeleteHook.dialogWasOpened}
-                authPath={appRoutes.auth}
-                deleteDialogProps={{
-                    question:`Удалить источник [${values.name}]`,
-                    action:deleteSourceAction ,
-                    closeAction:msgDeleteHook.closeDialog
-                }}
-            >
-            <SourceDetailsUI 
-                id={id?Number(id):null } 
-                readOnly={!currentUser}
-                values={values} 
-                initialName={sourceFullNameFromObj(currentSource)}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit} 
-                deleteSource={msgDeleteHook.openDialog} 
-                authors={authors}/>
-            </EditFormStatus>);
+    const initialName=currentSource ? currentSource.name : '';
+    const SourceForm = useMemo(()=>withFormStatus(SourceDetailsUIFC),[setValues]);
+
+    return ( 
+        <SourceForm
+            listPath={appRoutes.sources}
+            id={id ? Number(id) : null} 
+            fetchRecord={fetchSource}
+            isLoading={isLoading || isAuthorLoading}
+            sliceState={sliceState}
+            error={errorText}
+            readOnly={!allowEdit(id,currentUser,currentSource)}
+            values={values}
+            initialName={initialName}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit} 
+            deleteQuestion={`Удалить источник [${initialName}]?`}
+            deleteRecord={deleteSourceAction}
+            resetSliceState={resetSliceState}
+            authors={authors}
+            userName={getUserCreator(currentSource, currentUser)}
+
+        />
+      )
+
+
+
 }
+
+

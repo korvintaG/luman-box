@@ -1,58 +1,44 @@
-import { useEffect, useState, SyntheticEvent } from 'react';
+import { useMemo, useEffect, SyntheticEvent } from 'react';
 import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
-import { AuthorDetailsUI } from '../../../components/ui/details/author-details/author-details'
+import {  AuthorDetailsUIFC } from '../../../components/ui/details/author-details/author-details'
 import { useSelector, useDispatch } from '../../../services/store';
-import { useMsgModal } from '../../../hooks/useMsgModal'
 import {
     setAuthor, selectCurrentAuthor, delAuthor, selectError, setStateSuccess,
-    selectIsDataLoading, getAuthor, addAuthor, selectSliceState
+    getAuthor, addAuthor, selectSliceState
 } from '../../../slices/authors';
 import { selectCurrentUser } from '../../../slices/auth/index';
 import { appRoutes } from '../../../AppRoutes';
-import { isDMLRequestOK, AuthorRaw, RequestStatus } from '../../../utils/type'
-import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
+import { AuthorInner,  RequestStatus } from '../../../utils/type'
 import { useForm } from "../../../hooks/useForm";
+import { allowEdit, getUserCreator } from '../../../utils/utils';
+import { omit }  from "lodash";
+import {withFormStatus} from '../../../components/hocs/with-form-status'
 
-
-/**
- * Компонент редактирования автора - данные + UI
- */
 export const AuthorDetails = () => { 
     const { id } = useParams();
-    const { values, handleChange, setValues, getFormDTO } = useForm<AuthorRaw>({
+    const { values, handleChange, setValues, getFormDTO } = useForm<AuthorInner>({
         name: ""
       });
     
-    const msgDeleteHook = useMsgModal();
-    const navigate = useNavigate();
-    const isLoading = useSelector(selectIsDataLoading);
+    const dispatch = useDispatch();
     const sliceState = useSelector(selectSliceState);
     const errorText = useSelector(selectError);
     const currentUser = useSelector(selectCurrentUser);
     const currentAuthor = useSelector(selectCurrentAuthor);
-    const dispatch = useDispatch();
 
-    const fetchAuthor= ()=>{
+    function fetchAuthor() {
         if (id)
             dispatch(getAuthor(Number(id)))
     }
 
     const resetSliceState =()=> dispatch(setStateSuccess());
 
-    useEffect(() => fetchAuthor(), []);
+    useEffect(() => fetchAuthor(), []); 
 
     useEffect(() => {
-        if (isDMLRequestOK(sliceState))
-            navigate(appRoutes.authors);            
-    }, [sliceState]);
-
-    useEffect(() => {
-        if (currentAuthor)
-        setValues({
-            ...currentAuthor
-          })
-    }, [currentAuthor]);
+        if (currentAuthor) 
+            setValues({...omit(currentAuthor, ['user'])})
+    }, [currentAuthor, setValues]);
 
     const deleteAuthor = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -68,28 +54,25 @@ export const AuthorDetails = () => {
     }
 
     const initialName=currentAuthor ? currentAuthor.name : '';
-
-    return (<EditFormStatus 
-        sliceState={sliceState}        
-        isLoading={isLoading }
-        error={errorText}
-        fetchRecord={fetchAuthor}
-        resetSliceState={resetSliceState}
-        isDeleteDialog={msgDeleteHook.dialogWasOpened}
-        authPath={appRoutes.auth}
-        deleteDialogProps={{
-            question:`Удалить автора [${initialName}]?`,
-            action:deleteAuthor ,
-            closeAction:msgDeleteHook.closeDialog
-        }}
-        >
-                <AuthorDetailsUI 
-                    id={id ? Number(id) : null} 
-                    readOnly={!currentUser}
-                    values={values}
-                    initialName={initialName}
-                    handleChange={handleChange}
-                    handleSubmit={handleSubmit} 
-                    deleteAuthor={msgDeleteHook.openDialog} />
-            </EditFormStatus>)
+    const AuthorForm = useMemo(()=>withFormStatus(AuthorDetailsUIFC),[setValues]);
+ 
+    return ( 
+        <AuthorForm
+            listPath={appRoutes.authors}
+            id={id ? Number(id) : null} 
+            fetchRecord={fetchAuthor}
+            isLoading={sliceState===RequestStatus.Loading}
+            sliceState={sliceState}
+            error={errorText}
+            readOnly={!allowEdit(id,currentUser,currentAuthor)}
+            values={values}
+            initialName={initialName}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit} 
+            deleteQuestion={`Удалить автора [${initialName}]?`}
+            deleteRecord={deleteAuthor}
+            resetSliceState={resetSliceState}
+            userName={getUserCreator(currentAuthor, currentUser)}
+        />
+      )
 }

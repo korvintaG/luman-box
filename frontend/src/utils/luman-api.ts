@@ -97,6 +97,7 @@ export class LumanAPI extends Api implements ILumanAPI {
   };
 
   setAuthor = (data: AuthorPartial) => {
+    console.log('setAuthor',data)
     return this.requestWithRefresh(`/authors/${data.id}`, {
       method: 'PATCH',
       body: JSON.stringify({ ...data }),

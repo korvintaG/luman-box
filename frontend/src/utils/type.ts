@@ -14,8 +14,8 @@ export type AuthorRaw = AuthorInner & {
     user?:UserPartial;
 };
 export type AuthorRawPartial = Partial<AuthorRaw>;
-export type Author = AuthorInner & IDObject;
 export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
+export type Author = AuthorRaw & IDObject;
 
 // Источники
 export type SourceInner = NameObject;

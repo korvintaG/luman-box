@@ -1,19 +1,18 @@
 import { useParams } from 'react-router';
-import { useEffect, useState, SyntheticEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { KeywordDetailsUI } from '../../../components/ui/details/keyword-details/keyword-details'
-import { useMsgModal } from '../../../hooks/useMsgModal'
+import { useEffect, useMemo, SyntheticEvent } from 'react';
+import { KeywordDetailsUIFC } from '../../../components/ui/details/keyword-details/keyword-details'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
     setKeyword,selectCurrentKeyword, delKeyword, selectError, setStateSuccess,
-    selectIsDataLoading, getKeyword, addKeyword, selectSliceState
+    getKeyword, addKeyword, selectSliceState
   } from '../../../slices/keywords';
 import { appRoutes } from '../../../AppRoutes';
-import { isDMLRequestOK, KeywordRaw} from '../../../utils/type'
-import { EditFormStatus } from '../../../components/ui/uni/edit-form-status/edit-form-status'
+import { KeywordRaw, RequestStatus} from '../../../utils/type'
 import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from '../../../slices/auth/index';
-
+import {withFormStatus} from '../../../components/hocs/with-form-status'
+import { omit }  from "lodash";
+import { allowEdit, getUserCreator } from '../../../utils/utils';
 
 export const KeywordDetails = () => {
     const { id } = useParams(); 
@@ -21,37 +20,25 @@ export const KeywordDetails = () => {
         name: ""
       });
 
-    const navigate = useNavigate();
-    const isLoading = useSelector(selectIsDataLoading);
     const sliceState = useSelector(selectSliceState);
     const errorText = useSelector(selectError);
-    const msgDeleteHook = useMsgModal();
     const currentUser = useSelector(selectCurrentUser);
-    const error = useSelector(selectError);
     const currentKeyword = useSelector(selectCurrentKeyword);
     const dispatch = useDispatch();
 
     const fetchKeyword= ()=>{
-        if (id) {
-            const idNumber = Number(id);
-            dispatch(getKeyword(idNumber))
-        }
+        if (id) 
+            dispatch(getKeyword(Number(id)))
     }
 
     const resetSliceState =()=> dispatch(setStateSuccess());
 
     useEffect(() => fetchKeyword(),[]);
 
-    useEffect(() => { 
-        if (isDMLRequestOK(sliceState))
-            navigate(appRoutes.keywords);            
-    }, [sliceState]);
-
-
     useEffect(() => {
         if (currentKeyword)
             setValues({
-            ...currentKeyword
+            ...omit(currentKeyword,'user')
               })
 
     },[currentKeyword]);
@@ -61,41 +48,36 @@ export const KeywordDetails = () => {
             dispatch(delKeyword(idNumber))
     }
 
-
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        if (id) {
-            const idNumber = Number(id);
+        if (id) 
             dispatch(setKeyword({ ...getFormDTO(), id: Number(id)}));
-        }
-        else {
+        else 
             dispatch(addKeyword({ ...getFormDTO(), user: {id: currentUser!.id}}));
-        }
     }
 
     const initialName=currentKeyword? currentKeyword.name: '';
-
-    return (<EditFormStatus 
-        sliceState={sliceState}        
-        isLoading={isLoading }
-        error={errorText}
-        fetchRecord={fetchKeyword}
-        resetSliceState={resetSliceState}
-        isDeleteDialog={msgDeleteHook.dialogWasOpened}
-        authPath={appRoutes.auth}
-        deleteDialogProps={{
-            question:`Удалить ключевое слово [${initialName}]?`,
-            action:deleteKeyword ,
-            closeAction:msgDeleteHook.closeDialog
-        }}
-    >
-        <KeywordDetailsUI 
-            id={id?Number(id):null } 
-            readOnly={!currentUser}
+    const KeywordForm = useMemo(()=>withFormStatus(KeywordDetailsUIFC),[setValues]);
+  
+    return ( 
+        <KeywordForm
+            listPath={appRoutes.keywords}
+            id={id ? Number(id) : null} 
+            fetchRecord={fetchKeyword}
+            isLoading={sliceState===RequestStatus.Loading}
+            sliceState={sliceState}
+            error={errorText}
+            readOnly={!allowEdit(id,currentUser,currentKeyword)}
             values={values}
             initialName={initialName}
             handleChange={handleChange}
             handleSubmit={handleSubmit} 
-            deleteKeyword={msgDeleteHook.openDialog}/>
-        </EditFormStatus>);
+            deleteQuestion={`Удалить ключевое слово [${initialName}]?`}
+            deleteRecord={deleteKeyword}
+            resetSliceState={resetSliceState}
+            userName={getUserCreator(currentKeyword, currentUser)}
+            />
+      )
+    
+
 }

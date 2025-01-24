@@ -42,7 +42,7 @@ export class IdeasService {
 
 
   findOne(id: number) {
-    return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author']});
+    return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user']});
   }
 
   async update(id: number, updateIdeaDto: UpdateIdeaDto) {

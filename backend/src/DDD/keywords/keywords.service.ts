@@ -29,7 +29,7 @@ export class KeywordsService {
 
 
   findOne(id: number) {
-    return this.keywordRepository.findOneBy({ id });
+    return this.keywordRepository.findOne({where: { id }, relations: { user: true }});
   }
 
   update(id: number, updateKeywordDto: UpdateKeywordDto) {
