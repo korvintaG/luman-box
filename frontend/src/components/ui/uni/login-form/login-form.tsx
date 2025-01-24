@@ -45,6 +45,7 @@ export const LoginForm: FC<LoginFormProps> = (props:LoginFormProps) => {
 						<InputEditUI name="password" isPassword label='Пароль' value={props.values.password} handleChange={props.handleChange}/>
 					</section>
 					<ButtonAgreeUI caption="Войти"/>
+					<section>Вы еще не зарегестрированы в системе?<br/> Зарегестрируйтесь через наш телеграм-бот!</section>
 				</>
 				}
 			</form>
