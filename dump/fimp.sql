@@ -1,3 +1,9 @@
+DO $$
+DECLARE cnt bigint;
+BEGIN
+  select count(*) from users into cnt;
+  if cnt=0 then
+
 insert into users (name, id_out, password) select 'Altay' , 'korvintag_85', '-' where not exists (select * from users where id_out='korvintag_85');
 update users set name='Altay' where id_out='korvintag_85';
 insert into users (name, id_out, password) select 'Budda_from_Dnipro' , 'korvintag_45', '-' where not exists (select * from users where id_out='korvintag_45');
@@ -696,3 +702,6 @@ insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id 
 insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id iid from keywords, ideas  where keywords.id_out='korvintag_42' and  ideas.id_out='korvintag_4782';
 insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id iid from keywords, ideas  where keywords.id_out='korvintag_838' and  ideas.id_out='korvintag_4782';
 insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id iid from keywords, ideas  where keywords.id_out='korvintag_1805' and  ideas.id_out='korvintag_4782';
+
+  end if;
+END $$;

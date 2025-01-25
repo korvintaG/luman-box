@@ -1,12 +1,12 @@
 import {
-  Author, AuthorPartial, AuthorRawPartial, Source, Idea, IdeaRaw, IdeaPartial, IdeaRawPartial,
-  SourceRaw, ServerResponse, LoginData, LoginResult, User,
+  Author, AuthorPartial, AuthorRawPartial, Source, Idea, IdeaPartial, IdeaRawPartial,
+  ServerResponse, LoginData, LoginResult, User,
   Keyword, KeywordRawPartial, SourceRawPartial, SourcePartial, KeywordPartial, Success
 } from "./type";
 import { Api } from './api'
-import { getCookie, setCookie } from './cookie';
+import { getCookie } from './cookie';
 
-const URL_API = 'http://localhost:3000'
+export const API_URL = process.env.REACT_APP_API_URL ?? 'http://localhost:3000';
 
 export interface ILumanAPI {
   // авторы
@@ -242,4 +242,4 @@ export class LumanAPI extends Api implements ILumanAPI {
 
 type TAuthorsResponse = { data: Author[] };
 
-export default new LumanAPI(URL_API);
+export default new LumanAPI(API_URL);

@@ -1,0 +1,72 @@
+services:
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    env_file:
+      ./backend/.env
+    networks:
+      - internal
+    restart: unless-stopped
+
+  backend:
+    image: backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    build: 
+      context: ./backend # директория сборки (контекст)
+      dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
+    env_file:
+      ./backend/.env
+    networks:
+      - internal
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+# раскомментарить блок для первичного заполнения базы данных
+#  dbfill:
+#    image: dbfill
+#    container_name: dbfill
+#    build: 
+#      context: ./dump # директория сборки (контекст)
+#      dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
+#    env_file:
+#      ./backend/.env
+#    networks:
+#      - internal
+#    depends_on:
+#      - postgres
+#      - backend
+
+  frontend:
+    image: frontend
+    container_name: frontend
+    env_file:
+      ./frontend/.env
+    build: 
+      context: ./frontend # директория сборки (контекст)
+      dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
+    ports:
+      - "80:80"
+    networks:
+      - internal
+      - internet
+    depends_on:
+      - backend
+      - postgres
+    restart: unless-stopped
+
+networks:
+  internal:
+    name: internal
+    driver: bridge
+    internal: true
+  internet:
+    name: internet
+    driver: bridge
