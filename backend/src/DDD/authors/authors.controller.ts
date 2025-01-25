@@ -3,7 +3,7 @@ import { Request  } from 'express';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
+import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 
 
 @Controller('authors')

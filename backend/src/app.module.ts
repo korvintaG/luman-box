@@ -12,7 +12,7 @@ import { KeywordsModule } from './DDD/keywords/keywords.module';
 import { IdeasModule } from './DDD/ideas/ideas.module';
 import { User} from './DDD/users/entities/user.entity';
 import { UsersModule } from './DDD/users/users.module';
-import { AuthModule } from './guards/auth/auth.module'
+import { AuthModule } from './authorization/auth.module'
 
 
 @Module({

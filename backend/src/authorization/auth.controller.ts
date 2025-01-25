@@ -1,13 +1,13 @@
 import { InternalServerErrorException, Body, Get, Controller, Post, UseGuards, Req, Res } from '@nestjs/common';
-import { UsersService } from '../../DDD/users/users.service';
+import { UsersService } from '../DDD/users/users.service';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from '../local-auth.guard';
-import { CreateUserDto } from '../../DDD/users/dto/create-user.dto';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { CreateUserDto } from '../DDD/users/dto/create-user.dto';
 import { Response, Request  } from 'express';
-import { JwtRefreshAuthGuard } from '../jwt-refresh-auth.guard';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
-import { UserDto } from '../../DDD/users/dto/user.dto';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard'
+import { UserDto } from '../DDD/users/dto/user.dto';
+import { Serialize } from '../interceptors/serialize.interceptor';
 
 @Controller('auth')
 export class AuthController {

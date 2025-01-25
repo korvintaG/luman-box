@@ -1,8 +1,8 @@
 import { Injectable, InternalServerErrorException, BadRequestException, NotFoundException } from '@nestjs/common';
-import { UsersService } from '../../DDD/users/users.service';
-import {User} from '../../DDD/users/entities/user.entity'
-import {IUser} from '../../types/custom'
-import {CreateUserDto} from '../../DDD/users/dto/create-user.dto'
+import { UsersService } from '../DDD/users/users.service';
+import {User} from '../DDD/users/entities/user.entity'
+import {IUser} from '../types/custom'
+import {CreateUserDto} from '../DDD/users/dto/create-user.dto'
 import { JwtService } from '@nestjs/jwt';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';

@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 //import { extractRefreshTokenFromCookies } from '../../constants/cookies';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../auth.service';
 import {IUser} from '../../types/custom'
 
 

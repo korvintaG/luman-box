@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards } from '@
 import { IdeasService } from './ideas.service';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
+import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 
 
 @Controller('ideas')

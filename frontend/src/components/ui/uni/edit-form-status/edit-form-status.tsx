@@ -19,6 +19,7 @@ export type EditFormStatusProps = {
     error: string | null;
     fetchRecord:()=>void;
     resetSliceState:()=>void;
+    resetAuth:()=>void;
     isDeleteDialog: boolean;
     deleteDialogProps: MsgQuestionUIProps;
     authPath: string;
@@ -54,6 +55,7 @@ export const EditFormStatus: FC<EditFormStatusProps> = (props:EditFormStatusProp
             break
         case RequestStatus.FailedUnAuth:
             errorTitle= 'Ошибка авторизации.'
+            props.resetAuth();
             okAction=gotoAuth;
             break
         case RequestStatus.Failed:

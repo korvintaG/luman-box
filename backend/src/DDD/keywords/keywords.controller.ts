@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { KeywordsService } from './keywords.service';
 import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
+import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 
 @Controller('keywords')
 export class KeywordsController {

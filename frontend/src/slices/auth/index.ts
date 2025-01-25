@@ -45,6 +45,12 @@ const authSlice = createSlice({
     setStatus: (state, newStatus) => {
       state.status=newStatus.payload;
     },
+    resetAuth: (state) => {
+      state.status=AuthStatus.Idle;
+      state.currentLogin=null
+      state.currentUser=null
+      state.error=''
+    },
   },
   selectors: {
     selectSliceStatus: (sliceData) => sliceData.status,
@@ -101,5 +107,5 @@ const authSlice = createSlice({
 });
 
 export const { selectError, selectSliceStatus, selectCurrentUser, selectCurrentLogin} = authSlice.selectors;
-export const { resetStatus, setStatus } = authSlice.actions;
+export const { resetStatus, resetAuth, setStatus } = authSlice.actions;
 export default authSlice.reducer;

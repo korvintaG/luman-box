@@ -4,6 +4,8 @@ import { EditFormStatus } from '../../components/ui/uni/edit-form-status/edit-fo
 import { useMsgModal } from '../../hooks/useMsgModal'
 import { appRoutes } from '../../AppRoutes';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from '../../services/store';
+import { resetAuth } from '../../slices/auth/index';
 
 export type WidthFormStatusProps = {
     listPath: string;
@@ -21,6 +23,7 @@ export function withFormStatus<P>
     return function (props: P & WidthFormStatusProps): ReactElement {
         const msgDeleteHook = useMsgModal();
         const navigate = useNavigate();
+        const dispatch = useDispatch();
 
         useEffect(() => {
             if (isDMLRequestOK(props.sliceState))
@@ -36,6 +39,7 @@ export function withFormStatus<P>
             resetSliceState={props.resetSliceState}
             isDeleteDialog={msgDeleteHook.dialogWasOpened}
             authPath={appRoutes.auth}
+            resetAuth={()=>dispatch(resetAuth())}
             deleteDialogProps={{
                 question: props.deleteQuestion,
                 action: props.deleteRecord,

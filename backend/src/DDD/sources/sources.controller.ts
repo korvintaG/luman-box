@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { SourcesService } from './sources.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard'
+import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 
 
 @Controller('sources')
