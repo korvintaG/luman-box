@@ -19,10 +19,10 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   signin(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    console.log('AuthController login origin host',req.get('origin'),req.get('host'))
     return this.authService.login(res, req.user);
   }
 
-  @UseGuards(JwtRefreshAuthGuard) // нет смысла делать выход невошедши
   @Post('logout')
   clearAuthCookie(@Res({ passthrough: true }) res: Response) {
     res.clearCookie(this.authService.getCookieConfig().refreshToken.name);
