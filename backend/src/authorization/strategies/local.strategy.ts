@@ -15,7 +15,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(name: string, password: string) {
      // Ключ для отслеживания попыток (например, по IP или логину)
-     console.log('LocalStrategy validate',name,password)
      const key = name; // Можно заменить на req.ip или IP + username
 
      // Проверяем лимит только для неудачных попыток

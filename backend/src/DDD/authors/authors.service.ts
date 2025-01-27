@@ -1,11 +1,11 @@
-import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
-import { joinSimpleEntityFirst } from '../../utils/utils'
+import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
 import {IUser} from '../../types/custom'
 
 @Injectable()
@@ -16,8 +16,8 @@ export class AuthorsService {
     private sourcesService: SourcesService
   ) {}
 
-  create(createAuthorDto: CreateAuthorDto) {
-    return this.authorRepository.save(createAuthorDto);
+  create(user:IUser, createAuthorDto: CreateAuthorDto) {
+    return this.authorRepository.save({...createAuthorDto, user:{id:user.id}});
   }
 
   findAll() {
@@ -28,25 +28,13 @@ export class AuthorsService {
     return this.authorRepository.findOne({where: { id }, relations: { user: true }});
   }
 
-  async checkAccess(id: number, user:IUser) {
-    const [authorOld]=await this.authorRepository.find({where: {id}, relations:['user']});
-    if (!authorOld)
-      throw new HttpException({
-        message: "Не найден автор для операции"
-        }, HttpStatus.BAD_REQUEST);
-    if (authorOld.user.id!==user.id)
-      throw new UnauthorizedException({
-        message: "У Вас нет прав на редактирование авторов, добавленных не Вами"
-        });
-  }
-
   async update(id: number, user:IUser, updateAuthorDto: UpdateAuthorDto) {
-    await this.checkAccess(id, user);
+    await checkAccess(this.authorRepository,id, user.id);
     return this.authorRepository.update({id}, updateAuthorDto);
   }
 
   async remove(id: number, user:IUser) {
-    await this.checkAccess(id, user);
+    await checkAccess(this.authorRepository,id, user.id);
     try {
       return await this.authorRepository.delete({ id });
     }

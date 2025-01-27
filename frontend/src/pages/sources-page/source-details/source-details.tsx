@@ -56,9 +56,8 @@ export const SourceDetails = () => {
             setValues({...omit(currentSource, ['user']), author:{id: (currentSource.author?currentSource.author.id:0)}})
     },[currentSource]);
 
-    const deleteSourceAction = (e: SyntheticEvent) => {
-            const idNumber = Number(id);
-            dispatch(delSource(idNumber))
+    const deleteSource = (e: SyntheticEvent) => {
+            dispatch(delSource(Number(id)))
     }
 
     const handleSubmit = (e: SyntheticEvent) => {
@@ -66,7 +65,7 @@ export const SourceDetails = () => {
         if (id) 
             dispatch(setSource({...getFormDTO(), id: Number(id) }))
         else 
-            dispatch(addSource({...getFormDTO(), user: {id: currentUser!.id}}));
+            dispatch(addSource({...getFormDTO()}));
     }
 
     const initialName=currentSource ? currentSource.name : '';
@@ -86,16 +85,13 @@ export const SourceDetails = () => {
             handleChange={handleChange}
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить источник [${initialName}]?`}
-            deleteRecord={deleteSourceAction}
+            deleteRecord={deleteSource}
             resetSliceState={resetSliceState}
             authors={authors}
             userName={getUserCreator(currentSource, currentUser)}
-
         />
       )
 
-
-
-}
+    }
 
 

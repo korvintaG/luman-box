@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Req, Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Request  } from 'express';
 import { SourcesService } from './sources.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
@@ -11,8 +12,9 @@ export class SourcesController {
 
   @UseGuards(JwtAuthGuard)  
   @Post()
-  create(@Body() createSourceDto: CreateSourceDto) {
-    return this.sourcesService.create(createSourceDto);
+  create(@Req() req: Request,
+         @Body() createSourceDto: CreateSourceDto) {
+    return this.sourcesService.create(req.user,createSourceDto);
   }
 
   @Get()
@@ -27,13 +29,16 @@ export class SourcesController {
 
   @UseGuards(JwtAuthGuard)  
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSourceDto: UpdateSourceDto) {
-    return this.sourcesService.update(+id, updateSourceDto);
+  update(@Param('id') id: string, 
+         @Req() req: Request,
+         @Body() updateSourceDto: UpdateSourceDto) {
+    return this.sourcesService.update(+id,req.user, updateSourceDto);
   }
 
   @UseGuards(JwtAuthGuard)  
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sourcesService.remove(+id);
+  remove(@Param('id') id: string,
+         @Req() req: Request) {
+    return this.sourcesService.remove(+id,req.user);
   }
 }

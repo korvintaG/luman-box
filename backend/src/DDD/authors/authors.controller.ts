@@ -12,8 +12,9 @@ export class AuthorsController {
 
   @UseGuards(JwtAuthGuard)  
   @Post()
-  create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorsService.create(createAuthorDto);
+  create(@Req() req: Request,
+         @Body() createAuthorDto: CreateAuthorDto) {
+    return this.authorsService.create(req.user, createAuthorDto);
   }
 
   @Get()

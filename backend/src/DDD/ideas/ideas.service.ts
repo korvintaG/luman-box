@@ -6,8 +6,10 @@ import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { isEmpty, omit }  from "lodash";
 import {KeywordsService} from '../keywords/keywords.service'
+import {IUser} from '../../types/custom'
+import { checkAccess } from '../../utils/utils'
 
-
+ 
 @Injectable()
 export class IdeasService {
 
@@ -18,7 +20,7 @@ export class IdeasService {
 
   ) {}
 
-  async create(createIdeaDto: CreateIdeaDto) {
+  async create(user:IUser,createIdeaDto: CreateIdeaDto) {
     let onlyIdea=omit(createIdeaDto, ["keywords", "date_time_create"]);
     if (onlyIdea.source && onlyIdea.source.id ===0) {
       onlyIdea=omit(onlyIdea, ["source"]);
@@ -29,7 +31,7 @@ export class IdeasService {
         const keywords = await this.keywordsService.findByCond({ where: { id: In(createIdeaDto.keywords.map(el=>el.id)) }});
         idea.keywords = keywords;
       }
-    return this.ideaRepository.save(idea);
+    return this.ideaRepository.save({...idea, user:{id:user.id}});
   }
 
   findAll() {
@@ -45,7 +47,8 @@ export class IdeasService {
     return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user']});
   }
 
-  async update(id: number, updateIdeaDto: UpdateIdeaDto) {
+  async update(id: number, user:IUser,updateIdeaDto: UpdateIdeaDto) {
+    await checkAccess(this.ideaRepository,id, user.id);
     const onlyIdea=omit(updateIdeaDto, ["keywords"]);
     if (!isEmpty(onlyIdea)) {
         await this.ideaRepository.update({id}, onlyIdea);
@@ -62,7 +65,8 @@ export class IdeasService {
     return idea;
   }
 
-  remove(id: number) {
-    return this.ideaRepository.delete({ id });
+  async remove(id: number,user:IUser) {
+    await checkAccess(this.ideaRepository,id, user.id);
+    return  await this.ideaRepository.delete({ id });
   }
 }

@@ -78,7 +78,7 @@ export class AuthService {
         path: '/', 
         httpOnly: true,
         sameSite: 'strict' as 'strict',
-        secure: true,
+        secure: false,
         maxAge: Number(ms(this.configService.get('AUTH_REFRESH_TOKEN_EXPIRY')))
       },
     },

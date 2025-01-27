@@ -44,8 +44,7 @@ export const KeywordDetails = () => {
     },[currentKeyword]);
 
     const deleteKeyword = (e: SyntheticEvent) => {
-            const idNumber = Number(id);
-            dispatch(delKeyword(idNumber))
+            dispatch(delKeyword(Number(id)))
     }
 
     const handleSubmit = (e: SyntheticEvent) => {
@@ -53,7 +52,7 @@ export const KeywordDetails = () => {
         if (id) 
             dispatch(setKeyword({ ...getFormDTO(), id: Number(id)}));
         else 
-            dispatch(addKeyword({ ...getFormDTO(), user: {id: currentUser!.id}}));
+            dispatch(addKeyword({ ...getFormDTO()}));
     }
 
     const initialName=currentKeyword? currentKeyword.name: '';

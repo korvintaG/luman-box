@@ -1,11 +1,12 @@
-import { Injectable, HttpException, HttpStatus} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
 import { Repository, FindManyOptions } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
 import { SimpleEntity } from '../../types/custom'
-import { joinSimpleEntityFirst } from '../../utils/utils'
+import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
+import {IUser} from '../../types/custom'
 
 @Injectable()
 export class KeywordsService {
@@ -15,8 +16,8 @@ export class KeywordsService {
     private readonly keywordRepository: Repository<Keyword>,
   ) {}
 
-  create(createKeywordDto: CreateKeywordDto) {
-    return this.keywordRepository.save(createKeywordDto);
+  create(user:IUser,createKeywordDto: CreateKeywordDto) {
+    return this.keywordRepository.save({...createKeywordDto, user:{id:user.id}});
   }
 
   findAll() {
@@ -32,11 +33,13 @@ export class KeywordsService {
     return this.keywordRepository.findOne({where: { id }, relations: { user: true }});
   }
 
-  update(id: number, updateKeywordDto: UpdateKeywordDto) {
-    return this.keywordRepository.update({id}, updateKeywordDto);
+  async update(id: number, user:IUser,updateKeywordDto: UpdateKeywordDto) {
+    await checkAccess(this.keywordRepository,id, user.id);
+    return await this.keywordRepository.update({id}, updateKeywordDto);
   }
 
-  async remove(id: number) {
+  async remove(id: number,user:IUser) {
+    await checkAccess(this.keywordRepository,id, user.id);
     try {
       return await this.keywordRepository.delete({ id })
     }

@@ -5,7 +5,9 @@ import { Source } from './entities/source.entity'
 import { IdeasService } from '../ideas/ideas.service'
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { joinSimpleEntityFirst } from '../../utils/utils'
+import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
+import {IUser} from '../../types/custom'
+
 
 @Injectable()
 export class SourcesService {
@@ -14,11 +16,10 @@ export class SourcesService {
     @InjectRepository(Source)
     private readonly sourceRepository: Repository<Source>,
     private ideasService: IdeasService
-
   ) {}
 
-  create(createSourceDto: CreateSourceDto) {
-    return this.sourceRepository.save(createSourceDto);
+  create(user:IUser,createSourceDto: CreateSourceDto) {
+    return this.sourceRepository.save({...createSourceDto, user:{id:user.id}});
   }
 
   findAll() {
@@ -34,11 +35,13 @@ export class SourcesService {
     return this.sourceRepository.findOne({where: { id }, relations: { author: true, user: true }});
   }
 
-  update(id: number, updateSourceDto: UpdateSourceDto) {
-    return this.sourceRepository.update({id}, updateSourceDto);
+  async update(id: number, user:IUser, updateSourceDto: UpdateSourceDto) {
+    await checkAccess(this.sourceRepository,id, user.id);
+    return await this.sourceRepository.update({id}, updateSourceDto);
   }
 
-  async remove(id: number) {
+  async remove(id: number,user:IUser) {
+    await checkAccess(this.sourceRepository,id, user.id);
     try {
       return await this.sourceRepository.delete({ id });
     }

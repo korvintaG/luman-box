@@ -27,7 +27,6 @@ import { appRoutes } from "../../../AppRoutes";
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 import { omit }  from "lodash";
 import { allowEdit, getUserCreator } from '../../../utils/utils';
-
 import { KeywordPartial, IdeaRaw } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from '../../../slices/auth/index';
@@ -103,16 +102,15 @@ export const IdeaDetails = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    if (id) {
-      const idNumber = Number(id);
+    if (id) 
       dispatch(
         setIdea({
           ...getFormDTO(),
-          id: idNumber,
+          id: Number(id),
           keywords: keywordsDTO()}
       ));
-    } else 
-      dispatch(addIdea({...getFormDTO(), keywords: keywordsDTO(), user: {id: currentUser!.id}}));
+    else 
+      dispatch(addIdea({...getFormDTO(), keywords: keywordsDTO()}));
   };
 
   const initialName=currentIdea ? currentIdea.name : '';

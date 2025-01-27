@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards } from '@nestjs/common';
+import { Req, Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards } from '@nestjs/common';
+import { Request  } from 'express';
 import { IdeasService } from './ideas.service';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
@@ -11,8 +12,9 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)  
   @Post()
-  create(@Body() createIdeaDto: CreateIdeaDto) {
-    return this.ideasService.create(createIdeaDto);
+  create(@Req() req: Request,
+         @Body() createIdeaDto: CreateIdeaDto) {
+    return this.ideasService.create(req.user,createIdeaDto);
   }
 
   @Get()
@@ -27,13 +29,16 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)  
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateIdeaDto: UpdateIdeaDto) {
-    return this.ideasService.update(+id, updateIdeaDto);
+  update(@Param('id') id: string, 
+         @Req() req: Request,
+         @Body() updateIdeaDto: UpdateIdeaDto) {
+    return this.ideasService.update(+id, req.user,updateIdeaDto);
   }
 
   @UseGuards(JwtAuthGuard)  
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ideasService.remove(+id);
+  remove(@Param('id') id: string,
+         @Req() req: Request) {
+    return this.ideasService.remove(+id,req.user);
   }
 }
