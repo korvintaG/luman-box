@@ -8,7 +8,7 @@ services:
     volumes:
       - ./db_data:/var/lib/postgresql/data
     env_file:
-      ./backend/.env
+      - .env
     networks:
       - internal
     restart: unless-stopped
@@ -22,7 +22,7 @@ services:
       context: ./backend # директория сборки (контекст)
       dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
     env_file:
-      ./backend/.env
+      .env
     networks:
       - internal
     depends_on:
@@ -38,6 +38,7 @@ services:
 #      dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
 #    env_file:
 #      ./backend/.env
+#      .env
 #    networks:
 #      - internal
 #    depends_on:
@@ -47,8 +48,6 @@ services:
   frontend:
     image: frontend
     container_name: frontend
-    env_file:
-      ./frontend/.env
     build: 
       context: ./frontend # директория сборки (контекст)
       dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
