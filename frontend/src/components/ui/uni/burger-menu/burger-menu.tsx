@@ -25,8 +25,8 @@ export const BurgerMenuUI: FC<BurgerMenuUIProps> = ({menu, burgerActivated, setB
             <div className={styles.icon}></div>
     </label>
     <ul className={styles.menu}>
-        {menu.map((el) => 
-            <li>
+        {menu.map((el, cnt) => 
+            <li key={cnt}>
                 <LinkActionUI
                     to={el.link}
                     actionHandle={(e: SyntheticEvent) => setBurgerActivated(false)}

@@ -13,8 +13,8 @@ export const AboutPage: FC = () => {
     <main className={styles.main}>
       <ul className={styles.card_list}>
         {aboutList.map(
-          (el) =>
-            <li className={styles.list_element}>
+          (el, cnt) =>
+            <li key={cnt} className={styles.list_element}>
               <AboutCardUI
                 backgroundImage={el.image}
                 icon={el.icon}

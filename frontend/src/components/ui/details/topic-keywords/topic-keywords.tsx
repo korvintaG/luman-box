@@ -34,7 +34,7 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
             {props.keywordsSelected ?
                 <div className={styles.keywords}>
                     {props.keywordsSelected.map((kw) =>
-                        <KeywordUI 
+                        <KeywordUI key={kw.id}
                             id={kw.id} 
                             name={getKeywordName(kw.id)}
                             readOnly={props.readOnly}

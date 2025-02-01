@@ -53,6 +53,10 @@ services:
       dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:ro
     networks:
       - internal
       - internet
@@ -60,6 +64,15 @@ services:
       - backend
       - postgres
     restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    networks:
+      - internet
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 networks:
   internal:
