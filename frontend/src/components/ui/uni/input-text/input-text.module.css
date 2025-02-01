@@ -14,11 +14,15 @@
 }
 
 .text {
+    position: relative;
     resize:none;
     border: none;
-    width: 100%;
+    width: 99%;
     padding: 10px;
     font-family: 'Montserrat';
     height: 40vh;
+}
 
+.block:focus-within {
+    border: none;
 }

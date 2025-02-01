@@ -66,9 +66,9 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
                 classAdd={styles.original} 
                 value={values.original_text} 
                 name="original_text" 
-                textClassAdd={styles.original}
                 label='Вдохновивший текст'
                 readOnly={readOnly}
+                textClassAdd={styles.original_text}
                 handleChange={handleChange}/>
             <InputTextUI 
                 classAdd={styles.content} 

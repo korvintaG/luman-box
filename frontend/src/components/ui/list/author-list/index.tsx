@@ -12,7 +12,7 @@ export type AuthorListUIProps = {
 }
 
 export const AuthorListUI : FC<AuthorListUIProps> = ({authors, readOnly, addNewAuthor, isLoading}) => {
-    return (
+    return ( 
         <RecordListUI 
             header='Список авторов' 
             readOnly={readOnly}

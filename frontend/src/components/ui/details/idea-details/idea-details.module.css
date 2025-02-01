@@ -56,10 +56,10 @@
 
 
 .original, .content  {
-    min-width: calc(50vw - 37px);
+    min-width: calc(50vw - 17px);
 }
 
-.original  {
+.original_text  {
     font-style: italic;
 }
 
@@ -124,7 +124,7 @@
     }
 
     .original, .content {
-        width: calc(100vw - 10px);
+        width: calc(100vw - 17px);
     }
 
     .original textarea{

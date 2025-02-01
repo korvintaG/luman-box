@@ -11,7 +11,7 @@ export function combineClasses(inherited:classVar, replace: classVar, add: class
     if (replace)
         classRes=replace;
     if (add)
-        classRes=clsx(add,classRes);
+        classRes=clsx(classRes,add);
     return classRes;
 }
 

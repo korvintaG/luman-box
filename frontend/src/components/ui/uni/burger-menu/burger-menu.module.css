@@ -78,6 +78,10 @@
     color: #fff;
 }
 
+.item:hover {
+    cursor: pointer;
+}
+
 .item-active {
     color: yellow;
 }

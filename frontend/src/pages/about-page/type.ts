@@ -4,3 +4,4 @@ export type AboutList = {
     icon: string;
     image: string;
 }
+ 

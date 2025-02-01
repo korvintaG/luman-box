@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent,  ChangeEvent } from 'react';
+import { Link } from 'react-router-dom';
 import {HTMLEditElement, UserInner, User} from '../../../../utils/type'
 import { InputEditUI } from '../../../../components/ui/uni/input-edit/input-edit'
 import {AuthStatus} from '../../../../slices/auth/index'
@@ -45,7 +46,8 @@ export const LoginForm: FC<LoginFormProps> = (props:LoginFormProps) => {
 						<InputEditUI name="password" isPassword label='Пароль' value={props.values.password} handleChange={props.handleChange}/>
 					</section>
 					<ButtonAgreeUI caption="Войти"/>
-					<section>Вы еще не зарегестрированы в системе?<br/> Зарегестрируйтесь через наш телеграм-бот!</section>
+					<section>Вы еще не зарегестрированы в системе?<br/>
+					 Зарегестрируйтесь через наш <Link to ='https://t.me/Sferatum_bot'  >телеграм-бот!</Link></section>
 				</>
 				}
 			</form>

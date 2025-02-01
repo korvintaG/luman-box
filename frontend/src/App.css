@@ -18,4 +18,8 @@
   font-family: 'Montserrat';
 }
 
-
+@media (max-width: 750px) {
+  .main {
+      margin: 10px;
+  }
+}
