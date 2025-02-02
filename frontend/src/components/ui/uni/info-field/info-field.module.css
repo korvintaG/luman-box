@@ -13,14 +13,12 @@
   
   .info-label {
     display: inline-block;
-    min-width: 190px;
     display: block;
     text-align: right;
     font-size: 10px;
   }
   
   .info-field {
-    min-width: 250px;
     text-align: left;
   }
   
@@ -31,5 +29,8 @@
   .info-label {
     text-align: left;
   }
+  .info-block {
+    flex-direction: row;
+  }  
  
 }

@@ -36,6 +36,13 @@
     font-size: 10px;    
 }
 
+.idea {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    gap: 5px;
+    width: 100%;
+}
 
 .buttons {
     width: 500px;
@@ -56,7 +63,8 @@
 
 
 .original, .content  {
-    min-width: calc(50vw - 17px);
+    min-width: calc(50% - 9px);
+    height: 50vh;
 }
 
 .original_text  {
@@ -65,9 +73,12 @@
 
 
 .inputs {
-    height: 12vh;
-    width: 45vw;
-    min-height: 95px;
+    /*height: 12vh;*/
+    width: 100%;
+    display: flex;
+    gap: 7px;
+    flex-direction: column;
+    /*min-height: 95px;*/
 }
 
 
@@ -108,12 +119,16 @@
     }
 
     .inputs {
-        width: calc(100vw - 10px);
-        height: 100%;
+        width: 100%;
     }
 
-    .input {
+    .input { 
         min-width: 90vw;
+    }
+
+    .idea {
+            gap: 15px;
+            flex-direction: row;
     }
 
     .buttons {
@@ -124,11 +139,16 @@
     }
 
     .original, .content {
-        width: calc(100vw - 17px);
+        width: calc(100%);
     }
 
     .original textarea{
         font-size: 12px;
+    }
+
+    .label, .label_info {
+        text-align: left;
+        min-width: min-content;
     }
     
 }

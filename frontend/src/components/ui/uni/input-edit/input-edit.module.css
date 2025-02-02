@@ -11,14 +11,15 @@
   }
   
   .input-label {
-    display: inline-block;
-    min-width: 190px;
     display: block;
     text-align: right;
   }
   
   .input-edit {
-    min-width: 250px;
+    box-sizing: border-box;
+    flex: 1;
+    max-width: min(1400px, calc(100vw - 60px));
+    width: calc(100% - 100px);
   }
   
 /********************************************
@@ -27,6 +28,16 @@
 @media (max-width: 750px) {
   .input-label {
     text-align: left;
+  }
+
+  .input-edit {
+    max-width: calc(100vw - 25px);
+    width: calc(100% - 20px);
+  }
+
+  .input-block {
+    flex-direction: column;
+    gap: 0;
   }
  
 }

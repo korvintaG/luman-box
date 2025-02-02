@@ -5,20 +5,21 @@
   }
   
   .input-label,
-  .input-edit {
+  .input-select {
     font-family: 'Montserrat';
     font-size: 16px;
   }
   
   .input-label {
-    display: inline-block;
-    min-width: 190px;
     display: block;
     text-align: right;
  }
   
-  .input-edit {
-    min-width: 250px;
+  .input-select {
+    box-sizing: border-box;
+    flex: 1;
+    max-width: min(1400px, calc(100vw - 60px));
+    width: calc(100% - 100px);
   }
   
   
@@ -29,5 +30,15 @@
   .input-label {
     text-align: left;
   }
+
+  .input-select {
+    max-width: calc(100vw - 25px);
+    width: calc(100% - 20px);
+  }
  
+  .input-block {
+    flex-direction: column;
+    gap: 0;
+  }
+
 }

@@ -35,7 +35,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = (props) => {
         <select value={props.value} name={props.name} 
             disabled={props.readOnly}
             onChange={props.handleChange}
-            className={combineClasses(styles['input-edit'],props.selectClassReplace,props.selectClassAdd)}>
+            className={combineClasses(styles['input-select'],props.selectClassReplace,props.selectClassAdd)}>
             {props.hideEmpty ? null : <option value='0'></option> }
             {props.values.map((el)=>
                 <option className={styles.option} value={el.id} key={el.id}>

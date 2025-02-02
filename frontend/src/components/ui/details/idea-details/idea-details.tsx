@@ -40,52 +40,52 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
                 formClass={styles.form} mainClass={styles.main}>
             <div className={styles.inputs}>
                 <InfoFieldUI label='Запись добавил:' text={userName} 
-                    classAdd={styles.input_block}
-                    textClassAdd={styles.input}
-                    labelClassReplace={styles.label_info}/>
-                <InputSelectUI classAdd={styles.input_block}
+                labelClassAdd={styles.label_info}
+                />
+                <InputSelectUI 
                     name="source.id" label="Источник идеи:" value={values.source.id}
                     readOnly={readOnly}
-                    selectClassAdd={styles.input}
-                    labelClassReplace={styles.label}
                     handleChange={handleChange} 
+                    labelClassAdd={styles.label}
                     values={sources.map(el =>({id: el.id, name:el.name+'//'+authorNameFromObj(el.author)}))}/>
-                <InputEditUI classAdd={styles.input_block}
+                <InputEditUI 
                     name="name" label='Название идеи:' value={values.name} 
                     readOnly={readOnly}
+                    labelClassAdd={styles.label}
                     placeholder="Укажите название идеи"
-                    inputClassAdd={styles.input}
-                    labelClassReplace={styles.label}
                     handleChange={handleChange} />
-            </div>
-            <RecordButtonBlockUI id={id} 
-                readOnly={readOnly}
-                deleteRecord={deleteRecord} blockClass={styles.buttons}
-                submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить идею' />
-            <InputTextUI 
-                classAdd={styles.original} 
-                value={values.original_text} 
-                name="original_text" 
-                label='Вдохновивший текст'
-                readOnly={readOnly}
-                textClassAdd={styles.original_text}
-                handleChange={handleChange}/>
-            <InputTextUI 
-                classAdd={styles.content} 
-                value={values.content} 
-                name="content" 
-                label='Суть идеи'
-                readOnly={readOnly}
-                handleChange={handleChange}/>
-            <TopicKeywordsUI 
+         </div>
+         <div className={styles.idea}>
+                <InputTextUI 
+                    value={values.original_text} 
+                    name="original_text" 
+                    label='Вдохновивший текст'
+                    readOnly={readOnly}
+                    classAdd={styles.original} 
+                    textClassAdd={styles.original_text}
+                    handleChange={handleChange}/>
+                <InputTextUI 
+                    value={values.content} 
+                    name="content" 
+                    label='Суть идеи'
+                    readOnly={readOnly}
+                    classAdd={styles.content} 
+                    handleChange={handleChange}/>
+         </div>
+         <TopicKeywordsUI 
                 keywordsAll={keywords}
                 keywordsSelected={values.keywords?values.keywords:[]}
                 readOnly={readOnly}
                 deleteKeyword={deleteKeyword}
-        addKeyword={addKeyword}/>
+                addKeyword={addKeyword}/>
+        <RecordButtonBlockUI id={id} 
+                readOnly={readOnly}
+                deleteRecord={deleteRecord} 
+                submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить идею' />                
     </RecordEditUI>
 }
  
+//blockClass={styles.buttons}
 export function IdeaDetailsUIFC (props:IdeaDetailsUIProps) {
     return (
                 <IdeaDetailsUI {...props}/>
