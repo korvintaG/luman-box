@@ -15,6 +15,7 @@ import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, ScenesNames } from '../telegram-sessons.patterns';
 import { replyRegistration } from './messages';
 import { UsersService } from 'src/DDD/users/users.service';
+import { AuthService } from 'src/authorization/auth.service';
 
 @Injectable()
 @Scene(ScenesNames.REGISTRATION)
@@ -22,6 +23,7 @@ export class RegistrationScene {
   constructor(
     private telegramUsersDB: TelegramSessionsService,
     private usersDB: UsersService,
+    private authService: AuthService,
   ) {}
 
   /**
@@ -33,6 +35,10 @@ export class RegistrationScene {
    */
   @SceneEnter()
   async enter(@Ctx() ctx: MyContext & SceneContext) {
+    if (!ctx.session.chat_id) {
+      //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
+      ctx.scene.enter(ScenesNames.MAIN);
+    }
     const message = await replyRegistration(ctx);
     ctx.session.msg_to_upd = message;
   }
@@ -43,7 +49,6 @@ export class RegistrationScene {
   @Command(/menu|start/)
   async onMenu(@Ctx() ctx: MyContext & SceneContext) {
     ctx.deleteMessage();
-    console.log('сработала команда menu');
     ctx.scene.enter(ScenesNames.MAIN);
   }
 
@@ -103,10 +108,11 @@ export class RegistrationScene {
     const cbQuery = ctx.update.callback_query;
     const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
     if (userAnswer === CallbackData.FINILIZE_REGISTRATION) {
+      const authUser = await this.authService.register(ctx.session);
       ctx.session.password = '';
-      const databaseUser = await this.usersDB.create(ctx.session);
-      if (databaseUser) {
-        ctx.session.user_id = databaseUser.id;
+      if (authUser.success) {
+        const { id } = await this.usersDB.findOneByChatId(ctx.session.chat_id);
+        ctx.session.user_id = id;
         await this.telegramUsersDB.saveUser(ctx.session);
         ctx.scene.enter(ScenesNames.REGISTRATION);
       } //вот тут дописать если база вернула ошибку и вернуть финальное сообщение
@@ -124,8 +130,6 @@ export class RegistrationScene {
 
   @SceneLeave() //действия при выходе из сцены
   async sceneLeave(@Ctx() ctx: MyContext & SceneContext): Promise<void> {
-    console.log(
-      'scene leave with message id:' + ctx.session.msg_to_upd.message_id,
-    );
+    ctx.session.prev_scene = ScenesNames.REGISTRATION;
   }
 }

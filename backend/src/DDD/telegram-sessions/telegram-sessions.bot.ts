@@ -1,10 +1,10 @@
-import { Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
+import { Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
 import { Telegraf } from 'telegraf';
-import { TelegramSessionsService } from './telegram-sessions.service';
 import { MyContext } from './telegram-sessions.types';
-import { UsersService } from '../users/users.service';
 import { SceneContext } from 'telegraf/typings/scenes';
 import { ScenesNames } from './telegram-sessons.patterns';
+import { TelegramSessionsService } from './telegram-sessions.service';
+import { UsersService } from '../users/users.service';
 
 @Update()
 export class TelegramUserBot {
@@ -16,6 +16,12 @@ export class TelegramUserBot {
 
   @Start()
   async start(@Ctx() ctx: MyContext & SceneContext) {
+    if (!ctx.session.chat_id) {
+      console.log(
+        'Сессия инициализирована заново. Возможно, бот был перезапущен.',
+      );
+      ctx.session.msg_to_del = [];
+    }
     ctx.session.chat_id = ctx.chat.id | ctx.from.id | ctx.message.from.id;
     //проверяем зарегистрирован ли клиент, задаем стейт ctx.session
     const telegramUser = await this.telegramUsersDB.findByChatId(
@@ -30,6 +36,19 @@ export class TelegramUserBot {
       ctx.session.name = user.name;
       ctx.session.user_id = user.id;
     }
+    console.log(ctx.message.chat.id);
+    console.log(ctx.from.id);
+    console.log(ctx.message.from.id);
+    ctx.deleteMessage();
+    ctx.session.prev_scene = ScenesNames.START;
+    ctx.scene.enter(ScenesNames.MAIN);
+  }
+
+  @Command(/menu/)
+  async onMenu(@Ctx() ctx: MyContext & SceneContext) {
+    console.log(ctx.message.chat.id);
+    console.log(ctx.from.id);
+    console.log(ctx.message.from.id);
     ctx.deleteMessage();
     ctx.scene.enter(ScenesNames.MAIN);
   }

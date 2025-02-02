@@ -14,9 +14,14 @@ import { KeywordsScene } from './scenes/keywords.scene';
 import { ContactsScene } from './scenes/contacts.scene';
 import { SubmitPasswordScene } from './scenes/submitPassword.scene';
 import { RegistrationScene } from './scenes/registration.scene';
+import { AuthModule } from 'src/authorization/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TelegramSessions]), UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([TelegramSessions]),
+    UsersModule,
+    AuthModule,
+  ],
   controllers: [TelegramSessionsController],
   providers: [
     TelegramSessionsService,

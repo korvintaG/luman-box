@@ -1,7 +1,12 @@
 import { SceneContext } from 'telegraf/typings/scenes';
 import { MyContext } from '../telegram-sessions.types';
-import { Patterns, CallbackData } from '../telegram-sessons.patterns';
+import {
+  Patterns,
+  CallbackData,
+  ScenesNames,
+} from '../telegram-sessons.patterns';
 import { Message } from '@telegraf/types';
+import { deleteMessages } from '../utils';
 
 /**
  * Возвращает текст кнопки регистрации в зависимости от статуса пользователя (зарегистрирован? изменить пароль : задать/изменить логин и пароль )
@@ -11,7 +16,7 @@ const regButtonText = (ctx: MyContext & SceneContext) =>
     ? Patterns.BUTTON_REGISTER
     : ctx.session.user_id === 0
       ? Patterns.BUTTON_REGISTER_FINILIZE
-      : Patterns.BUTTON_CHANGE_PASSWORD;
+      : Patterns.BUTTON_MANAGE_ACCOUNT;
 
 /**
  * Возвращает инлайновый набор кнопок основного меню
@@ -171,19 +176,22 @@ export async function replyMain(
     );
     return reply as Message.TextMessage;
   } catch (e) {
-    console.log(e.message);
+    const reply = await ctx.reply(messageText, {
+      reply_markup: mainKeyboard(ctx),
+      parse_mode: 'HTML',
+    });
     if (
       e.message.includes(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      // console.log('сообщение повторяется');
-      return ctx.session.msg_to_upd;
+      if ((ctx.session.prev_scene = ScenesNames.START)) {
+        //если предыдущая сцена была Start, то возможно пользователь зашел после того, как до этого удалил все сообщения чата, при этом последнее сообщение которое было отправлено ботом, хранится в стейте и будет возвращать ошибку, что нечего править
+        //удаляем все старые сообщения, которые теоретически могли бы быть, если пользователь многократно жал на старт, но до этого не удалял чат
+        deleteMessages(ctx);
+        return reply;
+      } else return ctx.session.msg_to_upd;
     }
-    const reply = await ctx.reply(messageText, {
-      reply_markup: mainKeyboard(ctx),
-      parse_mode: 'HTML',
-    });
     return reply;
   }
 }
@@ -228,13 +236,11 @@ export async function replySubmitUsername(
     );
     return reply as Message.TextMessage;
   } catch (e) {
-    console.log(e.message);
     if (
       e.message.includes(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      // console.log('сообщение повторяется');
       return ctx.session.msg_to_upd;
     }
     const reply = await ctx.reply(messageText, {
@@ -249,9 +255,10 @@ export async function replySubmitUsername(
  * Возвращает ответное сообщение и инлайновые кнопки для submitPassword.
  *
  * Статусы сообщения из ctx.session.msg_status:
- * * 1 - пользователь новый, еще не ввел пароль
- * * 2 - пользователь ввел пароль, но он слишком короткий
- * * 3 - пользователь ввел пароль ответным сообщением, но он не прошло проверку на уникальность
+ * * 0 - пользователь новый, еще не ввел пароль
+ * * 1 - пользователь ввел пароль, но он слишком короткий
+ * * 2 - пользователь ввел пароль ответным сообщением, но он не прошло проверку на уникальность 
+ * * 3 - пользователь уже есть в базе и он успешно поменял пароль
  * 
   * Контрукция try catch используется для того, чтобы отправить новое сообщение (если в чате все сообщения до этого были удалены) или изменить единсвтенное текущее сообщение для эффекта бота с одним сообщением
  *
@@ -266,7 +273,9 @@ export async function replySubmitPassword(
       ? Patterns.PASSWORD_SHORT
       : ctx.session.msg_status === 2
         ? Patterns.PASSWORD_INVALID
-        : Patterns.PASSWORD_CREATE;
+        : ctx.session.msg_status === 3
+          ? Patterns.PASSWORD_UPDATED
+          : Patterns.PASSWORD_CREATE;
 
   try {
     const reply = await ctx.telegram.editMessageText(
@@ -281,13 +290,11 @@ export async function replySubmitPassword(
     );
     return reply as Message.TextMessage;
   } catch (e) {
-    console.log(e.message);
     if (
       e.message.includes(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      // console.log('сообщение повторяется');
       return ctx.session.msg_to_upd;
     }
     const reply = await ctx.reply(messageText, {
@@ -328,7 +335,6 @@ export async function replyRegistration(
     );
     return reply as Message.TextMessage;
   } catch (e) {
-    console.log(e.message);
     if (
       e.message.includes(
         'new message content and reply markup are exactly the same',
@@ -369,7 +375,6 @@ export async function replyWithBackButton(
     );
     return reply as Message.TextMessage;
   } catch (e) {
-    console.log(e.message);
     if (
       e.message.includes(
         'new message content and reply markup are exactly the same',

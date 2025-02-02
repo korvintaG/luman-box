@@ -65,8 +65,6 @@ export class AuthorsScene {
    */
   @SceneLeave()
   async sceneLeave(@Ctx() ctx: MyContext & SceneContext): Promise<void> {
-    console.log(
-      'scene leave with message id:' + ctx.session.msg_to_upd.message_id,
-    );
+    ctx.session.prev_scene = ScenesNames.AUTHORS;
   }
 }

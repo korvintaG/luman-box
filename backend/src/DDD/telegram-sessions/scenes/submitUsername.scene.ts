@@ -53,6 +53,10 @@ export class SubmitUsernameScene {
    */
   @SceneEnter()
   async enter(@Ctx() ctx: MyContext & SceneContext) {
+    if (!ctx.session.chat_id) {
+      //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
+      ctx.scene.enter(ScenesNames.MAIN);
+    }
     const message = await replySubmitUsername(ctx);
     ctx.session.msg_to_upd = message;
   }
@@ -63,7 +67,6 @@ export class SubmitUsernameScene {
   @Command(/menu|start/)
   async onMenu(@Ctx() ctx: MyContext & SceneContext) {
     ctx.deleteMessage();
-    console.log('сработала команда menu');
     ctx.session.msg_status = 0;
     ctx.scene.enter(ScenesNames.MAIN);
   }
@@ -120,8 +123,6 @@ export class SubmitUsernameScene {
    */
   @SceneLeave()
   async sceneLeave(@Ctx() ctx: MyContext & SceneContext): Promise<void> {
-    console.log(
-      'scene leave with message id:' + ctx.session.msg_to_upd.message_id,
-    );
+    ctx.session.prev_scene = ScenesNames.SUBMIT_USERNAME;
   }
 }
