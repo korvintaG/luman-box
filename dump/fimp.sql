@@ -8,7 +8,7 @@ BEGIN
  delete from idea_keywords;
  delete from users where LENGTH(password)<10;
   select count(*) from users into cnt;
-  if cnt!=0 then
+  if cnt=0 then
 insert into users (name, id_out, password) select 'Altay' , 'korvintag_85', '-' where not exists (select * from users where id_out='korvintag_85');
 update users set name='Altay' where id_out='korvintag_85';
 insert into users (name, id_out, password) select 'Budda_from_Dnipro' , 'korvintag_45', '-' where not exists (select * from users where id_out='korvintag_45');
