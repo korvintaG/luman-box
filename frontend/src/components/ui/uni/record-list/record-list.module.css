@@ -30,4 +30,14 @@
     margin-left: 9px;
     margin-right: 9px;
   }
+  .page-header {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 12px;
+  }
+
+  .list a {
+    font-size: 20px;
+  }
+
 }

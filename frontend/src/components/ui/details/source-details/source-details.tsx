@@ -30,16 +30,18 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = ({id, values, readOnly,
     const header= genHeaderText(readOnly,id,initialName,'источника'); 
     const btnCaptione = id ? 'Сохранить данные' : 'Добавить источник';
 
-    return <RecordEditUI header={header} onSubmit={handleSubmit}>
-            <InfoFieldUI label='Запись добавил:' text={userName} textClassAdd={styles.input}/>        
-            <InputEditUI name="name" label='Название источника:' value={values.name} 
+    return <RecordEditUI formClass={styles.form} header={header} onSubmit={handleSubmit}>
+            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={userName} />        
+            <InputEditUI labelClassAdd={styles.label} name="name" label='Название источника:' value={values.name} 
                 placeholder="Укажите название источника"
                 inputClassAdd={styles.input}
+                classAdd={styles.input_block}
                 readOnly={readOnly}
                 handleChange={handleChange} />
-            <InputSelectUI name="author.id" label="Выберите автора:" value={values.author?values.author.id:0}
+            <InputSelectUI labelClassAdd={styles.label} name="author.id" label="Выберите автора:" value={values.author?values.author.id:0}
                 readOnly={readOnly}
                 selectClassAdd={styles.input}
+                classAdd={styles.input_block}
                 handleChange={handleChange} values={authors}/>
             {error && <ErrorMessageUI error={error}/>}
             <RecordButtonBlockUI id={id} 

@@ -24,10 +24,12 @@ export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = ({id, values, readOnl
     const header= genHeaderText(readOnly,id,initialName,'ключевого слова'); 
     const btnCaptione= id ? 'Сохранить данные' : 'Добавить ключевое слово';
     
-    return <RecordEditUI header={header} onSubmit={handleSubmit}>
-            <InfoFieldUI label='Запись добавил:' text={userName}/>        
-            <InputEditUI name="name" label='Ключевое слово:' value={values.name} 
+    return <RecordEditUI formClass={styles.form} header={header} onSubmit={handleSubmit}>
+            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={userName}/>        
+            <InputEditUI labelClassAdd={styles.label} name="name" label='Ключевое слово:' value={values.name} 
                 placeholder="Введите ключевое слово"
+                inputClassAdd={styles.input}
+                classAdd={styles.input_block}
                 readOnly={readOnly}
                 handleChange={handleChange} />
             <RecordButtonBlockUI id={id} 

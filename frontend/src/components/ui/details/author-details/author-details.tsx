@@ -26,9 +26,12 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, readOnly,
     const header= genHeaderText(readOnly,id,initialName,'автора'); 
     const btnCaptione = id ? 'Сохранить данные' : 'Добавить автора';
    
-    return <RecordEditUI header={header} onSubmit={handleSubmit}>
-            <InfoFieldUI label='Запись добавил:' text={userName}/>
-            <InputEditUI name="name" label='ФИО автора' value={values.name} 
+    return <RecordEditUI formClass={styles.form}  header={header} onSubmit={handleSubmit}>
+            <InfoFieldUI labelClassAdd={styles.label} label='Запись добавил:' text={userName}/>
+            <InputEditUI name="name" label='ФИО автора:' value={values.name} 
+                labelClassAdd={styles.label}
+                inputClassAdd={styles.input}
+                classAdd={styles.input_block}
                 placeholder="Укажите ФИО автора"
                 readOnly={readOnly}
                 handleChange={handleChange} />

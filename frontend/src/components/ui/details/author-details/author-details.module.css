@@ -3,6 +3,35 @@
     display: flex;
     flex-direction: column;
     align-items:flex-start;
-    gap: 15px;
+    gap: 10px;
 }
 
+.input_block {
+    /*border: 1px red solid;*/
+    width: 100%;
+}
+
+.label {
+    min-width: 120px;
+}
+
+.input {
+    min-width: 300px;
+    max-width: 500px;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+    .label, .label_info {
+        text-align: left;
+        min-width: min-content;
+    }
+
+    .input {
+        width: 100%;
+    }
+    
+
+}

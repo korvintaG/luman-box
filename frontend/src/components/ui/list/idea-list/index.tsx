@@ -4,7 +4,7 @@ import { Idea , sourceFullNameFromObj} from '../../../../utils/type';
 import { RecordListUI } from '../../uni/record-list';
 import { getRouteParam , appRoutes} from '../../../../AppRoutes'
 import styles from './ideas-list.module.css';
-
+import { parseISO, format } from 'date-fns';
 
 export type IdeaListUIProps = {
     ideas: Idea[],
@@ -28,8 +28,8 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, readOnly, addNewIdea, i
                     <tr><th>Название идеи</th><th>Источник</th><th>Пользователь</th><th>Добавлено</th></tr>
                 </thead>
                 <tbody>
-                    {ideas.map((idea) => (
-                        <tr key={idea.id}>
+                    {ideas.map((idea) => {
+                        return (<tr key={idea.id}>
                             <td>
                                     <Link
                                     to={getRouteParam(appRoutes.idea,idea.id)} >
@@ -45,16 +45,13 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, readOnly, addNewIdea, i
                                 }
                             </td>
                             <td>
-                                    <Link
-                                    to={idea.user?getRouteParam(appRoutes.user,idea.user.id!):''}>
                                     {idea.user?idea.user.name:''}
-                                    </Link>
                             </td> 
                             <td className={styles.date_time}>
-                                    {idea.date_time_create }
+                                    {idea.date_time_create?format(parseISO(idea.date_time_create), 'dd.MM.yy HH:mm'):'-'}
                             </td>
-                        </tr>))
-                    }
+                        </tr>)})}
+                    
                 </tbody>
             </table>
         </RecordListUI>;
