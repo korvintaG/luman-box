@@ -37,7 +37,6 @@ services:
 #      context: ./dump # директория сборки (контекст)
 #      dockerfile: Dockerfile # Имя файла описания контейнера (Dockerfile)
 #    env_file:
-#      ./backend/.env
 #      .env
 #    networks:
 #      - internal
