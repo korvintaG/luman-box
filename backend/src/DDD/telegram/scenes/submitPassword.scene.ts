@@ -10,16 +10,12 @@ import {
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { Injectable } from '@nestjs/common';
 import { TelegramSessionsService } from '../telegram-sessions.service';
-import { MyContext } from '../telegram-sessions.types';
+import { MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
-import {
-  CallbackData,
-  Patterns,
-  ScenesNames,
-} from '../telegram-sessons.patterns';
+import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replySubmitPassword } from './messages';
 import { UsersService } from 'src/DDD/users/users.service';
-import { sanitizePassword } from '../utils';
+import { ChatId, messagePushToDelAndUpd, sanitizePassword } from '../utils';
 import { AuthService } from 'src/authorization/auth.service';
 
 @Injectable()
@@ -39,13 +35,13 @@ export class SubmitPasswordScene {
    * Текст и кнопки формируются исходя из стейта
    */
   @SceneEnter()
-  async enter(@Ctx() ctx: MyContext & SceneContext) {
-    if (!ctx.session.chat_id) {
+  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+    if (!ctx.session[chatId].chat_id) {
       //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
       ctx.scene.enter(ScenesNames.MAIN);
     }
-    const message = await replySubmitPassword(ctx);
-    ctx.session.msg_to_upd = message;
+    const message = await replySubmitPassword(ctx, chatId);
+    messagePushToDelAndUpd(message, ctx, chatId, this.telegramUsersDB);
   }
 
   /**
@@ -73,34 +69,39 @@ export class SubmitPasswordScene {
    * Срабатывает, если во время сцены пользователь отправляет любое сообщение, кроме /start или /menu
    */
   @On('message')
-  async onAnswer(@Ctx() ctx: MyContext & SceneContext) {
+  async onAnswer(
+    @Ctx() ctx: MyContext & SceneContext,
+    @ChatId() chatId: number,
+  ) {
     const userPassword = ctx.text;
     const userPasswordSanitized = sanitizePassword(userPassword);
     if (userPassword.length < 5) {
-      ctx.session.msg_status = 1;
+      ctx.session[chatId].msg_status = 1;
       ctx.scene.reenter();
     } else if (userPassword !== userPasswordSanitized) {
-      ctx.session.msg_status = 2;
+      ctx.session[chatId].msg_status = 2;
       ctx.scene.reenter();
     } else {
-      ctx.session.password = userPasswordSanitized;
-      const telegramUser = await this.telegramUsersDB.saveUser(ctx.session);
+      ctx.session[chatId].password = userPasswordSanitized;
+      const telegramUser = await this.telegramUsersDB.saveUser(
+        ctx.session[chatId],
+      );
       if (telegramUser.password === userPasswordSanitized) {
-        if (ctx.session.user_id === 0) {
+        if (ctx.session[chatId].user_id === 0) {
           //если новый пользователь задает пароль
-          ctx.session.msg_status = 0;
+          ctx.session[chatId].msg_status = 0;
           ctx.scene.enter(ScenesNames.REGISTRATION);
         } else {
           //если зарегистрированный пользователь меняет пароль
-          const authUser = await this.authService.update(ctx.session);
-          ctx.session.password = '';
+          const authUser = await this.authService.update(ctx.session[chatId]);
+          ctx.session[chatId].password = '';
           if (authUser.success) {
             const { id } = await this.usersDB.findOneByChatId(
-              ctx.session.chat_id,
+              ctx.session[chatId].chat_id,
             );
-            ctx.session.user_id = id;
-            ctx.session.msg_status = 3;
-            await this.telegramUsersDB.saveUser(ctx.session);
+            ctx.session[chatId].user_id = id;
+            ctx.session[chatId].msg_status = 3;
+            await this.telegramUsersDB.saveUser(ctx.session[chatId]);
             ctx.scene.reenter();
           } else {
             ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
@@ -108,7 +109,7 @@ export class SubmitPasswordScene {
           }
         }
       } else {
-        ctx.session.password = '';
+        ctx.session[chatId].password = '';
         ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
         await ctx.scene.leave();
       }
@@ -117,7 +118,10 @@ export class SubmitPasswordScene {
   }
 
   @SceneLeave() //действия при выходе из сцены
-  async sceneLeave(@Ctx() ctx: MyContext & SceneContext): Promise<void> {
-    ctx.session.prev_scene = ScenesNames.SUBMIT_PASSWORD;
+  async sceneLeave(
+    @Ctx() ctx: MyContext & SceneContext,
+    @ChatId() chatId: number,
+  ): Promise<void> {
+    ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_PASSWORD;
   }
 }

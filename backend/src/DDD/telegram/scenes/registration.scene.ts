@@ -10,12 +10,13 @@ import {
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { Injectable } from '@nestjs/common';
 import { TelegramSessionsService } from '../telegram-sessions.service';
-import { MyContext } from '../telegram-sessions.types';
+import { MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
-import { CallbackData, ScenesNames } from '../telegram-sessons.patterns';
+import { CallbackData, ScenesNames } from '../telegram.patterns';
 import { replyRegistration } from './messages';
 import { UsersService } from 'src/DDD/users/users.service';
 import { AuthService } from 'src/authorization/auth.service';
+import { ChatId, messagePushToDelAndUpd } from '../utils';
 
 @Injectable()
 @Scene(ScenesNames.REGISTRATION)
@@ -34,13 +35,13 @@ export class RegistrationScene {
    * Текст и кнопки формируются исходя из стейта
    */
   @SceneEnter()
-  async enter(@Ctx() ctx: MyContext & SceneContext) {
-    if (!ctx.session.chat_id) {
+  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+    if (!ctx.session[chatId].chat_id) {
       //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
       ctx.scene.enter(ScenesNames.MAIN);
     }
-    const message = await replyRegistration(ctx);
-    ctx.session.msg_to_upd = message;
+    const message = await replyRegistration(ctx, chatId);
+    messagePushToDelAndUpd(message, ctx, chatId, this.telegramUsersDB);
   }
 
   /**
@@ -104,16 +105,19 @@ export class RegistrationScene {
   async onFinilizeRegistration(
     @Ctx()
     ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
+    @ChatId() chatId: number,
   ) {
     const cbQuery = ctx.update.callback_query;
     const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
     if (userAnswer === CallbackData.FINILIZE_REGISTRATION) {
-      const authUser = await this.authService.register(ctx.session);
-      ctx.session.password = '';
+      const authUser = await this.authService.register(ctx.session[chatId]);
+      ctx.session[chatId].password = '';
       if (authUser.success) {
-        const { id } = await this.usersDB.findOneByChatId(ctx.session.chat_id);
-        ctx.session.user_id = id;
-        await this.telegramUsersDB.saveUser(ctx.session);
+        const { id } = await this.usersDB.findOneByChatId(
+          ctx.session[chatId].chat_id,
+        );
+        ctx.session[chatId].user_id = id;
+        await this.telegramUsersDB.saveUser(ctx.session[chatId]);
         ctx.scene.enter(ScenesNames.REGISTRATION);
       } //вот тут дописать если база вернула ошибку и вернуть финальное сообщение
     }
@@ -125,11 +129,13 @@ export class RegistrationScene {
   @On('message')
   async onAnswer(@Ctx() ctx: MyContext & SceneContext) {
     ctx.deleteMessage();
-    console.log('сработала текстовая команда');
   }
 
   @SceneLeave() //действия при выходе из сцены
-  async sceneLeave(@Ctx() ctx: MyContext & SceneContext): Promise<void> {
-    ctx.session.prev_scene = ScenesNames.REGISTRATION;
+  async sceneLeave(
+    @Ctx() ctx: MyContext & SceneContext,
+    @ChatId() chatId: number,
+  ): Promise<void> {
+    ctx.session[chatId].prev_scene = ScenesNames.REGISTRATION;
   }
 }

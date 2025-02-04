@@ -10,16 +10,12 @@ import {
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { Injectable } from '@nestjs/common';
 import { TelegramSessionsService } from '../telegram-sessions.service';
-import { ITelegramUser, MyContext } from '../telegram-sessions.types';
+import { ITelegramUser, MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
-import {
-  CallbackData,
-  Patterns,
-  ScenesNames,
-} from '../telegram-sessons.patterns';
+import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replySubmitUsername } from './messages';
 import { UsersService } from 'src/DDD/users/users.service';
-import { sanitizeUsername } from '../utils';
+import { ChatId, messagePushToDelAndUpd, sanitizeUsername } from '../utils';
 
 @Injectable()
 @Scene(ScenesNames.SUBMIT_USERNAME)
@@ -52,22 +48,22 @@ export class SubmitUsernameScene {
    * Текст и кнопки формируются исходя из стейта
    */
   @SceneEnter()
-  async enter(@Ctx() ctx: MyContext & SceneContext) {
-    if (!ctx.session.chat_id) {
+  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+    if (!ctx.session[chatId].chat_id) {
       //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
       ctx.scene.enter(ScenesNames.MAIN);
     }
-    const message = await replySubmitUsername(ctx);
-    ctx.session.msg_to_upd = message;
+    const message = await replySubmitUsername(ctx, chatId);
+    messagePushToDelAndUpd(message, ctx, chatId, this.telegramUsersDB);
   }
 
   /**
    * Срабатывает, когда пользователь вводит в поле сообщения команду /start или /menu. Сообщение удаляется, пользователь переходит в основную сцену
    */
   @Command(/menu|start/)
-  async onMenu(@Ctx() ctx: MyContext & SceneContext) {
+  async onMenu(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
     ctx.deleteMessage();
-    ctx.session.msg_status = 0;
+    ctx.session[chatId].msg_status = 0;
     ctx.scene.enter(ScenesNames.MAIN);
   }
 
@@ -87,30 +83,38 @@ export class SubmitUsernameScene {
    * Срабатывает, если во время сцены пользователь отправляет любое сообщение, кроме /start или /menu
    */
   @On('message')
-  async onAnswer(@Ctx() ctx: MyContext & SceneContext) {
-    await this.telegramUsersDB.saveUser(ctx.session);
+  async onAnswer(
+    @Ctx() ctx: MyContext & SceneContext,
+    @ChatId() chatId: number,
+  ) {
+    await this.telegramUsersDB.saveUser(ctx.session[chatId]);
     const userName = ctx.text;
     const userNameSanitized = sanitizeUsername(userName);
     if (userName.length < 5) {
-      ctx.session.msg_status = 1;
+      ctx.session[chatId].msg_status = 1;
       ctx.scene.reenter();
     } else if (userName !== userNameSanitized) {
-      ctx.session.msg_status = 2;
+      ctx.session[chatId].msg_status = 2;
       ctx.scene.reenter();
     } else if (
-      (await this.checkIfNameIsUnique(userNameSanitized, ctx.session)) === false
+      (await this.checkIfNameIsUnique(
+        userNameSanitized,
+        ctx.session[chatId],
+      )) === false
     ) {
-      ctx.session.msg_status = 3;
+      ctx.session[chatId].msg_status = 3;
       ctx.scene.reenter();
     } else {
-      ctx.session.name = userNameSanitized;
-      const telegramUser = await this.telegramUsersDB.saveUser(ctx.session);
+      ctx.session[chatId].name = userNameSanitized;
+      const telegramUser = await this.telegramUsersDB.saveUser(
+        ctx.session[chatId],
+      );
       if (telegramUser.name === userNameSanitized) {
-        ctx.session.name = userNameSanitized;
-        ctx.session.msg_status = 0;
+        ctx.session[chatId].name = userNameSanitized;
+        ctx.session[chatId].msg_status = 0;
         ctx.scene.enter(ScenesNames.REGISTRATION);
       } else {
-        ctx.session.msg_status = 0;
+        ctx.session[chatId].msg_status = 0;
         ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
         await ctx.scene.leave();
       }
@@ -122,7 +126,10 @@ export class SubmitUsernameScene {
    * Срабатывает при выходе из сцены
    */
   @SceneLeave()
-  async sceneLeave(@Ctx() ctx: MyContext & SceneContext): Promise<void> {
-    ctx.session.prev_scene = ScenesNames.SUBMIT_USERNAME;
+  async sceneLeave(
+    @Ctx() ctx: MyContext & SceneContext,
+    @ChatId() chatId: number,
+  ): Promise<void> {
+    ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_USERNAME;
   }
 }

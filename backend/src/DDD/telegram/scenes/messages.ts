@@ -1,32 +1,28 @@
 import { SceneContext } from 'telegraf/typings/scenes';
-import { MyContext } from '../telegram-sessions.types';
-import {
-  Patterns,
-  CallbackData,
-  ScenesNames,
-} from '../telegram-sessons.patterns';
+import { MyContext } from '../telegram.types';
+import { Patterns, CallbackData, ScenesNames } from '../telegram.patterns';
 import { Message } from '@telegraf/types';
-import { deleteMessages } from '../utils';
+import { deleteMessage } from '../utils';
 
 /**
  * Возвращает текст кнопки регистрации в зависимости от статуса пользователя (зарегистрирован? изменить пароль : задать/изменить логин и пароль )
  */
-const regButtonText = (ctx: MyContext & SceneContext) =>
-  ctx.session.name === 'null'
+const regButtonText = (ctx: MyContext & SceneContext, chatId: number) =>
+  ctx.session[chatId].name === 'null'
     ? Patterns.BUTTON_REGISTER
-    : ctx.session.user_id === 0
+    : ctx.session[chatId].user_id === 0
       ? Patterns.BUTTON_REGISTER_FINILIZE
       : Patterns.BUTTON_MANAGE_ACCOUNT;
 
 /**
  * Возвращает инлайновый набор кнопок основного меню
  */
-const mainKeyboard = (ctx: MyContext & SceneContext) => {
+const mainKeyboard = (ctx: MyContext & SceneContext, chatId: number) => {
   return {
     inline_keyboard: [
       [
         {
-          text: regButtonText(ctx),
+          text: regButtonText(ctx, chatId),
           callback_data: CallbackData.REGISTER,
         },
       ],
@@ -79,8 +75,11 @@ const onlyBackButtonKeyboard = () => {
 /**
  * Возвращает клавиатуру с кнопками для сцены регистрации
  */
-const registrationKeyboard = (ctx: MyContext & SceneContext) => {
-  if (ctx.session.user_id !== 0) {
+const registrationKeyboard = (
+  ctx: MyContext & SceneContext,
+  chatId: number,
+) => {
+  if (ctx.session[chatId].user_id !== 0) {
     return {
       inline_keyboard: [
         [
@@ -97,7 +96,7 @@ const registrationKeyboard = (ctx: MyContext & SceneContext) => {
         ],
       ],
     };
-  } else if (ctx.session.password === '') {
+  } else if (ctx.session[chatId].password === '') {
     return {
       inline_keyboard: [
         [
@@ -157,27 +156,27 @@ const registrationKeyboard = (ctx: MyContext & SceneContext) => {
  */
 export async function replyMain(
   ctx: MyContext & SceneContext,
+  chatId: number,
 ): Promise<Message.TextMessage> {
   const messageText =
-    ctx.session.name !== 'null'
-      ? `${Patterns.HELLO}, ${ctx.session.name}! 👋 `
+    ctx.session[chatId].name !== 'null'
+      ? `${Patterns.HELLO}, ${ctx.session[chatId].name}! 👋 `
       : `${Patterns.HELLO}, ${ctx.from.username}! 👋 `;
-
   try {
     const reply = await ctx.telegram.editMessageText(
-      ctx.session.chat_id,
-      ctx.session.msg_to_upd.message_id,
+      ctx.session[chatId].chat_id,
+      ctx.session[chatId].msg_to_upd.message_id,
       undefined,
       messageText,
       {
-        reply_markup: mainKeyboard(ctx),
+        reply_markup: mainKeyboard(ctx, chatId),
         parse_mode: 'HTML',
       },
     );
     return reply as Message.TextMessage;
   } catch (e) {
-    const reply = await ctx.reply(messageText, {
-      reply_markup: mainKeyboard(ctx),
+    const reply = await ctx.telegram.sendMessage(chatId, messageText, {
+      reply_markup: mainKeyboard(ctx, chatId),
       parse_mode: 'HTML',
     });
     if (
@@ -185,12 +184,12 @@ export async function replyMain(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      if ((ctx.session.prev_scene = ScenesNames.START)) {
+      if ((ctx.session[chatId].prev_scene = ScenesNames.START)) {
         //если предыдущая сцена была Start, то возможно пользователь зашел после того, как до этого удалил все сообщения чата, при этом последнее сообщение которое было отправлено ботом, хранится в стейте и будет возвращать ошибку, что нечего править
-        //удаляем все старые сообщения, которые теоретически могли бы быть, если пользователь многократно жал на старт, но до этого не удалял чат
-        deleteMessages(ctx);
+        //удаляем все старые сообщения, которые теоретически могли бы быть, если пользователь многократно жал на старт или меню, но до этого не удалял чат
+        await deleteMessage(ctx, chatId);
         return reply;
-      } else return ctx.session.msg_to_upd;
+      } else return ctx.session[chatId].msg_to_upd;
     }
     return reply;
   }
@@ -203,7 +202,7 @@ export async function replyMain(
  * * 1 - пользователь новый, еще не ввел имя пользователя
  * * 2 - пользователь ввел имя пользователя, но оно слишком короткое
  * * 3 - пользователь ввел имя пользователя ответным сообщением, но оно не прошло проверку на уникальность
- * 
+ *
   * Контрукция try catch используется для того, чтобы отправить новое сообщение (если в чате все сообщения до этого были удалены) или изменить единсвтенное текущее сообщение для эффекта бота с одним сообщением
  *
  * В catch также проверяется возможность возникновения ошибки, когда пользователь более 2 раз совершает неправильное действие (например, дважды вводит короткий username или неоднократно вводит неуникальное имя пользователя) и метод возвращает ошибку, что сообщение изменить нельзя, т.к. оно не изменилось
@@ -211,22 +210,23 @@ export async function replyMain(
  */
 export async function replySubmitUsername(
   ctx: MyContext & SceneContext,
+  chatId: number,
 ): Promise<Message.TextMessage> {
   const messageText =
-    ctx.session.msg_status === 1
+    ctx.session[chatId].msg_status === 1
       ? Patterns.USERNAME_SHORT
-      : ctx.session.msg_status === 2
+      : ctx.session[chatId].msg_status === 2
         ? Patterns.USERNAME_INVALID
-        : ctx.session.msg_status === 3
+        : ctx.session[chatId].msg_status === 3
           ? Patterns.USERNAME_BUSY
-          : ctx.session.name !== 'null'
+          : ctx.session[chatId].name !== 'null'
             ? Patterns.USERNAME_UPDATE
             : Patterns.USERNAME_CREATE;
 
   try {
     const reply = await ctx.telegram.editMessageText(
-      ctx.session.chat_id,
-      ctx.session.msg_to_upd.message_id,
+      ctx.session[chatId].chat_id,
+      ctx.session[chatId].msg_to_upd.message_id,
       undefined,
       messageText,
       {
@@ -241,9 +241,9 @@ export async function replySubmitUsername(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      return ctx.session.msg_to_upd;
+      return ctx.session[chatId].msg_to_upd;
     }
-    const reply = await ctx.reply(messageText, {
+    const reply = await ctx.telegram.sendMessage(chatId, messageText, {
       reply_markup: onlyBackButtonKeyboard(),
       parse_mode: 'HTML',
     });
@@ -257,9 +257,9 @@ export async function replySubmitUsername(
  * Статусы сообщения из ctx.session.msg_status:
  * * 0 - пользователь новый, еще не ввел пароль
  * * 1 - пользователь ввел пароль, но он слишком короткий
- * * 2 - пользователь ввел пароль ответным сообщением, но он не прошло проверку на уникальность 
+ * * 2 - пользователь ввел пароль ответным сообщением, но он не прошло проверку на уникальность
  * * 3 - пользователь уже есть в базе и он успешно поменял пароль
- * 
+ *
   * Контрукция try catch используется для того, чтобы отправить новое сообщение (если в чате все сообщения до этого были удалены) или изменить единсвтенное текущее сообщение для эффекта бота с одним сообщением
  *
  * В catch также проверяется возможность возникновения ошибки, когда пользователь более 2 раз совершает неправильное действие (например, дважды вводит короткий пароль или неоднократно вводит пароль с запрещенными символами) и метод возвращает ошибку, что сообщение изменить нельзя, т.к. оно не изменилось
@@ -267,20 +267,21 @@ export async function replySubmitUsername(
  */
 export async function replySubmitPassword(
   ctx: MyContext & SceneContext,
+  chatId: number,
 ): Promise<Message.TextMessage> {
   const messageText =
-    ctx.session.msg_status === 1
+    ctx.session[chatId].msg_status === 1
       ? Patterns.PASSWORD_SHORT
-      : ctx.session.msg_status === 2
+      : ctx.session[chatId].msg_status === 2
         ? Patterns.PASSWORD_INVALID
-        : ctx.session.msg_status === 3
+        : ctx.session[chatId].msg_status === 3
           ? Patterns.PASSWORD_UPDATED
           : Patterns.PASSWORD_CREATE;
 
   try {
     const reply = await ctx.telegram.editMessageText(
-      ctx.session.chat_id,
-      ctx.session.msg_to_upd.message_id,
+      ctx.session[chatId].chat_id,
+      ctx.session[chatId].msg_to_upd.message_id,
       undefined,
       messageText,
       {
@@ -295,15 +296,16 @@ export async function replySubmitPassword(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      return ctx.session.msg_to_upd;
+      return ctx.session[chatId].msg_to_upd;
     }
-    const reply = await ctx.reply(messageText, {
+    const reply = await ctx.telegram.sendMessage(chatId, messageText, {
       reply_markup: onlyBackButtonKeyboard(),
       parse_mode: 'HTML',
     });
     return reply;
   }
 }
+
 /**
  * Возвращает ответное сообщение и инлайновые кнопки для сцены Регистрации.
  *
@@ -314,22 +316,24 @@ export async function replySubmitPassword(
  */
 export async function replyRegistration(
   ctx: MyContext & SceneContext,
+  chatId: number,
 ): Promise<Message.TextMessage> {
   const messageText =
-    ctx.session.user_id !== 0
-      ? `${Patterns.REGISTER_STATUS_FINILIZED}${Patterns.USERNAME_CURRENT} ${ctx.session.name}\n${Patterns.PASSWORD_IS_SECRET}`
-      : ctx.session.password === '' && ctx.session.name !== 'null'
-        ? `${Patterns.REGISTER_STATUS_PROCESSED}${Patterns.USERNAME_TEMP_CURRENT} ${ctx.session.name} \n\n${Patterns.REGISTER_NEED_ACTION}`
-        : `${Patterns.REGISTER_STATUS_PROCESSED}${Patterns.USERNAME_TEMP_CURRENT} ${ctx.session.name} \n\n${Patterns.PASSWORD_TEMP_CURRENT} <tg-spoiler>${ctx.session.password}</tg-spoiler>\n\n${Patterns.REGISTER_NEED_TO_BE_FINISHED}`;
+    ctx.session[chatId].user_id !== 0
+      ? `${Patterns.REGISTER_STATUS_FINILIZED}${Patterns.USERNAME_CURRENT} ${ctx.session[chatId].name}\n${Patterns.PASSWORD_IS_SECRET}`
+      : ctx.session[chatId].password === '' &&
+          ctx.session[chatId].name !== 'null'
+        ? `${Patterns.REGISTER_STATUS_PROCESSED}${Patterns.USERNAME_TEMP_CURRENT} ${ctx.session[chatId].name} \n\n${Patterns.REGISTER_NEED_ACTION}`
+        : `${Patterns.REGISTER_STATUS_PROCESSED}${Patterns.USERNAME_TEMP_CURRENT} ${ctx.session[chatId].name} \n\n${Patterns.PASSWORD_TEMP_CURRENT} <tg-spoiler>${ctx.session[chatId].password}</tg-spoiler>\n\n${Patterns.REGISTER_NEED_TO_BE_FINISHED}`;
 
   try {
     const reply = await ctx.telegram.editMessageText(
-      ctx.session.chat_id,
-      ctx.session.msg_to_upd.message_id,
+      ctx.session[chatId].chat_id,
+      ctx.session[chatId].msg_to_upd.message_id,
       undefined,
       messageText,
       {
-        reply_markup: registrationKeyboard(ctx),
+        reply_markup: registrationKeyboard(ctx, chatId),
         parse_mode: 'HTML',
       },
     );
@@ -340,10 +344,10 @@ export async function replyRegistration(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      return ctx.session.msg_to_upd;
+      return ctx.session[chatId].msg_to_upd;
     }
-    const reply = await ctx.reply(messageText, {
-      reply_markup: registrationKeyboard(ctx),
+    const reply = await ctx.telegram.sendMessage(chatId, messageText, {
+      reply_markup: registrationKeyboard(ctx, chatId),
       parse_mode: 'HTML',
     });
     return reply;
@@ -360,12 +364,13 @@ export async function replyRegistration(
  */
 export async function replyWithBackButton(
   ctx: MyContext & SceneContext,
+  chatId: number,
 ): Promise<Message.TextMessage> {
   const messageText = Patterns.NOT_READY_PAGE;
   try {
     const reply = await ctx.telegram.editMessageText(
-      ctx.session.chat_id,
-      ctx.session.msg_to_upd.message_id,
+      ctx.session[chatId].chat_id,
+      ctx.session[chatId].msg_to_upd.message_id,
       undefined,
       messageText,
       {
@@ -380,9 +385,9 @@ export async function replyWithBackButton(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      return ctx.session.msg_to_upd;
+      return ctx.session[chatId].msg_to_upd;
     }
-    const reply = await ctx.reply(messageText, {
+    const reply = await ctx.telegram.sendMessage(chatId, messageText, {
       reply_markup: onlyBackButtonKeyboard(),
       parse_mode: 'HTML',
     });

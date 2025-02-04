@@ -13,11 +13,8 @@ import { IdeasModule } from './DDD/ideas/ideas.module';
 import { User } from './DDD/users/entities/user.entity';
 import { UsersModule } from './DDD/users/users.module';
 import { AuthModule } from './authorization/auth.module';
-import { TelegramSessionsModule } from './DDD/telegram-sessions/telegram-sessions.module';
-import { TelegramSessions } from './DDD/telegram-sessions/entities/telegram-sessions.entity';
-import { TelegrafModule, TelegrafModuleOptions } from 'nestjs-telegraf';
-import { session } from 'telegraf';
-import { initialTelegramUserState } from './DDD/telegram-sessions/telegram-sessions.types';
+import { TelegramModule } from './DDD/telegram/telegram.module';
+import { TelegramSessions } from './DDD/telegram/entities/telegram-sessions.entity';
 
 @Module({
   imports: [
@@ -41,29 +38,13 @@ import { initialTelegramUserState } from './DDD/telegram-sessions/telegram-sessi
         };
       },
     }),
-    TelegrafModule.forRootAsync({
-      inject: [ConfigService],
-      async useFactory(
-        configService: ConfigService,
-      ): Promise<TelegrafModuleOptions> {
-        return {
-          middlewares: [
-            session({
-              defaultSession: () => initialTelegramUserState,
-            }),
-          ],
-          token: configService.get('TELEGRAM_BOT_TOKEN'),
-        };
-      },
-    }),
-
+    TelegramModule,
     AuthorsModule,
     SourcesModule,
     KeywordsModule,
     IdeasModule,
     UsersModule,
     AuthModule,
-    TelegramSessionsModule,
   ],
   providers: [configProvider],
 })

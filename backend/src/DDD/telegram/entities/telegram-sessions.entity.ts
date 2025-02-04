@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { ITelegramUser } from '../telegram-sessions.types';
+import { ITelegramUser } from '../telegram.types';
 
 @Entity({ name: 'telegram-sessions' })
 export class TelegramSessions implements ITelegramUser {
@@ -14,4 +14,7 @@ export class TelegramSessions implements ITelegramUser {
 
   @Column()
   password: string;
+
+  @Column()
+  msg_to_del: number;
 }
