@@ -57,10 +57,12 @@ export class SubmitPasswordScene {
   async onBackRequest(
     @Ctx()
     ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
+    @ChatId() chatId: number,
   ) {
     const cbQuery = ctx.update.callback_query;
     const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
     if (userAnswer === CallbackData.BACK_TO_MENU) {
+      ctx.session[chatId].msg_status = 4;
       ctx.scene.enter(ScenesNames.MAIN);
     }
   }
