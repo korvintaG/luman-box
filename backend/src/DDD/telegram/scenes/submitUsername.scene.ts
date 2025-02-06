@@ -48,7 +48,7 @@ export class SubmitUsernameScene {
    * Текст и кнопки формируются исходя из стейта
    */
   @SceneEnter()
-  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
     if (!ctx.session[chatId].chat_id) {
       //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
       ctx.scene.enter(ScenesNames.MAIN);
@@ -61,7 +61,7 @@ export class SubmitUsernameScene {
    * Срабатывает, когда пользователь вводит в поле сообщения команду /start или /menu. Сообщение удаляется, пользователь переходит в основную сцену
    */
   @Command(/menu|start/)
-  async onMenu(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+  async onMenu(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
     ctx.deleteMessage();
     ctx.session[chatId].msg_status = 0;
     ctx.scene.enter(ScenesNames.MAIN);
@@ -85,16 +85,19 @@ export class SubmitUsernameScene {
   @On('message')
   async onAnswer(
     @Ctx() ctx: MyContext & SceneContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ) {
-    await this.telegramUsersDB.saveUser(ctx.session[chatId]);
+    const telegramUser = await this.telegramUsersDB.saveUser(
+      ctx.session[chatId],
+    );
+    ctx.session[chatId].id = telegramUser.id;
     const userName = ctx.text;
     const userNameSanitized = sanitizeUsername(userName);
     if (userName.length < 5) {
-      ctx.session[chatId].msg_status = 1;
+      ctx.session[chatId].msg_status = 1; //задаем стейт ответа, что пользователь не прошел проверку по длинне имени
       ctx.scene.reenter();
     } else if (userName !== userNameSanitized) {
-      ctx.session[chatId].msg_status = 2;
+      ctx.session[chatId].msg_status = 2; //задаем стейт ответа, что пользователь не прошел проверку по разрешенным знакам
       ctx.scene.reenter();
     } else if (
       (await this.checkIfNameIsUnique(
@@ -102,7 +105,7 @@ export class SubmitUsernameScene {
         ctx.session[chatId],
       )) === false
     ) {
-      ctx.session[chatId].msg_status = 3;
+      ctx.session[chatId].msg_status = 3; //задаем стейт ответа, что пользователь не прошел проверку пникальности
       ctx.scene.reenter();
     } else {
       ctx.session[chatId].name = userNameSanitized;
@@ -111,10 +114,10 @@ export class SubmitUsernameScene {
       );
       if (telegramUser.name === userNameSanitized) {
         ctx.session[chatId].name = userNameSanitized;
-        ctx.session[chatId].msg_status = 0;
+        ctx.session[chatId].msg_status = 0; //обнуляем стейт статуса ответа, т.к. переходим на новую сцену
         ctx.scene.enter(ScenesNames.REGISTRATION);
       } else {
-        ctx.session[chatId].msg_status = 0;
+        ctx.session[chatId].msg_status = 0; //обнуляем стейт ответа, т.к. ошибка
         ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
         await ctx.scene.leave();
       }
@@ -128,7 +131,7 @@ export class SubmitUsernameScene {
   @SceneLeave()
   async sceneLeave(
     @Ctx() ctx: MyContext & SceneContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ): Promise<void> {
     ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_USERNAME;
   }

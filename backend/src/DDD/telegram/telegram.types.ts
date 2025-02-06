@@ -5,11 +5,12 @@ import { UsersService } from '../users/users.service';
 import { TelegramSessionsService } from './telegram-sessions.service';
 
 export interface ITelegramUser {
-  chat_id: number;
+  chat_id: string;
   user_id: number;
   name: string;
   password: string;
   msg_to_del: number;
+  id?: number;
 }
 
 /**
@@ -30,7 +31,7 @@ export interface ITelegramUserState extends ITelegramUser {
 }
 
 export class UserState implements ITelegramUserState {
-  chat_id: number;
+  chat_id: string;
   user_id: number;
   name: string;
   password: string;
@@ -38,13 +39,15 @@ export class UserState implements ITelegramUserState {
   msg_to_upd?: Message.TextMessage;
   msg_to_del: number;
   prev_scene: string;
+  id: number;
 
   private constructor(
-    chat_id: number,
+    chat_id: string,
     user_id: number,
     name: string,
     password: string,
     msg_to_del: number,
+    id?: number | undefined,
   ) {
     this.chat_id = chat_id;
     this.user_id = user_id;
@@ -53,13 +56,14 @@ export class UserState implements ITelegramUserState {
     this.msg_status = 0;
     this.msg_to_del = msg_to_del;
     this.prev_scene = '';
+    this.id = id;
   }
 
   // Фабричный метод для асинхронной инициализации
   public static async create(
     telegramUsersDB: TelegramSessionsService,
     usersDB: UsersService,
-    chat_id: number,
+    chat_id: string,
   ): Promise<UserState> {
     const telegramUser = await telegramUsersDB.findByChatId(chat_id);
     const userDB = await usersDB.findOneByChatId(chat_id);
@@ -69,6 +73,7 @@ export class UserState implements ITelegramUserState {
       telegramUser ? telegramUser.name : 'null',
       telegramUser ? telegramUser.password : '',
       telegramUser ? telegramUser.msg_to_del : 0,
+      telegramUser ? telegramUser.id : undefined,
     );
   }
 }
@@ -77,6 +82,6 @@ export class UserState implements ITelegramUserState {
  */
 export interface MyContext<U extends Update = Update> extends Context<U> {
   session: {
-    [chatId: number]: UserState;
+    [chatId: string]: UserState;
   };
 }

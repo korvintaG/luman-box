@@ -1,10 +1,20 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ITelegramUser } from '../telegram.types';
 
 @Entity({ name: 'telegram-sessions' })
 export class TelegramSessions implements ITelegramUser {
-  @PrimaryColumn()
-  chat_id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @PrimaryColumn({ unique: true })
+  @Index()
+  chat_id: string;
 
   @Column()
   user_id: number;

@@ -7,7 +7,7 @@ import { deleteMessage } from '../utils';
 /**
  * Возвращает текст кнопки регистрации в зависимости от статуса пользователя (зарегистрирован? изменить пароль : задать/изменить логин и пароль )
  */
-const regButtonText = (ctx: MyContext & SceneContext, chatId: number) =>
+const regButtonText = (ctx: MyContext & SceneContext, chatId: string) =>
   ctx.session[chatId].name === 'null'
     ? Patterns.BUTTON_REGISTER
     : ctx.session[chatId].user_id === 0
@@ -17,39 +17,13 @@ const regButtonText = (ctx: MyContext & SceneContext, chatId: number) =>
 /**
  * Возвращает инлайновый набор кнопок основного меню
  */
-const mainKeyboard = (ctx: MyContext & SceneContext, chatId: number) => {
+const mainKeyboard = (ctx: MyContext & SceneContext, chatId: string) => {
   return {
     inline_keyboard: [
       [
         {
           text: regButtonText(ctx, chatId),
           callback_data: CallbackData.REGISTER,
-        },
-      ],
-      [
-        {
-          text: Patterns.BUTTON_AUTHORS,
-          callback_data: CallbackData.AUTHORS,
-        },
-        {
-          text: Patterns.BUTTON_SOURCES,
-          callback_data: CallbackData.SOURCES,
-        },
-      ],
-      [
-        {
-          text: Patterns.BUTTON_IDEAS,
-          callback_data: CallbackData.IDEAS,
-        },
-        {
-          text: Patterns.BUTTON_KEYWORDS,
-          callback_data: CallbackData.KEYWORDS,
-        },
-      ],
-      [
-        {
-          text: Patterns.BUTTON_CONTACTS,
-          callback_data: CallbackData.CONTACTS,
         },
       ],
     ],
@@ -77,7 +51,7 @@ const onlyBackButtonKeyboard = () => {
  */
 const registrationKeyboard = (
   ctx: MyContext & SceneContext,
-  chatId: number,
+  chatId: string,
 ) => {
   if (ctx.session[chatId].user_id !== 0) {
     return {
@@ -156,7 +130,7 @@ const registrationKeyboard = (
  */
 export async function replyMain(
   ctx: MyContext & SceneContext,
-  chatId: number,
+  chatId: string,
 ): Promise<Message.TextMessage> {
   const messageText =
     ctx.session[chatId].name !== 'null'
@@ -210,7 +184,7 @@ export async function replyMain(
  */
 export async function replySubmitUsername(
   ctx: MyContext & SceneContext,
-  chatId: number,
+  chatId: string,
 ): Promise<Message.TextMessage> {
   const messageText =
     ctx.session[chatId].msg_status === 1
@@ -267,7 +241,7 @@ export async function replySubmitUsername(
  */
 export async function replySubmitPassword(
   ctx: MyContext & SceneContext,
-  chatId: number,
+  chatId: string,
 ): Promise<Message.TextMessage> {
   const messageText =
     ctx.session[chatId].msg_status === 1
@@ -316,7 +290,7 @@ export async function replySubmitPassword(
  */
 export async function replyRegistration(
   ctx: MyContext & SceneContext,
-  chatId: number,
+  chatId: string,
 ): Promise<Message.TextMessage> {
   const messageText =
     ctx.session[chatId].user_id !== 0
@@ -364,7 +338,7 @@ export async function replyRegistration(
  */
 export async function replyWithBackButton(
   ctx: MyContext & SceneContext,
-  chatId: number,
+  chatId: string,
 ): Promise<Message.TextMessage> {
   const messageText = Patterns.NOT_READY_PAGE;
   try {

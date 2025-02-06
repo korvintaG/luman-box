@@ -35,7 +35,7 @@ export class RegistrationScene {
    * Текст и кнопки формируются исходя из стейта
    */
   @SceneEnter()
-  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
     if (!ctx.session[chatId].chat_id) {
       //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
       ctx.scene.enter(ScenesNames.MAIN);
@@ -105,7 +105,7 @@ export class RegistrationScene {
   async onFinilizeRegistration(
     @Ctx()
     ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ) {
     const cbQuery = ctx.update.callback_query;
     const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
@@ -134,7 +134,7 @@ export class RegistrationScene {
   @SceneLeave() //действия при выходе из сцены
   async sceneLeave(
     @Ctx() ctx: MyContext & SceneContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ): Promise<void> {
     ctx.session[chatId].prev_scene = ScenesNames.REGISTRATION;
   }

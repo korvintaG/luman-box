@@ -24,7 +24,7 @@ export class TelegramSessionsService {
     return this.telegramSessionsRepository.save(this._genUser(user));
   }
 
-  findByChatId(chat_id: number) {
+  findByChatId(chat_id: string) {
     return this.telegramSessionsRepository.findOneBy({ chat_id: chat_id });
   }
 

@@ -36,7 +36,7 @@ export class UsersService {
     return id ? this.userRepository.findOneBy({ id }) : null;
   }
 
-  findOneByChatId(chat_id: number) {
+  findOneByChatId(chat_id: string) {
     return chat_id ? this.userRepository.findOneBy({ chat_id }) : null;
   }
 

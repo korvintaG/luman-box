@@ -21,7 +21,7 @@ export class TelegramBot {
   @Start()
   async start(
     @Ctx() ctx: Scenes.SceneContext & MyContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ) {
     const userState = await UserState.create(
       this.telegramUsersDB,
@@ -29,7 +29,7 @@ export class TelegramBot {
       chatId,
     );
     ctx.session[chatId] = userState;
-    deleteMessageReceivedAndRest(ctx, chatId);
+    await deleteMessageReceivedAndRest(ctx, chatId);
     ctx.session[chatId].prev_scene = ScenesNames.START;
     await ctx.scene.enter(ScenesNames.MAIN);
   }
@@ -40,7 +40,7 @@ export class TelegramBot {
   @Command(/menu/)
   async onMenu(
     @Ctx() ctx: Scenes.SceneContext & MyContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ) {
     if (!ctx.session[chatId]) {
       //если нет стейта, то обновляем его

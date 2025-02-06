@@ -8,12 +8,7 @@ import { TelegramSessions } from './entities/telegram-sessions.entity';
 import { UsersModule } from '../users/users.module';
 import { AuthModule } from 'src/authorization/auth.module';
 import { MainScene } from './scenes/main.scene';
-import { AuthorsScene } from './scenes/authors.scene';
-import { ContactsScene } from './scenes/contacts.scene';
-import { IdeasScene } from './scenes/ideas.scene';
-import { KeywordsScene } from './scenes/keywords.scene';
 import { RegistrationScene } from './scenes/registration.scene';
-import { SourcesScene } from './scenes/sources.scene';
 import { SubmitPasswordScene } from './scenes/submitPassword.scene';
 import { SubmitUsernameScene } from './scenes/submitUsername.scene';
 
@@ -35,12 +30,7 @@ import { SubmitUsernameScene } from './scenes/submitUsername.scene';
     TelegramBot,
     TelegramSessionsService,
     MainScene,
-    AuthorsScene,
-    ContactsScene,
-    IdeasScene,
-    KeywordsScene,
     RegistrationScene,
-    SourcesScene,
     SubmitPasswordScene,
     SubmitUsernameScene,
   ],

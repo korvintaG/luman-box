@@ -33,7 +33,7 @@ export class MainScene {
    * Текст и кнопки формируются исходя из стейта
    */
   @SceneEnter()
-  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: number) {
+  async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
     if (!ctx.session[chatId]) {
       //если нет стейта, то обновляем его
       const userState = await UserState.create(
@@ -44,14 +44,23 @@ export class MainScene {
       ctx.session[chatId] = userState;
     }
     const message = await replyMain(ctx, chatId); //отправляем ответ
-    messagePushToDelAndUpd(message, ctx, chatId, this.telegramUsersDB);
+    const { id } = await messagePushToDelAndUpd(
+      //сохраняем id последнего отправленного ботом сообщения
+      message,
+      ctx,
+      chatId,
+      this.telegramUsersDB,
+    );
+    if (!ctx.session[chatId].id) {
+      ctx.session[chatId].id = id; //сохраняем в стейт id, если пользователь новый и до этого был undefined
+    }
   }
 
   @Action(CallbackData.REGISTER)
   async onRegister(
     @Ctx()
     ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ) {
     const cbQuery = ctx.update.callback_query;
     const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
@@ -59,66 +68,6 @@ export class MainScene {
       if (ctx.session[chatId].name === 'null') {
         ctx.scene.enter(ScenesNames.SUBMIT_USERNAME);
       } else ctx.scene.enter(ScenesNames.REGISTRATION);
-    }
-  }
-
-  @Action(CallbackData.AUTHORS)
-  async onAuthors(
-    @Ctx()
-    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-  ) {
-    const cbQuery = ctx.update.callback_query;
-    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
-    if (userAnswer === CallbackData.AUTHORS) {
-      ctx.scene.enter(ScenesNames.AUTHORS);
-    }
-  }
-
-  @Action(CallbackData.SOURCES)
-  async onSources(
-    @Ctx()
-    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-  ) {
-    const cbQuery = ctx.update.callback_query;
-    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
-    if (userAnswer === CallbackData.SOURCES) {
-      ctx.scene.enter(ScenesNames.SOURCES);
-    }
-  }
-
-  @Action(CallbackData.IDEAS)
-  async onIdeas(
-    @Ctx()
-    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-  ) {
-    const cbQuery = ctx.update.callback_query;
-    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
-    if (userAnswer === CallbackData.IDEAS) {
-      ctx.scene.enter(ScenesNames.IDEAS);
-    }
-  }
-
-  @Action(CallbackData.KEYWORDS)
-  async onKeywords(
-    @Ctx()
-    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-  ) {
-    const cbQuery = ctx.update.callback_query;
-    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
-    if (userAnswer === CallbackData.KEYWORDS) {
-      ctx.scene.enter(ScenesNames.KEYWORDS);
-    }
-  }
-
-  @Action(CallbackData.CONTACTS)
-  async onContacts(
-    @Ctx()
-    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-  ) {
-    const cbQuery = ctx.update.callback_query;
-    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
-    if (userAnswer === CallbackData.CONTACTS) {
-      ctx.scene.enter(ScenesNames.CONTACTS);
     }
   }
 
@@ -137,7 +86,7 @@ export class MainScene {
   @On('message')
   async onAnswer(
     @Ctx() ctx: MyContext & SceneContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ) {
     await deleteMessage(ctx, chatId);
   }
@@ -148,7 +97,7 @@ export class MainScene {
   @SceneLeave()
   async sceneLeave(
     @Ctx() ctx: MyContext & SceneContext,
-    @ChatId() chatId: number,
+    @ChatId() chatId: string,
   ): Promise<void> {
     ctx.session[chatId].prev_scene = ScenesNames.MAIN;
   }

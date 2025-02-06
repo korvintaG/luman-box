@@ -9,8 +9,8 @@ export class User {
   id_out: string;
 
   //id по чату в TelegramBot
-  @Column({ type: 'int', unique: true })
-  chat_id: number;
+  @Column({ type: 'varchar' })
+  chat_id: string;
 
   @Column({ type: 'varchar', unique: true })
   name: string;
