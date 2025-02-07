@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramBot } from './telegram.bot';
 import { session } from 'telegraf';
@@ -11,28 +11,51 @@ import { MainScene } from './scenes/main.scene';
 import { RegistrationScene } from './scenes/registration.scene';
 import { SubmitPasswordScene } from './scenes/submitPassword.scene';
 import { SubmitUsernameScene } from './scenes/submitUsername.scene';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-@Module({
-  imports: [
-    TelegrafModule.forRootAsync({
-      useFactory: () => ({
-        token: process.env.TELEGRAM_BOT_TOKEN,
-        middlewares: [session()],
-        include: [TelegramModule],
-      }),
-    }),
-    TypeOrmModule.forFeature([TelegramSessions]),
-    UsersModule,
-    AuthModule,
-  ],
+@Module({})
+export class TelegramModule {
+  static forRoot(): DynamicModule {
+    const imports = [];
+    const providers = [
+      TelegramSessionsService,
+      MainScene,
+      RegistrationScene,
+      SubmitPasswordScene,
+      SubmitUsernameScene,
+      TelegramBot,
+    ];
 
-  providers: [
-    TelegramBot,
-    TelegramSessionsService,
-    MainScene,
-    RegistrationScene,
-    SubmitPasswordScene,
-    SubmitUsernameScene,
-  ],
-})
-export class TelegramModule {}
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+
+    if (token) {
+      imports.push(
+        TelegrafModule.forRootAsync({
+          imports: [ConfigModule],
+          useFactory: (configService: ConfigService) => ({
+            token: configService.get<string>('TELEGRAM_BOT_TOKEN'),
+            middlewares: [session()],
+            include: [TelegramModule],
+          }),
+          inject: [ConfigService],
+        }),
+      );
+    } else {
+      console.log(
+        'Telegram bot token is not defined. Telegram bot will not start.',
+        'TelegramModule',
+      );
+    }
+
+    return {
+      module: TelegramModule,
+      imports: [
+        ...imports,
+        TypeOrmModule.forFeature([TelegramSessions]),
+        UsersModule,
+        AuthModule,
+      ],
+      providers,
+    };
+  }
+}
