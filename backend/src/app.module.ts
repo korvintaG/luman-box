@@ -38,7 +38,7 @@ import { TelegramSessions } from './DDD/telegram/entities/telegram-sessions.enti
         };
       },
     }),
-    TelegramModule,
+    TelegramModule.forRoot(),
     AuthorsModule,
     SourcesModule,
     KeywordsModule,
