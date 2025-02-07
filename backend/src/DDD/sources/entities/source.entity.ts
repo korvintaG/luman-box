@@ -1,6 +1,7 @@
-import { JoinColumn, ManyToOne, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { RelationId, JoinColumn,OneToMany, ManyToOne, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Author } from '../../authors/entities/author.entity'
 import { User } from '../../users/entities/user.entity'
+import {Idea} from '../../ideas/entities/idea.entity'
 
 //{ id:1, author_id:1, name:'Как делать полезные заметки'},
 
@@ -16,6 +17,14 @@ export class Source {
   
     @Column('varchar')
     name: string;
+
+
+    @OneToMany(() => Idea, (idea) => idea.source)
+    ideas: Idea[];
+
+    /*@RelationId((source: Source) => source.ideas) // Получаем только ID постов
+    ideaIds: number[];*/
+
 
     @ManyToOne(() => Author, (author) => author.name, { nullable: true })
     @JoinColumn({ name: 'author_id' })

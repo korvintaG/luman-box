@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Idea , sourceFullNameFromObj} from '../../../../utils/type';
 import { RecordListUI } from '../../uni/record-list';
 import { getRouteParam , appRoutes} from '../../../../AppRoutes'
-import styles from './ideas-list.module.css';
 import { parseISO, format } from 'date-fns';
+import styles from './ideas-list.module.css';
 
 export type IdeaListUIProps = {
     ideas: Idea[],

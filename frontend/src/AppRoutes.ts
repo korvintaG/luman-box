@@ -10,6 +10,7 @@ export const appRoutes = {
     ideas: '/ideas',
     idea: '/ideas/:id',
     ideaAdd: '/ideas/add',
+    ideaFind: '/ideas/find',
     keywords: '/keywords',
     keyword: '/keywords/:id',
     keywordAdd: '/keywords/add',

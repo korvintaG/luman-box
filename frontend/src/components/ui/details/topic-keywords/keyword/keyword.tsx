@@ -1,7 +1,7 @@
 import { FC, useEffect, SyntheticEvent } from 'react';
 import styles from './keyword.module.css'
 import { Link } from 'react-router-dom';
-import { getRouteParam , appRoutes} from '../../../../AppRoutes'
+import { getRouteParam , appRoutes} from '../../../../../AppRoutes'
 
 
 export type KeywordUIProps = {

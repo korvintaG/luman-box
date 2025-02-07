@@ -7,13 +7,16 @@ import {isUnauthorizedError} from '../../utils/utils'
 export const initialState: ListToWork<Idea> = {
   list: [],
   current: null,
+  current_id_only: null,
   status: RequestStatus.Idle,
   error: ''
 }; 
 
 export const fetchIdeas = createAsyncThunk('fetchIdeas', LumanAPI.getIdeas);
-export const setIdea = createAsyncThunk('setIdea', LumanAPI.setIdea);
+export const fetchIdeasBySrcKw = createAsyncThunk('fetchIdeasBySrcKw', LumanAPI.getIdeasBySrcKw);
 export const getIdea = createAsyncThunk('getIdea', LumanAPI.getIdea);
+export const findIdeaIDBySrcKw = createAsyncThunk('findIdeaIDBySrcKw', LumanAPI.findIdeaIDBySourceKeyword);
+export const setIdea = createAsyncThunk('setIdea', LumanAPI.setIdea);
 export const addIdea = createAsyncThunk('addIdea', LumanAPI.addIdea);
 export const delIdea = createAsyncThunk('delIdea', LumanAPI.delIdea);
 
@@ -40,10 +43,15 @@ const ideasSlice = createSlice({
     setStateSuccess: (state) => {
       state.status=RequestStatus.Success;
     },
+    resetStatus: (state) => {
+      state.status=RequestStatus.Idle;
+    },
+
   },
   selectors: {
     selectIdeas: (sliceState) => sliceState.list,
     selectCurrentIdea: (sliceState) => sliceState.current,
+    selectCurrentIdeaId: (sliceState) => sliceState.current_id_only,
     selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
     selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error
@@ -53,11 +61,21 @@ const ideasSlice = createSlice({
       .addCase(fetchIdeas.fulfilled, (state, action) => {
         state.list = action.payload;
       })
+      .addCase(fetchIdeasBySrcKw.fulfilled, (state, action) => {
+        state.list = action.payload;
+      })
       .addCase(getIdea.pending, (state) => {
         state.current = null;
+        state.current_id_only = null;
       })
       .addCase(getIdea.fulfilled, (state, action) => {
         state.current = action.payload;
+      })
+      .addCase(findIdeaIDBySrcKw.pending, (state) => {
+        state.current_id_only = null;
+      })
+      .addCase(findIdeaIDBySrcKw.fulfilled, (state, action) => {
+        state.current_id_only = action.payload.id;
       })
       .addCase(addIdea.fulfilled, (state, _) => {
         state.status=RequestStatus.Added;
@@ -77,7 +95,7 @@ const ideasSlice = createSlice({
       .addCase(delIdea.rejected, (state, _) => {
         state.status=RequestStatus.FailedDelete;
       })
-      .addMatcher(isAnyOf(getIdea.fulfilled,fetchIdeas.fulfilled), (state) => {
+      .addMatcher(isAnyOf(getIdea.fulfilled,fetchIdeas.fulfilled, fetchIdeasBySrcKw.fulfilled), (state) => {
         state.status = RequestStatus.Success;
       })
       .addMatcher(isPendingIdeaAction, (state) => {
@@ -88,11 +106,10 @@ const ideasSlice = createSlice({
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status=RequestStatus.FailedUnAuth
-
       });
   }
 });
 
-export const { selectError, selectIdeas, selectCurrentIdea, selectSliceState, selectIsDataLoading } = ideasSlice.selectors;
-export const { clearCurrentIdea, setStateSuccess } = ideasSlice.actions;
+export const { selectError, selectIdeas, selectCurrentIdea, selectCurrentIdeaId, selectSliceState, selectIsDataLoading } = ideasSlice.selectors;
+export const { clearCurrentIdea, setStateSuccess, resetStatus } = ideasSlice.actions;
 export default ideasSlice.reducer;

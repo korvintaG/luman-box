@@ -4,7 +4,7 @@ import styles from './record-buttons-block.module.css';
 import { ButtonAgreeUI } from '../button-type-agree/button-type-agree'
 import { ButtonAlertUI } from '../button-type-alert/button-type-alert'
 import { ButtonUI } from '../button-type/button-type'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export type RecordButtonBlockUIProps = {
     id: number | null;
@@ -18,9 +18,13 @@ export type RecordButtonBlockUIProps = {
 export const RecordButtonBlockUI: FC<RecordButtonBlockUIProps> = (props) => {
     let saveCaption='Сохранить данные';
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const curBack = searchParams.get('back');
+
     const back=(e: SyntheticEvent<Element, Event>)=>{
+
         e.preventDefault();
-        navigate(-1)
+        navigate(curBack?-curBack:-1)
     }
 
     if (!props.id)

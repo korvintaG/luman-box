@@ -1,0 +1,15 @@
+.block {
+    padding-top: 20px;
+}
+
+.header {
+    font-size: 14px;
+    font-weight:normal;
+    text-align: left;
+    text-decoration: underline;
+}
+
+.element {
+    text-indent: 20px;
+    text-align: left;
+}

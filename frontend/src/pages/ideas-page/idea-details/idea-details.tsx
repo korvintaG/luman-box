@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
-import { useMemo, useEffect, SyntheticEvent } from "react";
+import { useMemo, useEffect, SyntheticEvent, useState } from "react";
 import { IdeaDetailsUIFC } from "../../../components/ui/details/idea-details/idea-details";
+import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "../../../services/store";
 import {
   setIdea,
@@ -8,9 +9,12 @@ import {
   delIdea,
   selectError,
   selectIsDataLoading,
+  selectCurrentIdeaId,
   getIdea,
   setStateSuccess,
   addIdea,
+  resetStatus,
+  findIdeaIDBySrcKw,
   selectSliceState,
 } from "../../../slices/ideas";
 import {
@@ -41,6 +45,10 @@ export const IdeaDetails = () => {
     date_time_create: "",
     keywords: [],
   });
+  const [searchParams] = useSearchParams();
+  const findSourceId = searchParams.get('source_id');
+  const findKeywordId = searchParams.get('keyword_id');
+  let [foundID, setFoundID] = useState<number | null>(null);
 
   const isLoading = useSelector(selectIsDataLoading);
   const sliceState = useSelector(selectSliceState);
@@ -49,15 +57,16 @@ export const IdeaDetails = () => {
   const currentUser = useSelector(selectCurrentUser);
   const sources = useSelector(selectSources);
   const errorText = useSelector(selectError);
+  const currentIdeaID = useSelector(selectCurrentIdeaId);
   const isKeywordsLoading = useSelector(keywordsLoading);
   const keywords = useSelector(selectKeywords);
   const dispatch = useDispatch();
 
   const fetchIdea = () => {
-    if (id) {
-      const idNumber = Number(id);
-      dispatch(getIdea(idNumber));
-    }
+    if (id && Number(id)>0) 
+      dispatch(getIdea(Number(id)));
+    else if (foundID && foundID>0)
+      dispatch(getIdea(foundID));
   };
 
   const resetSliceState =()=> dispatch(setStateSuccess());
@@ -73,7 +82,22 @@ export const IdeaDetails = () => {
     if (sources.length === 0) dispatch(fetchSources());
     if (keywords.length === 0) dispatch(fetchKeywords());
     fetchIdea();
+    if (!id && findKeywordId && findSourceId)
+      dispatch(findIdeaIDBySrcKw({source_id: Number(findSourceId), keyword_id: Number(findKeywordId)}))
   }, [id]);
+
+  useEffect(() => {
+    if (currentIdeaID && currentIdeaID>0) 
+      setFoundID(currentIdeaID)
+  },[currentIdeaID]);
+
+  useEffect(() => {
+    if (foundID && foundID>0) {
+      //dispatch(resetStatus());
+      fetchIdea();
+    }
+  },[foundID]);
+
 
   useEffect(() => {
     if (currentIdea) 
@@ -119,7 +143,7 @@ export const IdeaDetails = () => {
   return ( 
     <IdeaForm
         listPath={appRoutes.ideas}
-        id={id ? Number(id) : null} 
+        id={id ? Number(id) : (foundID?foundID:null)} 
         fetchRecord={fetchIdea}
         isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
         sliceState={sliceState}

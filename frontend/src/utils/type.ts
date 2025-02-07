@@ -7,11 +7,16 @@ export type NameObject = {
     name: string;
 }
 
+export type SimpleNameObject = IDObject & NameObject;
+
+export type SimpleNameObjectWithCnt = IDObject & NameObject & {cnt: number};
+
 
 // Авторы
 export type AuthorInner = NameObject;
 export type AuthorRaw = AuthorInner & {
     user?:UserPartial;
+    sources?:SimpleNameObject[];
 };
 export type AuthorRawPartial = Partial<AuthorRaw>;
 export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
@@ -22,6 +27,8 @@ export type SourceInner = NameObject;
 export type SourceRaw = SourceInner & {
     author?:AuthorPartial;
     user?:UserPartial;
+    ideas?:SimpleNameObject[];
+    keywords?:SimpleNameObjectWithCnt[];
 }
 export type SourceRawPartial = Partial<SourceRaw>;
 export type SourcePartial = Partial<Source> & IDObject;

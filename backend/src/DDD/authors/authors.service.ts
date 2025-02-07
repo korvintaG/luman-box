@@ -25,7 +25,15 @@ export class AuthorsService {
   }
 
   findOne(id: number) {
-    return this.authorRepository.findOne({where: { id }, relations: { user: true }});
+    //return this.authorRepository.findOne({where: { id }, relations: ['user','sources']});
+    return this.authorRepository
+      .createQueryBuilder('author')
+      .leftJoinAndSelect('author.sources', 'source')
+      .leftJoinAndSelect('author.user', 'user')
+      .select(['author','source.id', 'source.name', 'user.id', 'user.name']) // Выбираем только нужные поля
+      .where('author.id = :id', { id })
+      .getOne();
+
   }
 
   async update(id: number, user:IUser, updateAuthorDto: UpdateAuthorDto) {

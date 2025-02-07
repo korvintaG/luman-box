@@ -5,9 +5,12 @@ import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons
 import {ErrorMessageUI} from '../../uni/error-message/error-message'
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import {InputSelectUI} from '../../uni/input-select/input-select'
+import {RelationListUI} from '../../uni/relation-list'
+import { appRoutes} from '../../../../AppRoutes'
 import styles from './source-details.module.css'
 import {genHeaderText} from '../../../../utils/utils' 
 import {InfoFieldUI} from '../../uni/info-field/info-field'
+import {SourceKeywordsUI} from '../source-keywords/source-keywords'
 
 export type SourceDetailsUIProps = {
     id: number | null;
@@ -48,7 +51,17 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = ({id, values, readOnly,
                 readOnly={readOnly}
                 deleteRecord={deleteRecord} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить источник' />
-    </RecordEditUI>
+            {id && <>
+                <RelationListUI 
+                    title='Список идей по источнику:'
+                    editURLPath={appRoutes.idea}
+                    list={values.ideas}/>
+                <SourceKeywordsUI
+                    title='Список ключевых слов идей по источнику:'
+                    source_id={id}
+                    keywordsAll={values.keywords}/>
+            </>}
+    </RecordEditUI> 
 }
 
 export function SourceDetailsUIFC (props:SourceDetailsUIProps) {

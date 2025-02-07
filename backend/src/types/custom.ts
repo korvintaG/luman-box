@@ -3,6 +3,11 @@ export interface SimpleEntity {
   name: string;
 }
 
+export interface SimpleEntityWithCnt extends SimpleEntity  {
+  cnt: number;
+}
+
+
 export interface SimpleEntityWithOutID extends SimpleEntity {
   id_out: string;
 }
@@ -23,6 +28,11 @@ export interface IIdea extends SimpleEntityWithOutID  {
   content: string;
   date_time_create: string;
   keywords: number[];
+}
+
+export interface IIdeaBySourceAndKeyword {
+  source_id:number;
+  keyword_id:number
 }
 
 export type AccessToken = {

@@ -53,7 +53,7 @@ export class KeywordsService {
             LEFT JOIN ideas as i on ik.idea_id=i.id
             where keyword_id=$1
             limit 5`,[id])
-          errMessage+=joinSimpleEntityFirst(result);
+          errMessage+=joinSimpleEntityFirst(result); 
         }
         catch (find_err) {
             errMessage=errMessage+" [не удалось найти список закрепленных за ключевым слово идей из-за ошибки: "+find_err.message+']';

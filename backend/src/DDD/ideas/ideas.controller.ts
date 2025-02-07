@@ -1,6 +1,7 @@
-import { Req, Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards } from '@nestjs/common';
+import { Req, Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards, Query } from '@nestjs/common';
 import { Request  } from 'express';
 import { IdeasService } from './ideas.service';
+import {IIdeaBySourceAndKeyword} from '../../types/custom'
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
@@ -18,9 +19,18 @@ export class IdeasController {
   }
 
   @Get()
-  findAll() {
-    return this.ideasService.findAll();
+  findAll(@Query() query:Partial<IIdeaBySourceAndKeyword>) {
+    if (query.keyword_id && query.source_id)
+      return this.ideasService.findBySrcKw({source_id:query.source_id , keyword_id: query.keyword_id });
+    else
+      return this.ideasService.findAll();
   }
+
+  @Get('/find-by-source-kw/:src/:kw')
+  findBySourceKw(@Param('src') src: string, @Param('kw') kw: string) {
+    return this.ideasService.findBySourceKw(src,kw);
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {

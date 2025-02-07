@@ -160,9 +160,17 @@ export class LumanAPI extends Api implements ILumanAPI {
   // * Идеи
   // **********************************************
 
-  getIdeas = (): Promise<Idea[]> => {
+  getIdeas = (): Promise<Idea[]> => { 
     return this.request<Idea[]>(`/ideas`, { method: 'GET' })
   };
+
+  getIdeasBySrcKw = (cond:{source_id: number, keyword_id: number}): Promise<Idea[]> => { 
+    return this.request<Idea[]>(
+      `/ideas?source_id=`+cond.source_id+'&keyword_id='+cond.keyword_id, 
+      { method: 'GET' }
+    )
+  };
+
 
   getIdea = (id: number): Promise<Idea> => {
     return this.request<Idea>(`/ideas/${id}`, { method: 'GET' })
@@ -197,6 +205,13 @@ export class LumanAPI extends Api implements ILumanAPI {
     });
   };
 
+  findIdeaIDBySourceKeyword = (findCond:{source_id: number, keyword_id: number}) : Promise<{id: number}> => {
+    return this.request<{id: number}>(
+      `/ideas/find-by-source-kw/${findCond.source_id}/${findCond.keyword_id}`, 
+      { method: 'GET' }
+    )
+  };
+  
   // **********************************************
   // * Ключевые слова
   // **********************************************

@@ -1,10 +1,13 @@
 import { FC, SyntheticEvent,  ChangeEvent } from 'react';
 import { RecordEditUI } from '../../uni/record-edit/record-edit'
 import { HTMLEditElement, AuthorRaw } from '../../../../utils/type'
+import { appRoutes} from '../../../../AppRoutes'
+
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import {genHeaderText} from '../../../../utils/utils' 
 import {InfoFieldUI} from '../../uni/info-field/info-field'
+import {RelationListUI} from '../../uni/relation-list'
 import styles from './author-details.module.css'
 
 /**
@@ -41,6 +44,11 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, readOnly,
                 deleteRecord={deleteRecord} 
                 submitButtonCaption={btnCaptione} 
                 deleteButtonCaption='Удалить автора' />
+            <RelationListUI 
+                title='Список источников автора:'
+                editURLPath={appRoutes.source}
+                list={values.sources}
+                />
     </RecordEditUI>            
 }
  

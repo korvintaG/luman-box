@@ -1,0 +1,23 @@
+.block {
+    padding-top: 20px;
+}
+
+.header {
+    font-size: 14px;
+    font-weight:normal;
+    text-align: left;
+    text-decoration: underline;
+}
+
+
+.sub_block {
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+    /*border: 1px red solid;*/
+}
+
+.element {
+    display: inline-block;
+    padding-left: 10px;
+}

@@ -4,6 +4,7 @@ import { Repository, In, FindManyOptions } from 'typeorm';
 import { Idea } from './entities/idea.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
+import {IIdeaBySourceAndKeyword} from '../../types/custom'
 import { isEmpty, omit }  from "lodash";
 import {KeywordsService} from '../keywords/keywords.service'
 import {IUser} from '../../types/custom'
@@ -36,6 +37,22 @@ export class IdeasService {
 
   findAll() {
     return this.ideaRepository.find( { relations: ['source.author', 'user'] , order: { name: "ASC" }});
+  }
+
+  async findBySrcKw(cond:IIdeaBySourceAndKeyword) {
+    const founds=await this.ideaRepository.manager.query<{id:number}[]>(
+      `select ideas.id
+      from ideas, idea_keywords as ik
+      where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[cond.source_id,cond.keyword_id]);
+    return this.ideaRepository.find( { relations: ['source.author', 'user'] , where: { id: In(founds.map(el=>el.id))}, order: { name: "ASC" }});
+  }
+
+  async findBySourceKw(src:string, kw: string) {
+     const founds=await this.ideaRepository.manager.query<{id:number}[]>(
+        `select ideas.id
+        from ideas, idea_keywords as ik
+        where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[src,kw]);
+      return founds[0];
   }
 
   findByCond(cond:FindManyOptions) {

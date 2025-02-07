@@ -6,6 +6,7 @@ import { IdeasService } from '../ideas/ideas.service'
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
+import { SimpleEntityWithCnt } from '../../types/custom'
 import {IUser} from '../../types/custom'
 
 
@@ -31,8 +32,22 @@ export class SourcesService {
   }
 
 
-  findOne(id: number) {
-    return this.sourceRepository.findOne({where: { id }, relations: { author: true, user: true }});
+  async findOne(id: number) {
+    const mainRes= await this.sourceRepository
+      .createQueryBuilder('source')
+      .leftJoinAndSelect('source.ideas', 'idea')
+      .leftJoinAndSelect('source.user', 'user')
+      .leftJoinAndSelect('source.author', 'author')
+      .select(['source','idea.id', 'idea.name', 'user.id', 'user.name', 'author.id', 'author.name']) // Выбираем только нужные поля
+      .where('source.id = :id', { id })
+      .getOne();
+    const kw=await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
+        `select keywords.name, keywords.id, count(ideas.*)::integer as cnt from ideas, idea_keywords as ik, keywords
+        where ideas.source_id=$1 and ik.idea_id=ideas.id and keywords.id=ik.keyword_id
+        group by keywords.name, keywords.id
+        order by keywords.name`,[id]);
+    return {...mainRes, keywords:kw};
+      
   }
 
   async update(id: number, user:IUser, updateSourceDto: UpdateSourceDto) {

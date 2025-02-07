@@ -1,6 +1,6 @@
 import { useState, FC, ChangeEvent, SyntheticEvent } from 'react';
 import { HTMLEditElement, IdeaRaw, KeywordPartial, Keyword } from '../../../../utils/type'
-import { KeywordUI } from '../keyword'
+import { KeywordUI } from './keyword'
 import {InputSelectUI} from '../../uni/input-select/input-select'
 import styles from './topic-keywords.module.css'
 
