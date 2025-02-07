@@ -43,7 +43,6 @@ type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
 export interface ListToWork<T> {
     list: T[]; 
     current: T | null;
-    current_id_only?: number | null;
     status: RequestStatusValue,
     error: string;
   }

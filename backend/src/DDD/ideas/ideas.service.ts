@@ -52,7 +52,7 @@ export class IdeasService {
         `select ideas.id
         from ideas, idea_keywords as ik
         where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[src,kw]);
-      return founds[0];
+      return this.findOne(founds[0].id);
   }
 
   findByCond(cond:FindManyOptions) {

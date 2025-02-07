@@ -9,12 +9,11 @@ import {
   delIdea,
   selectError,
   selectIsDataLoading,
-  selectCurrentIdeaId,
   getIdea,
   setStateSuccess,
   addIdea,
   resetStatus,
-  findIdeaIDBySrcKw,
+  getIdeaBySrcKw,
   selectSliceState,
 } from "../../../slices/ideas";
 import {
@@ -48,7 +47,6 @@ export const IdeaDetails = () => {
   const [searchParams] = useSearchParams();
   const findSourceId = searchParams.get('source_id');
   const findKeywordId = searchParams.get('keyword_id');
-  let [foundID, setFoundID] = useState<number | null>(null);
 
   const isLoading = useSelector(selectIsDataLoading);
   const sliceState = useSelector(selectSliceState);
@@ -57,7 +55,6 @@ export const IdeaDetails = () => {
   const currentUser = useSelector(selectCurrentUser);
   const sources = useSelector(selectSources);
   const errorText = useSelector(selectError);
-  const currentIdeaID = useSelector(selectCurrentIdeaId);
   const isKeywordsLoading = useSelector(keywordsLoading);
   const keywords = useSelector(selectKeywords);
   const dispatch = useDispatch();
@@ -65,8 +62,8 @@ export const IdeaDetails = () => {
   const fetchIdea = () => {
     if (id && Number(id)>0) 
       dispatch(getIdea(Number(id)));
-    else if (foundID && foundID>0)
-      dispatch(getIdea(foundID));
+    else if (findSourceId && findKeywordId)
+      dispatch(getIdeaBySrcKw({source_id:Number(findSourceId), keyword_id:Number(findKeywordId)}));
   };
 
   const resetSliceState =()=> dispatch(setStateSuccess());
@@ -83,20 +80,9 @@ export const IdeaDetails = () => {
     if (keywords.length === 0) dispatch(fetchKeywords());
     fetchIdea();
     if (!id && findKeywordId && findSourceId)
-      dispatch(findIdeaIDBySrcKw({source_id: Number(findSourceId), keyword_id: Number(findKeywordId)}))
+      dispatch(getIdeaBySrcKw({source_id: Number(findSourceId), keyword_id: Number(findKeywordId)}))
   }, [id]);
 
-  useEffect(() => {
-    if (currentIdeaID && currentIdeaID>0) 
-      setFoundID(currentIdeaID)
-  },[currentIdeaID]);
-
-  useEffect(() => {
-    if (foundID && foundID>0) {
-      //dispatch(resetStatus());
-      fetchIdea();
-    }
-  },[foundID]);
 
 
   useEffect(() => {
@@ -143,7 +129,7 @@ export const IdeaDetails = () => {
   return ( 
     <IdeaForm
         listPath={appRoutes.ideas}
-        id={id ? Number(id) : (foundID?foundID:null)} 
+        id={id ? Number(id) : (currentIdea?currentIdea.id:null)} 
         fetchRecord={fetchIdea}
         isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
         sliceState={sliceState}

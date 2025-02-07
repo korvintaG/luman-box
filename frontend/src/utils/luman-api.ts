@@ -205,8 +205,8 @@ export class LumanAPI extends Api implements ILumanAPI {
     });
   };
 
-  findIdeaIDBySourceKeyword = (findCond:{source_id: number, keyword_id: number}) : Promise<{id: number}> => {
-    return this.request<{id: number}>(
+  getIdeaBySourceKeyword = (findCond:{source_id: number, keyword_id: number}) : Promise<Idea> => {
+    return this.request<Idea>(
       `/ideas/find-by-source-kw/${findCond.source_id}/${findCond.keyword_id}`, 
       { method: 'GET' }
     )
