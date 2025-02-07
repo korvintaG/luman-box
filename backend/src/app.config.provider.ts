@@ -16,12 +16,12 @@ export const configProvider = {
 };
 
 export interface AppConfig {
-    database: AppConfigDatabase;
-  }
-  
-  export interface AppConfigDatabase {
-    username: string;
-    password: string;
-    databaseName: string;
-  }
-  
+  database: AppConfigDatabase;
+}
+
+export interface AppConfigDatabase {
+  username: string;
+  password: string;
+  databaseName: string;
+}
+
