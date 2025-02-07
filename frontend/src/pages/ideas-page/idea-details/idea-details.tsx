@@ -79,8 +79,8 @@ export const IdeaDetails = () => {
     if (sources.length === 0) dispatch(fetchSources());
     if (keywords.length === 0) dispatch(fetchKeywords());
     fetchIdea();
-    if (!id && findKeywordId && findSourceId)
-      dispatch(getIdeaBySrcKw({source_id: Number(findSourceId), keyword_id: Number(findKeywordId)}))
+    /*if (!id && findKeywordId && findSourceId)
+      dispatch(getIdeaBySrcKw({source_id: Number(findSourceId), keyword_id: Number(findKeywordId)}))*/
   }, [id]);
 
 
@@ -126,15 +126,17 @@ export const IdeaDetails = () => {
   const initialName=currentIdea ? currentIdea.name : '';
   const IdeaForm = useMemo(()=>withFormStatus(IdeaDetailsUIFC),[setValues]);
 
+  const realId=id ? id : (currentIdea?String(currentIdea.id):undefined);
+
   return ( 
     <IdeaForm
         listPath={appRoutes.ideas}
-        id={id ? Number(id) : (currentIdea?currentIdea.id:null)} 
+        id={realId?Number(realId):null} 
         fetchRecord={fetchIdea}
         isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
         sliceState={sliceState}
         error={errorText}
-        readOnly={!allowEdit(id,currentUser,currentIdea)}
+        readOnly={!allowEdit(realId,currentUser,currentIdea)}
         values={values}
         initialName={initialName}
         handleChange={handleChange}
