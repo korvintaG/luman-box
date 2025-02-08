@@ -10,7 +10,7 @@ import { selectCurrentUser } from '../../../slices/auth/index';
 import { appRoutes } from '../../../AppRoutes';
 import { AuthorInner,  RequestStatus } from '../../../utils/type'
 import { useForm } from "../../../hooks/useForm";
-import { allowEdit, getUserCreator } from '../../../utils/utils';
+import { getEditAccess, getUserCreator } from '../../../utils/utils';
 import { omit }  from "lodash";
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 
@@ -45,6 +45,12 @@ export const AuthorDetails = () => {
         dispatch(delAuthor(Number(id)));
     }
 
+    const moderateAuthor = (e: SyntheticEvent) => {
+        e.preventDefault();
+        //dispatch(moderateAuthor(Number(id)));
+    }
+
+
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id)
@@ -64,13 +70,14 @@ export const AuthorDetails = () => {
             isLoading={sliceState===RequestStatus.Loading}
             sliceState={sliceState}
             error={errorText}
-            readOnly={!allowEdit(id,currentUser,currentAuthor)}
+            editAccessStatus={getEditAccess(id,currentUser,currentAuthor)}
             values={values}
             initialName={initialName}
             handleChange={handleChange}
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить автора [${initialName}]?`}
             deleteRecord={deleteAuthor}
+            moderateRecord={moderateAuthor}
             resetSliceState={resetSliceState}
             userName={getUserCreator(currentAuthor, currentUser)}
         />

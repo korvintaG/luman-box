@@ -16,6 +16,9 @@ export class Keyword {
     @Column('varchar')
     name: string;
 
+    @Column({type:'int', default:0})
+    moderated: number;
+
     @ManyToOne(() => User, (user) => user.name, { nullable: false })
     @JoinColumn({ name: 'user_id' })
     user: User;

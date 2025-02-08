@@ -22,22 +22,43 @@ export function isUnauthorizedError(message: string): boolean {
     return errCode==='401';
 }
 
-export function allowEdit(id:string | undefined, currentUser:User|null, currentRecord:any):boolean{
+export const enum EditAccessStatus {
+    Readonly = 'readonly',
+    Editable = 'editable',
+    Moderatable = 'moderatable'
+}
+
+export function getEditAccess(id:string | undefined, currentUser:User|null, currentRecord:any):EditAccessStatus{
     if (!currentUser) // не авторизован
-        return false;
+        return EditAccessStatus.Readonly;
     if (!id) // новый всегда можно 
-        return true;
+        return EditAccessStatus.Editable;
     if (!currentRecord)
-        return false;
+        return EditAccessStatus.Readonly;
     // точно есть автор и пользователь
     else // старый
       if (!currentRecord.user)
-        return false;
+        return EditAccessStatus.Readonly;
       else
         if (!currentRecord.user.id)
-            return false;
+            return EditAccessStatus.Readonly;
         else
-            return currentUser.id===currentRecord.user.id;
+            if ([1, 3].includes(currentUser.role_id)) {
+                if (currentRecord.moderated>0) { // уже отмодерировано
+                    if (currentUser.role_id===3)
+                        return EditAccessStatus.Editable; // супермодератор может менять все
+                    else
+                        return EditAccessStatus.Readonly; // обычный модератор ничего не может делать с отмодерированными
+                }
+                else
+                    return EditAccessStatus.Moderatable;
+            }
+            else
+                if (currentRecord.moderated>0)
+                    return EditAccessStatus.Readonly;
+                else
+                    return (currentUser.id===currentRecord.user.id)?
+                            EditAccessStatus.Editable:EditAccessStatus.Readonly;
 }
 
 export function genHeaderText(readOnly:boolean, id: number | null, name: string| null, 

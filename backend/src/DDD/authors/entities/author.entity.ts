@@ -15,6 +15,9 @@ export class Author {
     @Column('varchar')
     name: string;
 
+    @Column({type:'int', default:0})
+    moderated: number;
+
     @OneToMany(() => Source, (source) => source.author)
     sources: Source[];
 

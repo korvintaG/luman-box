@@ -58,6 +58,9 @@ export function authorNameFromObj(author?: Partial<Author>): string {
 export type KeywordInner = NameObject;
 export type KeywordRaw = KeywordInner & {
     user?:UserPartial;
+    sources?:SimpleNameObject[];
+    authors?:SimpleNameObject[];
+    ideas?:SimpleNameObject[];
 };
 export type KeywordRawPartial = Partial<KeywordRaw>;
 export type Keyword = KeywordRaw & IDObject;
@@ -129,7 +132,8 @@ export type AuthorPartial = Partial<Author> & IDObject // то же что ав�
 
 export type User= {
 	name: string;
-    id: number
+    id: number;
+    role_id: number;
 }
 
 export type UserPartial= Partial<User>;

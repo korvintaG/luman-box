@@ -27,7 +27,7 @@ export class UsersService {
     return name
       ? this.userRepository.find({
           where: { name },
-          select: { id: true, name: true, password: true },
+          select: { id: true, name: true, password: true, role_id: true },
         })
       : null;
   }

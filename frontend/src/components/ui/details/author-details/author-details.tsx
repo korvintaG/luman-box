@@ -5,7 +5,7 @@ import { appRoutes} from '../../../../AppRoutes'
 
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {InputEditUI} from '../../uni/input-edit/input-edit'
-import {genHeaderText} from '../../../../utils/utils' 
+import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
 import {InfoFieldUI} from '../../uni/info-field/info-field'
 import {RelationListUI} from '../../uni/relation-list'
 import styles from './author-details.module.css'
@@ -17,37 +17,38 @@ export type AuthorDetailsUIProps = {
     id: number | null;
     values: AuthorRaw; // поля автора для редактирования
     initialName: string; // начальное имя
-    readOnly: boolean;
+    editAccessStatus: EditAccessStatus;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // сохранить изменения в базе
     deleteRecord: (e: SyntheticEvent) => void; // функция удаления автора
+    moderateRecord: (e: SyntheticEvent) => void; // функция одобрения автора
     userName: string;
 }
 
-export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = ({id, readOnly,
-     values, initialName, handleChange, handleSubmit, deleteRecord, userName}) => {
-    const header= genHeaderText(readOnly,id,initialName,'автора'); 
-    const btnCaptione = id ? 'Сохранить данные' : 'Добавить автора';
+export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (props:AuthorDetailsUIProps) => {
+    const header= genHeaderText(props.editAccessStatus===EditAccessStatus.Readonly,props.id,props.initialName,'автора'); 
+    const btnCaptione = props.id ? 'Сохранить данные' : 'Добавить автора';
    
-    return <RecordEditUI formClass={styles.form}  header={header} onSubmit={handleSubmit}>
-            <InfoFieldUI labelClassAdd={styles.label} label='Запись добавил:' text={userName}/>
-            <InputEditUI name="name" label='ФИО автора:' value={values.name} 
+    return <RecordEditUI formClass={styles.form}  header={header} onSubmit={props.handleSubmit}>
+            <InfoFieldUI labelClassAdd={styles.label} label='Запись добавил:' text={props.userName}/>
+            <InputEditUI name="name" label='ФИО автора:' value={props.values.name} 
                 labelClassAdd={styles.label}
                 inputClassAdd={styles.input}
                 classAdd={styles.input_block}
                 placeholder="Укажите ФИО автора"
-                readOnly={readOnly}
-                handleChange={handleChange} />
+                readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
+                handleChange={props.handleChange} />
             <RecordButtonBlockUI 
-                id={id} 
-                readOnly={readOnly}
-                deleteRecord={deleteRecord} 
+                id={props.id} 
+                editAccessStatus={props.editAccessStatus}
+                deleteRecord={props.deleteRecord} 
+                moderateRecord={props.moderateRecord}
                 submitButtonCaption={btnCaptione} 
                 deleteButtonCaption='Удалить автора' />
             <RelationListUI 
                 title='Список источников автора:'
                 editURLPath={appRoutes.source}
-                list={values.sources}
+                list={props.values.sources}
                 />
     </RecordEditUI>            
 }

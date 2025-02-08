@@ -17,7 +17,7 @@ import { appRoutes } from '../../../AppRoutes';
 import { selectCurrentUser } from '../../../slices/auth/index';
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 import { omit }  from "lodash";
-import { allowEdit, getUserCreator } from '../../../utils/utils';
+import { getEditAccess, getUserCreator } from '../../../utils/utils';
 
 export const SourceDetails = () => {
 
@@ -60,6 +60,11 @@ export const SourceDetails = () => {
             dispatch(delSource(Number(id)))
     }
 
+    const moderateSource = (e: SyntheticEvent) => {
+        //dispatch(delSource(Number(id)))
+    }
+
+    
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id) 
@@ -79,13 +84,14 @@ export const SourceDetails = () => {
             isLoading={isLoading || isAuthorLoading}
             sliceState={sliceState}
             error={errorText}
-            readOnly={!allowEdit(id,currentUser,currentSource)}
+            editAccessStatus={getEditAccess(id,currentUser,currentSource)}
             values={values}
             initialName={initialName}
             handleChange={handleChange}
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить источник [${initialName}]?`}
             deleteRecord={deleteSource}
+            moderateRecord={moderateSource}
             resetSliceState={resetSliceState}
             authors={authors}
             userName={getUserCreator(currentSource, currentUser)}

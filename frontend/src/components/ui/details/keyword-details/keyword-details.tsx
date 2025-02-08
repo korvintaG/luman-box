@@ -3,39 +3,60 @@ import { RecordEditUI } from '../../uni/record-edit/record-edit'
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import { HTMLEditElement, KeywordRaw } from '../../../../utils/type'
-import {genHeaderText} from '../../../../utils/utils' 
+import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
 import {InfoFieldUI} from '../../uni/info-field/info-field'
+import {RelationListUI} from '../../uni/relation-list'
+import { appRoutes} from '../../../../AppRoutes'
 import styles from './keyword-details.module.css'
 
 
 export type KeywordDetailsUIProps = {
     id: number | null;
-    readOnly: boolean;
+    editAccessStatus: EditAccessStatus;
     values: KeywordRaw; // поля ключевого слова для редактирования
     initialName: string; // начальное имя
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void;
     deleteRecord: (e: SyntheticEvent) => void;
+    moderateRecord: (e: SyntheticEvent) => void;
     userName: string;
 }
 
-export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = ({id, values, readOnly,
-    initialName, handleChange, handleSubmit, deleteRecord, userName}) => {
-    const header= genHeaderText(readOnly,id,initialName,'ключевого слова'); 
-    const btnCaptione= id ? 'Сохранить данные' : 'Добавить ключевое слово';
+export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = (props:KeywordDetailsUIProps) => {
+    const header= genHeaderText(props.editAccessStatus===EditAccessStatus.Readonly,props.id,props.initialName,'ключевого слова'); 
+    const btnCaptione= props.id ? 'Сохранить данные' : 'Добавить ключевое слово';
     
-    return <RecordEditUI formClass={styles.form} header={header} onSubmit={handleSubmit}>
-            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={userName}/>        
-            <InputEditUI labelClassAdd={styles.label} name="name" label='Ключевое слово:' value={values.name} 
+    return <RecordEditUI formClass={styles.form} header={header} onSubmit={props.handleSubmit}>
+            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' 
+                text={props.userName}/>        
+            <InputEditUI labelClassAdd={styles.label} 
+                name="name" label='Ключевое слово:' value={props.values.name} 
                 placeholder="Введите ключевое слово"
                 inputClassAdd={styles.input}
                 classAdd={styles.input_block}
-                readOnly={readOnly}
-                handleChange={handleChange} />
-            <RecordButtonBlockUI id={id} 
-                readOnly={readOnly}
-                deleteRecord={deleteRecord} 
+                readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
+                handleChange={props.handleChange} />
+            <RecordButtonBlockUI id={props.id} 
+                editAccessStatus={props.editAccessStatus}
+                deleteRecord={props.deleteRecord} 
+                moderateRecord={props.moderateRecord} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить ключевое слово' />
+            <RelationListUI 
+                title='Список авторов, в идеях по источникам которых есть ключевое слово:'
+                editURLPath={appRoutes.author}
+                list={props.values.authors}
+                />
+            <RelationListUI 
+                title='Список источников, в идеях по которым есть ключевое слово:'
+                editURLPath={appRoutes.source}
+                list={props.values.sources}
+                />
+            <RelationListUI 
+                title='Список идей, по которым есть ключевое слово:'
+                editURLPath={appRoutes.idea}
+                list={props.values.ideas}
+                />
+
     </RecordEditUI> 
 }
 

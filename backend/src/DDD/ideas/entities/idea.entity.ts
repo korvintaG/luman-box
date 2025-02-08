@@ -34,6 +34,9 @@ export class Idea {
     //@Column({ type: 'timestamp', nullable: true })
     @CreateDateColumn()
     date_time_create: Date;
+
+    @Column({type:'int', default:0})
+    moderated: number;
        
     @ManyToMany(() => Keyword, (keyword) => keyword.ideas)
     @JoinTable({

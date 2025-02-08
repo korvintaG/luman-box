@@ -12,7 +12,7 @@ import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from '../../../slices/auth/index';
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 import { omit }  from "lodash";
-import { allowEdit, getUserCreator } from '../../../utils/utils';
+import { getEditAccess, getUserCreator } from '../../../utils/utils';
 
 export const KeywordDetails = () => {
     const { id } = useParams(); 
@@ -47,6 +47,11 @@ export const KeywordDetails = () => {
             dispatch(delKeyword(Number(id)))
     }
 
+    const moderateKeyword = (e: SyntheticEvent) => {
+        //dispatch(delKeyword(Number(id)))
+    }
+
+
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
         if (id) 
@@ -66,13 +71,14 @@ export const KeywordDetails = () => {
             isLoading={sliceState===RequestStatus.Loading}
             sliceState={sliceState}
             error={errorText}
-            readOnly={!allowEdit(id,currentUser,currentKeyword)}
+            editAccessStatus={getEditAccess(id,currentUser,currentKeyword)}
             values={values}
             initialName={initialName}
             handleChange={handleChange}
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить ключевое слово [${initialName}]?`}
             deleteRecord={deleteKeyword}
+            moderateRecord={moderateKeyword}
             resetSliceState={resetSliceState}
             userName={getUserCreator(currentKeyword, currentUser)}
             />

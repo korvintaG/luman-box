@@ -35,6 +35,14 @@ export class KeywordsController {
   }
 
   @UseGuards(JwtAuthGuard)  
+  @Post('moderate/:id')
+  moderate(@Param('id') id: string, 
+         @Req() req: Request) {
+    return this.keywordsService.moderate(+id, req.user);
+  }
+
+
+  @UseGuards(JwtAuthGuard)  
   @Delete(':id')
   remove(@Param('id') id: string,
          @Req() req: Request) {

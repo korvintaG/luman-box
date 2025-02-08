@@ -11,4 +11,9 @@ export class UserDto {
 
   @IsNumber()
   chat_id: number;
+
+  @Expose()
+  @IsNumber()
+  role_id: number;
+
 }

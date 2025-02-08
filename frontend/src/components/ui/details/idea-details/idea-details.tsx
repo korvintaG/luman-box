@@ -6,7 +6,7 @@ import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import {InputSelectUI} from '../../uni/input-select/input-select'
 import {InputTextUI} from '../../uni/input-text/input-text'
-import {genHeaderText} from '../../../../utils/utils' 
+import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
 import {InfoFieldUI} from '../../uni/info-field/info-field'
 import styles from './idea-details.module.css'
 
@@ -14,10 +14,11 @@ import styles from './idea-details.module.css'
 export type IdeaDetailsUIProps = {
     id: number | null;
     values: IdeaRaw; // поля идеи для редактирования
-    readOnly: boolean;
+    editAccessStatus: EditAccessStatus;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // действие
     deleteRecord: (e: SyntheticEvent) => void; // удалить текущую идею
+    moderateRecord: (e: SyntheticEvent) => void; // одобрить ключевое слово к идеи
     deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
     addKeyword: (id: number) => void; // добавить ключевое слово к идеи
     sources: Source[]; // источники для выбора
@@ -29,58 +30,56 @@ export type IdeaDetailsUIProps = {
 /**
  * Компонент редактирования идеи чистый 
  */
-export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
-    { id, values, handleChange, handleSubmit, deleteRecord, sources, keywords, initialName, 
-        readOnly,userName,
-        addKeyword, deleteKeyword }) => {
-    const header= genHeaderText(readOnly,id,initialName,'идеи','жен'); 
-    const btnCaptione = id ? 'Сохранить данные' : 'Добавить идею';
+export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (props: IdeaDetailsUIProps) => {
+    const header= genHeaderText(props.editAccessStatus===EditAccessStatus.Readonly,props.id,props.initialName,'идеи','жен'); 
+    const btnCaptione = props.id ? 'Сохранить данные' : 'Добавить идею';
  
-    return <RecordEditUI header={header} onSubmit={handleSubmit} 
+    return <RecordEditUI header={header} onSubmit={props.handleSubmit} 
                 formClass={styles.form} mainClass={styles.main}>
             <div className={styles.inputs}>
-                <InfoFieldUI label='Запись добавил:' text={userName} 
+                <InfoFieldUI label='Запись добавил:' text={props.userName} 
                 labelClassAdd={styles.label_info}
                 />
                 <InputSelectUI 
-                    name="source.id" label="Источник идеи:" value={values.source.id}
-                    readOnly={readOnly}
-                    handleChange={handleChange} 
+                    name="source.id" label="Источник идеи:" value={props.values.source.id}
+                    readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
+                    handleChange={props.handleChange} 
                     labelClassAdd={styles.label}
-                    values={sources.map(el =>({id: el.id, name:el.name+'//'+authorNameFromObj(el.author)}))}/>
+                    values={props.sources.map(el =>({id: el.id, name:el.name+'//'+authorNameFromObj(el.author)}))}/>
                 <InputEditUI 
-                    name="name" label='Название идеи:' value={values.name} 
-                    readOnly={readOnly}
+                    name="name" label='Название идеи:' value={props.values.name} 
+                    readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
                     labelClassAdd={styles.label}
                     placeholder="Укажите название идеи"
-                    handleChange={handleChange} />
+                    handleChange={props.handleChange} />
          </div>
          <div className={styles.idea}>
                 <InputTextUI 
-                    value={values.original_text} 
+                    value={props.values.original_text} 
                     name="original_text" 
                     label='Вдохновивший текст'
-                    readOnly={readOnly}
+                    readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
                     classAdd={styles.original} 
                     textClassAdd={styles.original_text}
-                    handleChange={handleChange}/>
+                    handleChange={props.handleChange}/>
                 <InputTextUI 
-                    value={values.content} 
+                    value={props.values.content} 
                     name="content" 
                     label='Суть идеи'
-                    readOnly={readOnly}
+                    readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
                     classAdd={styles.content} 
-                    handleChange={handleChange}/>
+                    handleChange={props.handleChange}/>
          </div>
          <TopicKeywordsUI 
-                keywordsAll={keywords}
-                keywordsSelected={values.keywords?values.keywords:[]}
-                readOnly={readOnly}
-                deleteKeyword={deleteKeyword}
-                addKeyword={addKeyword}/>
-        <RecordButtonBlockUI id={id} 
-                readOnly={readOnly}
-                deleteRecord={deleteRecord} 
+                keywordsAll={props.keywords}
+                keywordsSelected={props.values.keywords?props.values.keywords:[]}
+                readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
+                deleteKeyword={props.deleteKeyword}
+                addKeyword={props.addKeyword}/>
+        <RecordButtonBlockUI id={props.id} 
+                editAccessStatus={props.editAccessStatus}
+                deleteRecord={props.deleteRecord} 
+                moderateRecord={props.moderateRecord} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить идею' />                
     </RecordEditUI>
 }

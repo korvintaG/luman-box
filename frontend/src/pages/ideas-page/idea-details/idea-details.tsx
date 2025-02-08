@@ -29,7 +29,7 @@ import {
 import { appRoutes } from "../../../AppRoutes";
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 import { omit }  from "lodash";
-import { allowEdit, getUserCreator } from '../../../utils/utils';
+import { getEditAccess, getUserCreator } from '../../../utils/utils';
 import { KeywordPartial, IdeaRaw } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from '../../../slices/auth/index';
@@ -98,6 +98,12 @@ export const IdeaDetails = () => {
     dispatch(delIdea(idNumber));
   };
 
+  const moderateIdea = (e: SyntheticEvent) => {
+    const idNumber = Number(id);
+    //dispatch(delIdea(idNumber));
+  };
+
+
   const deleteKeyword = (e: SyntheticEvent, id: number) => {
     e.preventDefault();
     setValues({
@@ -136,13 +142,14 @@ export const IdeaDetails = () => {
         isLoading={isLoading || isSourcesLoading || isKeywordsLoading}
         sliceState={sliceState}
         error={errorText}
-        readOnly={!allowEdit(realId,currentUser,currentIdea)}
+        editAccessStatus={getEditAccess(realId,currentUser,currentIdea)}
         values={values}
         initialName={initialName}
         handleChange={handleChange}
         handleSubmit={handleSubmit} 
         deleteQuestion={`Удалить идею [${initialName}]?`}
         deleteRecord={deleteIdea}
+        moderateRecord={moderateIdea}
         resetSliceState={resetSliceState}
         sources={sources}
         keywords={keywords}

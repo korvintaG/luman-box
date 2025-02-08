@@ -40,7 +40,7 @@ export class SourcesService {
       .leftJoinAndSelect('source.author', 'author')
       .select(['source','idea.id', 'idea.name', 'user.id', 'user.name', 'author.id', 'author.name']) // Выбираем только нужные поля
       .where('source.id = :id', { id })
-      .getOne();
+      .getOne(); 
     const kw=await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
         `select keywords.name, keywords.id, count(ideas.*)::integer as cnt from ideas, idea_keywords as ik, keywords
         where ideas.source_id=$1 and ik.idea_id=ideas.id and keywords.id=ik.keyword_id
@@ -54,6 +54,12 @@ export class SourcesService {
     await checkAccess(this.sourceRepository,id, user.id);
     return await this.sourceRepository.update({id}, updateSourceDto);
   }
+
+  async moderate(id: number, user:IUser) {
+    //await checkAccess(this.authorRepository,id, user.id);
+    return this.sourceRepository.update({id}, {moderated: user.id});
+  }
+  
 
   async remove(id: number,user:IUser) {
     await checkAccess(this.sourceRepository,id, user.id);

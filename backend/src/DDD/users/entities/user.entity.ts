@@ -17,4 +17,13 @@ export class User {
 
   @Column('varchar', { select: false })
   password: string;
+
+  // варианты:
+  // =0 - обычный
+  // =1 - админ
+  // =2 - удаленный
+  // =3 - суперадмин
+  @Column({ type: 'int', default: 0 })
+  role_id: number;
+
 }

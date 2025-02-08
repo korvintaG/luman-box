@@ -36,6 +36,14 @@ export class AuthorsController {
   }
 
   @UseGuards(JwtAuthGuard)  
+  @Post('moderate/:id')
+  moderate(@Param('id') id: string, 
+         @Req() req: Request) {
+    return this.authorsService.moderate(+id, req.user);
+  }
+
+
+  @UseGuards(JwtAuthGuard)  
   @Delete(':id')
   remove(@Param('id') id: string,
          @Req() req: Request) {

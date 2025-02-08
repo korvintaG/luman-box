@@ -58,6 +58,12 @@ export class KeywordsService {
     return await this.keywordRepository.update({id}, updateKeywordDto);
   }
 
+  async moderate(id: number, user:IUser) {
+    //await checkAccess(this.authorRepository,id, user.id);
+    return this.keywordRepository.update({id}, {moderated: user.id});
+  }
+
+
   async remove(id: number,user:IUser) {
     await checkAccess(this.keywordRepository,id, user.id);
     try {

@@ -18,6 +18,8 @@ export class Source {
     @Column('varchar')
     name: string;
 
+    @Column({type:'int', default:0})
+    moderated: number;
 
     @OneToMany(() => Idea, (idea) => idea.source)
     ideas: Idea[];

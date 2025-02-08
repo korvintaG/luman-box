@@ -41,6 +41,12 @@ export class AuthorsService {
     return this.authorRepository.update({id}, updateAuthorDto);
   }
 
+  async moderate(id: number, user:IUser) {
+    //await checkAccess(this.authorRepository,id, user.id);
+    return this.authorRepository.update({id}, {moderated: user.id});
+  }
+
+
   async remove(id: number, user:IUser) {
     await checkAccess(this.authorRepository,id, user.id);
     try {

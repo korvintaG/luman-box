@@ -82,6 +82,12 @@ export class IdeasService {
     return idea;
   }
 
+  async moderate(id: number, user:IUser) {
+    //await checkAccess(this.authorRepository,id, user.id);
+    return this.ideaRepository.update({id}, {moderated: user.id});
+  }
+
+
   async remove(id: number,user:IUser) {
     await checkAccess(this.ideaRepository,id, user.id);
     return  await this.ideaRepository.delete({ id });

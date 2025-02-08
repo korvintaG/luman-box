@@ -19,7 +19,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   signin(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    console.log('AuthController login origin host',req.get('origin'),req.get('host'))
+    //console.log('AuthController login origin host',req.get('origin'),req.get('host'))
     return this.authService.login(res, req.user);
   }
 
@@ -55,7 +55,9 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     res.header('Cache-Control', 'no-store');
-    return this.usersService.findOne(req.user.id);
+    const user=await this.usersService.findOne(req.user.id);
+    //console.log('getUser',user);
+    return user;
   }
 
 

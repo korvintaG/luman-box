@@ -44,4 +44,6 @@ export type AccessTokenPayload = {
   name: string;
 };
 
-export interface IUser extends SimpleEntity{};
+export interface IUser extends SimpleEntity{
+  role_id: number;
+};
