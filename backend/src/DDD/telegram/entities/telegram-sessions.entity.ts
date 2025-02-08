@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { ITelegramUser } from '../telegram.types';
 
-@Entity({ name: 'telegram-sessions' })
+@Entity({ name: 'telegram_sessions' })
 export class TelegramSessions implements ITelegramUser {
   @PrimaryGeneratedColumn()
   id: number;
