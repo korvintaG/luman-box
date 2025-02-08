@@ -25,6 +25,7 @@ services:
       .env
     networks:
       - internal
+      - internet
     depends_on:
       - postgres
     restart: unless-stopped

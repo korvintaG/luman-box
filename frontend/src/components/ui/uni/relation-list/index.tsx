@@ -15,15 +15,17 @@ export const RelationListUI : FC<RelationListUIProps> = ({list, title, editURLPa
         return null;
     const clonedArray = list.map(a => {return {...a}})
     clonedArray.sort((a, b) => a.name.localeCompare(b.name));
-    return <section className={styles.block}>
-        <h2 className={styles.header}>{title}</h2>
-        <ul>
-            {clonedArray.map((el)=>{return <li className={styles.element}>
-                <Link 
-                    to={getRouteParam(editURLPath,el.id)}>
-                    {el.name}
-                </Link>
-            </li>})}
-        </ul>
-    </section>
+    return <details>
+                <summary className={styles.header}>{title}</summary>
+                <section className={styles.block}>
+                    <ul>
+                        {clonedArray.map((el)=>{return <li key={el.id} className={styles.element}>
+                            <Link 
+                                to={getRouteParam(editURLPath,el.id)}>
+                                {el.name}
+                            </Link>
+                        </li>})}
+                    </ul>
+                </section>
+            </details> 
 }

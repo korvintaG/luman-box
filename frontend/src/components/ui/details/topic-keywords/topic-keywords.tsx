@@ -1,5 +1,6 @@
 import { useState, FC, ChangeEvent, SyntheticEvent } from 'react';
-import { HTMLEditElement, IdeaRaw, KeywordPartial, Keyword } from '../../../../utils/type'
+import clsx from 'clsx';
+import { HTMLEditElement, KeywordPartial, Keyword } from '../../../../utils/type'
 import { KeywordUI } from './keyword'
 import {InputSelectUI} from '../../uni/input-select/input-select'
 import styles from './topic-keywords.module.css'
@@ -30,7 +31,8 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
         setKeywordToAdd(0);
     }
 
-    return(<div className={styles.keywords_block}>
+    return(<div className={clsx(styles.keywords_block, 
+            {[styles.keywords_block_border]: !props.readOnly})}>
             {props.keywordsSelected ?
                 <div className={styles.keywords}>
                     {props.keywordsSelected.map((kw) =>
@@ -44,14 +46,14 @@ export const TopicKeywordsUI: FC<TopicKeywordsUIProps> = (props) => {
             : null
             }
 
-            <InputSelectUI 
+            {!props.readOnly &&<InputSelectUI 
                 classAdd={styles.input_block}
                 name="keyword_id" 
                 label="Добавить ключевое слово:" 
                 value={keywordToAdd}
                 values={props.keywordsAll.filter((el)=> !props.keywordsSelected.find((fel)=>fel.id===el.id))} // только новые
                 selectClassAdd={styles['keywords-select']}
-                readOnly={props.readOnly}
                 handleChange={changeKeywordToAdd} />
+            }
     </div>)
 }

@@ -15,10 +15,11 @@ export const KeywordUI: FC<KeywordUIProps> = ({id, name, readOnly, deleteKeyword
    
     return <div className={styles.keyword}>
         <Link to={getRouteParam(appRoutes.keyword,id)}>{'#'+name}</Link>
-        <button className={styles.btnClose} 
-            disabled={readOnly}
-            onClick={(e:SyntheticEvent)=>deleteKeyword(e,id)}>
-            x
-        </button>
+        {!readOnly && <button className={styles.btnClose} 
+                disabled={readOnly}
+                onClick={(e:SyntheticEvent)=>deleteKeyword(e,id)}>
+                x
+            </button>
+        }
         </div>
 }

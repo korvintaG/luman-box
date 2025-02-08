@@ -24,7 +24,6 @@ export const IdeasPage: FC = () => {
     const [searchParams] = useSearchParams();
     const condSrc = searchParams.get('source_id');
     const condKw = searchParams.get('keyword_id');
-    console.log('IdeasPage',condSrc,condKw);
 
   
     const dispatch = useDispatch();
@@ -32,11 +31,9 @@ export const IdeasPage: FC = () => {
  
     useEffect(() => {
         if (condSrc && condKw) {
-            console.log('IdeasPage useEffect condSrc')
             dispatch(fetchIdeasBySrcKw({source_id:Number(condSrc), keyword_id:Number(condKw)}))
         }
         else {
-            console.log('IdeasPage useEffect null')
             dispatch(fetchIdeas())
         }
     }, []);

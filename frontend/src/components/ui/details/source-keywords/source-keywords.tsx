@@ -14,24 +14,26 @@ export type SourceKeywordsUIProps = {
 export const SourceKeywordsUI: FC<SourceKeywordsUIProps> = (props) => {
     if (!props.keywordsAll || props.keywordsAll.length===0)
         return null;
-    return <section className={styles.block} >
-        <h3 className={styles.header}>{props.title}</h3>
-        <p className={styles.sub_block}>
-            {props.keywordsAll.map((el)=>{
-                    if (el.cnt===1)
-                        return <Link 
-                            className={styles.element} 
-                            to={appRoutes.ideaFind+'?source_id='+props.source_id+'&keyword_id='+ el.id}> 
+    return <details>
+        <summary className={styles.header}>{props.title} </summary>
+        <section className={styles.block} >
+            <p className={styles.sub_block}>
+                {props.keywordsAll.map((el)=>{
+                        if (el.cnt===1)
+                            return <Link key={el.id}
+                                className={styles.element} 
+                                to={appRoutes.ideaFind+'?source_id='+props.source_id+'&keyword_id='+ el.id}> 
+                                    {'#'+el.name}
+                                </Link>
+                        else
+                            return <Link key={el.id} className={styles.element}
+                                to={appRoutes.ideas+'?source_id='+props.source_id+'&keyword_id='+el.id} 
+                            >
                                 {'#'+el.name}
                             </Link>
-                    else
-                        return <Link className={styles.element}
-                            to={appRoutes.ideas+'?source_id='+props.source_id+'&keyword_id='+el.id} 
-                        >
-                            {'#'+el.name}
-                        </Link>
-                })
-            }
-        </p>
-    </section>
+                    })
+                }
+            </p>
+        </section>
+    </details>
 }

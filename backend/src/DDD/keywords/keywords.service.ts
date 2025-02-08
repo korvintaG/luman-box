@@ -29,8 +29,28 @@ export class KeywordsService {
   }
 
 
-  findOne(id: number) {
-    return this.keywordRepository.findOne({where: { id }, relations: { user: true }});
+  async findOne(id: number) {
+    const authors=await this.keywordRepository.manager.query<SimpleEntity[]>(
+       `select distinct authors.id, authors.name
+        from keywords, idea_keywords , ideas, sources, authors 
+        where keywords.id=$1 and idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
+          and sources.id=source_id and authors.id=author_id
+        order by authors.name`,[id]);
+    const sources=await this.keywordRepository.manager.query<SimpleEntity[]>(
+        `select distinct sources.id, sources.name ||' // ' || authors.name as name
+        from keywords, idea_keywords , ideas, sources, authors 
+        where keywords.id=$1 and idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
+          and sources.id=source_id and authors.id=author_id
+        order by sources.name ||' // ' || authors.name`,[id]);
+    const ideas=await this.keywordRepository.manager.query<SimpleEntity[]>(
+        `select distinct ideas.id, ideas.name || ' ['||sources.name ||' // ' || authors.name||']' as name
+        from keywords, idea_keywords , ideas, sources, authors 
+        where keywords.id=$1 and idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
+          and sources.id=source_id and authors.id=author_id
+        order by ideas.name || ' ['||sources.name ||' // ' || authors.name||']'`,[id]);
+    const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true }});
+    return {...mainRes, authors, sources, ideas};
+
   }
 
   async update(id: number, user:IUser,updateKeywordDto: UpdateKeywordDto) {

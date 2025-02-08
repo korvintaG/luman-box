@@ -42,8 +42,8 @@ export const LoginForm: FC<LoginFormProps> = (props:LoginFormProps) => {
 				<>
 					<h1>Вход в систему</h1>
 					<section className={styles.login_inputs}>
-						<InputEditUI name="name" label='Никнэйм' value={props.values.name} handleChange={props.handleChange}/>
-						<InputEditUI name="password" isPassword label='Пароль' value={props.values.password} handleChange={props.handleChange}/>
+						<InputEditUI name="name" labelClassAdd={styles.label} label='Никнэйм' value={props.values.name} handleChange={props.handleChange}/>
+						<InputEditUI name="password" labelClassAdd={styles.label} isPassword label='Пароль' value={props.values.password} handleChange={props.handleChange}/>
 					</section>
 					<ButtonAgreeUI caption="Войти"/>
 					<section>Вы еще не зарегестрированы в системе?<br/>

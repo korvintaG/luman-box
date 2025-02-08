@@ -46,7 +46,6 @@ export function useForm<T>(inputValues: T) {
 
 
   const handleChange = (event: ChangeEvent<HTMLEditElement >) => {
-    console.log('handleChange',event.target)
     const { value, name } = event.target;
     if (name.indexOf('.')>0)
     {
