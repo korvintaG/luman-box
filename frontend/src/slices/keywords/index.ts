@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Keyword, RequestStatus } from '../../utils/type'
-import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
+import { ListToWork, ErrorAction } from '../utils'
 import LumanAPI from '../../utils/luman-api'
 import {isUnauthorizedError} from '../../utils/utils'
 
@@ -15,6 +15,8 @@ export const fetchKeywords = createAsyncThunk('fetchKeywords', LumanAPI.getKeywo
 export const setKeyword = createAsyncThunk('setKeyword', LumanAPI.setKeyword);
 export const getKeyword = createAsyncThunk('getKeyword', LumanAPI.getKeyword);
 export const addKeyword = createAsyncThunk('addKeyword', LumanAPI.addKeyword);
+export const approveKeyword = createAsyncThunk('approveKeyword', LumanAPI.approveKeyword);
+export const rejectKeyword = createAsyncThunk('approveKeyword', LumanAPI.rejectKeyword);
 export const delKeyword = createAsyncThunk('delKeyword', LumanAPI.delKeyword);
 
 export function isPendingKeywordAction(action: PayloadAction) {
@@ -43,12 +45,15 @@ const keywordsSlice = createSlice({
   selectors: {
     selectKeywords: (sliceState) => sliceState.list,
     selectCurrentKeyword: (sliceState) => sliceState.current,
-    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
+    selectIsDataLoading: (sliceState) => sliceState.status===RequestStatus.Loading,
     selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchKeywords.pending, (state) => {
+        state.list = [];
+      })
       .addCase(fetchKeywords.fulfilled, (state, action) => {
         state.list = action.payload;
       })
@@ -61,20 +66,20 @@ const keywordsSlice = createSlice({
       .addCase(addKeyword.fulfilled, (state, _) => {
         state.status=RequestStatus.Added;
       })
-      .addCase(setKeyword.fulfilled, (state, _) => {
-        state.status=RequestStatus.Updated;
-      })
       .addCase(delKeyword.fulfilled, (state, _) => {
         state.status=RequestStatus.Deleted;
       })
       .addCase(addKeyword.rejected, (state, _) => {
         state.status=RequestStatus.FailedAdd;
       })
-      .addCase(setKeyword.rejected, (state, _) => {
-        state.status=RequestStatus.FailedUpdate;
-      })
       .addCase(delKeyword.rejected, (state, _) => {
         state.status=RequestStatus.FailedDelete;
+      })
+      .addMatcher(isAnyOf(setKeyword.fulfilled,approveKeyword.fulfilled,rejectKeyword.fulfilled), (state, _) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addMatcher(isAnyOf(setKeyword.rejected,approveKeyword.rejected,rejectKeyword.rejected), (state, _) => {
+        state.status=RequestStatus.FailedUpdate;
       })
       .addMatcher(isAnyOf(getKeyword.fulfilled,fetchKeywords.fulfilled), (state, _) => {
         state.status=RequestStatus.Success;
@@ -87,7 +92,6 @@ const keywordsSlice = createSlice({
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status=RequestStatus.FailedUnAuth
-
       });
   }
 });

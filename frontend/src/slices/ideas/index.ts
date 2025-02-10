@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Idea, RequestStatus } from '../../utils/type'
-import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
+import { ListToWork,  ErrorAction } from '../utils'
 import LumanAPI from '../../utils/luman-api'
 import {isUnauthorizedError} from '../../utils/utils'
 
@@ -17,6 +17,8 @@ export const getIdea = createAsyncThunk('getIdea', LumanAPI.getIdea);
 export const getIdeaBySrcKw = createAsyncThunk('getIdeaBySrcKw', LumanAPI.getIdeaBySourceKeyword);
 export const setIdea = createAsyncThunk('setIdea', LumanAPI.setIdea);
 export const addIdea = createAsyncThunk('addIdea', LumanAPI.addIdea);
+export const approveIdea = createAsyncThunk('approveIdea', LumanAPI.approveIdea);
+export const rejectIdea = createAsyncThunk('approveIdea', LumanAPI.rejectIdea);
 export const delIdea = createAsyncThunk('delIdea', LumanAPI.delIdea);
 
 
@@ -50,35 +52,14 @@ const ideasSlice = createSlice({
   selectors: {
     selectIdeas: (sliceState) => sliceState.list,
     selectCurrentIdea: (sliceState) => sliceState.current,
-    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
+    selectIsDataLoading: (sliceState) => sliceState.status===RequestStatus.Loading,
     selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchIdeas.fulfilled, (state, action) => {
-        state.list = action.payload;
-      })
-      .addCase(fetchIdeasBySrcKw.fulfilled, (state, action) => {
-        state.list = action.payload;
-      })
-      .addCase(getIdea.pending, (state) => {
-        state.current = null;
-      })
-      .addCase(getIdea.fulfilled, (state, action) => {
-        state.current = action.payload;
-      })
-      .addCase(getIdeaBySrcKw.pending, (state) => {
-        state.current = null;
-      })
-      .addCase(getIdeaBySrcKw.fulfilled, (state, action) => {
-        state.current = action.payload;
-      })
       .addCase(addIdea.fulfilled, (state, _) => {
         state.status=RequestStatus.Added;
-      })
-      .addCase(setIdea.fulfilled, (state, _) => {
-        state.status=RequestStatus.Updated;
       })
       .addCase(delIdea.fulfilled, (state, _) => {
         state.status=RequestStatus.Deleted;
@@ -86,13 +67,29 @@ const ideasSlice = createSlice({
       .addCase(addIdea.rejected, (state, _) => {
         state.status=RequestStatus.FailedAdd;
       })
-      .addCase(setIdea.rejected, (state, _) => {
-        state.status=RequestStatus.FailedUpdate;
-      })
       .addCase(delIdea.rejected, (state, _) => {
         state.status=RequestStatus.FailedDelete;
       })
-      .addMatcher(isAnyOf(getIdea.fulfilled, getIdeaBySrcKw.fulfilled, fetchIdeas.fulfilled, fetchIdeasBySrcKw.fulfilled), (state) => {
+      .addMatcher(isAnyOf(setIdea.fulfilled, approveIdea.fulfilled, rejectIdea.fulfilled), (state) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addMatcher(isAnyOf(setIdea.rejected, approveIdea.rejected, rejectIdea.rejected), (state) => {
+        state.status=RequestStatus.FailedUpdate;
+      })
+      .addMatcher(isAnyOf(fetchIdeas.pending,fetchIdeasBySrcKw.pending), (state) => {
+        state.list = [];
+      })
+      .addMatcher(isAnyOf(fetchIdeas.fulfilled,fetchIdeasBySrcKw.fulfilled), (state, action) => {
+        state.list = action.payload;
+      })
+      .addMatcher(isAnyOf(getIdea.pending, getIdeaBySrcKw.pending), (state) => {
+        state.current = null;
+      })
+      .addMatcher(isAnyOf(getIdea.fulfilled, getIdeaBySrcKw.fulfilled), (state, action) => {
+        state.current = action.payload;;
+      })
+      .addMatcher(isAnyOf(getIdea.fulfilled, getIdeaBySrcKw.fulfilled, 
+        fetchIdeas.fulfilled, fetchIdeasBySrcKw.fulfilled), (state) => {
         state.status = RequestStatus.Success;
       })
       .addMatcher(isPendingIdeaAction, (state) => {

@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
-import { Repository, FindManyOptions } from 'typeorm';
+import { Repository, FindManyOptions, MoreThan } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
 import { SimpleEntity } from '../../types/custom'
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
@@ -20,14 +20,25 @@ export class KeywordsService {
     return this.keywordRepository.save({...createKeywordDto, user:{id:user.id}});
   }
 
-  findAll() {
-    return this.keywordRepository.find( {order: { name: "ASC" }});
+  findAll(user:IUser) {
+    if (!user) // неавторизован, выводим все отмодерированное
+      return this.keywordRepository.find( {where:{moderated:MoreThan(1)}, order: { name: "ASC" }});
+    else {
+      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+        return this.keywordRepository
+          .createQueryBuilder('keyword')
+          .where('keyword.moderated >0 ')
+          .orWhere('keyword.user_id = :user', { user: user.id})
+          .orderBy('name')
+          .getMany();
+      else // админ, выводим все
+        return this.keywordRepository.find( {order: { name: "ASC" }});
+    }
   }
 
   findByCond(cond:FindManyOptions) {
     return this.keywordRepository.find( cond);
   }
-
 
   async findOne(id: number) {
     const authors=await this.keywordRepository.manager.query<SimpleEntity[]>(

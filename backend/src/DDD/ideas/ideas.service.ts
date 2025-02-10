@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In, FindManyOptions } from 'typeorm';
+import { Repository, In, FindManyOptions, MoreThan } from 'typeorm';
 import { Idea } from './entities/idea.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
@@ -35,15 +35,47 @@ export class IdeasService {
     return this.ideaRepository.save({...idea, user:{id:user.id}});
   }
 
-  findAll() {
-    return this.ideaRepository.find( { relations: ['source.author', 'user'] , order: { name: "ASC" }});
+  findAll(user:IUser) {
+    //return this.ideaRepository.find( { relations: ['source.author', 'user'] , order: { name: "ASC" }});
+
+    if (!user) // неавторизован, выводим все отмодерированное
+      return this.ideaRepository.find( { where:{moderated:MoreThan(1)}, relations: ['source.author', 'user'] , order: { name: "ASC" }});
+    else {
+      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+        return this.ideaRepository
+          .createQueryBuilder('idea')
+          .leftJoinAndSelect('idea.source', 'source')
+          .leftJoinAndSelect('idea.user', 'user')
+          .leftJoinAndSelect('source.author', 'author')
+          .where('idea.moderated >0 ')
+          .orWhere('idea.user_id = :user', { user: user.id})
+          .orderBy('idea.name')
+          .getMany();
+      else // админ, выводим все
+        return this.ideaRepository.find( { relations: ['source.author', 'user'] , order: { name: "ASC" }});
+    }
   }
 
-  async findBySrcKw(cond:IIdeaBySourceAndKeyword) {
-    const founds=await this.ideaRepository.manager.query<{id:number}[]>(
-      `select ideas.id
-      from ideas, idea_keywords as ik
-      where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[cond.source_id,cond.keyword_id]);
+  async findBySrcKw(user:IUser, cond:IIdeaBySourceAndKeyword) {
+    let founds:{id: number}[]=[];
+    if (!user) // неавторизован, выводим все отмодерированное
+      founds=await this.ideaRepository.manager.query<{id:number}[]>(
+        `select ideas.id
+        from ideas, idea_keywords as ik
+        where ideas.source_id=$1 and ideas.moderated>0 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[cond.source_id,cond.keyword_id]);
+    else {
+      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+        founds=await this.ideaRepository.manager.query<{id:number}[]>(
+          `select ideas.id
+          from ideas, idea_keywords as ik
+          where ideas.source_id=$1 and (ideas.moderated>0 or ideas.user_id=$2) and ik.idea_id=ideas.id and ik.keyword_id=$3`,[cond.source_id, user.id, cond.keyword_id]);
+      else {// админ, выводим все
+        founds=await this.ideaRepository.manager.query<{id:number}[]>(
+          `select ideas.id
+          from ideas, idea_keywords as ik
+          where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[cond.source_id, cond.keyword_id]);
+      }
+    }
     return this.ideaRepository.find( { relations: ['source.author', 'user'] , where: { id: In(founds.map(el=>el.id))}, order: { name: "ASC" }});
   }
 

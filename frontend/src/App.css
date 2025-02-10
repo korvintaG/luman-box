@@ -18,6 +18,15 @@
   font-family: 'Montserrat';
 }
 
+.moderated-need {
+  color:chocolate;
+}
+
+.moderated-cancel {
+  color:red;
+}
+
+
 @media (max-width: 750px) {
   .main {
       margin: 10px;

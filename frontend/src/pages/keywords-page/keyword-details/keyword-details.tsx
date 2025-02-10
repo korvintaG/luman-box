@@ -3,7 +3,7 @@ import { useEffect, useMemo, SyntheticEvent } from 'react';
 import { KeywordDetailsUIFC } from '../../../components/ui/details/keyword-details/keyword-details'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
-    setKeyword,selectCurrentKeyword, delKeyword, selectError, setStateSuccess,
+    setKeyword,selectCurrentKeyword, delKeyword, selectError, setStateSuccess, approveKeyword, rejectKeyword,
     getKeyword, addKeyword, selectSliceState
   } from '../../../slices/keywords';
 import { appRoutes } from '../../../AppRoutes';
@@ -47,8 +47,12 @@ export const KeywordDetails = () => {
             dispatch(delKeyword(Number(id)))
     }
 
-    const moderateKeyword = (e: SyntheticEvent) => {
-        //dispatch(delKeyword(Number(id)))
+    const approveRecord = (e: SyntheticEvent) => {
+        dispatch(approveKeyword(Number(id)))
+    }
+
+    const rejectRecord = (e: SyntheticEvent) => {
+        dispatch(rejectKeyword(Number(id)))
     }
 
 
@@ -78,7 +82,8 @@ export const KeywordDetails = () => {
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить ключевое слово [${initialName}]?`}
             deleteRecord={deleteKeyword}
-            moderateRecord={moderateKeyword}
+            approveRecord={approveRecord}
+            rejectRecord={rejectRecord}
             resetSliceState={resetSliceState}
             userName={getUserCreator(currentKeyword, currentUser)}
             />

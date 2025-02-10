@@ -2,11 +2,11 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
-import {IUser} from '../../types/custom'
+import {IModerate, IUser} from '../../types/custom'
 
 @Injectable()
 export class AuthorsService {
@@ -20,8 +20,20 @@ export class AuthorsService {
     return this.authorRepository.save({...createAuthorDto, user:{id:user.id}});
   }
 
-  findAll() {
-    return this.authorRepository.find( {order: { name: "ASC" }});
+  async findAll(user:IUser) {
+    if (!user) // неавторизован, выводим все отмодерированное
+      return this.authorRepository.find( {where:{moderated:MoreThan(1)}, order: { name: "ASC" }});
+    else {
+      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+        return this.authorRepository
+          .createQueryBuilder('author')
+          .where('author.moderated >0 ')
+          .orWhere('author.user_id = :user', { user: user.id})
+          .orderBy('name')
+          .getMany();
+      else // админ, выводим все
+        return this.authorRepository.find( {order: { name: "ASC" }});
+    }
   }
 
   findOne(id: number) {
@@ -41,9 +53,12 @@ export class AuthorsService {
     return this.authorRepository.update({id}, updateAuthorDto);
   }
 
-  async moderate(id: number, user:IUser) {
+  async moderate(id: number, user:IUser, {action}: IModerate) {
     //await checkAccess(this.authorRepository,id, user.id);
-    return this.authorRepository.update({id}, {moderated: user.id});
+    if (action==='approve')
+      return this.authorRepository.update({id}, {moderated: user.id});
+    else
+      return this.authorRepository.update({id}, {moderated: -1});
   }
 
 

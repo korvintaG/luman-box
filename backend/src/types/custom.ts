@@ -35,6 +35,10 @@ export interface IIdeaBySourceAndKeyword {
   keyword_id:number
 }
 
+export interface IModerate {
+  action: 'approve' | 'reject';
+}
+
 export type AccessToken = {
   access_token: string;
 };

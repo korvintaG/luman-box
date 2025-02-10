@@ -15,24 +15,29 @@ export interface ILumanAPI {
   setAuthor: (data: AuthorPartial) => any;
   addAuthor: (data: AuthorRawPartial) => any;
   delAuthor: (id: number) => any;
+  approveAuthor: (id: number) => any;
+  rejectAuthor: (id: number) => any;
   // источники
   getSources: () => Promise<Source[]>;
   getSource: (id: number) => Promise<Source>;
   setSource: (data: SourcePartial) => any;
   addSource: (data: SourceRawPartial) => any;
   delSource: (id: number) => any;
+  approveSource: (id: number) => any;
   // ключевые слова
   getKeywords: () => Promise<Keyword[]>;
   getKeyword: (id: number) => Promise<Keyword>;
   setKeyword: (data: KeywordPartial) => any;
   addKeyword: (data: KeywordRawPartial) => any;
   delKeyword: (id: number) => any;
+  approveKeyword: (id: number) => any;
   // идеи
   getIdeas: () => Promise<Idea[]>;
   getIdea: (id: number) => Promise<Idea>;
   setIdea: (data: IdeaPartial) => any;
   addIdea: (data: IdeaRawPartial) => any;
   delIdea: (id: number) => any;
+  approveIdea: (id: number) => any;
   // авторизация
   login: (data: LoginData) => Promise<ServerResponse<LoginResult>>;
   getUser: () => Promise<User>;
@@ -78,7 +83,13 @@ export class LumanAPI extends Api implements ILumanAPI {
   // **********************************************
 
   getAuthors = (): Promise<Author[]> => {
-    return this.request<Author[]>(`/authors`, { method: 'GET' });
+    return this.request<Author[]>(`/authors`, { 
+      method: 'GET' ,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
   };
 
   getAuthor = (id: number): Promise<Author> => {
@@ -108,6 +119,27 @@ export class LumanAPI extends Api implements ILumanAPI {
     });
   }
 
+  approveAuthor= (id: number) => {
+    return this.requestWithRefresh(`/authors/moderate/${id}?action=approved`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
+
+  rejectAuthor= (id: number) => {
+    return this.requestWithRefresh(`/authors/moderate/${id}?action=reject`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
+
+
   delAuthor = (id: number) => {
     return this.requestWithRefresh(`/authors/${id}`, {
       method: 'DELETE',
@@ -120,7 +152,13 @@ export class LumanAPI extends Api implements ILumanAPI {
   // **********************************************
 
   getSources = (): Promise<Source[]> => {
-    return this.request<Source[]>(`/sources`, { method: 'GET' })
+    return this.request<Source[]>(`/sources`, 
+      { method: 'GET' ,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getCookie('accessToken')}`
+        }
+      })
   };
 
   getSource = (id: number): Promise<Source> => {
@@ -149,6 +187,27 @@ export class LumanAPI extends Api implements ILumanAPI {
     });
   };
 
+  approveSource= (id: number) => {
+    return this.requestWithRefresh(`/sources/moderate/${id}?action=approve`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
+
+  rejectSource= (id: number) => {
+    return this.requestWithRefresh(`/sources/moderate/${id}?action=reject`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
+
+
   delSource = (id: number) => {
     return this.requestWithRefresh(`/sources/${id}`, {
       method: 'DELETE',
@@ -161,7 +220,13 @@ export class LumanAPI extends Api implements ILumanAPI {
   // **********************************************
 
   getIdeas = (): Promise<Idea[]> => { 
-    return this.request<Idea[]>(`/ideas`, { method: 'GET' })
+    return this.request<Idea[]>(`/ideas`, { 
+      method: 'GET' ,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }      
+    })
   };
 
   getIdeasBySrcKw = (cond:{source_id: number, keyword_id: number}): Promise<Idea[]> => { 
@@ -170,7 +235,6 @@ export class LumanAPI extends Api implements ILumanAPI {
       { method: 'GET' }
     )
   };
-
 
   getIdea = (id: number): Promise<Idea> => {
     return this.request<Idea>(`/ideas/${id}`, { method: 'GET' })
@@ -198,6 +262,26 @@ export class LumanAPI extends Api implements ILumanAPI {
     });
   };
 
+  approveIdea= (id: number) => {
+    return this.requestWithRefresh(`/ideas/moderate/${id}?action=approve`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
+
+  rejectIdea= (id: number) => {
+    return this.requestWithRefresh(`/ideas/moderate/${id}?action=reject`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }  
+
   delIdea = (id: number) => {
     return this.requestWithRefresh(`/ideas/${id}`, {
       method: 'DELETE',
@@ -217,7 +301,13 @@ export class LumanAPI extends Api implements ILumanAPI {
   // **********************************************
 
   getKeywords = (): Promise<Keyword[]> => {
-    return this.request<Keyword[]>(`/keywords`, { method: 'GET' })
+    return this.request<Keyword[]>(`/keywords`, { 
+      method: 'GET' ,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    })
   };
 
   getKeyword = (id: number): Promise<Keyword> => {
@@ -235,7 +325,6 @@ export class LumanAPI extends Api implements ILumanAPI {
     });
   };
 
-
   setKeyword = (data: KeywordPartial) => {
     return this.requestWithRefresh(`/keywords/${data.id}`, {
       method: 'PATCH',
@@ -246,6 +335,26 @@ export class LumanAPI extends Api implements ILumanAPI {
       }
     });
   };
+
+  approveKeyword= (id: number) => {
+    return this.requestWithRefresh(`/keywords/moderate/${id}?action=approved`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
+
+  rejectKeyword= (id: number) => {
+    return this.requestWithRefresh(`/keywords/moderate/${id}?action=reject`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`
+      }
+    });
+  }
 
   delKeyword = (id: number) => {
     return this.requestWithRefresh(`/keywords/${id}`, {

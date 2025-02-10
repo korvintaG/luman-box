@@ -5,6 +5,9 @@ import {IIdeaBySourceAndKeyword} from '../../types/custom'
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
+import { RoleGuard } from '../../authorization/guards/role.guard';
+import { Role } from '../../authorization/decorators/role.decorator';
+import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 
 
 @Controller('ideas')
@@ -19,11 +22,13 @@ export class IdeasController {
   }
 
   @Get()
-  findAll(@Query() query:Partial<IIdeaBySourceAndKeyword>) {
+  @UseGuards(OptionalJwtAuthGuard)
+  findAll(@Req() req: Request,
+          @Query() query:Partial<IIdeaBySourceAndKeyword>) {
     if (query.keyword_id && query.source_id)
-      return this.ideasService.findBySrcKw({source_id:query.source_id , keyword_id: query.keyword_id });
+      return this.ideasService.findBySrcKw(req.user,{source_id:query.source_id , keyword_id: query.keyword_id });
     else
-      return this.ideasService.findAll();
+      return this.ideasService.findAll(req.user);
   }
 
   @Get('/find-by-source-kw/:src/:kw')
@@ -45,8 +50,9 @@ export class IdeasController {
     return this.ideasService.update(+id, req.user,updateIdeaDto);
   }
 
-  @UseGuards(JwtAuthGuard)  
   @Post('moderate/:id')
+  @UseGuards(JwtAuthGuard,RoleGuard)  
+  @Role(1)
   moderate(@Param('id') id: string, 
          @Req() req: Request) {
     return this.ideasService.moderate(+id, req.user);

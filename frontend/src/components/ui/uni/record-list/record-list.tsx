@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import clsx from 'clsx';
-import { ButtonAddUI } from '../../../../components/ui/uni/button-add'
+import { ButtonAddUI } from '../buttons/button-add'
 import styles from './record-list.module.css';
 import { Preloader } from '../../../../components/ui/uni/preloader';
 

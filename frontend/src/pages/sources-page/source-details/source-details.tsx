@@ -4,7 +4,7 @@ import { SourceDetailsUIFC } from '../../../components/ui/details/source-details
 import { useSelector, useDispatch } from '../../../services/store';
 import {
     setSource,selectCurrentSource, delSource, selectError, setStateSuccess,
-    selectIsDataLoading, getSource, addSource, selectSliceState
+    selectIsDataLoading, getSource, addSource, selectSliceState, approveSource, rejectSource
   } from '../../../slices/sources';
 import {
     selectAuthors, 
@@ -60,9 +60,14 @@ export const SourceDetails = () => {
             dispatch(delSource(Number(id)))
     }
 
-    const moderateSource = (e: SyntheticEvent) => {
-        //dispatch(delSource(Number(id)))
+    const approveRecord = (e: SyntheticEvent) => {
+        dispatch(approveSource(Number(id)))
     }
+
+    const rejectRecord = (e: SyntheticEvent) => {
+        dispatch(rejectSource(Number(id)))
+    }
+
 
     
     const handleSubmit = (e: SyntheticEvent) => {
@@ -91,7 +96,8 @@ export const SourceDetails = () => {
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить источник [${initialName}]?`}
             deleteRecord={deleteSource}
-            moderateRecord={moderateSource}
+            approveRecord={approveRecord}
+            rejectRecord={rejectRecord}
             resetSliceState={resetSliceState}
             authors={authors}
             userName={getUserCreator(currentSource, currentUser)}

@@ -1,0 +1,9 @@
+     /* Стили для кнопки "Отвергнуть изменения" */
+.button {
+      background-color: #ffc107; /* Желтый цвет */
+      color: black;
+  }
+
+.button:hover {
+      background-color: #e0a800;
+  }

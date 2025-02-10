@@ -5,8 +5,8 @@ import { InputEditUI } from '../../../../components/ui/uni/input-edit/input-edit
 import {AuthStatus} from '../../../../slices/auth/index'
 import { Preloader } from '../preloader';
 import { ErrorMessageUI } from '../error-message/error-message'
-import { ButtonAgreeUI } from '../button-type-agree/button-type-agree'
-import { ButtonAlertUI } from '../button-type-alert/button-type-alert'
+import { ButtonAgreeUI } from '../buttons/button-type-agree/button-type-agree'
+import { ButtonAlertUI } from '../buttons/button-type-alert/button-type-alert'
 import styles from './login-form.module.css';
 
 export type LoginFormProps = {

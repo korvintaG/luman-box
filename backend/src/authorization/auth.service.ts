@@ -53,7 +53,7 @@ export class AuthService {
 
   async generateRefreshToken(authUser: Partial<User>) {
     return this.jwtService.sign(
-      { id: authUser.id, name: authUser.name },
+      { id: authUser.id, name: authUser.name, role_id: authUser.role_id },
       {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
         expiresIn: this.configService.get('AUTH_REFRESH_TOKEN_EXPIRY'),
@@ -93,7 +93,7 @@ export class AuthService {
   }
 
   async generateAccessToken(user: Partial<User>) {
-    const payload = { id: user.id, name: user.name };
+    const payload = { id: user.id, name: user.name, role_id: user.role_id };
     return {
       access_token: this.jwtService.sign(payload), // jwt module is configured in auth.module.ts for access token
       success: true,

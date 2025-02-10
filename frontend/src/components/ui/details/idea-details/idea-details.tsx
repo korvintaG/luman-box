@@ -18,7 +18,8 @@ export type IdeaDetailsUIProps = {
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // действие
     deleteRecord: (e: SyntheticEvent) => void; // удалить текущую идею
-    moderateRecord: (e: SyntheticEvent) => void; // одобрить ключевое слово к идеи
+    approveRecord: (e: SyntheticEvent) => void; // одобрить ключевое слово к идеи
+    rejectRecord: (e: SyntheticEvent) => void; // отвергнуть ключевое слово к идеи
     deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
     addKeyword: (id: number) => void; // добавить ключевое слово к идеи
     sources: Source[]; // источники для выбора
@@ -79,7 +80,8 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (props: IdeaDetailsUIProps)
         <RecordButtonBlockUI id={props.id} 
                 editAccessStatus={props.editAccessStatus}
                 deleteRecord={props.deleteRecord} 
-                moderateRecord={props.moderateRecord} 
+                approveRecord={props.approveRecord} 
+                rejectRecord={props.rejectRecord} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить идею' />                
     </RecordEditUI>
 }

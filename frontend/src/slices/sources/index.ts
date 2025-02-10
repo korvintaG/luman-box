@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import { Source, RequestStatus } from '../../utils/type'
 import LumanAPI from '../../utils/luman-api'
-import { ListToWork, isFullFilledAction, isPendingAction, isRejectedAction, ErrorAction } from '../utils'
+import { ListToWork, ErrorAction } from '../utils'
 import {isUnauthorizedError} from '../../utils/utils'
 
 export const initialState: ListToWork<Source> = {
@@ -15,6 +15,8 @@ export const fetchSources = createAsyncThunk('fetchSources', LumanAPI.getSources
 export const getSource = createAsyncThunk('getSource', LumanAPI.getSource);
 export const setSource = createAsyncThunk('setSource', LumanAPI.setSource);
 export const addSource = createAsyncThunk('addSource', LumanAPI.addSource);
+export const approveSource = createAsyncThunk('approveSource', LumanAPI.approveSource);
+export const rejectSource = createAsyncThunk('approveSource', LumanAPI.rejectSource);
 export const delSource = createAsyncThunk('delSource', LumanAPI.delSource);
 
 export function isPendingSourceAction(action: PayloadAction) {
@@ -43,12 +45,15 @@ const sourcesSlice = createSlice({
   selectors: {
     selectSources: (sliceState) => sliceState.list,
     selectCurrentSource: (sliceState) => sliceState.current,
-    selectIsDataLoading: (sliceState) => sliceState.status==RequestStatus.Loading,
+    selectIsDataLoading: (sliceState) => sliceState.status===RequestStatus.Loading,
     selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchSources.pending, (state) => {
+        state.list = [];
+      })
       .addCase(fetchSources.fulfilled, (state, action) => {
         state.list = action.payload;
       })
@@ -61,20 +66,20 @@ const sourcesSlice = createSlice({
       .addCase(addSource.fulfilled, (state, _) => {
         state.status=RequestStatus.Added;
       })
-      .addCase(setSource.fulfilled, (state, _) => {
-        state.status=RequestStatus.Updated;
-      })
       .addCase(delSource.fulfilled, (state, _) => {
         state.status=RequestStatus.Deleted;
       })
       .addCase(addSource.rejected, (state, _) => {
         state.status=RequestStatus.FailedAdd;
       })
-      .addCase(setSource.rejected, (state, _) => {
-        state.status=RequestStatus.FailedUpdate;
-      })
       .addCase(delSource.rejected, (state, _) => {
         state.status=RequestStatus.FailedDelete;
+      })
+      .addMatcher(isAnyOf(setSource.fulfilled,approveSource.fulfilled,rejectSource.fulfilled), (state) => {
+        state.status=RequestStatus.Updated;
+      })
+      .addMatcher(isAnyOf(setSource.rejected,approveSource.rejected,rejectSource.rejected), (state) => {
+        state.status=RequestStatus.FailedUpdate;
       })
       .addMatcher(isAnyOf(getSource.fulfilled,fetchSources.fulfilled), (state) => {
         state.status=RequestStatus.Success
@@ -87,7 +92,6 @@ const sourcesSlice = createSlice({
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status=RequestStatus.FailedUnAuth
-
       });
   }
 });

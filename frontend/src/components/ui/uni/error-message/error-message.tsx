@@ -1,5 +1,5 @@
 import { FC,  SyntheticEvent } from 'react';
-import {ButtonUI} from '../button-type/button-type'
+import {ButtonUI} from '../buttons/button-type'
 import styles from './error-message.module.css'
 
 

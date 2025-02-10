@@ -3,8 +3,8 @@ import { useParams } from 'react-router';
 import {  AuthorDetailsUIFC } from '../../../components/ui/details/author-details/author-details'
 import { useSelector, useDispatch } from '../../../services/store';
 import {
-    setAuthor, selectCurrentAuthor, delAuthor, selectError, setStateSuccess,
-    getAuthor, addAuthor, selectSliceState
+    setAuthor, selectCurrentAuthor, delAuthor, selectError, setStateSuccess, approveAuthor,
+    getAuthor, addAuthor, selectSliceState, rejectAuthor
 } from '../../../slices/authors';
 import { selectCurrentUser } from '../../../slices/auth/index';
 import { appRoutes } from '../../../AppRoutes';
@@ -45,10 +45,17 @@ export const AuthorDetails = () => {
         dispatch(delAuthor(Number(id)));
     }
 
-    const moderateAuthor = (e: SyntheticEvent) => {
+    const approveAuthorAction = (e: SyntheticEvent) => {
         e.preventDefault();
-        //dispatch(moderateAuthor(Number(id)));
+        dispatch(approveAuthor(Number(id)));
     }
+
+    const rejectAuthorAction = (e: SyntheticEvent) => {
+        e.preventDefault();
+        dispatch(rejectAuthor(Number(id)));
+    }
+
+    
 
 
     const handleSubmit = (e: SyntheticEvent) => {
@@ -77,7 +84,8 @@ export const AuthorDetails = () => {
             handleSubmit={handleSubmit} 
             deleteQuestion={`Удалить автора [${initialName}]?`}
             deleteRecord={deleteAuthor}
-            moderateRecord={moderateAuthor}
+            approveRecord={approveAuthorAction}
+            rejectRecord={rejectAuthorAction}
             resetSliceState={resetSliceState}
             userName={getUserCreator(currentAuthor, currentUser)}
         />

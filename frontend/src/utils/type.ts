@@ -20,7 +20,9 @@ export type AuthorRaw = AuthorInner & {
 };
 export type AuthorRawPartial = Partial<AuthorRaw>;
 export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
-export type Author = AuthorRaw & IDObject;
+export type Author = AuthorRaw & IDObject & {
+    moderated?: number;
+}; 
 
 // Источники
 export type SourceInner = NameObject;

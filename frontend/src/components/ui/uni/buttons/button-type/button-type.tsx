@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent} from 'react';
 import styles from './button-type.module.css';
-import { combineClasses } from '../../../../utils/utils'
+import { combineClasses } from '../../../../../utils/utils'
 
 
 export type ButtonUIProps = {

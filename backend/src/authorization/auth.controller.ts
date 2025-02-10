@@ -8,6 +8,8 @@ import { JwtRefreshAuthGuard } from './guards/jwt-refresh-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard'
 import { UserDto } from '../DDD/users/dto/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
+import { RoleGuard } from './guards/role.guard';
+import { Role } from './decorators/role.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -30,6 +32,8 @@ export class AuthController {
   }
 
   @Post('register')
+  @UseGuards(JwtAuthGuard,RoleGuard)  
+  @Role(3)
   async register(
     @Body() createUserDto: CreateUserDto
   ) {

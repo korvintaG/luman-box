@@ -1,4 +1,4 @@
-import { Repository, FindManyOptions } from 'typeorm';
+import { Repository, FindManyOptions, MoreThan } from 'typeorm';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Source } from './entities/source.entity'
@@ -23,9 +23,22 @@ export class SourcesService {
     return this.sourceRepository.save({...createSourceDto, user:{id:user.id}});
   }
 
-  findAll() {
-    return this.sourceRepository.find( {relations: { author: true }, order: { name: "ASC" }});
+  findAll(user:IUser) {
+    if (!user) // неавторизован, выводим все отмодерированное
+    return this.sourceRepository.find( {relations: { author: true }, where:{moderated:MoreThan(1)}, order: { name: "ASC" }});
+  else {
+    if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+      return this.sourceRepository
+      .createQueryBuilder('source')
+      .leftJoinAndSelect('source.author', 'author')
+      .where('source.moderated >0 ')
+      .orWhere('source.user_id = :user', { user: user.id})
+      .orderBy('source.name')
+      .getMany();
+    else // админ, выводим все
+      return this.sourceRepository.find( {relations: { author: true }, order: { name: "ASC" }});
   }
+}
 
   findByCond(cond:FindManyOptions) {
     return this.sourceRepository.find( cond);

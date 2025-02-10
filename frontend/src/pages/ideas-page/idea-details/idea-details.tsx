@@ -14,6 +14,8 @@ import {
   addIdea,
   resetStatus,
   getIdeaBySrcKw,
+  approveIdea,
+  rejectIdea,
   selectSliceState,
 } from "../../../slices/ideas";
 import {
@@ -98,9 +100,14 @@ export const IdeaDetails = () => {
     dispatch(delIdea(idNumber));
   };
 
-  const moderateIdea = (e: SyntheticEvent) => {
+  const approveRecord = (e: SyntheticEvent) => {
     const idNumber = Number(id);
-    //dispatch(delIdea(idNumber));
+    dispatch(approveIdea(idNumber));
+  };
+
+  const rejectRecord = (e: SyntheticEvent) => {
+    const idNumber = Number(id);
+    dispatch(rejectIdea(idNumber));
   };
 
 
@@ -149,7 +156,8 @@ export const IdeaDetails = () => {
         handleSubmit={handleSubmit} 
         deleteQuestion={`Удалить идею [${initialName}]?`}
         deleteRecord={deleteIdea}
-        moderateRecord={moderateIdea}
+        approveRecord={approveRecord}
+        rejectRecord={rejectRecord}
         resetSliceState={resetSliceState}
         sources={sources}
         keywords={keywords}

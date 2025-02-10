@@ -1,9 +1,13 @@
-import { Req, Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
+import { Req,Query, Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
 import { Request  } from 'express';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
+import { OptionalJwtAuthGuard} from '../../authorization/guards/optional-jwt-auth.guard'
+import { RoleGuard } from '../../authorization/guards/role.guard';
+import { Role } from '../../authorization/decorators/role.decorator';
+import { IModerate, IUser } from '../../types/custom';
 
 
 @Controller('authors')
@@ -18,8 +22,9 @@ export class AuthorsController {
   }
 
   @Get()
-  findAll() {
-    return this.authorsService.findAll();
+  @UseGuards(OptionalJwtAuthGuard)    
+  findAll(@Req() req: Request) {
+    return this.authorsService.findAll(req.user);
   }
 
   @Get(':id')
@@ -35,11 +40,13 @@ export class AuthorsController {
     return this.authorsService.update(+id, req.user, updateAuthorDto);
   }
 
-  @UseGuards(JwtAuthGuard)  
   @Post('moderate/:id')
+  @UseGuards(JwtAuthGuard,RoleGuard)  
+  @Role(1)
   moderate(@Param('id') id: string, 
-         @Req() req: Request) {
-    return this.authorsService.moderate(+id, req.user);
+         @Req() req: Request,
+         @Query() query:IModerate) {
+    return this.authorsService.moderate(+id, req.user, query);
   }
 
 

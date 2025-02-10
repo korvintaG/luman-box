@@ -1,0 +1,8 @@
+.block {
+    display: flex;
+    padding-top: 15px;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}

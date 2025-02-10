@@ -18,7 +18,8 @@ export type KeywordDetailsUIProps = {
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void;
     deleteRecord: (e: SyntheticEvent) => void;
-    moderateRecord: (e: SyntheticEvent) => void;
+    approveRecord: (e: SyntheticEvent) => void;
+    rejectRecord: (e: SyntheticEvent) => void;
     userName: string;
 }
 
@@ -39,7 +40,8 @@ export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = (props:KeywordDetails
             <RecordButtonBlockUI id={props.id} 
                 editAccessStatus={props.editAccessStatus}
                 deleteRecord={props.deleteRecord} 
-                moderateRecord={props.moderateRecord} 
+                approveRecord={props.approveRecord} 
+                rejectRecord={props.rejectRecord} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить ключевое слово' />
             <RelationListUI 
                 title='Список авторов, в идеях по источникам которых есть ключевое слово:'

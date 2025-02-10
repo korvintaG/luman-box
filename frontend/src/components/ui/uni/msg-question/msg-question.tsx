@@ -1,7 +1,7 @@
 import Modal from 'react-modal'
 import { FC, SyntheticEvent  } from 'react';
-import { ButtonAgreeUI } from '../button-type-agree'
-import { ButtonAlertUI } from '../button-type-alert'
+import { ButtonAgreeUI } from '../buttons/button-type-agree'
+import { ButtonAlertUI } from '../buttons/button-type-alert'
 import { ReactComponent as CloseIcon } from "./close-icon.svg";
 import styles from './msg-question.module.css';
 

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 import { Author} from '../../../../utils/type';
 import { RecordListUI } from '../../../../components/ui/uni/record-list'
 import { getRouteParam , appRoutes} from '../../../../AppRoutes'
@@ -22,6 +23,8 @@ export const AuthorListUI : FC<AuthorListUIProps> = ({authors, readOnly, addNewA
                     {authors.map((author) => (
                         <li key={author.id}>
                             <Link
+                                className={clsx({['moderated-need']:author.moderated===0})
+                                    }
                                 to={getRouteParam(appRoutes.author,author.id)} >
                                 {author.name}
                             </Link>

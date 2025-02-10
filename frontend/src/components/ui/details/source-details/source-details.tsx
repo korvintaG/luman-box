@@ -21,7 +21,8 @@ export type SourceDetailsUIProps = {
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // изменение элемента ввода
     handleSubmit: (e: SyntheticEvent) => void; // действия по submit
     deleteRecord: (e: SyntheticEvent) => void; // действия по удалению источника
-    moderateRecord: (e: SyntheticEvent) => void; // действия по одобрению источника
+    approveRecord: (e: SyntheticEvent) => void; // действия по одобрению источника
+    rejectRecord: (e: SyntheticEvent) => void; // действия по отвержению источника
     authors: Author[]; // список авторов для выбора в лукапе
     userName: string;
 }
@@ -54,7 +55,8 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = (props:SourceDetailsUIP
             <RecordButtonBlockUI id={props.id} 
                 editAccessStatus={props.editAccessStatus}
                 deleteRecord={props.deleteRecord} 
-                moderateRecord={props.moderateRecord} 
+                approveRecord={props.approveRecord} 
+                rejectRecord={props.rejectRecord} 
                 submitButtonCaption={btnCaptione} deleteButtonCaption='Удалить источник' />
             {props.id && <>
                 <RelationListUI 

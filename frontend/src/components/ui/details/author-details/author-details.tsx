@@ -14,14 +14,15 @@ import styles from './author-details.module.css'
  * Чистый компонент редактирования автора
  */
 export type AuthorDetailsUIProps = {
-    id: number | null;
+    id: number | null; 
     values: AuthorRaw; // поля автора для редактирования
     initialName: string; // начальное имя
     editAccessStatus: EditAccessStatus;
     handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
     handleSubmit: (e: SyntheticEvent) => void; // сохранить изменения в базе
     deleteRecord: (e: SyntheticEvent) => void; // функция удаления автора
-    moderateRecord: (e: SyntheticEvent) => void; // функция одобрения автора
+    approveRecord: (e: SyntheticEvent) => void; // функция одобрения автора
+    rejectRecord: (e: SyntheticEvent) => void; // функция отвержения автора
     userName: string;
 }
 
@@ -42,7 +43,8 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (props:AuthorDetailsUIP
                 id={props.id} 
                 editAccessStatus={props.editAccessStatus}
                 deleteRecord={props.deleteRecord} 
-                moderateRecord={props.moderateRecord}
+                approveRecord={props.approveRecord}
+                rejectRecord={props.rejectRecord}
                 submitButtonCaption={btnCaptione} 
                 deleteButtonCaption='Удалить автора' />
             <RelationListUI 
