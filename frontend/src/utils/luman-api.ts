@@ -120,7 +120,7 @@ export class LumanAPI extends Api implements ILumanAPI {
   }
 
   approveAuthor= (id: number) => {
-    return this.requestWithRefresh(`/authors/moderate/${id}?action=approved`, {
+    return this.requestWithRefresh(`/authors/moderate/${id}?action=approve`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -337,7 +337,7 @@ export class LumanAPI extends Api implements ILumanAPI {
   };
 
   approveKeyword= (id: number) => {
-    return this.requestWithRefresh(`/keywords/moderate/${id}?action=approved`, {
+    return this.requestWithRefresh(`/keywords/moderate/${id}?action=approve`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
