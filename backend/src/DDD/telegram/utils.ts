@@ -28,7 +28,9 @@ export async function deleteMessage(ctx: MyContext, chatId: string) {
     await ctx.telegram.deleteMessage(ctx.session[chatId].chat_id, message);
   } catch (e) {
     if (e.code === 400) {
-      console.log(`Сообщение ${message} не существует или уже удалено.`);
+      console.log(
+        `Уведомление: сообщение ${message} не существует или уже удалено. Сообщение будет пересоздано.`,
+      );
     } else {
       console.error(`Ошибка при удалении сообщения ${message}:`, e);
     }
@@ -44,8 +46,15 @@ export async function deleteMessageReceivedAndRest(
 ) {
   const message = ctx.message;
   await deleteMessage(ctx, chatId);
-  if (message.from.id === Number(chatId)) {
-    await ctx.telegram.deleteMessage(chatId, message.message_id);
+  console.log('пытаемся удалить все ненужные сообщения в чате с пользователем');
+  try {
+    if ((ctx.from.id || ctx.chat?.id) === Number(chatId)) {
+      await ctx.telegram.deleteMessage(chatId, message.message_id);
+    }
+  } catch (e) {
+    console.error(
+      'Уведомление: не обнаружены сообщения для удаления после перезагрузки бота',
+    );
   }
 }
 
