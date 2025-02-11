@@ -23,6 +23,9 @@ export class TelegramBot {
     @Ctx() ctx: Scenes.SceneContext & MyContext,
     @ChatId() chatId: string,
   ) {
+    // Добавляем задержку в 500 мс
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     console.log('Вход в сцену Start');
     const userState = await UserState.create(
       this.telegramUsersDB,
