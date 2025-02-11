@@ -36,6 +36,7 @@ export class SubmitPasswordScene {
    */
   @SceneEnter()
   async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
+    console.log(`Вход в сцену ${ctx.session.__scenes.current}`);
     if (!ctx.session[chatId].chat_id) {
       //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
       ctx.scene.enter(ScenesNames.MAIN);
@@ -47,8 +48,10 @@ export class SubmitPasswordScene {
   /**
    * Срабатывает, когда пользователь вводит в поле сообщения команду /start или /menu. Сообщение удаляется, пользователь переходит в основную сцену
    */
-  @Command(/menu|start/)
+  @Command(/^\/menu$/) // Регулярное выражение для точного совпадения с /menu
+  @Command(/^\/start$/) // Регулярное выражение для точного совпадения с /start
   async onMenu(@Ctx() ctx: MyContext & SceneContext) {
+    console.log('Написали start/menu из основной сцены');
     ctx.deleteMessage();
     ctx.scene.enter(ScenesNames.MAIN);
   }
@@ -124,6 +127,7 @@ export class SubmitPasswordScene {
     @Ctx() ctx: MyContext & SceneContext,
     @ChatId() chatId: string,
   ): Promise<void> {
+    console.log(`Выход со сцены ${ctx.session.__scenes.current}`);
     ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_PASSWORD;
   }
 }

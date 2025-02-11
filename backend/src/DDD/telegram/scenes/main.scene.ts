@@ -15,7 +15,7 @@ import { CallbackData, ScenesNames } from '../telegram.patterns';
 import { replyMain } from './messages';
 import { TelegramSessionsService } from '../telegram-sessions.service';
 import { UsersService } from 'src/DDD/users/users.service';
-import { ChatId, deleteMessage, messagePushToDelAndUpd } from '../utils';
+import { ChatId, messagePushToDelAndUpd } from '../utils';
 
 @Injectable()
 @Scene(ScenesNames.MAIN)
@@ -34,6 +34,7 @@ export class MainScene {
    */
   @SceneEnter()
   async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
+    console.log(`Вход в сцену ${ctx.session.__scenes.current}`);
     if (!ctx.session[chatId]) {
       //если нет стейта, то обновляем его
       const userState = await UserState.create(
@@ -74,8 +75,10 @@ export class MainScene {
   /**
    * Срабатывает, если во время сцены пользователь отправляет любое сообщение, чтобы не засорять чат.
    */
-  @Command(/menu/)
+  @Command(/^\/menu$/) // Регулярное выражение для точного совпадения с /menu
+  @Command(/^\/start$/) // Регулярное выражение для точного совпадения с /start
   async onMenu(@Ctx() ctx: MyContext & SceneContext) {
+    console.log('Написал start/menu из основной сцены');
     ctx.deleteMessage();
     ctx.scene.reenter();
   }
@@ -84,11 +87,12 @@ export class MainScene {
    * Срабатывает, если во время сцены пользователь отправляет любое сообщение, чтобы не засорять чат.
    */
   @On('message')
-  async onAnswer(
-    @Ctx() ctx: MyContext & SceneContext,
-    @ChatId() chatId: string,
-  ) {
-    await deleteMessage(ctx, chatId);
+  async onAnswer(@Ctx() ctx: MyContext & SceneContext) {
+    await ctx.deleteMessage();
+    if (ctx.text === '/start') {
+      //обработка ситуации, когда пользователь удалил чат полностью, а потом заходит по старту
+      ctx.scene.reenter();
+    }
   }
 
   /**
@@ -100,5 +104,6 @@ export class MainScene {
     @ChatId() chatId: string,
   ): Promise<void> {
     ctx.session[chatId].prev_scene = ScenesNames.MAIN;
+    console.log(`Выход со сцены ${ctx.session.__scenes.current}`);
   }
 }
