@@ -15,7 +15,14 @@ import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replySubmitUsername } from './messages';
 import { UsersService } from 'src/DDD/users/users.service';
-import { ChatId, messagePushToDelAndUpd, sanitizeUsername } from '../utils';
+import {
+  ChatId,
+  customLog,
+  deletMessageWithLog,
+  onStartOrMenuCommand,
+  sanitizeUsername,
+  updateMessageState,
+} from '../utils';
 
 @Injectable()
 @Scene(ScenesNames.SUBMIT_USERNAME)
@@ -49,13 +56,42 @@ export class SubmitUsernameScene {
    */
   @SceneEnter()
   async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
-    console.log(`Вход в сцену ${ctx.session.__scenes.current}`);
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Вход в сцену`,
+    );
     if (!ctx.session[chatId].chat_id) {
-      //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `При входе в сцену не обраружен state, перенаправляем на mainScene`,
+      );
       ctx.scene.enter(ScenesNames.MAIN);
     }
     const message = await replySubmitUsername(ctx, chatId);
-    messagePushToDelAndUpd(message, ctx, chatId, this.telegramUsersDB);
+    updateMessageState(message, ctx, chatId, this.telegramUsersDB);
+  }
+
+  @Action(CallbackData.BACK_TO_MENU)
+  async onBackRequest(
+    @Ctx()
+    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
+    @ChatId() chatId: string,
+  ) {
+    const cbQuery = ctx.update.callback_query;
+    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
+    if (userAnswer === CallbackData.BACK_TO_MENU) {
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Пользователь нажал кнопку "Назад в основное меню"`,
+      );
+      ctx.scene.enter(ScenesNames.MAIN);
+    }
   }
 
   /**
@@ -64,22 +100,7 @@ export class SubmitUsernameScene {
   @Command(/^\/menu$/) // Регулярное выражение для точного совпадения с /menu
   @Command(/^\/start$/) // Регулярное выражение для точного совпадения с /start
   async onMenu(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
-    console.log('Написали start/menu из основной сцены');
-    ctx.deleteMessage();
-    ctx.session[chatId].msg_status = 0;
-    ctx.scene.enter(ScenesNames.MAIN);
-  }
-
-  @Action(CallbackData.BACK_TO_MENU)
-  async onBackRequest(
-    @Ctx()
-    ctx: MyContext & SceneContext & { update: Update.CallbackQueryUpdate },
-  ) {
-    const cbQuery = ctx.update.callback_query;
-    const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
-    if (userAnswer === CallbackData.BACK_TO_MENU) {
-      ctx.scene.enter(ScenesNames.MAIN);
-    }
+    onStartOrMenuCommand(ctx, chatId);
   }
 
   /**
@@ -90,42 +111,138 @@ export class SubmitUsernameScene {
     @Ctx() ctx: MyContext & SceneContext,
     @ChatId() chatId: string,
   ) {
-    const telegramUser = await this.telegramUsersDB.saveUser(
-      ctx.session[chatId],
-    );
-    ctx.session[chatId].id = telegramUser.id;
-    const userName = ctx.text;
-    const userNameSanitized = sanitizeUsername(userName);
-    if (userName.length < 5) {
-      ctx.session[chatId].msg_status = 1; //задаем стейт ответа, что пользователь не прошел проверку по длинне имени
-      ctx.scene.reenter();
-    } else if (userName !== userNameSanitized) {
-      ctx.session[chatId].msg_status = 2; //задаем стейт ответа, что пользователь не прошел проверку по разрешенным знакам
-      ctx.scene.reenter();
-    } else if (
-      (await this.checkIfNameIsUnique(
-        userNameSanitized,
-        ctx.session[chatId],
-      )) === false
-    ) {
-      ctx.session[chatId].msg_status = 3; //задаем стейт ответа, что пользователь не прошел проверку пникальности
-      ctx.scene.reenter();
-    } else {
-      ctx.session[chatId].name = userNameSanitized;
-      const telegramUser = await this.telegramUsersDB.saveUser(
-        ctx.session[chatId],
+    if (ctx.text === '/start') {
+      //обработка ситуации, когда пользователь удалил чат полностью, а потом заходит по старту
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Возможно, пльзователь до этого удалил чат полностью и теперь жмет на кнопку /start`,
       );
-      if (telegramUser.name === userNameSanitized) {
-        ctx.session[chatId].name = userNameSanitized;
-        ctx.session[chatId].msg_status = 0; //обнуляем стейт статуса ответа, т.к. переходим на новую сцену
-        ctx.scene.enter(ScenesNames.REGISTRATION);
-      } else {
-        ctx.session[chatId].msg_status = 0; //обнуляем стейт ответа, т.к. ошибка
-        ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
-        await ctx.scene.leave();
+      deletMessageWithLog(ctx, chatId);
+      try {
+        await ctx.telegram.deleteMessage(
+          chatId,
+          ctx.session[chatId].msg_to_del,
+        );
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Удалено старое сообщение от бота, которое было в чате`,
+        );
+      } catch (e) {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Старое сообщение, которое надо удалить, не удалсь удалить`,
+        );
       }
+      ctx.scene.enter(ScenesNames.MAIN);
+    } else {
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Пользователь отправил сообщение "${ctx.text}", чтобы задать юзернейм"`,
+      );
+      if (!ctx.session[chatId]) {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Пользователь зашел впервые, поэтому создадим для него стейт и запись в telegram-sessions`,
+        );
+        try {
+          const { id } = await this.telegramUsersDB.saveUser(
+            ctx.session[chatId],
+          );
+          ctx.session[chatId].id = id;
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Новая запись о пользователе создана в telegram-sessions успешно`,
+          );
+        } catch (e) {
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Ошибка! Что-то пошло не так и новая запись о пользователе создана в telegram-sessions не была создана. Пользователю будет отправлено сообщение об ошибке`,
+          );
+          await ctx.telegram.sendMessage(chatId, Patterns.ERROR);
+          await ctx.scene.leave();
+        }
+      }
+      const userName = ctx.text;
+      const userNameSanitized = sanitizeUsername(userName);
+      if (userName.length < 5) {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Юзернейм не прошел проверку на длинну`,
+        );
+        ctx.session[chatId].msg_status = 1; //задаем стейт ответа, что пользователь не прошел проверку по длинне имени
+        ctx.scene.reenter();
+      } else if (userName !== userNameSanitized) {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Юзернейм не прошел проверку на наличие запрещенных символов`,
+        );
+        ctx.session[chatId].msg_status = 2; //задаем стейт ответа, что пользователь не прошел проверку по разрешенным знакам
+        ctx.scene.reenter();
+      } else if (
+        (await this.checkIfNameIsUnique(
+          userNameSanitized,
+          ctx.session[chatId],
+        )) === false
+      ) {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Юзернейм не прошел проверку на уникальность`,
+        );
+        ctx.session[chatId].msg_status = 3; //задаем стейт ответа, что пользователь не прошел проверку пникальности
+        ctx.scene.reenter();
+      } else {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Юзернейм прошел все проверки`,
+        );
+        ctx.session[chatId].name = userNameSanitized;
+        try {
+          await this.telegramUsersDB.saveUser(ctx.session[chatId]);
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Обновлена запись о пользователе в telegram-users, пользователь будет перемещен в сцену registrationScene`,
+          );
+          ctx.session[chatId].name = userNameSanitized;
+          ctx.session[chatId].msg_status = 0;
+          ctx.scene.enter(ScenesNames.REGISTRATION);
+        } catch (e) {
+          ctx.session[chatId].msg_status = 0;
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Ошибка! Данные пользователя по каким-то причинам не сохранились в telegam-users. Пользователю будет отправлено сообщение об ошибке`,
+          );
+          await ctx.telegram.sendMessage(chatId, Patterns.ERROR);
+          await ctx.scene.leave();
+        }
+      }
+      deletMessageWithLog(ctx, chatId);
     }
-    await ctx.deleteMessage();
   }
 
   /**
@@ -136,7 +253,12 @@ export class SubmitUsernameScene {
     @Ctx() ctx: MyContext & SceneContext,
     @ChatId() chatId: string,
   ): Promise<void> {
-    console.log(`Выход со сцены ${ctx.session.__scenes.current}`);
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Выход со сцены`,
+    );
     ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_USERNAME;
   }
 }

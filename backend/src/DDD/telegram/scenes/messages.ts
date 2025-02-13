@@ -1,8 +1,8 @@
 import { SceneContext } from 'telegraf/typings/scenes';
 import { MyContext } from '../telegram.types';
-import { Patterns, CallbackData, ScenesNames } from '../telegram.patterns';
+import { Patterns, CallbackData } from '../telegram.patterns';
 import { Message } from '@telegraf/types';
-import { deleteMessage } from '../utils';
+
 
 /**
  * Возвращает текст кнопки регистрации в зависимости от статуса пользователя (зарегистрирован? изменить пароль : задать/изменить логин и пароль )
@@ -158,12 +158,13 @@ export async function replyMain(
         'new message content and reply markup are exactly the same',
       )
     ) {
-      if ((ctx.session[chatId].prev_scene = ScenesNames.START)) {
-        //если предыдущая сцена была Start, то возможно пользователь зашел после того, как до этого удалил все сообщения чата, при этом последнее сообщение которое было отправлено ботом, хранится в стейте и будет возвращать ошибку, что нечего править
-        //удаляем все старые сообщения, которые теоретически могли бы быть, если пользователь многократно жал на старт или меню, но до этого не удалял чат
-        await deleteMessage(ctx, chatId);
-        return reply;
-      } else return ctx.session[chatId].msg_to_upd;
+      // if ((ctx.session[chatId].prev_scene = ScenesNames.START)) {
+      //   //если предыдущая сцена была Start, то возможно пользователь зашел после того, как до этого удалил все сообщения чата, при этом последнее сообщение которое было отправлено ботом, хранится в стейте и будет возвращать ошибку, что нечего править
+      //   //удаляем все старые сообщения, которые теоретически могли бы быть, если пользователь многократно жал на старт или меню, но до этого не удалял чат
+      //   await deleteMessage(ctx, chatId);
+      //   return reply;
+      // } else 
+      return ctx.session[chatId].msg_to_upd;
     }
     return reply;
   }
