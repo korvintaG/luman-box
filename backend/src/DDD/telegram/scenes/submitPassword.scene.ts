@@ -230,6 +230,5 @@ export class SubmitPasswordScene {
       ctx.session.__scenes.current,
       `Выход со сцены`,
     );
-    ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_PASSWORD;
   }
 }

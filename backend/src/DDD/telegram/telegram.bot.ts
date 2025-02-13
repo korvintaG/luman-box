@@ -68,7 +68,6 @@ export class TelegramBot {
         );
       }
     }
-    ctx.session[chatId].prev_scene = ScenesNames.START;
     customLog(
       'TelegramBot',
       chatId,
@@ -139,7 +138,6 @@ export class TelegramBot {
           );
         }
       }
-      ctx.session[chatId].prev_scene = ScenesNames.START;
       customLog(
         'TelegramBot',
         chatId,

@@ -156,7 +156,6 @@ export class MainScene {
     @Ctx() ctx: MyContext & SceneContext,
     @ChatId() chatId: string,
   ): Promise<void> {
-    ctx.session[chatId].prev_scene = ScenesNames.MAIN;
     customLog(
       'TelegramBot',
       chatId,

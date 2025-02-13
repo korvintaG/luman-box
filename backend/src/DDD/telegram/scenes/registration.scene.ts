@@ -275,6 +275,5 @@ export class RegistrationScene {
       ctx.session.__scenes.current,
       `Выход со сцены`,
     );
-    ctx.session[chatId].prev_scene = ScenesNames.REGISTRATION;
   }
 }
