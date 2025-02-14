@@ -15,7 +15,14 @@ import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replySubmitPassword } from './messages';
 import { UsersService } from 'src/DDD/users/users.service';
-import { ChatId, messagePushToDelAndUpd, sanitizePassword } from '../utils';
+import {
+  ChatId,
+  customLog,
+  deletMessageWithLog,
+  onStartOrMenuCommand,
+  sanitizePassword,
+  updateMessageState,
+} from '../utils';
 import { AuthService } from 'src/authorization/auth.service';
 
 @Injectable()
@@ -36,13 +43,23 @@ export class SubmitPasswordScene {
    */
   @SceneEnter()
   async enter(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
-    console.log(`Вход в сцену ${ctx.session.__scenes.current}`);
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Вход в сцену`,
+    );
     if (!ctx.session[chatId].chat_id) {
-      //если после перехода на сцену был разрыв связи с сервером и стейт сбросился
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `При входе в сцену не обраружен state, перенаправляем на mainScene`,
+      );
       ctx.scene.enter(ScenesNames.MAIN);
     }
     const message = await replySubmitPassword(ctx, chatId);
-    messagePushToDelAndUpd(message, ctx, chatId, this.telegramUsersDB);
+    updateMessageState(message, ctx, chatId, this.telegramUsersDB);
   }
 
   /**
@@ -50,10 +67,8 @@ export class SubmitPasswordScene {
    */
   @Command(/^\/menu$/) // Регулярное выражение для точного совпадения с /menu
   @Command(/^\/start$/) // Регулярное выражение для точного совпадения с /start
-  async onMenu(@Ctx() ctx: MyContext & SceneContext) {
-    console.log('Написали start/menu из основной сцены');
-    ctx.deleteMessage();
-    ctx.scene.enter(ScenesNames.MAIN);
+  async onMenu(@Ctx() ctx: MyContext & SceneContext, @ChatId() chatId: string) {
+    onStartOrMenuCommand(ctx, chatId);
   }
 
   @Action(CallbackData.BACK_TO_MENU)
@@ -65,6 +80,12 @@ export class SubmitPasswordScene {
     const cbQuery = ctx.update.callback_query;
     const userAnswer = 'data' in cbQuery ? cbQuery.data : null;
     if (userAnswer === CallbackData.BACK_TO_MENU) {
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Пользователь нажал кнопку "Назад в основное меню"`,
+      );
       ctx.session[chatId].msg_status = 4;
       ctx.scene.enter(ScenesNames.MAIN);
     }
@@ -78,56 +99,136 @@ export class SubmitPasswordScene {
     @Ctx() ctx: MyContext & SceneContext,
     @ChatId() chatId: string,
   ) {
-    const userPassword = ctx.text;
-    const userPasswordSanitized = sanitizePassword(userPassword);
-    if (userPassword.length < 5) {
-      ctx.session[chatId].msg_status = 1;
-      ctx.scene.reenter();
-    } else if (userPassword !== userPasswordSanitized) {
-      ctx.session[chatId].msg_status = 2;
-      ctx.scene.reenter();
-    } else {
-      ctx.session[chatId].password = userPasswordSanitized;
-      const telegramUser = await this.telegramUsersDB.saveUser(
-        ctx.session[chatId],
+    if (ctx.text === '/start') {
+      //обработка ситуации, когда пользователь удалил чат полностью, а потом заходит по старту
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Возможно, пльзователь до этого удалил чат полностью и теперь жмет на кнопку /start`,
       );
-      if (telegramUser.password === userPasswordSanitized) {
-        if (ctx.session[chatId].user_id === 0) {
-          //если новый пользователь задает пароль
-          ctx.session[chatId].msg_status = 0;
-          ctx.scene.enter(ScenesNames.REGISTRATION);
-        } else {
-          //если зарегистрированный пользователь меняет пароль
-          const authUser = await this.authService.update(ctx.session[chatId]);
-          ctx.session[chatId].password = '';
-          if (authUser.success) {
-            const { id } = await this.usersDB.findOneByChatId(
-              ctx.session[chatId].chat_id,
-            );
-            ctx.session[chatId].user_id = id;
-            ctx.session[chatId].msg_status = 3;
-            await this.telegramUsersDB.saveUser(ctx.session[chatId]);
-            ctx.scene.reenter();
-          } else {
-            ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
-            await ctx.scene.leave();
-          }
-        }
+      deletMessageWithLog(ctx, chatId);
+      ctx.scene.enter(ScenesNames.MAIN);
+    } else {
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Пользователь отправил сообщение, чтобы задать пароль"`,
+      );
+      const userPassword = ctx.text;
+      const userPasswordSanitized = sanitizePassword(userPassword);
+      if (userPassword.length < 5) {
+        ctx.session[chatId].msg_status = 1;
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Пароль не прошел проверку на длинну`,
+        );
+        ctx.scene.reenter();
+      } else if (userPassword !== userPasswordSanitized) {
+        ctx.session[chatId].msg_status = 2;
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Пароль не прошел проверку на наличие запрещенных символов`,
+        );
+        ctx.scene.reenter();
       } else {
-        ctx.session[chatId].password = '';
-        ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
-        await ctx.scene.leave();
+        ctx.session[chatId].password = userPasswordSanitized;
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Пароль прошел валидацию`,
+        );
+        try {
+          await this.telegramUsersDB.saveUser(ctx.session[chatId]);
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Пароль, полученный от пользователя, временно записан telegram-users`,
+          );
+          if (ctx.session[chatId].user_id === 0) {
+            customLog(
+              'TelegramBot',
+              chatId,
+              ctx.session.__scenes.current,
+              `Так как пользователя еще нет в базе users, пользователь сейчас будет перенаправлен на сцену registerScene для дальнейшего подтверждения процедуры регистрации`,
+            );
+            ctx.session[chatId].msg_status = 0;
+            ctx.scene.enter(ScenesNames.REGISTRATION);
+          } else {
+            customLog(
+              'TelegramBot',
+              chatId,
+              ctx.session.__scenes.current,
+              `Пользователь ранее уже был зарегистрирован в users и просто меняет пароль, далее будет проведена процедура Auth по новому паролю`,
+            );
+            try {
+              await this.authService.update(ctx.session[chatId]);
+              customLog(
+                'TelegramBot',
+                chatId,
+                ctx.session.__scenes.current,
+                `Пользователь успешно прошел процедуру Auth по смене пароля`,
+              );
+              ctx.session[chatId].password = '';
+              customLog(
+                'TelegramBot',
+                chatId,
+                ctx.session.__scenes.current,
+                `Временный пароль в стейте удален`,
+              );
+              try {
+                await this.telegramUsersDB.saveUser(ctx.session[chatId]);
+                customLog(
+                  'TelegramBot',
+                  chatId,
+                  ctx.session.__scenes.current,
+                  `Данные пользователя обновлены в таблице telegram-sessions, пароль обнулен`,
+                );
+              } catch (e) {
+                customLog(
+                  'TelegramBot',
+                  chatId,
+                  ctx.session.__scenes.current,
+                  `Ошибка! Пароль пользователя по каким-то причинам не смог обнулиться в telegram-sessions. Пользователю будет отправлено сообщение об ошибке`,
+                );
+                await ctx.telegram.sendMessage(chatId, Patterns.ERROR);
+                await ctx.scene.leave();
+              }
+              ctx.session[chatId].msg_status = 3;
+              ctx.scene.reenter();
+            } catch (e) {
+              ctx.session[chatId].password = '';
+              ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
+              await ctx.scene.leave();
+            }
+          }
+        } catch (e) {
+          ctx.session[chatId].password = '';
+          ctx.editMessageText(Patterns.ERROR, { parse_mode: 'HTML' });
+          await ctx.scene.leave();
+        }
       }
     }
-    await ctx.deleteMessage();
+    deletMessageWithLog(ctx, chatId);
   }
 
-  @SceneLeave() //действия при выходе из сцены
+  @SceneLeave()
   async sceneLeave(
     @Ctx() ctx: MyContext & SceneContext,
     @ChatId() chatId: string,
   ): Promise<void> {
-    console.log(`Выход со сцены ${ctx.session.__scenes.current}`);
-    ctx.session[chatId].prev_scene = ScenesNames.SUBMIT_PASSWORD;
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Выход со сцены`,
+    );
   }
 }

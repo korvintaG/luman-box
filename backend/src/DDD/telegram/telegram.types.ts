@@ -21,13 +21,10 @@ export interface ITelegramUser {
  * Параметр msg_to_up хранит в себе последнее сообщение бота, чтобы его можно было возвращать на случай, если возникают какие-то ошибки
  *
  * Парамет msg_to_del хранит в себе список сообщений, которые пользователь получал от бота, чтобы удалить их при необходимости
- *
- * Параметр prev_scene сохраняет в себе название предыдущей сцены, с которой пришел пользователь
  */
 export interface ITelegramUserState extends ITelegramUser {
   msg_status: number;
   msg_to_upd?: Message.TextMessage;
-  prev_scene?: string;
 }
 
 export class UserState implements ITelegramUserState {
@@ -38,7 +35,6 @@ export class UserState implements ITelegramUserState {
   msg_status: number;
   msg_to_upd?: Message.TextMessage;
   msg_to_del: number;
-  prev_scene: string;
   id: number;
 
   private constructor(
@@ -55,7 +51,6 @@ export class UserState implements ITelegramUserState {
     this.password = password;
     this.msg_status = 0;
     this.msg_to_del = msg_to_del;
-    this.prev_scene = '';
     this.id = id;
   }
 

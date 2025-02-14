@@ -3,7 +3,7 @@ import { Ctx, Start, Update, Command, On, Action } from 'nestjs-telegraf';
 import { Scenes } from 'telegraf';
 import { TelegramSessionsService } from './telegram-sessions.service';
 import { UsersService } from '../users/users.service';
-import { ChatId, deleteMessageReceivedAndRest } from './utils';
+import { ChatId, customLog, deletMessageWithLog } from './utils';
 import { MyContext, UserState } from './telegram.types';
 import { ScenesNames } from './telegram.patterns';
 
@@ -16,50 +16,65 @@ export class TelegramBot {
   ) {}
 
   /**
-   * Срабатывает только при первом входе по кнопке Start или если до этого весь чат был удален. Все остальные команды /start переадресуют на сцену mainScene
+   * Срабатывает только при первом входе по кнопке Start или если сервер был перезагружен. Все остальные команды /start переадресуют на сцену mainScene
    */
   @Start()
+  @Command(/^\/menu$/)
+  @On('message')
   async start(
     @Ctx() ctx: Scenes.SceneContext & MyContext,
     @ChatId() chatId: string,
   ) {
-    console.log('Вход в сцену Start');
+    // Добавляем задержку в 500 мс
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Вход в сцену по сообщению "${ctx.text}" `,
+    );
+
     const userState = await UserState.create(
       this.telegramUsersDB,
       this.usersDB,
       chatId,
     );
     ctx.session[chatId] = userState;
-    await deleteMessageReceivedAndRest(ctx, chatId);
-    ctx.session[chatId].prev_scene = ScenesNames.START;
-    console.log('Выход со цены Start');
-    await ctx.scene.enter(ScenesNames.MAIN);
-  }
-
-  /**
-   * Срабатывает, когда пользователь вводит в поле сообщения команду /menu после перезагрузки сервера, а до этого у него оставались сообщения в чате выше: в этом случае кнопки предыдущего сообщения не отвечают и клиент что-то может писать или нажать на меню
-   */
-  @Command(/^\/menu$/) // Регулярное выражение для точного совпадения с /menu
-  @On('message')
-  async onMenu(
-    @Ctx() ctx: Scenes.SceneContext & MyContext,
-    @ChatId() chatId: string,
-  ) {
-    console.log(
-      'Написали /menu или любое другое сообщение из сцены Start, после того как бот был перезапущен сервером и все кнопки были недоступны',
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Задан стейт ${JSON.stringify(ctx.session[chatId], null, 2)}`,
     );
-    if (!ctx.session[chatId]) {
-      //если нет стейта, то обновляем его
-      const userState = await UserState.create(
-        this.telegramUsersDB,
-        this.usersDB,
-        chatId,
-      );
-      ctx.session[chatId] = userState;
+    deletMessageWithLog(ctx, chatId);
+    if (ctx.session[chatId].msg_to_del) {
+      try {
+        await ctx.telegram.deleteMessage(
+          chatId,
+          ctx.session[chatId].msg_to_del,
+        );
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Удалено старое сообщение от бота, которое было в чате`,
+        );
+      } catch (e) {
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Старое сообщение, которое надо удалить, не удалсь удалить`,
+        );
+      }
     }
-    deleteMessageReceivedAndRest(ctx, chatId);
-    ctx.session[chatId].prev_scene = ScenesNames.START;
-    ctx.scene.enter(ScenesNames.MAIN);
+    customLog(
+      'TelegramBot',
+      chatId,
+      ctx.session.__scenes.current,
+      `Выход со сцены`,
+    );
+    await ctx.scene.enter(ScenesNames.MAIN);
   }
 
   /**
@@ -78,15 +93,23 @@ export class TelegramBot {
 
     // Если callback-запрос не был обработан (например, бот был перезапущен)
     if (!ctx.session[chatId]) {
-      console.log(
-        'Пользователь нажал на неработающую кнопку после перезагрузки бота',
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        'Пользователь нажал на неработающую кнопку после перезагрузки бота. Отправили всплывающее сообщение о том, что он будет перенаправлен в главное меню',
       );
-      //всплывающее сообщение-уведомление вверху чата
+      //всплывающее сообщение-уведомление вверху чата. работает, к сожалению, только при нажатии на кнопки!
       await ctx.answerCbQuery(
         'Бот был перезапущен, поэтому Вы были перенаправлены в основное меню.',
       );
       if (!ctx.session[chatId]) {
-        //если нет стейта, то обновляем его
+        customLog(
+          'TelegramBot',
+          chatId,
+          ctx.session.__scenes.current,
+          `Не обраружен state, создаем state`,
+        );
         const userState = await UserState.create(
           this.telegramUsersDB,
           this.usersDB,
@@ -94,9 +117,34 @@ export class TelegramBot {
         );
         ctx.session[chatId] = userState;
       }
-      deleteMessageReceivedAndRest(ctx, chatId);
-      ctx.session[chatId].prev_scene = ScenesNames.START;
-      ctx.scene.enter(ScenesNames.MAIN);
+      if (ctx.session[chatId].msg_to_del) {
+        try {
+          await ctx.telegram.deleteMessage(
+            chatId,
+            ctx.session[chatId].msg_to_del,
+          );
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Удалено старое сообщение от бота, которое было в чате`,
+          );
+        } catch (e) {
+          customLog(
+            'TelegramBot',
+            chatId,
+            ctx.session.__scenes.current,
+            `Старое сообщение, которое надо удалить, не удалсь удалить`,
+          );
+        }
+      }
+      customLog(
+        'TelegramBot',
+        chatId,
+        ctx.session.__scenes.current,
+        `Выход со сцены`,
+      );
+      await ctx.scene.enter(ScenesNames.MAIN);
     }
 
     // Если callback-запрос был обработан, продолжаем как обычно
