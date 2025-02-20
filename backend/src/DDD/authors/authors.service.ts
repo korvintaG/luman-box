@@ -6,7 +6,7 @@ import { Repository, MoreThan } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
-import {IModerate, IUser} from '../../types/custom'
+import {IModerate, IUser, Role} from '../../types/custom'
 
 @Injectable()
 export class AuthorsService {
@@ -24,7 +24,7 @@ export class AuthorsService {
     if (!user) // неавторизован, выводим все отмодерированное
       return this.authorRepository.find( {where:{moderated:MoreThan(1)}, order: { name: "ASC" }});
     else {
-      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+      if (user.role_id===Role.User) // простой пользователь - выводим отмодерированное и его
         return this.authorRepository
           .createQueryBuilder('author')
           .where('author.moderated >0 ')

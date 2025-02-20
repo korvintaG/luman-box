@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { IsNumber } from 'class-validator';
+import { Role } from '../../../types/custom';
 
 export class UserDto {
   @Expose()
@@ -14,6 +15,6 @@ export class UserDto {
 
   @Expose()
   @IsNumber()
-  role_id: number;
+  role_id: Role;
 
 }

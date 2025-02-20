@@ -1,12 +1,12 @@
 import { Req, Controller, Get, Post, Body, Patch, Param, Delete,  UseGuards, Query } from '@nestjs/common';
 import { Request  } from 'express';
 import { IdeasService } from './ideas.service';
-import {IIdeaBySourceAndKeyword} from '../../types/custom'
+import {IIdeaBySourceAndKeyword, Role} from '../../types/custom'
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 import { RoleGuard } from '../../authorization/guards/role.guard';
-import { Role } from '../../authorization/decorators/role.decorator';
+import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 
 
@@ -52,7 +52,7 @@ export class IdeasController {
 
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard,RoleGuard)  
-  @Role(1)
+  @WithRole(Role.Admin)
   moderate(@Param('id') id: string, 
          @Req() req: Request) {
     return this.ideasService.moderate(+id, req.user);

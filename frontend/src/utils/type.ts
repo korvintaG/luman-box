@@ -132,10 +132,18 @@ export type Author = AuthorInner & IDObject;
 export type AuthorPartial = Partial<Author> & IDObject // то же что автор, но обязательный ID
 */
 
+export const enum Role {
+    User = 0,
+    Admin = 1,
+    //Blocked = 2,
+    SuperAdmin = 3
+}
+  
+
 export type User= {
 	name: string;
     id: number;
-    role_id: number;
+    role_id: Role;
 }
 
 export type UserPartial= Partial<User>;

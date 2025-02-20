@@ -6,7 +6,7 @@ import { Repository, FindManyOptions, MoreThan } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
 import { SimpleEntity } from '../../types/custom'
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
-import {IUser} from '../../types/custom'
+import {IUser, Role} from '../../types/custom'
 
 @Injectable()
 export class KeywordsService {
@@ -24,7 +24,7 @@ export class KeywordsService {
     if (!user) // неавторизован, выводим все отмодерированное
       return this.keywordRepository.find( {where:{moderated:MoreThan(1)}, order: { name: "ASC" }});
     else {
-      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+      if (user.role_id===Role.User) // простой пользователь - выводим отмодерированное и его
         return this.keywordRepository
           .createQueryBuilder('keyword')
           .where('keyword.moderated >0 ')

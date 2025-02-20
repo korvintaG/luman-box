@@ -6,8 +6,8 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 import { OptionalJwtAuthGuard} from '../../authorization/guards/optional-jwt-auth.guard'
 import { RoleGuard } from '../../authorization/guards/role.guard';
-import { Role } from '../../authorization/decorators/role.decorator';
-import { IModerate, IUser } from '../../types/custom';
+import { WithRole } from '../../authorization/decorators/role.decorator';
+import { IModerate, Role } from '../../types/custom';
 
 
 @Controller('authors')
@@ -42,7 +42,7 @@ export class AuthorsController {
 
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard,RoleGuard)  
-  @Role(1)
+  @WithRole(Role.Admin)
   moderate(@Param('id') id: string, 
          @Req() req: Request,
          @Query() query:IModerate) {

@@ -1,4 +1,4 @@
-import { User } from "./type";
+import { User, Role } from "./type";
   
 import clsx from 'clsx';
 
@@ -43,9 +43,9 @@ export function getEditAccess(id:string | undefined, currentUser:User|null, curr
         if (!currentRecord.user.id)
             return EditAccessStatus.Readonly;
         else
-            if ([1, 3].includes(currentUser.role_id)) {
+            if ([Role.Admin, Role.SuperAdmin].includes(currentUser.role_id)) {
                 if (currentRecord.moderated>0) { // уже отмодерировано
-                    if (currentUser.role_id===3)
+                    if (currentUser.role_id===Role.SuperAdmin)
                         return EditAccessStatus.Editable; // супермодератор может менять все
                     else
                         return EditAccessStatus.Readonly; // обычный модератор ничего не может делать с отмодерированными

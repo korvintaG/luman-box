@@ -7,7 +7,7 @@ import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils'
 import { SimpleEntityWithCnt } from '../../types/custom'
-import {IUser} from '../../types/custom'
+import {IUser, Role} from '../../types/custom'
 
 
 @Injectable()
@@ -27,7 +27,7 @@ export class SourcesService {
     if (!user) // неавторизован, выводим все отмодерированное
     return this.sourceRepository.find( {relations: { author: true }, where:{moderated:MoreThan(1)}, order: { name: "ASC" }});
   else {
-    if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+    if (user.role_id===Role.User) // простой пользователь - выводим отмодерированное и его
       return this.sourceRepository
       .createQueryBuilder('source')
       .leftJoinAndSelect('source.author', 'author')

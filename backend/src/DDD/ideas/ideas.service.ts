@@ -7,7 +7,7 @@ import { UpdateIdeaDto } from './dto/update-idea.dto';
 import {IIdeaBySourceAndKeyword} from '../../types/custom'
 import { isEmpty, omit }  from "lodash";
 import {KeywordsService} from '../keywords/keywords.service'
-import {IUser} from '../../types/custom'
+import {IUser, Role} from '../../types/custom'
 import { checkAccess } from '../../utils/utils'
 
  
@@ -41,7 +41,7 @@ export class IdeasService {
     if (!user) // неавторизован, выводим все отмодерированное
       return this.ideaRepository.find( { where:{moderated:MoreThan(1)}, relations: ['source.author', 'user'] , order: { name: "ASC" }});
     else {
-      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+      if (user.role_id===Role.User) // простой пользователь - выводим отмодерированное и его
         return this.ideaRepository
           .createQueryBuilder('idea')
           .leftJoinAndSelect('idea.source', 'source')
@@ -64,7 +64,7 @@ export class IdeasService {
         from ideas, idea_keywords as ik
         where ideas.source_id=$1 and ideas.moderated>0 and ik.idea_id=ideas.id and ik.keyword_id=$2`,[cond.source_id,cond.keyword_id]);
     else {
-      if (user.role_id===0) // простой пользователь - выводим отмодерированное и его
+      if (user.role_id===Role.User) // простой пользователь - выводим отмодерированное и его
         founds=await this.ideaRepository.manager.query<{id:number}[]>(
           `select ideas.id
           from ideas, idea_keywords as ik

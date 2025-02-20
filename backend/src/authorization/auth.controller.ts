@@ -9,7 +9,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard'
 import { UserDto } from '../DDD/users/dto/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { RoleGuard } from './guards/role.guard';
-import { Role } from './decorators/role.decorator';
+import { WithRole } from './decorators/role.decorator';
+import { Role } from '../types/custom'
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
 
   @Post('register')
   @UseGuards(JwtAuthGuard,RoleGuard)  
-  @Role(3)
+  @WithRole(Role.SuperAdmin)
   async register(
     @Body() createUserDto: CreateUserDto
   ) {

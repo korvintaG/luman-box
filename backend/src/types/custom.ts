@@ -48,6 +48,14 @@ export type AccessTokenPayload = {
   name: string;
 };
 
+export const enum Role {
+  User = 0,
+  Admin = 1,
+  //Blocked = 2,
+  SuperAdmin = 3
+}
+
+
 export interface IUser extends SimpleEntity{
-  role_id: number;
+  role_id: Role;
 };

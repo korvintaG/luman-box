@@ -5,9 +5,9 @@ import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 import { RoleGuard } from '../../authorization/guards/role.guard';
-import { Role } from '../../authorization/decorators/role.decorator';
+import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-
+import { Role } from '../../types/custom'
 
 @Controller('sources')
 export class SourcesController {
@@ -41,7 +41,7 @@ export class SourcesController {
 
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard,RoleGuard)  
-  @Role(1)
+  @WithRole(Role.Admin)
   moderate(@Param('id') id: string, 
          @Req() req: Request) {
     return this.sourcesService.moderate(+id, req.user);

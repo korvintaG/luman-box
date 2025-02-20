@@ -1,4 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Role } from '../../../types/custom';
+
 
 @Entity('users')
 export class User {
@@ -24,6 +26,6 @@ export class User {
   // =2 - удаленный
   // =3 - суперадмин
   @Column({ type: 'int', default: 0 })
-  role_id: number;
+  role_id: Role;
 
 }
