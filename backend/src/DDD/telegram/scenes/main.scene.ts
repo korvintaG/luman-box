@@ -13,7 +13,7 @@ import { SceneContext } from 'telegraf/typings/scenes';
 import { Update } from '@telegraf/types';
 import { CallbackData, ScenesNames } from '../telegram.patterns';
 import { replyMain } from './messages';
-import { TelegramSessionsService } from '../telegram-sessions.service';
+import { TelegramSessionsService } from '../telegram.service';
 import { UsersService } from 'src/DDD/users/users.service';
 import {
   ChatId,

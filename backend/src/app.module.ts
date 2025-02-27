@@ -15,6 +15,9 @@ import { UsersModule } from './DDD/users/users.module';
 import { AuthModule } from './authorization/auth.module';
 import { TelegramModule } from './DDD/telegram/telegram.module';
 import { TelegramSessions } from './DDD/telegram/entities/telegram-sessions.entity';
+import { TelegramMessagingModule } from './DDD/telegram-messages/telegram-messages.module';
+import { TelegramMessage } from './DDD/telegram-messages/entities/telegram-message.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -33,12 +36,22 @@ import { TelegramSessions } from './DDD/telegram/entities/telegram-sessions.enti
           username: configService.get('DATABASE_USERNAME'),
           password: configService.get('DATABASE_PASSWORD'),
           database: configService.get('DATABASE_NAME'),
-          entities: [Author, Source, Keyword, Idea, User, TelegramSessions],
+          entities: [
+            Author,
+            Source,
+            Keyword,
+            Idea,
+            User,
+            TelegramSessions,
+            TelegramMessage,
+          ],
           synchronize: true,
         };
       },
     }),
     TelegramModule.forRoot(),
+    TelegramMessagingModule,
+    ScheduleModule.forRoot(),
     AuthorsModule,
     SourcesModule,
     KeywordsModule,

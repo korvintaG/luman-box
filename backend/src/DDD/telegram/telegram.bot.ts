@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Ctx, Start, Update, Command, On, Action } from 'nestjs-telegraf';
 import { Scenes } from 'telegraf';
-import { TelegramSessionsService } from './telegram-sessions.service';
+import { TelegramSessionsService } from './telegram.service';
 import { UsersService } from '../users/users.service';
 import { ChatId, customLog, deletMessageWithLog } from './utils';
 import { MyContext, UserState } from './telegram.types';
 import { ScenesNames } from './telegram.patterns';
+import { TelegramMessagingService } from '../telegram-messages/telegram-messages.service';
 
 @Update()
 @Injectable()
@@ -13,7 +14,12 @@ export class TelegramBot {
   constructor(
     private readonly telegramUsersDB: TelegramSessionsService,
     private readonly usersDB: UsersService,
+    private readonly telegramMessagingService: TelegramMessagingService,
   ) {}
+
+  async notifyUser(userId: number, message: string) {
+    await this.telegramMessagingService.sendMessage(userId, message);
+  }
 
   /**
    * Срабатывает только при первом входе по кнопке Start или если сервер был перезагружен. Все остальные команды /start переадресуют на сцену mainScene
