@@ -2,7 +2,7 @@ import { Message, Update } from '@telegraf/types';
 import { Context } from 'telegraf';
 
 import { UsersService } from '../users/users.service';
-import { TelegramSessionsService } from './telegram-sessions.service';
+import { TelegramSessionsService } from './telegram.service';
 
 export interface ITelegramUser {
   chat_id: string;

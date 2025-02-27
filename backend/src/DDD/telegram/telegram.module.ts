@@ -2,7 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramBot } from './telegram.bot';
 import { session } from 'telegraf';
-import { TelegramSessionsService } from './telegram-sessions.service';
+import { TelegramSessionsService } from './telegram.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TelegramSessions } from './entities/telegram-sessions.entity';
 import { UsersModule } from '../users/users.module';
@@ -12,6 +12,7 @@ import { RegistrationScene } from './scenes/registration.scene';
 import { SubmitPasswordScene } from './scenes/submitPassword.scene';
 import { SubmitUsernameScene } from './scenes/submitUsername.scene';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TelegramMessagingModule } from '../telegram-messages/telegram-messages.module';
 
 @Module({})
 export class TelegramModule {
@@ -54,6 +55,7 @@ export class TelegramModule {
         TypeOrmModule.forFeature([TelegramSessions]),
         UsersModule,
         AuthModule,
+        TelegramMessagingModule,
       ],
       providers,
     };

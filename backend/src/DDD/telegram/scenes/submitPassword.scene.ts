@@ -9,7 +9,7 @@ import {
 } from 'nestjs-telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { Injectable } from '@nestjs/common';
-import { TelegramSessionsService } from '../telegram-sessions.service';
+import { TelegramSessionsService } from '../telegram.service';
 import { MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';

@@ -2,7 +2,7 @@ import { Message } from 'telegraf/typings/core/types/typegram';
 import { MyContext } from './telegram.types';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { SceneContext } from 'telegraf/typings/scenes';
-import { TelegramSessionsService } from './telegram-sessions.service';
+import { TelegramSessionsService } from './telegram.service';
 import { Patterns, ScenesNames } from './telegram.patterns';
 
 /**
