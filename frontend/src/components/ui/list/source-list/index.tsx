@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import clsx from 'clsx';
 import { Source,  sourceFullNameFromObj } from '../../../../utils/type';
 import { RecordListUI } from '../../../../components/ui/uni/record-list'
 import { Link } from 'react-router-dom';
@@ -23,7 +24,7 @@ export const SourceListUI : FC<SourceListUIProps> = ({sources, readOnly, addNewS
                 {sources.map((source) => 
                 <li key={source.id} className={styles.source_li}>
                     <Link
-                        className={styles.link}
+                        className={clsx(styles.link, {['moderated-need']:!source.moderated})}
                         to={getRouteParam(appRoutes.source,source.id)} >
                         {sourceFullNameFromObj(source)}
                     </Link>

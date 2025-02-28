@@ -91,13 +91,12 @@ export class IdeasService {
     return this.ideaRepository.find( cond);
   }
 
-
   findOne(id: number) {
-    return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user']});
+    return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user', 'moderator']});
   }
 
   async update(id: number, user:IUser,updateIdeaDto: UpdateIdeaDto) {
-    await checkAccess(this.ideaRepository,id, user.id);
+    await checkAccess(this.ideaRepository,id, user);
     const onlyIdea=omit(updateIdeaDto, ["keywords"]);
     if (!isEmpty(onlyIdea)) {
         await this.ideaRepository.update({id}, onlyIdea);
@@ -121,7 +120,7 @@ export class IdeasService {
 
 
   async remove(id: number,user:IUser) {
-    await checkAccess(this.ideaRepository,id, user.id);
+    await checkAccess(this.ideaRepository,id, user);
     return  await this.ideaRepository.delete({ id });
   }
 }

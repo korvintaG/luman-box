@@ -21,6 +21,7 @@ export type KeywordDetailsUIProps = {
     approveRecord: (e: SyntheticEvent) => void;
     rejectRecord: (e: SyntheticEvent) => void;
     userName: string;
+    moderatorName?: string | null;
 }
 
 export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = (props:KeywordDetailsUIProps) => {
@@ -28,8 +29,8 @@ export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = (props:KeywordDetails
     const btnCaptione= props.id ? 'Сохранить данные' : 'Добавить ключевое слово';
     
     return <RecordEditUI formClass={styles.form} header={header} onSubmit={props.handleSubmit}>
-            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' 
-                text={props.userName}/>        
+            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={props.userName}/>
+            {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label_info} label='Проверил:' text={props.moderatorName}/>}
             <InputEditUI labelClassAdd={styles.label} 
                 name="name" label='Ключевое слово:' value={props.values.name} 
                 placeholder="Введите ключевое слово"

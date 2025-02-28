@@ -85,3 +85,10 @@ export function getUserCreator(currentRecord:any,currentUser:User | null): strin
         else    
             return '-'
 }
+
+export function getModerator(currentRecord:any): string | null {
+    if (currentRecord) 
+        if (currentRecord.moderator)
+            return currentRecord.moderator.name;
+    return null;
+}

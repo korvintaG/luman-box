@@ -50,8 +50,9 @@ export class SourcesService {
       .createQueryBuilder('source')
       .leftJoinAndSelect('source.ideas', 'idea')
       .leftJoinAndSelect('source.user', 'user')
+      .leftJoinAndSelect('source.moderator', 'moderator')
       .leftJoinAndSelect('source.author', 'author')
-      .select(['source','idea.id', 'idea.name', 'user.id', 'user.name', 'author.id', 'author.name']) // Выбираем только нужные поля
+      .select(['source','idea.id', 'idea.name', 'user.id', 'user.name', 'author.id', 'author.name', 'moderator.id', 'moderator.name']) // Выбираем только нужные поля
       .where('source.id = :id', { id })
       .getOne(); 
     const kw=await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
@@ -64,7 +65,7 @@ export class SourcesService {
   }
 
   async update(id: number, user:IUser, updateSourceDto: UpdateSourceDto) {
-    await checkAccess(this.sourceRepository,id, user.id);
+    await checkAccess(this.sourceRepository,id, user);
     return await this.sourceRepository.update({id}, updateSourceDto);
   }
 
@@ -75,7 +76,7 @@ export class SourcesService {
   
 
   async remove(id: number,user:IUser) {
-    await checkAccess(this.sourceRepository,id, user.id);
+    await checkAccess(this.sourceRepository,id, user);
     try {
       return await this.sourceRepository.delete({ id });
     }

@@ -35,9 +35,14 @@ export class Idea {
     @CreateDateColumn()
     date_time_create: Date;
 
-    @Column({type:'int', default:0})
+    @Column({type:'int', nullable:true,  name:'moderated'})
     moderated: number;
        
+    @ManyToOne(() => User, (user) => user.name, { nullable: true })
+    @JoinColumn({ name: 'moderated' })
+    moderator: User;        
+
+
     @ManyToMany(() => Keyword, (keyword) => keyword.ideas)
     @JoinTable({
         name: "idea_keywords",

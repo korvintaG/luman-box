@@ -16,6 +16,7 @@ export type SimpleNameObjectWithCnt = IDObject & NameObject & {cnt: number};
 export type AuthorInner = NameObject;
 export type AuthorRaw = AuthorInner & {
     user?:UserPartial;
+    moderator?:UserPartial;
     sources?:SimpleNameObject[];
 };
 export type AuthorRawPartial = Partial<AuthorRaw>;
@@ -29,12 +30,15 @@ export type SourceInner = NameObject;
 export type SourceRaw = SourceInner & {
     author?:AuthorPartial;
     user?:UserPartial;
+    moderator?:UserPartial;
     ideas?:SimpleNameObject[];
     keywords?:SimpleNameObjectWithCnt[];
 }
 export type SourceRawPartial = Partial<SourceRaw>;
 export type SourcePartial = Partial<Source> & IDObject;
-export type Source = SourceRaw & IDObject;
+export type Source = SourceRaw & IDObject & {
+    moderated?: number;
+};
 
 export function sourceFullNameFromObj(source: SourcePartial | Source | null | undefined): string {
     let name='';
@@ -60,12 +64,15 @@ export function authorNameFromObj(author?: Partial<Author>): string {
 export type KeywordInner = NameObject;
 export type KeywordRaw = KeywordInner & {
     user?:UserPartial;
+    moderator?:UserPartial;
     sources?:SimpleNameObject[];
     authors?:SimpleNameObject[];
     ideas?:SimpleNameObject[];
 };
 export type KeywordRawPartial = Partial<KeywordRaw>;
-export type Keyword = KeywordRaw & IDObject;
+export type Keyword = KeywordRaw & IDObject & {
+    moderated?: number;
+};
 export type KeywordPartial = Partial<Keyword> & IDObject;
 
 // Идеи
@@ -78,6 +85,7 @@ export type IdeaInner= NameObject & {
 export type IdeaRaw= IdeaInner & {
     source: SourcePartial;
     user?: UserPartial;
+    moderator?:UserPartial;
     keywords: KeywordPartial[];
 }
 
@@ -85,7 +93,9 @@ export type IdeaRawPartial = Partial<IdeaRaw>;
 export type IdeaPartial = Partial<Idea> & IDObject;
 
 
-export type Idea= IdeaRaw &  IDObject
+export type Idea= IdeaRaw &  IDObject & {
+    moderated?: number;
+}
 
 
 /*export type KeywordsIdea = {

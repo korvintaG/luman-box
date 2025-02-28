@@ -15,8 +15,12 @@ export class Author {
     @Column('varchar')
     name: string;
 
-    @Column({type:'int', default:0})
+    @Column({type:'int', nullable:true,  name:'moderated'})
     moderated: number;
+
+    @ManyToOne(() => User, (user) => user.name, { nullable: true })
+    @JoinColumn({ name: 'moderated' })
+    moderator: User;        
 
     @OneToMany(() => Source, (source) => source.author)
     sources: Source[];

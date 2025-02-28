@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import {SimpleEntity} from '../types/custom'
+import {IUser, SimpleEntity, Role} from '../types/custom'
 
 
 export function joinSimpleEntityFirst(relations: SimpleEntity[], max:number=4):string {
@@ -14,13 +14,13 @@ export function joinSimpleEntityFirst(relations: SimpleEntity[], max:number=4):s
     return errMessage;
 }
 
-export async function checkAccess(rep: Repository<any>, id_record: number, id_user:number) {
+export async function checkAccess(rep: Repository<any>, id_record: number, user:IUser) {
   const [recordOld]=await rep.find({where: {id:id_record}, relations:['user']});
   if (!recordOld)
     throw new HttpException({
       message: "Не найдена запись для операции"
       }, HttpStatus.BAD_REQUEST);
-  if (recordOld.user.id!==id_user)
+  if (recordOld.user.id!==user.id && user.role_id !== Role.SuperAdmin)
     throw new UnauthorizedException({
       message: "У Вас нет прав на редактирование записей, добавленных не Вами"
       });

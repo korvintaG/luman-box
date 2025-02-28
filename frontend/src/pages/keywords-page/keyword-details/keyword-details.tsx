@@ -12,7 +12,7 @@ import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from '../../../slices/auth/index';
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 import { omit }  from "lodash";
-import { getEditAccess, getUserCreator } from '../../../utils/utils';
+import { getEditAccess, getModerator, getUserCreator } from '../../../utils/utils';
 
 export const KeywordDetails = () => {
     const { id } = useParams(); 
@@ -86,6 +86,7 @@ export const KeywordDetails = () => {
             rejectRecord={rejectRecord}
             resetSliceState={resetSliceState}
             userName={getUserCreator(currentKeyword, currentUser)}
+            moderatorName={getModerator(currentKeyword)}
             />
       )
     

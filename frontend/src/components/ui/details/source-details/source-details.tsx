@@ -25,6 +25,7 @@ export type SourceDetailsUIProps = {
     rejectRecord: (e: SyntheticEvent) => void; // действия по отвержению источника
     authors: Author[]; // список авторов для выбора в лукапе
     userName: string;
+    moderatorName?: string | null;
 }
 
 /**
@@ -36,6 +37,7 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = (props:SourceDetailsUIP
 
     return <RecordEditUI formClass={styles.form} header={header} onSubmit={props.handleSubmit}>
             <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={props.userName} />        
+            {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label_info} label='Проверил:' text={props.moderatorName} />}
             <InputEditUI labelClassAdd={styles.label} name="name" label='Название источника:' value={props.values.name} 
                 placeholder="Укажите название источника"
                 inputClassAdd={styles.input}

@@ -42,14 +42,15 @@ export class AuthorsService {
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.sources', 'source')
       .leftJoinAndSelect('author.user', 'user')
-      .select(['author','source.id', 'source.name', 'user.id', 'user.name']) // Выбираем только нужные поля
+      .leftJoinAndSelect('author.moderator', 'moderator')
+      .select(['author','source.id', 'source.name', 'user.id', 'user.name', 'moderator.id',  'moderator.name']) // Выбираем только нужные поля
       .where('author.id = :id', { id })
       .getOne();
 
   }
 
   async update(id: number, user:IUser, updateAuthorDto: UpdateAuthorDto) {
-    await checkAccess(this.authorRepository,id, user.id);
+    await checkAccess(this.authorRepository,id, user);
     return this.authorRepository.update({id}, updateAuthorDto);
   }
 
@@ -63,7 +64,7 @@ export class AuthorsService {
 
 
   async remove(id: number, user:IUser) {
-    await checkAccess(this.authorRepository,id, user.id);
+    await checkAccess(this.authorRepository,id, user);
     try {
       return await this.authorRepository.delete({ id });
     }
