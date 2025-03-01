@@ -24,6 +24,7 @@ export type AuthorDetailsUIProps = {
     approveRecord: (e: SyntheticEvent) => void; // функция одобрения автора
     rejectRecord: (e: SyntheticEvent) => void; // функция отвержения автора
     userName: string;
+    moderatorName?: string | null;
 }
 
 export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (props:AuthorDetailsUIProps) => {
@@ -32,12 +33,15 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (props:AuthorDetailsUIP
    
     return <RecordEditUI formClass={styles.form}  header={header} onSubmit={props.handleSubmit}>
             <InfoFieldUI labelClassAdd={styles.label} label='Запись добавил:' text={props.userName}/>
+            {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label} label='Проверил:' text={props.moderatorName}/>}
             <InputEditUI name="name" label='ФИО автора:' value={props.values.name} 
                 labelClassAdd={styles.label}
                 inputClassAdd={styles.input}
                 classAdd={styles.input_block}
                 placeholder="Укажите ФИО автора"
                 readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
+                minLength={5}
+                required
                 handleChange={props.handleChange} />
             <RecordButtonBlockUI 
                 id={props.id} 

@@ -16,8 +16,12 @@ export class Keyword {
     @Column('varchar')
     name: string;
 
-    @Column({type:'int', default:0})
+    @Column({type:'int', nullable:true,  name:'moderated'})
     moderated: number;
+
+    @ManyToOne(() => User, (user) => user.name, { nullable: true })
+    @JoinColumn({ name: 'moderated' })
+    moderator: User;        
 
     @ManyToOne(() => User, (user) => user.name, { nullable: false })
     @JoinColumn({ name: 'user_id' })

@@ -30,8 +30,8 @@ import {
 } from "../../../slices/keywords";
 import { appRoutes } from "../../../AppRoutes";
 import {withFormStatus} from '../../../components/hocs/with-form-status'
-import { omit }  from "lodash";
-import { getEditAccess, getUserCreator } from '../../../utils/utils';
+import { omit, pick }  from "lodash";
+import { getEditAccess, getModerator, getUserCreator } from '../../../utils/utils';
 import { KeywordPartial, IdeaRaw } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from '../../../slices/auth/index';
@@ -90,7 +90,7 @@ export const IdeaDetails = () => {
   useEffect(() => {
     if (currentIdea) 
         setValues({
-          ...omit(currentIdea,'user'),
+          ...pick(currentIdea,['name','original_text','content','date_time_create','keywords']),
           source: { id: currentIdea.source? Number(currentIdea.source.id) :0}
         })
   }, [currentIdea]);
@@ -164,6 +164,7 @@ export const IdeaDetails = () => {
         addKeyword={addKeyword}
         deleteKeyword={deleteKeyword}
         userName={getUserCreator(currentIdea, currentUser)}
+        moderatorName={getModerator(currentIdea)}
         />
   )
 };

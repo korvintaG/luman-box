@@ -10,8 +10,8 @@ import { selectCurrentUser } from '../../../slices/auth/index';
 import { appRoutes } from '../../../AppRoutes';
 import { AuthorInner,  RequestStatus } from '../../../utils/type'
 import { useForm } from "../../../hooks/useForm";
-import { getEditAccess, getUserCreator } from '../../../utils/utils';
-import { omit }  from "lodash";
+import { getEditAccess, getUserCreator, getModerator } from '../../../utils/utils';
+import { omit, pick }  from "lodash";
 import {withFormStatus} from '../../../components/hocs/with-form-status'
 
 export const AuthorDetails = () => { 
@@ -37,7 +37,7 @@ export const AuthorDetails = () => {
 
     useEffect(() => {
         if (currentAuthor) 
-            setValues({...omit(currentAuthor, ['user'])})
+            setValues({...pick(currentAuthor, ['name'])})
     }, [currentAuthor, setValues]);
 
     const deleteAuthor = (e: SyntheticEvent) => {
@@ -60,8 +60,12 @@ export const AuthorDetails = () => {
 
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
-        if (id)
-            dispatch(setAuthor({ ...getFormDTO(), id: Number(id)}));
+        if (id) {
+            console.log('AuthorDetails handleSubmit id',id)
+            const newo={ ...getFormDTO(), id: Number(id)};
+            console.log('AuthorDetails handleSubmit',newo)
+            dispatch(setAuthor(newo));
+        }
         else
             dispatch(addAuthor({...getFormDTO()}));
     }
@@ -88,6 +92,7 @@ export const AuthorDetails = () => {
             rejectRecord={rejectAuthorAction}
             resetSliceState={resetSliceState}
             userName={getUserCreator(currentAuthor, currentUser)}
+            moderatorName={getModerator(currentAuthor)}
         />
       )
 }

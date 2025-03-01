@@ -59,13 +59,13 @@ export class KeywordsService {
         where keywords.id=$1 and idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
           and sources.id=source_id and authors.id=author_id
         order by ideas.name || ' ['||sources.name ||' // ' || authors.name||']'`,[id]);
-    const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true }});
+    const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true, moderator: true }});
     return {...mainRes, authors, sources, ideas};
 
   }
 
   async update(id: number, user:IUser,updateKeywordDto: UpdateKeywordDto) {
-    await checkAccess(this.keywordRepository,id, user.id);
+    await checkAccess(this.keywordRepository,id, user);
     return await this.keywordRepository.update({id}, updateKeywordDto);
   }
 
@@ -76,7 +76,7 @@ export class KeywordsService {
 
 
   async remove(id: number,user:IUser) {
-    await checkAccess(this.keywordRepository,id, user.id);
+    await checkAccess(this.keywordRepository,id, user);
     try {
       return await this.keywordRepository.delete({ id })
     }

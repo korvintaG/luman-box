@@ -12,6 +12,7 @@ export function useForm<T>(inputValues: T) {
 
   const getFormDTO= ():Partial<T>=>{
     let obj:Partial<T>=Object.assign({}, values)
+    console.log(values);
     let key: keyof Partial<T>;
     for(key in obj) {
       if (typeof obj[key]=== 'object') {

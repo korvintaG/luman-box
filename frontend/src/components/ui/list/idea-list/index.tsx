@@ -1,10 +1,12 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 import { Idea , sourceFullNameFromObj} from '../../../../utils/type';
 import { RecordListUI } from '../../uni/record-list';
 import { getRouteParam , appRoutes} from '../../../../AppRoutes'
 import { parseISO, format } from 'date-fns';
 import styles from './ideas-list.module.css';
+
 
 export type IdeaListUIProps = {
     ideas: Idea[],
@@ -32,6 +34,7 @@ export const IdeaListUI : FC<IdeaListUIProps> = ({ideas, readOnly, addNewIdea, i
                         return (<tr key={idea.id}>
                             <td>
                                     <Link
+                                    className={clsx({['moderated-need']:!idea.moderated}) }
                                     to={getRouteParam(appRoutes.idea,idea.id)} >
                                     {idea.name }
                                     </Link>

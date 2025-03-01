@@ -23,7 +23,7 @@ export const AuthorListUI : FC<AuthorListUIProps> = ({authors, readOnly, addNewA
                     {authors.map((author) => (
                         <li key={author.id}>
                             <Link
-                                className={clsx({['moderated-need']:author.moderated===0})
+                                className={clsx({['moderated-need']:!author.moderated}) 
                                     }
                                 to={getRouteParam(appRoutes.author,author.id)} >
                                 {author.name}

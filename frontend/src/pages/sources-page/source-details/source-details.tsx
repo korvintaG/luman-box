@@ -16,8 +16,8 @@ import {useForm} from '../../../hooks/useForm';
 import { appRoutes } from '../../../AppRoutes';
 import { selectCurrentUser } from '../../../slices/auth/index';
 import {withFormStatus} from '../../../components/hocs/with-form-status'
-import { omit }  from "lodash";
-import { getEditAccess, getUserCreator } from '../../../utils/utils';
+import { omit, pick }  from "lodash";
+import { getEditAccess, getModerator, getUserCreator } from '../../../utils/utils';
 
 export const SourceDetails = () => {
 
@@ -49,11 +49,12 @@ export const SourceDetails = () => {
         if (authors.length===0)
             dispatch(fetchAuthors());
         fetchSource();
+        // eslint-disable-next-line react-hooks/exhaustive-deps        
     },[]);  
 
     useEffect(() => {
         if (currentSource)
-            setValues({...omit(currentSource, ['user']), author:{id: (currentSource.author?currentSource.author.id:0)}})
+            setValues({...pick(currentSource, ['name']), author:{id: (currentSource.author?currentSource.author.id:0)}})
     },[currentSource]);
 
     const deleteSource = (e: SyntheticEvent) => {
@@ -101,6 +102,7 @@ export const SourceDetails = () => {
             resetSliceState={resetSliceState}
             authors={authors}
             userName={getUserCreator(currentSource, currentUser)}
+            moderatorName={getModerator(currentSource)}
         />
       )
 

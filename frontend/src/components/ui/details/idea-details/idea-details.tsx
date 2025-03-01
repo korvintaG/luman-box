@@ -26,6 +26,7 @@ export type IdeaDetailsUIProps = {
     keywords: Keyword[]; // ключевые слова для выбора
     initialName: string; // начальное название идеи для отображения
     userName: string;    
+    moderatorName?: string | null;
 }
 
 /**
@@ -38,9 +39,8 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (props: IdeaDetailsUIProps)
     return <RecordEditUI header={header} onSubmit={props.handleSubmit} 
                 formClass={styles.form} mainClass={styles.main}>
             <div className={styles.inputs}>
-                <InfoFieldUI label='Запись добавил:' text={props.userName} 
-                labelClassAdd={styles.label_info}
-                />
+                <InfoFieldUI label='Запись добавил:' text={props.userName} labelClassAdd={styles.label_info}/>
+                {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label_info} label='Проверил:' text={props.moderatorName}/>}
                 <InputSelectUI 
                     name="source.id" label="Источник идеи:" value={props.values.source.id}
                     readOnly={props.editAccessStatus===EditAccessStatus.Readonly}

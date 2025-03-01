@@ -19,6 +19,8 @@ export type InputEditUIProps = {
     inputClassAdd?: string;
     readOnly?: boolean;
     isPassword?: boolean;
+    required?:boolean;
+    minLength?:number;
 }
 
 // clsx({[props.classAdd!]:props.classAdd},styles['input-block'])
@@ -34,6 +36,8 @@ export const InputEditUI: FC<InputEditUIProps> = (props) => {
             placeholder={props.placeholder? props.placeholder :''}
             type={props.isPassword?"password":"text"}
             readOnly={props.readOnly}
+            required={props.required}
+            minLength={props.minLength}
             onChange={props.handleChange}>
         </input>
     </div>

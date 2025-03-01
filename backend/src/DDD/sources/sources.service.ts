@@ -60,16 +60,9 @@ export class SourcesService {
       .createQueryBuilder('source')
       .leftJoinAndSelect('source.ideas', 'idea')
       .leftJoinAndSelect('source.user', 'user')
+      .leftJoinAndSelect('source.moderator', 'moderator')
       .leftJoinAndSelect('source.author', 'author')
-      .select([
-        'source',
-        'idea.id',
-        'idea.name',
-        'user.id',
-        'user.name',
-        'author.id',
-        'author.name',
-      ]) // Выбираем только нужные поля
+      .select(['source','idea.id', 'idea.name', 'user.id', 'user.name', 'author.id', 'author.name', 'moderator.id', 'moderator.name']) // Выбираем только нужные поля
       .where('source.id = :id', { id })
       .getOne();
     const kw = await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
@@ -82,9 +75,9 @@ export class SourcesService {
     return { ...mainRes, keywords: kw };
   }
 
-  async update(id: number, user: IUser, updateSourceDto: UpdateSourceDto) {
-    await checkAccess(this.sourceRepository, id, user.id);
-    return await this.sourceRepository.update({ id }, updateSourceDto);
+  async update(id: number, user:IUser, updateSourceDto: UpdateSourceDto) {
+    await checkAccess(this.sourceRepository,id, user);
+    return await this.sourceRepository.update({id}, updateSourceDto);
   }
 
   async moderate(id: number, user: IUser) {
@@ -92,8 +85,8 @@ export class SourcesService {
     return this.sourceRepository.update({ id }, { moderated: user.id });
   }
 
-  async remove(id: number, user: IUser) {
-    await checkAccess(this.sourceRepository, id, user.id);
+  async remove(id: number,user:IUser) {
+    await checkAccess(this.sourceRepository,id, user);
     try {
       return await this.sourceRepository.delete({ id });
     } catch (err) {
