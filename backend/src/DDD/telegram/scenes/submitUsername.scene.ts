@@ -14,7 +14,7 @@ import { ITelegramUser, MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replySubmitUsername } from './messages';
-import { UsersService } from 'src/DDD/users/users.service';
+import { UsersService } from '../../users/users.service';
 import {
   ChatId,
   customLog,

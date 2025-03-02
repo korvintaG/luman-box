@@ -14,7 +14,7 @@ import { MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replySubmitPassword } from './messages';
-import { UsersService } from 'src/DDD/users/users.service';
+import { UsersService } from '../../users/users.service';
 import {
   ChatId,
   customLog,
@@ -23,7 +23,7 @@ import {
   sanitizePassword,
   updateMessageState,
 } from '../utils';
-import { AuthService } from 'src/authorization/auth.service';
+import { AuthService } from '../../../authorization/auth.service';
 
 @Injectable()
 @Scene(ScenesNames.SUBMIT_PASSWORD)
