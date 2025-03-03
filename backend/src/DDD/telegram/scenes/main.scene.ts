@@ -10,11 +10,11 @@ import {
 import { Injectable } from '@nestjs/common';
 import { MyContext, UserState } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
-import { Update } from '@telegraf/types';
+
 import { CallbackData, ScenesNames } from '../telegram.patterns';
 import { replyMain } from './messages';
 import { TelegramSessionsService } from '../telegram.service';
-import { UsersService } from 'src/DDD/users/users.service';
+import { UsersService } from '../../users/users.service';
 import {
   ChatId,
   customLog,
@@ -22,6 +22,7 @@ import {
   onStartOrMenuCommand,
   updateMessageState,
 } from '../utils';
+import { Update } from 'telegraf/typings/core/types/typegram';
 
 @Injectable()
 @Scene(ScenesNames.MAIN)

@@ -1,8 +1,9 @@
-import { Message, Update } from '@telegraf/types';
+
 import { Context } from 'telegraf';
 
 import { UsersService } from '../users/users.service';
 import { TelegramSessionsService } from './telegram.service';
+import { Message, Update } from 'telegraf/typings/core/types/typegram';
 
 export interface ITelegramUser {
   chat_id: string;

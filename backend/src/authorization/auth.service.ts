@@ -14,8 +14,7 @@ import { promisify } from 'util';
 import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { ITelegramUser } from 'src/DDD/telegram/telegram.types';
-// import { ITelegramUser } from 'src/DDD/telegram-sessions/telegram-sessions.types';
+import { ITelegramUser } from '../DDD/telegram/telegram.types';
 
 const scrypt = promisify(_scrypt);
 

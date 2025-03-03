@@ -1,7 +1,8 @@
 import { SceneContext } from 'telegraf/typings/scenes';
 import { MyContext } from '../telegram.types';
 import { Patterns, CallbackData } from '../telegram.patterns';
-import { Message } from '@telegraf/types';
+import { Message } from 'telegraf/typings/core/types/typegram';
+
 
 /**
  * Возвращает текст кнопки регистрации в зависимости от статуса пользователя (зарегистрирован? изменить пароль : задать/изменить логин и пароль )

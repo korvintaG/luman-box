@@ -14,8 +14,8 @@ import { MyContext } from '../telegram.types';
 import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, Patterns, ScenesNames } from '../telegram.patterns';
 import { replyRegistration } from './messages';
-import { UsersService } from 'src/DDD/users/users.service';
-import { AuthService } from 'src/authorization/auth.service';
+import { UsersService } from '../../users/users.service';
+import { AuthService } from '../../../authorization/auth.service';
 import {
   ChatId,
   customLog,

@@ -17,7 +17,12 @@ export class TelegramMessagingService {
     private readonly telegramMessageRepository: Repository<TelegramMessage>,
     private readonly usersDB: UsersService,
   ) {
-    this.bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (token) {
+      this.bot = new Telegraf(token);
+    } else {
+      console.log('TELEGRAM_BOT_TOKEN не определен в переменных окружения');
+    }
   }
 
   /**

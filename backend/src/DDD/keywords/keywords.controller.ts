@@ -6,7 +6,7 @@ import { UpdateKeywordDto } from './dto/update-keyword.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
-import { OptionalJwtAuthGuard } from 'src/authorization/guards/optional-jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { Role } from '../../types/custom'
 
 @Controller('keywords')
