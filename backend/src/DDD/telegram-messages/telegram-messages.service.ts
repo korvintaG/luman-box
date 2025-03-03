@@ -5,8 +5,9 @@ import { TelegramMessage } from './entities/telegram-message.entity';
 import { Telegraf } from 'telegraf';
 import { UsersService } from '../users/users.service';
 import { customLog } from '../telegram/utils';
-import { Cron } from '@nestjs/schedule';
+import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { Not, IsNull } from 'typeorm';
+import { CronJob } from 'cron';
 
 @Injectable()
 export class TelegramMessagingService implements OnModuleInit {
@@ -16,6 +17,7 @@ export class TelegramMessagingService implements OnModuleInit {
     @InjectRepository(TelegramMessage)
     private readonly telegramMessageRepository: Repository<TelegramMessage>,
     private readonly usersDB: UsersService,
+    private readonly schedulerRegistry: SchedulerRegistry, // Добавляем SchedulerRegistry
   ) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
     if (token) {
@@ -24,12 +26,21 @@ export class TelegramMessagingService implements OnModuleInit {
       console.log('TELEGRAM_BOT_TOKEN не определен в переменных окружения');
     }
   }
-
   onModuleInit() {
+    // Проверяем наличие переменных окружения
     if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.MSG_QUEUE_FREQUENCY) {
       console.log('TELEGRAM_BOT_TOKEN или MSG_QUEUE_FREQUENCY не определены в переменных окружения. Cron-задача не будет запущена.');
       return;
     }
+
+    const job = new CronJob(
+      process.env.MSG_QUEUE_FREQUENCY, 
+      () => this.handleTelegramMsgQueue(), 
+      null, 
+      true, 
+    );
+
+    this.schedulerRegistry.addCronJob('handleTelegramMsgQueue', job);
   }
 
   /**
@@ -59,7 +70,6 @@ export class TelegramMessagingService implements OnModuleInit {
   /**
    * Обрабатывает очередь сообщений для отправки и пытается отправлять сообщения со статусом неотправленные один раз в минуту
    */
-  @Cron(process.env.MSG_QUEUE_FREQUENCY) // Частота запуска
   async handleTelegramMsgQueue(): Promise<void> {
     if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.MSG_QUEUE_FREQUENCY) {
       return;
