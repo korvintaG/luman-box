@@ -9,7 +9,7 @@ import {RelationListUI} from '../../uni/relation-list'
 import { appRoutes} from '../../../../AppRoutes'
 import styles from './source-details.module.css'
 import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
-import {InfoFieldUI} from '../../uni/info-field/info-field'
+import {Authorship} from '../../details/authorship/authorship'
 import {SourceKeywordsUI} from '../source-keywords/source-keywords'
 
 export type SourceDetailsUIProps = {
@@ -36,8 +36,7 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = (props:SourceDetailsUIP
     const btnCaptione = props.id ? 'Сохранить данные' : 'Добавить источник';
 
     return <RecordEditUI formClass={styles.form} header={header} onSubmit={props.handleSubmit}>
-            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={props.userName} />        
-            {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label_info} label='Проверил:' text={props.moderatorName} />}
+            <Authorship userName={props.userName} moderatorName={props.moderatorName} className={styles.label_info}/>
             <InputEditUI labelClassAdd={styles.label} name="name" label='Название источника:' value={props.values.name} 
                 placeholder="Укажите название источника"
                 inputClassAdd={styles.input}

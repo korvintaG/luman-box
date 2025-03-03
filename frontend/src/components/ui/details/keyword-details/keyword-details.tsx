@@ -4,7 +4,7 @@ import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import { HTMLEditElement, KeywordRaw } from '../../../../utils/type'
 import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
-import {InfoFieldUI} from '../../uni/info-field/info-field'
+import {Authorship} from '../../details/authorship/authorship'
 import {RelationListUI} from '../../uni/relation-list'
 import { appRoutes} from '../../../../AppRoutes'
 import styles from './keyword-details.module.css'
@@ -29,8 +29,7 @@ export const KeywordDetailsUI: FC<KeywordDetailsUIProps> = (props:KeywordDetails
     const btnCaptione= props.id ? 'Сохранить данные' : 'Добавить ключевое слово';
     
     return <RecordEditUI formClass={styles.form} header={header} onSubmit={props.handleSubmit}>
-            <InfoFieldUI labelClassAdd={styles.label_info} label='Запись добавил:' text={props.userName}/>
-            {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label_info} label='Проверил:' text={props.moderatorName}/>}
+            <Authorship userName={props.userName} moderatorName={props.moderatorName} className={styles.label_info}/>
             <InputEditUI labelClassAdd={styles.label} 
                 name="name" label='Ключевое слово:' value={props.values.name} 
                 placeholder="Введите ключевое слово"

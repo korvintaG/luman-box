@@ -9,6 +9,7 @@ import {InputTextUI} from '../../uni/input-text/input-text'
 import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
 import {InfoFieldUI} from '../../uni/info-field/info-field'
 import styles from './idea-details.module.css'
+import { Authorship } from '../authorship/authorship';
 
 
 export type IdeaDetailsUIProps = {
@@ -39,8 +40,7 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (props: IdeaDetailsUIProps)
     return <RecordEditUI header={header} onSubmit={props.handleSubmit} 
                 formClass={styles.form} mainClass={styles.main}>
             <div className={styles.inputs}>
-                <InfoFieldUI label='Запись добавил:' text={props.userName} labelClassAdd={styles.label_info}/>
-                {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label_info} label='Проверил:' text={props.moderatorName}/>}
+                <Authorship userName={props.userName} moderatorName={props.moderatorName} className={styles.label_info}/>
                 <InputSelectUI 
                     name="source.id" label="Источник идеи:" value={props.values.source.id}
                     readOnly={props.editAccessStatus===EditAccessStatus.Readonly}

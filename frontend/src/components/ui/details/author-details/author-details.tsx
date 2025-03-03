@@ -6,7 +6,7 @@ import { appRoutes} from '../../../../AppRoutes'
 import {RecordButtonBlockUI} from '../../uni/record-buttons-block/record-buttons-block';
 import {InputEditUI} from '../../uni/input-edit/input-edit'
 import {genHeaderText, EditAccessStatus} from '../../../../utils/utils' 
-import {InfoFieldUI} from '../../uni/info-field/info-field'
+import {Authorship} from '../../details/authorship/authorship'
 import {RelationListUI} from '../../uni/relation-list'
 import styles from './author-details.module.css'
 
@@ -32,8 +32,7 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (props:AuthorDetailsUIP
     const btnCaptione = props.id ? 'Сохранить данные' : 'Добавить автора';
    
     return <RecordEditUI formClass={styles.form}  header={header} onSubmit={props.handleSubmit}>
-            <InfoFieldUI labelClassAdd={styles.label} label='Запись добавил:' text={props.userName}/>
-            {props.moderatorName && <InfoFieldUI labelClassAdd={styles.label} label='Проверил:' text={props.moderatorName}/>}
+            <Authorship userName={props.userName} moderatorName={props.moderatorName} className={styles.label}/>
             <InputEditUI name="name" label='ФИО автора:' value={props.values.name} 
                 labelClassAdd={styles.label}
                 inputClassAdd={styles.input}
