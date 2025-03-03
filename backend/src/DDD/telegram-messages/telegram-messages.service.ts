@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit  } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TelegramMessage } from './entities/telegram-message.entity';
@@ -9,7 +9,7 @@ import { Cron } from '@nestjs/schedule';
 import { Not, IsNull } from 'typeorm';
 
 @Injectable()
-export class TelegramMessagingService {
+export class TelegramMessagingService implements OnModuleInit {
   private bot: Telegraf;
 
   constructor(
@@ -25,8 +25,15 @@ export class TelegramMessagingService {
     }
   }
 
+  onModuleInit() {
+    if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.MSG_QUEUE_FREQUENCY) {
+      console.log('TELEGRAM_BOT_TOKEN или MSG_QUEUE_FREQUENCY не определены в переменных окружения. Cron-задача не будет запущена.');
+      return;
+    }
+  }
+
   /**
-   * Отправляет сообщение через Telegram и сохраняет его в базу данных
+   * Добавляет сообщение в базу данных для последующей его обработки в очереди сообщений (функция handleTelegramMsgQueue)
    */
   async sendMessage(userId: number, text: string): Promise<void> {
     const message = new TelegramMessage();
@@ -35,33 +42,8 @@ export class TelegramMessagingService {
     await this.telegramMessageRepository.save(message);
     const user = await this.usersDB.findOne(userId);
     const chatId = user.chat_id;
-
-    if (chatId) {
-      try {
-        const telegramMessage = await this.bot.telegram.sendMessage(
-          chatId,
-          text,
-        );
-        await this.telegramMessageRepository.update(message.id, {
-          status: 1,
-          date_time_send: () => `to_timestamp(${telegramMessage.date})`,
-          chat_id: chatId,
-        });
-        customLog(
-          'TelegramMessage',
-          chatId,
-          '',
-          `Сообщение успешно отправлено и сохранено`,
-        );
-      } catch (e) {
-        await this.telegramMessageRepository.update(message.id, {
-          status: 2,
-          chat_id: chatId,
-        });
-        customLog('TelegramMessage', chatId, '', `Сообщение не отправлено`);
-      }
-    } else {
-      //если у user нет chat_id
+    //если у user нет chat_id
+    if (!chatId) {
       await this.telegramMessageRepository.update(message.id, {
         status: 2,
       });
@@ -79,32 +61,35 @@ export class TelegramMessagingService {
    */
   @Cron(process.env.MSG_QUEUE_FREQUENCY) // Частота запуска
   async handleTelegramMsgQueue(): Promise<void> {
+    if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.MSG_QUEUE_FREQUENCY) {
+      return;
+    }
+
     try {
-      customLog('TelegramMessage', '', '', `Проверка очереди сообщений..`);
+      // customLog('TelegramMessage', '', '', `Проверка очереди сообщений..`);
 
       // Ищем неотправленные сообщения (status = 0)
       const messages = await this.telegramMessageRepository.find({
         where: [
           { status: 0, chat_id: Not(IsNull()) }, // Сообщения в очереди
-          { status: 2, chat_id: Not(IsNull()) }, // Сообщения с ошибкой
         ],
       });
 
-      if (messages.length === 0) {
-        customLog(
-          'TelegramMessage',
-          '',
-          '',
-          `Нет сообщений для отправки в очереди`,
-        );
-      }
+      // if (messages.length === 0) {
+      //   customLog(
+      //     'TelegramMessage',
+      //     '',
+      //     '',
+      //     `Нет сообщений для отправки в очереди`,
+      //   );
+      // }
 
-      customLog(
-        'TelegramMessage',
-        '',
-        '',
-        `Найдено ${messages.length} сообщений в очереди для отправки`,
-      );
+      // customLog(
+      //   'TelegramMessage',
+      //   '',
+      //   '',
+      //   `Найдено ${messages.length} сообщений в очереди для отправки`,
+      // );
 
       // Отправляем каждое сообщение
       for (const message of messages) {
@@ -117,6 +102,12 @@ export class TelegramMessagingService {
             status: 1,
             date_time_send: () => `to_timestamp(${telegramMessage.date})`,
           });
+          customLog(
+            'TelegramMessage',
+            '',
+            '',
+            `Сообщение id: ${message.id}, text: ${message.text} отправлено пользователю id: ${message.user_id}`,
+          );
         } catch (e) {
           await this.telegramMessageRepository.update(message.id, {
             status: 2,
@@ -125,7 +116,7 @@ export class TelegramMessagingService {
             'TelegramMessage',
             '',
             '',
-            `Сообщение id: ${message.id} не отправлено`,
+            `Сообщение id: ${message.id} пользователю id: ${message.user_id} не отправлено`,
           );
         }
       }
@@ -134,7 +125,7 @@ export class TelegramMessagingService {
         'TelegramMessage',
         '',
         '',
-        `Ошибка при обработке очереди сообщений: ${exports.message}`,
+        `Ошибка при обработке очереди сообщений: ${e.message}`,
       );
     }
   }
