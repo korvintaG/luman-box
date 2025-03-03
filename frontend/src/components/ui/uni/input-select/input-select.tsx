@@ -27,21 +27,31 @@ export type InputSelectUIProps = {
 
 export const InputSelectUI: FC<InputSelectUIProps> = (props) => {
 
+    const getSelectName=():string => {
+        const found=props.values.find((el)=>el.id===props.value);
+        if (found)
+            return found.name;
+        else
+        return '';
+    }
+
     return <div className={combineClasses(styles['input-block'],props.classReplace,props.classAdd)}>
         <label htmlFor={props.name} 
             className={combineClasses(styles['input-label'],props.labelClassReplace,props.labelClassAdd)}>
             {props.label}
         </label>
-        <select value={props.value} name={props.name} 
-            disabled={props.readOnly}
-            onChange={props.handleChange}
-            className={combineClasses(styles['input-select'],props.selectClassReplace,props.selectClassAdd)}>
-            {props.hideEmpty ? null : <option value='0'></option> }
-            {props.values.map((el)=>
-                <option className={styles.option} value={el.id} key={el.id}>
-                    {el.name}
-                </option>
-            )}
-        </select>
+        {props.readOnly?<span className={styles['input-select-readonly']} >{getSelectName()}</span>:
+            <select value={props.value} name={props.name} 
+                disabled={props.readOnly}
+                onChange={props.handleChange}
+                className={combineClasses(styles['input-select'],props.selectClassReplace,props.selectClassAdd)}>
+                {props.hideEmpty ? null : <option value='0'></option> }
+                {props.values.map((el)=>
+                    <option className={styles.option} value={el.id} key={el.id}>
+                        {el.name}
+                    </option>
+                )}
+            </select>
+        }
     </div>
 }

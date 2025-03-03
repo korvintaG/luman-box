@@ -10,6 +10,12 @@
     font-size: 16px;
   }
   
+  .input-select-readonly {
+    font-family: 'Montserrat';
+    font-size: 17px;
+    font-weight: bold;
+  }
+
   .input-label {
     display: block;
     text-align: right;

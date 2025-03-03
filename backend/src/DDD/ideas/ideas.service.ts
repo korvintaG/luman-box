@@ -92,7 +92,18 @@ export class IdeasService {
   }
 
   findOne(id: number) {
-    return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user', 'moderator']});
+    //return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user', 'moderator']});
+    return this.ideaRepository
+      .createQueryBuilder('idea')
+      .leftJoinAndSelect('idea.keywords', 'keywords')
+      .leftJoinAndSelect('idea.source', 'source')
+      .leftJoinAndSelect('source.author', 'author')
+      .leftJoinAndSelect('idea.user', 'user')
+      .leftJoinAndSelect('idea.moderator', 'moderator')
+      .select(['idea','source', 'author', 'keywords', 'user.id', 'user.name', 'moderator.id',  'moderator.name']) // Выбираем только нужные поля
+      .where('idea.id = :id', { id })
+      .getOne();
+
   }
 
   async update(id: number, user:IUser,updateIdeaDto: UpdateIdeaDto) {

@@ -59,9 +59,16 @@ export class KeywordsService {
         where keywords.id=$1 and idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
           and sources.id=source_id and authors.id=author_id
         order by ideas.name || ' ['||sources.name ||' // ' || authors.name||']'`,[id]);
-    const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true, moderator: true }});
-    return {...mainRes, authors, sources, ideas};
+    //const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true, moderator: true }});
+    const mainRes = await this.keywordRepository
+    .createQueryBuilder('keyword')
+    .leftJoinAndSelect('keyword.user', 'user')
+    .leftJoinAndSelect('keyword.moderator', 'moderator')
+    .select(['keyword', 'user.id', 'user.name', 'moderator.id',  'moderator.name']) // Выбираем только нужные поля
+    .where('keyword.id = :id', { id })
+    .getOne();
 
+    return {...mainRes, authors, sources, ideas};
   }
 
   async update(id: number, user:IUser,updateKeywordDto: UpdateKeywordDto) {

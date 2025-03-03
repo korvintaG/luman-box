@@ -46,7 +46,7 @@ export const SourceDetailsUI: FC<SourceDetailsUIProps> = (props:SourceDetailsUIP
                 handleChange={props.handleChange} />
             <InputSelectUI labelClassAdd={styles.label} 
                 name="author.id" 
-                label="Выберите автора:" 
+                label="Автор:" 
                 value={props.values.author?props.values.author.id:0}
                 readOnly={props.editAccessStatus===EditAccessStatus.Readonly}
                 selectClassAdd={styles.input}

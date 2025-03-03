@@ -31,14 +31,16 @@ export const InputEditUI: FC<InputEditUIProps> = (props) => {
             className={combineClasses(styles['input-label'],props.labelClassReplace,props.labelClassAdd)}>
             {props.label}
         </label>
-        <input className={combineClasses(styles['input-edit'],props.inputClassReplace,props.inputClassAdd)}
-            value={props.value} name={props.name} 
-            placeholder={props.placeholder? props.placeholder :''}
-            type={props.isPassword?"password":"text"}
-            readOnly={props.readOnly}
-            required={props.required}
-            minLength={props.minLength}
-            onChange={props.handleChange}>
-        </input>
+        {props.readOnly?<span className={styles['input-edit-readonly']}>{props.value}</span>:
+            <input className={combineClasses(styles['input-edit'],props.inputClassReplace,props.inputClassAdd)}
+                value={props.value} name={props.name} 
+                placeholder={props.placeholder? props.placeholder :''}
+                type={props.isPassword?"password":"text"}
+                readOnly={props.readOnly}
+                required={props.required}
+                minLength={props.minLength}
+                onChange={props.handleChange}>
+            </input>
+        }
     </div>
 }    
