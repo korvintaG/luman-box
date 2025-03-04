@@ -1,1 +1,1 @@
-export { RecordListUI } from './record-list';
+export { RecordListUI } from "./record-list";

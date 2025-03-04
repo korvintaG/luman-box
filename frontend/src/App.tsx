@@ -1,26 +1,26 @@
-import React from 'react';
-import './App.css';
-import { Routes, Route } from 'react-router-dom';
-import { appRoutes } from './AppRoutes'
-import { AppHeaderUI } from './components/app-header/app-header';
-import { AppFooterUI } from './components/app-footer/app-footer';
-import { AboutPage } from './pages/about-page/about-page'
-import { AuthorsPage } from './pages/authors-page/authors-page'
-import { SourcesPage } from './pages/sources-page/sources-page'
-import { IdeasPage } from './pages/ideas-page/ideas-page';
-import { AuthorDetails } from './pages/authors-page/author-details/author-details'
-import { SourceDetails } from './pages/sources-page/source-details/source-details'
-import { IdeaDetails } from './pages/ideas-page/idea-details/idea-details'
-import { KeywordsPage } from './pages/keywords-page/keywords-page';
-import { KeywordDetails } from './pages/keywords-page/keyword-details/keyword-details'
-import {NotFoundPage} from './pages/not-found-page/not-found-page'
-import LoginPage from './pages/login-page/login-page'
+import React from "react";
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import { appRoutes } from "./AppRoutes";
+import { AppHeaderUI } from "./components/app-header/app-header";
+import { AppFooterUI } from "./components/app-footer/app-footer";
+import { AboutPage } from "./pages/about-page/about-page";
+import { AuthorsPage } from "./pages/authors-page/authors-page";
+import { SourcesPage } from "./pages/sources-page/sources-page";
+import { IdeasPage } from "./pages/ideas-page/ideas-page";
+import { AuthorDetails } from "./pages/authors-page/author-details/author-details";
+import { SourceDetails } from "./pages/sources-page/source-details/source-details";
+import { IdeaDetails } from "./pages/ideas-page/idea-details/idea-details";
+import { KeywordsPage } from "./pages/keywords-page/keywords-page";
+import { KeywordDetails } from "./pages/keywords-page/keyword-details/keyword-details";
+import { NotFoundPage } from "./pages/not-found-page/not-found-page";
+import LoginPage from "./pages/login-page/login-page";
 
 function App() {
   return (
     <div className="App">
       <AppHeaderUI />
-      <Routes >
+      <Routes>
         <Route path={appRoutes.home} element={<AboutPage />} />
         <Route path={appRoutes.authors} element={<AuthorsPage />} />
         <Route path={appRoutes.author} element={<AuthorDetails />} />

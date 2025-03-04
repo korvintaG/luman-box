@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit  } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TelegramMessage } from './entities/telegram-message.entity';
@@ -29,15 +29,17 @@ export class TelegramMessagingService implements OnModuleInit {
   onModuleInit() {
     // Проверяем наличие переменных окружения
     if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.MSG_QUEUE_FREQUENCY) {
-      console.log('TELEGRAM_BOT_TOKEN или MSG_QUEUE_FREQUENCY не определены в переменных окружения. Cron-задача не будет запущена.');
+      console.log(
+        'TELEGRAM_BOT_TOKEN или MSG_QUEUE_FREQUENCY не определены в переменных окружения. Cron-задача не будет запущена.',
+      );
       return;
     }
 
     const job = new CronJob(
-      process.env.MSG_QUEUE_FREQUENCY, 
-      () => this.handleTelegramMsgQueue(), 
-      null, 
-      true, 
+      process.env.MSG_QUEUE_FREQUENCY,
+      () => this.handleTelegramMsgQueue(),
+      null,
+      true,
     );
 
     this.schedulerRegistry.addCronJob('handleTelegramMsgQueue', job);
@@ -53,7 +55,7 @@ export class TelegramMessagingService implements OnModuleInit {
     await this.telegramMessageRepository.save(message);
     const user = await this.usersDB.findOne(userId);
     const chatId = user.chat_id;
-    
+
     //если у user нет chat_id
     if (!chatId) {
       await this.telegramMessageRepository.update(message.id, {

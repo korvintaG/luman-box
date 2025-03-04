@@ -1,1 +1,1 @@
-export { ButtonBackUI } from './button-type-back';
+export { ButtonBackUI } from "./button-type-back";

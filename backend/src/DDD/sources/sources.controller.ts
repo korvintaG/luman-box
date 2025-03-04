@@ -1,27 +1,36 @@
-import { Req, Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { Request  } from 'express';
+import {
+  Req,
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { SourcesService } from './sources.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard'
+import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-import { Role } from '../../types/custom'
+import { Role } from '../../types/custom';
 
 @Controller('sources')
 export class SourcesController {
   constructor(private readonly sourcesService: SourcesService) {}
 
-  @UseGuards(JwtAuthGuard)  
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Req() req: Request,
-         @Body() createSourceDto: CreateSourceDto) {
-    return this.sourcesService.create(req.user,createSourceDto);
+  create(@Req() req: Request, @Body() createSourceDto: CreateSourceDto) {
+    return this.sourcesService.create(req.user, createSourceDto);
   }
 
   @Get()
-  @UseGuards(OptionalJwtAuthGuard)    
+  @UseGuards(OptionalJwtAuthGuard)
   findAll(@Req() req: Request) {
     return this.sourcesService.findAll(req.user);
   }
@@ -31,26 +40,26 @@ export class SourcesController {
     return this.sourcesService.findOne(+id);
   }
 
-  @UseGuards(JwtAuthGuard)  
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, 
-         @Req() req: Request,
-         @Body() updateSourceDto: UpdateSourceDto) {
-    return this.sourcesService.update(+id,req.user, updateSourceDto);
+  update(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Body() updateSourceDto: UpdateSourceDto,
+  ) {
+    return this.sourcesService.update(+id, req.user, updateSourceDto);
   }
 
   @Post('moderate/:id')
-  @UseGuards(JwtAuthGuard,RoleGuard)  
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
-  moderate(@Param('id') id: string, 
-         @Req() req: Request) {
+  moderate(@Param('id') id: string, @Req() req: Request) {
     return this.sourcesService.moderate(+id, req.user);
   }
 
-  @UseGuards(JwtAuthGuard)  
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string,
-         @Req() req: Request) {
-    return this.sourcesService.remove(+id,req.user);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    return this.sourcesService.remove(+id, req.user);
   }
 }

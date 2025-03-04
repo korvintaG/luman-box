@@ -3,26 +3,23 @@ export interface SimpleEntity {
   name: string;
 }
 
-export interface SimpleEntityWithCnt extends SimpleEntity  {
+export interface SimpleEntityWithCnt extends SimpleEntity {
   cnt: number;
 }
-
 
 export interface SimpleEntityWithOutID extends SimpleEntity {
   id_out: string;
 }
 
-export interface IAuthor extends SimpleEntityWithOutID {
-}
-  
+export interface IAuthor extends SimpleEntityWithOutID {}
+
 export interface ISource extends SimpleEntityWithOutID {
-    author_id: number;
- }
-  
-export interface IKeyword extends SimpleEntityWithOutID {
+  author_id: number;
 }
 
-export interface IIdea extends SimpleEntityWithOutID  {
+export interface IKeyword extends SimpleEntityWithOutID {}
+
+export interface IIdea extends SimpleEntityWithOutID {
   source_id: number;
   original_text: string;
   content: string;
@@ -31,8 +28,8 @@ export interface IIdea extends SimpleEntityWithOutID  {
 }
 
 export interface IIdeaBySourceAndKeyword {
-  source_id:number;
-  keyword_id:number
+  source_id: number;
+  keyword_id: number;
 }
 
 export interface IModerate {
@@ -52,10 +49,9 @@ export const enum Role {
   User = 0,
   Admin = 1,
   //Blocked = 2,
-  SuperAdmin = 3
+  SuperAdmin = 3,
 }
 
-
-export interface IUser extends SimpleEntity{
+export interface IUser extends SimpleEntity {
   role_id: Role;
-};
+}

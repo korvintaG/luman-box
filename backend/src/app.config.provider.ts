@@ -24,4 +24,3 @@ export interface AppConfigDatabase {
   password: string;
   databaseName: string;
 }
-
