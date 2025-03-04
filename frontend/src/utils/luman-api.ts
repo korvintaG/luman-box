@@ -1,12 +1,26 @@
 import {
-  Author, AuthorPartial, AuthorRawPartial, Source, Idea, IdeaPartial, IdeaRawPartial,
-  ServerResponse, LoginData, LoginResult, User,
-  Keyword, KeywordRawPartial, SourceRawPartial, SourcePartial, KeywordPartial, Success
+  Author,
+  AuthorPartial,
+  AuthorRawPartial,
+  Source,
+  Idea,
+  IdeaPartial,
+  IdeaRawPartial,
+  ServerResponse,
+  LoginData,
+  LoginResult,
+  User,
+  Keyword,
+  KeywordRawPartial,
+  SourceRawPartial,
+  SourcePartial,
+  KeywordPartial,
+  Success,
 } from "./type";
-import { Api } from './api'
-import { getCookie } from './cookie';
+import { Api } from "./api";
+import { getCookie } from "./cookie";
 
-export const API_URL = process.env.REACT_APP_API_URL ?? 'http://localhost:3000';
+export const API_URL = process.env.REACT_APP_API_URL ?? "http://localhost:3000";
 
 export interface ILumanAPI {
   // авторы
@@ -45,105 +59,100 @@ export interface ILumanAPI {
 }
 
 export class LumanAPI extends Api implements ILumanAPI {
-  constructor(baseUrl: string, options?: RequestInit) {
-    super(baseUrl, options);
-  }
 
   // **********************************************
   // * Авторизация
   // **********************************************
   login = (data: LoginData): Promise<ServerResponse<LoginResult>> => {
     return this.request(`/auth/login`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      credentials: 'include'
+      credentials: "include",
     });
-  }
+  };
 
-  getUser = () : Promise<User> => {
-		return this.requestWithRefresh<User>('/auth/user', {
-			method: 'GET',
-			headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
-		});
-  }
+  getUser = (): Promise<User> => {
+    return this.requestWithRefresh<User>("/auth/user", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${getCookie("accessToken")}` },
+    });
+  };
 
-  logout = () : Promise<Success> => {
-		return this.request<Success>('/auth/logout', {
-			method: 'POST',
-      credentials: 'include' 
-		});
-  }
-
+  logout = (): Promise<Success> => {
+    return this.request<Success>("/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+  };
 
   // **********************************************
-  // * Авторы 
+  // * Авторы
   // **********************************************
 
   getAuthors = (): Promise<Author[]> => {
-    return this.request<Author[]>(`/authors`, { 
-      method: 'GET' ,
+    return this.request<Author[]>(`/authors`, {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
   getAuthor = (id: number): Promise<Author> => {
-    return this.request<Author>(`/authors/${id}`, { method: 'GET' })
+    return this.request<Author>(`/authors/${id}`, { method: "GET" });
   };
 
   addAuthor = (data: AuthorRawPartial) => {
-    return this.requestWithRefresh('/authors/', {
-      method: 'POST',
+    return this.requestWithRefresh("/authors/", {
+      method: "POST",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
   setAuthor = (data: AuthorPartial) => {
-    console.log('setAuthor',data)
+    console.log("setAuthor", data);
     return this.requestWithRefresh(`/authors/${data.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
+  };
 
-  approveAuthor= (id: number) => {
+  approveAuthor = (id: number) => {
     return this.requestWithRefresh(`/authors/moderate/${id}?action=approve`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
+  };
 
-  rejectAuthor= (id: number) => {
+  rejectAuthor = (id: number) => {
     return this.requestWithRefresh(`/authors/moderate/${id}?action=reject`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
-
+  };
 
   delAuthor = (id: number) => {
     return this.requestWithRefresh(`/authors/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${getCookie("accessToken")}` },
     });
   };
 
@@ -152,66 +161,65 @@ export class LumanAPI extends Api implements ILumanAPI {
   // **********************************************
 
   getSources = (): Promise<Source[]> => {
-    return this.request<Source[]>(`/sources`, 
-      { method: 'GET' ,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getCookie('accessToken')}`
-        }
-      })
+    return this.request<Source[]>(`/sources`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
   };
 
   getSource = (id: number): Promise<Source> => {
-    return this.request<Source>(`/sources/${id}`, { method: 'GET' })
-  }
+    return this.request<Source>(`/sources/${id}`, { method: "GET" });
+  };
 
   addSource = (data: SourceRawPartial) => {
-    return this.requestWithRefresh('/sources/', {
-      method: 'POST',
+    return this.requestWithRefresh("/sources/", {
+      method: "POST",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
   setSource = (data: SourcePartial) => {
     return this.requestWithRefresh(`/sources/${data.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
-  approveSource= (id: number) => {
+  approveSource = (id: number) => {
     return this.requestWithRefresh(`/sources/moderate/${id}?action=approve`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
+  };
 
-  rejectSource= (id: number) => {
+  rejectSource = (id: number) => {
     return this.requestWithRefresh(`/sources/moderate/${id}?action=reject`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
-
+  };
 
   delSource = (id: number) => {
     return this.requestWithRefresh(`/sources/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${getCookie("accessToken")}` },
     });
   };
 
@@ -219,151 +227,156 @@ export class LumanAPI extends Api implements ILumanAPI {
   // * Идеи
   // **********************************************
 
-  getIdeas = (): Promise<Idea[]> => { 
-    return this.request<Idea[]>(`/ideas`, { 
-      method: 'GET' ,
+  getIdeas = (): Promise<Idea[]> => {
+    return this.request<Idea[]>(`/ideas`, {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }      
-    })
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
   };
 
-  getIdeasBySrcKw = (cond:{source_id: number, keyword_id: number}): Promise<Idea[]> => { 
+  getIdeasBySrcKw = (cond: {
+    source_id: number;
+    keyword_id: number;
+  }): Promise<Idea[]> => {
     return this.request<Idea[]>(
-      `/ideas?source_id=`+cond.source_id+'&keyword_id='+cond.keyword_id, 
-      { method: 'GET' }
-    )
+      `/ideas?source_id=` + cond.source_id + "&keyword_id=" + cond.keyword_id,
+      { method: "GET" },
+    );
   };
 
   getIdea = (id: number): Promise<Idea> => {
-    return this.request<Idea>(`/ideas/${id}`, { method: 'GET' })
+    return this.request<Idea>(`/ideas/${id}`, { method: "GET" });
   };
 
   addIdea = (data: IdeaRawPartial) => {
-    return this.requestWithRefresh('/ideas/', {
-      method: 'POST',
+    return this.requestWithRefresh("/ideas/", {
+      method: "POST",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
   setIdea = (data: IdeaPartial) => {
     return this.requestWithRefresh(`/ideas/${data.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
-  approveIdea= (id: number) => {
+  approveIdea = (id: number) => {
     return this.requestWithRefresh(`/ideas/moderate/${id}?action=approve`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
+  };
 
-  rejectIdea= (id: number) => {
+  rejectIdea = (id: number) => {
     return this.requestWithRefresh(`/ideas/moderate/${id}?action=reject`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }  
+  };
 
   delIdea = (id: number) => {
     return this.requestWithRefresh(`/ideas/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${getCookie("accessToken")}` },
     });
   };
 
-  getIdeaBySourceKeyword = (findCond:{source_id: number, keyword_id: number}) : Promise<Idea> => {
+  getIdeaBySourceKeyword = (findCond: {
+    source_id: number;
+    keyword_id: number;
+  }): Promise<Idea> => {
     return this.request<Idea>(
-      `/ideas/find-by-source-kw/${findCond.source_id}/${findCond.keyword_id}`, 
-      { method: 'GET' }
-    )
+      `/ideas/find-by-source-kw/${findCond.source_id}/${findCond.keyword_id}`,
+      { method: "GET" },
+    );
   };
-  
+
   // **********************************************
   // * Ключевые слова
   // **********************************************
 
   getKeywords = (): Promise<Keyword[]> => {
-    return this.request<Keyword[]>(`/keywords`, { 
-      method: 'GET' ,
+    return this.request<Keyword[]>(`/keywords`, {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
-    })
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+    });
   };
 
   getKeyword = (id: number): Promise<Keyword> => {
-    return this.request<Keyword>(`/keywords/${id}`, { method: 'GET' })
+    return this.request<Keyword>(`/keywords/${id}`, { method: "GET" });
   };
 
   addKeyword = (data: KeywordRawPartial) => {
-    return this.requestWithRefresh('/keywords/', {
-      method: 'POST',
+    return this.requestWithRefresh("/keywords/", {
+      method: "POST",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
   setKeyword = (data: KeywordPartial) => {
     return this.requestWithRefresh(`/keywords/${data.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       body: JSON.stringify({ ...data }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
   };
 
-  approveKeyword= (id: number) => {
+  approveKeyword = (id: number) => {
     return this.requestWithRefresh(`/keywords/moderate/${id}?action=approve`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
+  };
 
-  rejectKeyword= (id: number) => {
+  rejectKeyword = (id: number) => {
     return this.requestWithRefresh(`/keywords/moderate/${id}?action=reject`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
     });
-  }
+  };
 
   delKeyword = (id: number) => {
     return this.requestWithRefresh(`/keywords/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${getCookie('accessToken')}` }
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${getCookie("accessToken")}` },
     });
   };
 }
 
-type TAuthorsResponse = { data: Author[] };
-
-export default new LumanAPI(API_URL);
+const lumanAPI=new LumanAPI(API_URL);
+export default lumanAPI;

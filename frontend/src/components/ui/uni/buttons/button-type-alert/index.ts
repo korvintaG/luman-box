@@ -1,1 +1,1 @@
-export { ButtonAlertUI } from './button-type-alert';
+export { ButtonAlertUI } from "./button-type-alert";

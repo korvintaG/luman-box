@@ -1,1 +1,1 @@
-export { ButtonModerateApproveUI } from './button-type-moderate-approve';
+export { ButtonModerateApproveUI } from "./button-type-moderate-approve";

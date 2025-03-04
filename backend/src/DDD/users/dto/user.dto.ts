@@ -16,5 +16,4 @@ export class UserDto {
   @Expose()
   @IsNumber()
   role_id: Role;
-
 }

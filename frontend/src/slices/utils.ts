@@ -1,20 +1,36 @@
-import { AsyncThunk, SerializedError, UnknownAction , createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RequestStatusValue } from '../utils/type'
+import {
+  AsyncThunk,
+  SerializedError,
+  UnknownAction,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { RequestStatusValue } from "../utils/type";
 
-const hasPrefix = (action: UnknownAction, prefix: string) => action.type.startsWith(prefix);
+const hasPrefix = (action: UnknownAction, prefix: string) =>
+  action.type.startsWith(prefix);
 const isRejected = (action: UnknownAction) => action.type.endsWith("/rejected");
 
-export type ErrorAction = PayloadAction<unknown, string, {
-  arg: string;
-  requestId: string;
-  requestStatus: "rejected";
-  aborted: boolean;
-  condition: boolean;
-} & ({
-  rejectedWithValue: true;
-} | ({
-  rejectedWithValue: false;
-} & {})), SerializedError>;
+export type ErrorAction = PayloadAction<
+  unknown,
+  string,
+  {
+    arg: string;
+    requestId: string;
+    requestStatus: "rejected";
+    aborted: boolean;
+    condition: boolean;
+  } & (
+    | {
+        rejectedWithValue: true;
+      }
+    | ({
+        rejectedWithValue: false;
+      } & {})
+  ),
+  SerializedError
+>;
 
 /* const isRejectedAction = (prefix: string) => (
   action: UnknownAction
@@ -23,26 +39,25 @@ export type ErrorAction = PayloadAction<unknown, string, {
 };*/
 
 export function isRejectedAction(action: PayloadAction) {
-  return action.type.endsWith('rejected');
-} 
+  return action.type.endsWith("rejected");
+}
 
 export function isFullFilledAction(action: PayloadAction) {
-  return action.type.endsWith('fulfilled');
-} 
+  return action.type.endsWith("fulfilled");
+}
 
 export function isPendingAction(action: PayloadAction) {
-  return action.type.endsWith('pending');
-}  
+  return action.type.endsWith("pending");
+}
 
-
-type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>
-type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>
-type PendingAction = ReturnType<GenericAsyncThunk['pending']>
-type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>
+type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
+type RejectedAction = ReturnType<GenericAsyncThunk["rejected"]>;
+type PendingAction = ReturnType<GenericAsyncThunk["pending"]>;
+type FulfilledAction = ReturnType<GenericAsyncThunk["fulfilled"]>;
 
 export interface ListToWork<T> {
-    list: T[]; 
-    current: T | null;
-    status: RequestStatusValue,
-    error: string;
-  }
+  list: T[];
+  current: T | null;
+  status: RequestStatusValue;
+  error: string;
+}

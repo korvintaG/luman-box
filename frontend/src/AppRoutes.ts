@@ -1,21 +1,21 @@
 export const appRoutes = {
-    home: '/',
-    auth: '/auth',
-    authors: '/authors',
-    author: '/authors/:id',
-    authorAdd: '/authors/add',
-    sources: '/sources',
-    source: '/sources/:id',
-    sourceAdd:'/sources/add',
-    ideas: '/ideas',
-    idea: '/ideas/:id',
-    ideaAdd: '/ideas/add',
-    ideaFind: '/ideas/find',
-    keywords: '/keywords',
-    keyword: '/keywords/:id',
-    keywordAdd: '/keywords/add',
-    user: '/users/:id'
-}
+  home: "/",
+  auth: "/auth",
+  authors: "/authors",
+  author: "/authors/:id",
+  authorAdd: "/authors/add",
+  sources: "/sources",
+  source: "/sources/:id",
+  sourceAdd: "/sources/add",
+  ideas: "/ideas",
+  idea: "/ideas/:id",
+  ideaAdd: "/ideas/add",
+  ideaFind: "/ideas/find",
+  keywords: "/keywords",
+  keyword: "/keywords/:id",
+  keywordAdd: "/keywords/add",
+  user: "/users/:id",
+};
 
 /**
  * Возвращает маршрут с означенным параметром
@@ -24,8 +24,8 @@ export const appRoutes = {
  * @returns маршрут с означенным параметром
  */
 export function getRouteParam(route: string, param: number): string {
-    return getRouteWParam(route)+param;
-}    
+  return getRouteWParam(route) + param;
+}
 
 /**
  * Взять маршрут без подстроки параметра (с ":")
@@ -33,9 +33,7 @@ export function getRouteParam(route: string, param: number): string {
  * @returns строка маршрута без параметра
  */
 export function getRouteWParam(route: string): string {
-    const pos=route.indexOf(':');
-    if (pos===-1)
-        return route
-    else
-        return route.substring(0,pos);
+  const pos = route.indexOf(":");
+  if (pos === -1) return route;
+  else return route.substring(0, pos);
 }

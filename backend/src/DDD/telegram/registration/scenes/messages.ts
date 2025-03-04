@@ -3,7 +3,6 @@ import { MyContext } from '../telegram.types';
 import { Patterns, CallbackData } from '../telegram.patterns';
 import { Message } from 'telegraf/typings/core/types/typegram';
 
-
 /**
  * Возвращает текст кнопки регистрации в зависимости от статуса пользователя (зарегистрирован? изменить пароль : задать/изменить логин и пароль )
  */
@@ -322,5 +321,3 @@ export async function replyRegistration(
     return reply;
   }
 }
-
-

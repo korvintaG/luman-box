@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Session} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Session,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 //import { AuthService } from '../../guards/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -7,14 +16,13 @@ import { UserDto } from './dto/user.dto';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { User } from './entities/user.entity';
 
-
 @Controller('users')
 @Serialize(UserDto)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     //private readonly authService: AuthService
-    ) {}
+  ) {}
 
   /*@Get('/whoami')
   whoAmI(@Session() session: any) {
@@ -24,7 +32,6 @@ export class UsersController {
     return user;
   }*/
 
-  
   /*@Post('/signout')
   signOut(@Session() session: any) {
     session.userId = null;

@@ -55,6 +55,26 @@ export class TelegramMessagingService implements OnModuleInit {
     message.text = text;
     message.user_id = userId;
     await this.telegramMessageRepository.save(message);
+    const user = await this.usersDB.findOne(userId);
+    const chatId = user.chat_id;
+
+    //если у user нет chat_id
+    if (!chatId) {
+      await this.telegramMessageRepository.update(message.id, {
+        status: 2,
+      });
+      customLog(
+        'TelegramMessage',
+        '',
+        '',
+        `Попытка отправить сообщение пользователю id:${userId}, у которого нет chat_id`,
+      );
+      return;
+    }
+    message.chat_id = chatId;
+    await this.telegramMessageRepository.update(message.id, {
+      chat_id: chatId,
+    });
   }
 
   /**

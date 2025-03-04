@@ -1,1 +1,1 @@
-export { ButtonAgreeUI } from './button-type-agree';
+export { ButtonAgreeUI } from "./button-type-agree";
