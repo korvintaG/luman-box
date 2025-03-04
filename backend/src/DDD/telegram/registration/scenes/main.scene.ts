@@ -14,7 +14,7 @@ import { SceneContext } from 'telegraf/typings/scenes';
 import { CallbackData, ScenesNames } from '../telegram.patterns';
 import { replyMain } from './messages';
 import { TelegramSessionsService } from '../telegram.service';
-import { UsersService } from '../../users/users.service';
+
 import {
   ChatId,
   customLog,
@@ -23,6 +23,7 @@ import {
   updateMessageState,
 } from '../utils';
 import { Update } from 'telegraf/typings/core/types/typegram';
+import { UsersService } from '../../../users/users.service';
 
 @Injectable()
 @Scene(ScenesNames.MAIN)

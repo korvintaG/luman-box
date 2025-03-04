@@ -5,14 +5,14 @@ import { session } from 'telegraf';
 import { TelegramSessionsService } from './telegram.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TelegramSessions } from './entities/telegram-sessions.entity';
-import { AuthModule } from '../../authorization/auth.module';
-import { UsersModule } from '../users/users.module';
+import { AuthModule } from '../../../authorization/auth.module';
+import { UsersModule } from '../../users/users.module';
 import { MainScene } from './scenes/main.scene';
 import { RegistrationScene } from './scenes/registration.scene';
 import { SubmitPasswordScene } from './scenes/submitPassword.scene';
 import { SubmitUsernameScene } from './scenes/submitUsername.scene';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TelegramMessagingModule } from '../telegram-messages/telegram-messages.module';
+import { TelegramMessagingModule } from '../messages/telegram-messages.module';
 
 @Module({})
 export class TelegramModule {

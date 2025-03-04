@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TelegramMessage } from './entities/telegram-message.entity';
 import { Telegraf } from 'telegraf';
-import { UsersService } from '../users/users.service';
-import { customLog } from '../telegram/utils';
-import { Cron, SchedulerRegistry } from '@nestjs/schedule';
+import { UsersService } from '../../users/users.service';
+import { customLog } from '../registration/utils';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { Not, IsNull } from 'typeorm';
 import { CronJob } from 'cron';
 
@@ -53,6 +53,7 @@ export class TelegramMessagingService implements OnModuleInit {
     await this.telegramMessageRepository.save(message);
     const user = await this.usersDB.findOne(userId);
     const chatId = user.chat_id;
+    
     //если у user нет chat_id
     if (!chatId) {
       await this.telegramMessageRepository.update(message.id, {
@@ -64,7 +65,12 @@ export class TelegramMessagingService implements OnModuleInit {
         '',
         `Попытка отправить сообщение пользователю id:${userId}, у которого нет chat_id`,
       );
+      return;
     }
+    message.chat_id = chatId;
+    await this.telegramMessageRepository.update(message.id, {
+      chat_id: chatId,
+    });
   }
 
   /**
