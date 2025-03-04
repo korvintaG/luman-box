@@ -13,10 +13,10 @@ import { IdeasModule } from './DDD/ideas/ideas.module';
 import { User } from './DDD/users/entities/user.entity';
 import { UsersModule } from './DDD/users/users.module';
 import { AuthModule } from './authorization/auth.module';
-import { TelegramModule } from './DDD/telegram/telegram.module';
-import { TelegramSessions } from './DDD/telegram/entities/telegram-sessions.entity';
-import { TelegramMessagingModule } from './DDD/telegram-messages/telegram-messages.module';
-import { TelegramMessage } from './DDD/telegram-messages/entities/telegram-message.entity';
+import { TelegramModule } from './DDD/telegram/registration/telegram.module';
+import { TelegramSessions } from './DDD/telegram/registration/entities/telegram-sessions.entity';
+import { TelegramMessagingModule } from './DDD/telegram/messages/telegram-messages.module';
+import { TelegramMessage } from './DDD/telegram/messages/entities/telegram-message.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({

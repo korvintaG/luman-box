@@ -323,43 +323,4 @@ export async function replyRegistration(
   }
 }
 
-/**
- * Возвращает ответное сообщение-заглушку с кнопкой "назад"  для незаполненных сцен.
- *
- * Контрукция try catch используется для того, чтобы отправить новое сообщение (если в чате все сообщения до этого были удалены) или изменить единсвтенное текущее сообщение для эффекта бота с одним сообщением
- *
- * В catch также проверяется возможность возникновения ошибки, когда пользователь более 2 раз совершает неправильное действие (например, дважды вводит короткий пароль или неоднократно вводит пароль с запрещенными символами) и метод возвращает ошибку, что сообщение изменить нельзя, т.к. оно не изменилось
 
- */
-export async function replyWithBackButton(
-  ctx: MyContext & SceneContext,
-  chatId: string,
-): Promise<Message.TextMessage> {
-  const messageText = Patterns.NOT_READY_PAGE;
-  try {
-    const reply = await ctx.telegram.editMessageText(
-      ctx.session[chatId].chat_id,
-      ctx.session[chatId].msg_to_upd.message_id,
-      undefined,
-      messageText,
-      {
-        reply_markup: onlyBackButtonKeyboard(),
-        parse_mode: 'HTML',
-      },
-    );
-    return reply as Message.TextMessage;
-  } catch (e) {
-    if (
-      e.message.includes(
-        'new message content and reply markup are exactly the same',
-      )
-    ) {
-      return ctx.session[chatId].msg_to_upd;
-    }
-    const reply = await ctx.telegram.sendMessage(chatId, messageText, {
-      reply_markup: onlyBackButtonKeyboard(),
-      parse_mode: 'HTML',
-    });
-    return reply;
-  }
-}

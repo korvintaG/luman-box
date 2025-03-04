@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'telegram_message' })
+@Entity({ name: 'telegram_messages' })
 export class TelegramMessage {
   @PrimaryGeneratedColumn()
   id: number;

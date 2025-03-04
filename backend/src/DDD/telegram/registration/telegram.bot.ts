@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Ctx, Start, Update, Command, On, Action } from 'nestjs-telegraf';
 import { Scenes } from 'telegraf';
 import { TelegramSessionsService } from './telegram.service';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../users/users.service';
 import { ChatId, customLog, deletMessageWithLog } from './utils';
 import { MyContext, UserState } from './telegram.types';
 import { ScenesNames } from './telegram.patterns';
-import { TelegramMessagingService } from '../telegram-messages/telegram-messages.service';
+import { TelegramMessagingService } from '../messages/telegram-messages.service';
 
 @Update()
 @Injectable()
@@ -52,6 +52,7 @@ export class TelegramBot {
       ctx.session.__scenes.current,
       `Задан стейт ${JSON.stringify(ctx.session[chatId], null, 2)}`,
     );
+
     deletMessageWithLog(ctx, chatId);
     if (ctx.session[chatId].msg_to_del) {
       try {
