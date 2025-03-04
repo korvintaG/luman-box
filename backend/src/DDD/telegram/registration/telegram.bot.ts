@@ -7,6 +7,7 @@ import { ChatId, customLog, deletMessageWithLog } from './utils';
 import { MyContext, UserState } from './telegram.types';
 import { ScenesNames } from './telegram.patterns';
 import { TelegramMessagingService } from '../messages/telegram-messages.service';
+import { throws } from 'assert';
 
 @Update()
 @Injectable()
@@ -17,6 +18,9 @@ export class TelegramBot {
     private readonly telegramMessagingService: TelegramMessagingService,
   ) {}
 
+ /**
+   * Пример использования метода отправки сообщений из очереди
+   */
   async notifyUser(userId: number, message: string) {
     await this.telegramMessagingService.sendMessage(userId, message);
   }
