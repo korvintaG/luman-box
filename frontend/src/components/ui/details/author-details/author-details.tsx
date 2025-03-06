@@ -34,7 +34,7 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (
     props.editAccessStatus === EditAccessStatus.Readonly,
     props.id,
     props.initialName,
-    "автора",
+    "автора"
   );
   const btnCaptione = props.id ? "Сохранить данные" : "Добавить автора";
 

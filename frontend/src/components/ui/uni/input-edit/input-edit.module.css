@@ -11,9 +11,11 @@
   }
   
   .input-edit-readonly {
+    display: inline-block;
     font-family: 'Montserrat';
     font-size: 17px;
     font-weight: bold;
+    text-align: left;
   }
 
 
@@ -47,4 +49,9 @@
     gap: 0;
   }
  
+  .input-edit-readonly {
+    padding-left: 10px;
+  }
+
+
 }

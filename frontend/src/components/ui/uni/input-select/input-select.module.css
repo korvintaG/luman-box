@@ -14,6 +14,8 @@
     font-family: 'Montserrat';
     font-size: 17px;
     font-weight: bold;
+    text-align: left;
+    display: inline-block;
   }
 
   .input-label {
@@ -45,6 +47,10 @@
   .input-block {
     flex-direction: column;
     gap: 0;
+  }
+
+  .input-select-readonly {
+    padding-left: 10px;
   }
 
 }

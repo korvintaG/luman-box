@@ -68,7 +68,7 @@ export function genHeaderText(
 ): string {
   const newWord = gender === "муж" ? "нового" : "новой";
   if (!id) return `Добавление ${newWord} ` + text;
-  else if (readOnly) return `Просмотр ${text} [${name}]`;
+  else if (readOnly) return `Просмотр ${text}`;
   else return `Редактирование ${text} [${name}]`;
 }
 
