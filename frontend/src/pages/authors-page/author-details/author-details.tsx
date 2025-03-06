@@ -47,7 +47,7 @@ export const AuthorDetails = () => {
   useEffect(() => fetchAuthor(), []);
 
   useEffect(() => {
-    if (currentAuthor) setValues({ ...pick(currentAuthor, ["name"]) });
+    if (currentAuthor) setValues({ ...pick(currentAuthor, ["name","sources","ideas","keywords"]) });
   }, [currentAuthor, setValues]);
 
   const deleteAuthor = (e: SyntheticEvent) => {

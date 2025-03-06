@@ -8,12 +8,14 @@ export type RelationListUIProps = {
   title: string;
   list: SimpleNameObject[] | undefined;
   editURLPath: string;
+  prefix?:string;
 };
 
 export const RelationListUI: FC<RelationListUIProps> = ({
   list,
   title,
   editURLPath,
+  prefix
 }) => {
   if (!list || list.length === 0) return null;
   const clonedArray = list.map((a) => {
@@ -28,7 +30,7 @@ export const RelationListUI: FC<RelationListUIProps> = ({
           {clonedArray.map((el) => {
             return (
               <li key={el.id} className={styles.element}>
-                <Link to={getRouteParam(editURLPath, el.id)}>{el.name}</Link>
+                <Link to={getRouteParam(editURLPath, el.id)}>{(prefix?prefix:'')+el.name}</Link>
               </li>
             );
           })}

@@ -6,7 +6,7 @@ import { IdeasService } from '../ideas/ideas.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
-import { SimpleEntityWithCnt } from '../../types/custom';
+import { SimpleEntityWithCnt, SimpleEntity } from '../../types/custom';
 import { IUser, Role } from '../../types/custom';
 
 @Injectable()
@@ -75,14 +75,23 @@ export class SourcesService {
       ]) // Выбираем только нужные поля
       .where('source.id = :id', { id })
       .getOne();
-    const kw = await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
-      `select keywords.name, keywords.id, count(ideas.*)::integer as cnt from ideas, idea_keywords as ik, keywords
+    const keywords = await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
+      `select keywords.name, keywords.id, count(ideas.*)::integer as cnt 
+        from ideas, idea_keywords as ik, keywords
         where ideas.source_id=$1 and ik.idea_id=ideas.id and keywords.id=ik.keyword_id
         group by keywords.name, keywords.id
         order by keywords.name`,
       [id],
     );
-    return { ...mainRes, keywords: kw };
+    const ideas = await this.sourceRepository.manager.query<SimpleEntity[]>(
+      `select distinct ideas.id, ideas.name 
+        from ideas
+        where source_id=$1
+        order by ideas.name`,
+      [id],
+    );
+
+    return { ...mainRes, keywords, ideas };
   }
 
   async update(id: number, user: IUser, updateSourceDto: UpdateSourceDto) {

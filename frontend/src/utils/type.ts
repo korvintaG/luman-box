@@ -17,6 +17,8 @@ export type AuthorRaw = AuthorInner & {
   user?: UserPartial;
   moderator?: UserPartial;
   sources?: SimpleNameObject[];
+  ideas?: SimpleNameObject[];  
+  keywords?: SimpleNameObject[];  
 };
 export type AuthorRawPartial = Partial<AuthorRaw>;
 export type AuthorPartial = Partial<Author> & IDObject; // то же что автор, но обязательный ID

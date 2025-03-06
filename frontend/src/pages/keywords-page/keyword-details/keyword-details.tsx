@@ -19,7 +19,7 @@ import { KeywordRaw, RequestStatus } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from "../../../slices/auth/index";
 import { withFormStatus } from "../../../components/hocs/with-form-status";
-import { omit } from "lodash";
+import { pick, omit } from "lodash";
 import {
   getEditAccess,
   getModerator,
@@ -49,7 +49,7 @@ export const KeywordDetails = () => {
   useEffect(() => {
     if (currentKeyword)
       setValues({
-        ...omit(currentKeyword, "user"),
+        ...omit(currentKeyword, ["user","moderator"]),
       });
   }, [currentKeyword]);
 

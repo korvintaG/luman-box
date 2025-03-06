@@ -37,7 +37,7 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (
     "автора"
   );
   const btnCaptione = props.id ? "Сохранить данные" : "Добавить автора";
-
+  console.log('AuthorDetailsUI',props.values)
   return (
     <RecordEditUI
       formClass={styles.form}
@@ -76,6 +76,18 @@ export const AuthorDetailsUI: FC<AuthorDetailsUIProps> = (
         editURLPath={appRoutes.source}
         list={props.values.sources}
       />
+      <RelationListUI
+        title="Список идей по источникам автора:"
+        editURLPath={appRoutes.idea}
+        list={props.values.ideas}
+      />
+      <RelationListUI
+        title="Список ключевых слов по источникам автора:"
+        editURLPath={appRoutes.keyword}
+        list={props.values.keywords}
+        prefix="#"
+      />
+
     </RecordEditUI>
   );
 };

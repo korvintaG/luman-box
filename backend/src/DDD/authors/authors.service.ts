@@ -6,7 +6,7 @@ import { Repository, MoreThan } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
-import { IModerate, IUser, Role } from '../../types/custom';
+import { IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
 
 @Injectable()
 export class AuthorsService {
@@ -43,9 +43,8 @@ export class AuthorsService {
     }
   }
 
-  findOne(id: number) {
-    //return this.authorRepository.findOne({where: { id }, relations: ['user','sources']});
-    return this.authorRepository
+  async findOne(id: number) {
+    const author= await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.sources', 'source')
       .leftJoinAndSelect('author.user', 'user')
@@ -61,6 +60,30 @@ export class AuthorsService {
       ]) // Выбираем только нужные поля
       .where('author.id = :id', { id })
       .getOne();
+    const sources = await this.authorRepository.manager.query<SimpleEntity[]>(
+      `select distinct sources.id, sources.name 
+        from sources
+        where sources.author_id=$1
+        order by sources.name`,
+      [id],
+    );
+    const ideas = await this.authorRepository.manager.query<SimpleEntity[]>(
+      `select distinct ideas.id, ideas.name 
+        from ideas, sources
+        where sources.id=source_id and author_id=$1
+        order by ideas.name`,
+      [id],
+    );
+    const keywords = await this.authorRepository.manager.query<SimpleEntity[]>(
+      `select distinct keywords.id, keywords.name
+        from keywords, idea_keywords , ideas, sources
+        where idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
+          and sources.id=source_id and author_id=$1
+        order by keywords.name`,
+      [id],
+    );
+  
+    return {...author,sources,ideas,keywords}
   }
 
   async update(id: number, user: IUser, updateAuthorDto: UpdateAuthorDto) {

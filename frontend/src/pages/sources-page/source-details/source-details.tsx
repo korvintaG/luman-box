@@ -66,7 +66,7 @@ export const SourceDetails = () => {
   useEffect(() => {
     if (currentSource)
       setValues({
-        ...pick(currentSource, ["name"]),
+        ...pick(currentSource, ["name","author","ideas","keywords"]),
         author: { id: currentSource.author ? currentSource.author.id : 0 },
       });
   }, [currentSource]);
