@@ -9,7 +9,6 @@ BEGIN
  delete from users where LENGTH(password)<10;
  insert into users (name, password) select 'korvin', '-' where not exists (select * from users where name='korvin');
   select count(*) from users into cnt;
-  if cnt!=0 then
 insert into users (name, id_out, password) select 'Altay' , 'korvintag_85', '-' where not exists (select * from users where id_out='korvintag_85');
 update users set name='Altay' where id_out='korvintag_85';
 insert into users (name, id_out, password) select 'Budda_from_Dnipro' , 'korvintag_45', '-' where not exists (select * from users where id_out='korvintag_45');
@@ -668,5 +667,4 @@ insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id 
 insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id iid from keywords, ideas  where keywords.id_out='korvintag_52' and  ideas.id_out='korvintag_4457';
 insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id iid from keywords, ideas  where keywords.id_out='korvintag_52' and  ideas.id_out='korvintag_4459';
 insert into idea_keywords(keyword_id, idea_id) select keywords.id kid, ideas.id iid from keywords, ideas  where keywords.id_out='korvintag_52' and  ideas.id_out='korvintag_4782';
-  end if;
 END $$;
