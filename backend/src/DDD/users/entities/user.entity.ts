@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { OneToMany, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Role } from '../../../types/custom';
+import { Attitude } from '../../attitudes/entities/attitude.entity';
 
 @Entity('users')
 export class User {
@@ -26,4 +27,8 @@ export class User {
   // =3 - суперадмин
   @Column({ type: 'int', default: 0 })
   role_id: Role;
+
+  @OneToMany(() => Attitude, (attitude) => attitude.user)
+  attitudes: Attitude[];
+
 }

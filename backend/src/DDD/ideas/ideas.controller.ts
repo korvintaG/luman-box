@@ -45,13 +45,15 @@ export class IdeasController {
   }
 
   @Get('/find-by-source-kw/:src/:kw')
-  findBySourceKw(@Param('src') src: string, @Param('kw') kw: string) {
-    return this.ideasService.findBySourceKw(src, kw);
+  @UseGuards(OptionalJwtAuthGuard)
+  findBySourceKw(@Param('src') src: string, @Param('kw') kw: string, @Req() req: Request) {
+    return this.ideasService.findBySourceKw(src, kw,req.user);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ideasService.findOne(+id);
+  @UseGuards(OptionalJwtAuthGuard)
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.ideasService.findOne(+id,req.user);
   }
 
   @UseGuards(JwtAuthGuard)

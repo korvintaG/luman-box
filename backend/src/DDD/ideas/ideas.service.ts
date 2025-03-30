@@ -9,6 +9,7 @@ import { isEmpty, omit } from 'lodash';
 import { KeywordsService } from '../keywords/keywords.service';
 import { IUser, Role } from '../../types/custom';
 import { checkAccess } from '../../utils/utils';
+import { AttitudesService } from '../attitudes/attitudes.service';
 
 @Injectable()
 export class IdeasService {
@@ -16,6 +17,7 @@ export class IdeasService {
     @InjectRepository(Idea)
     private readonly ideaRepository: Repository<Idea>,
     private keywordsService: KeywordsService,
+    private attitudesService: AttitudesService,
   ) {}
 
   async create(user: IUser, createIdeaDto: CreateIdeaDto) {
@@ -35,8 +37,6 @@ export class IdeasService {
   }
 
   findAll(user: IUser) {
-    //return this.ideaRepository.find( { relations: ['source.author', 'user'] , order: { name: "ASC" }});
-
     if (!user)
       // неавторизован, выводим все отмодерированное
       return this.ideaRepository.find({
@@ -100,23 +100,22 @@ export class IdeasService {
     });
   }
 
-  async findBySourceKw(src: string, kw: string) {
+  async findBySourceKw(src: string, kw: string, user:IUser) {
     const founds = await this.ideaRepository.manager.query<{ id: number }[]>(
       `select ideas.id
         from ideas, idea_keywords as ik
         where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,
       [src, kw],
     );
-    return this.findOne(founds[0].id);
+    return this.findOne(founds[0].id,user);
   }
 
   findByCond(cond: FindManyOptions) {
     return this.ideaRepository.find(cond);
   }
 
-  findOne(id: number) {
-    //return this.ideaRepository.findOne({where: {id}, relations: ['keywords', 'source.author', 'user', 'moderator']});
-    return this.ideaRepository
+  async findOne(id: number, user:IUser) {
+    const found=await this.ideaRepository
       .createQueryBuilder('idea')
       .leftJoinAndSelect('idea.keywords', 'keywords')
       .leftJoinAndSelect('idea.source', 'source')
@@ -135,6 +134,8 @@ export class IdeasService {
       ]) // Выбираем только нужные поля
       .where('idea.id = :id', { id })
       .getOne();
+    const attitude=await this.attitudesService.findOne(id,user);
+    return {...found,attitude}
   }
 
   async update(id: number, user: IUser, updateIdeaDto: UpdateIdeaDto) {

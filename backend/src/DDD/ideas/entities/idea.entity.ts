@@ -2,6 +2,7 @@ import {
   CreateDateColumn,
   JoinTable,
   ManyToMany,
+  OneToMany,
   JoinColumn,
   ManyToOne,
   Entity,
@@ -11,6 +12,7 @@ import {
 import { Source } from '../../sources/entities/source.entity';
 import { Keyword } from '../../keywords/entities/keyword.entity';
 import { User } from '../../users/entities/user.entity';
+import { Attitude } from 'src/DDD/attitudes/entities/attitude.entity';
 
 @Entity('ideas')
 export class Idea {
@@ -61,4 +63,7 @@ export class Idea {
     },
   })
   keywords: Keyword[];
+
+  @OneToMany(() => Attitude, (attitude) => attitude.idea)
+  attitudes: Attitude[];
 }
