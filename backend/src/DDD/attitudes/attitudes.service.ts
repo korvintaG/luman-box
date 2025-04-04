@@ -19,6 +19,7 @@ export class AttitudesService {
  ) {}
 
   async create(user: IUser,ideaID:number, createAttitudeDto: CreateAttitudeDto) {
+    console.log('AttitudesService create',user, ideaID, createAttitudeDto)
     const found=await this.attitudeRepository.find({
       where:{user_id:user.id, 
              idea_id:ideaID}
@@ -57,18 +58,22 @@ export class AttitudesService {
         attitudesGen[i][att1.value]=Number(att1.count);
       }
     } 
-    const attitudes_all={all:attitudeNames.map((value,no)=>{return({[value]:attitudesGen[no]})})};
+    let res={};
+    for (let i = 0; i < attitudeNames.length; i++) {
+      res={...res,[attitudeNames[i]]:attitudesGen[i]};
+    }
+    const attitudesAll={all:res};
     if (user) {
       const found=await this.attitudeRepository.find({
         where:{user_id:user.id, 
                idea_id:ideaID}
         });
       if (found.length===1) {// найдено      
-        const attitudes_user=pick(found[0],attitudeNames);
-        return {...attitudes_all,user:attitudes_user};
+        const attitudesUser=pick(found[0],attitudeNames);
+        return {...attitudesAll,user:attitudesUser};
       }
     }
-    return {...attitudes_all};
+    return {...attitudesAll};
   }
 
 }

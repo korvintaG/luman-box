@@ -90,10 +90,28 @@ export type IdeaRaw = IdeaInner & {
   user?: UserPartial;
   moderator?: UserPartial;
   keywords: KeywordPartial[];
+  attitudes?:IdeaAttitudes;
 };
 
 export type IdeaRawPartial = Partial<IdeaRaw>;
 export type IdeaPartial = Partial<Idea> & IDObject;
+
+export type UserAttitude={
+  like: number;
+  importance: number;
+  truth: number;  
+}
+
+export type UserAttitudeIdea = Partial<UserAttitude> & IDObject;
+
+export type IdeaAttitudes={
+  all:{
+    like:number[];
+    importance:number[];
+    truth:number[];
+  }
+  user?:UserAttitude;
+}
 
 export type Idea = IdeaRaw &
   IDObject & {
@@ -122,6 +140,8 @@ export const enum RequestStatus {
   Updated = "updated",
   Added = "added",
   Deleted = "deleted",
+  Attituding = "attituding",
+  Attituded = "attituded"
 }
 
 export function isRequestFailed(request: RequestStatus): boolean {

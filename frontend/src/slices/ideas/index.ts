@@ -35,8 +35,10 @@ export const approveIdea = createAsyncThunk(
 export const rejectIdea = createAsyncThunk("approveIdea", LumanAPI.rejectIdea);
 export const delIdea = createAsyncThunk("delIdea", LumanAPI.delIdea);
 
+export const attitudeIdea = createAsyncThunk("attitudeIdea", LumanAPI.attitudeIdea);
+
 export function isPendingIdeaAction(action: PayloadAction) {
-  return action.type.endsWith("pending") && action.type.includes("Idea");
+  return action.type.endsWith("pending") && action.type.includes("Idea") && !action.type.includes("attitude");
 }
 
 export function isRejectedIdeaAction(action: PayloadAction) {
@@ -70,6 +72,12 @@ const ideasSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(attitudeIdea.pending, (state, _) => {
+        //state.status = RequestStatus.Attituding;
+      })
+      .addCase(attitudeIdea.fulfilled, (state, _) => {
+        //state.status = RequestStatus.Attituded;
+      })
       .addCase(addIdea.fulfilled, (state, _) => {
         state.status = RequestStatus.Added;
       })
@@ -89,7 +97,7 @@ const ideasSlice = createSlice({
         },
       )
       .addMatcher(
-        isAnyOf(setIdea.rejected, approveIdea.rejected, rejectIdea.rejected),
+        isAnyOf(setIdea.rejected, approveIdea.rejected, rejectIdea.rejected, attitudeIdea.rejected),
         (state) => {
           state.status = RequestStatus.FailedUpdate;
         },
@@ -120,7 +128,7 @@ const ideasSlice = createSlice({
           getIdea.fulfilled,
           getIdeaBySrcKw.fulfilled,
           fetchIdeas.fulfilled,
-          fetchIdeasBySrcKw.fulfilled,
+          fetchIdeasBySrcKw.fulfilled
         ),
         (state) => {
           state.status = RequestStatus.Success;

@@ -5,6 +5,8 @@ import {
   Source,
   Keyword,
   authorNameFromObj,
+  IdeaAttitudes,
+  UserAttitudeIdea,
 } from "../../../../utils/type";
 import { RecordEditUI } from "../../uni/record-edit/record-edit";
 import { TopicKeywordsUI } from "../topic-keywords/topic-keywords";
@@ -15,6 +17,9 @@ import { InputTextUI } from "../../uni/input-text/input-text";
 import { genHeaderText, EditAccessStatus } from "../../../../utils/utils";
 import styles from "./idea-details.module.css";
 import { Authorship } from "../authorship/authorship";
+import { Attitude } from "../../uni/attitude/attitude";
+import { AttitudeIdea } from "../../uni/attitude-idea/attitude-idea";
+
 
 export type IdeaDetailsUIProps = {
   id: number | null;
@@ -27,11 +32,13 @@ export type IdeaDetailsUIProps = {
   rejectRecord: (e: SyntheticEvent) => void; // отвергнуть ключевое слово к идеи
   deleteKeyword: (e: SyntheticEvent, id: number) => void; // удалить ключевое слово к идеи
   addKeyword: (id: number) => void; // добавить ключевое слово к идеи
+  setAttitude?: (attitude: UserAttitudeIdea) =>void;
   sources: Source[]; // источники для выбора
   keywords: Keyword[]; // ключевые слова для выбора
   initialName: string; // начальное название идеи для отображения
   userName: string;
   moderatorName?: string | null;
+  attitudes?: IdeaAttitudes;
 };
 
 /**
@@ -110,6 +117,9 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
         deleteKeyword={props.deleteKeyword}
         addKeyword={props.addKeyword}
       />
+    {props.id && props.attitudes && 
+        <AttitudeIdea ideaID={props.id} attitudes={props.attitudes} setAttitudes={props.setAttitude}
+    />}
       <RecordButtonBlockUI
         id={props.id}
         editAccessStatus={props.editAccessStatus}

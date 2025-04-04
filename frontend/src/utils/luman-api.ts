@@ -16,9 +16,12 @@ import {
   SourcePartial,
   KeywordPartial,
   Success,
+  UserAttitude,
+  UserAttitudeIdea,
 } from "./type";
 import { Api } from "./api";
 import { getCookie } from "./cookie";
+import { omit } from "lodash";
 
 export const API_URL = process.env.REACT_APP_API_URL ?? "http://localhost:3000";
 
@@ -248,7 +251,13 @@ export class LumanAPI extends Api implements ILumanAPI {
   };
 
   getIdea = (id: number): Promise<Idea> => {
-    return this.request<Idea>(`/ideas/${id}`, { method: "GET" });
+    return this.request<Idea>(`/ideas/${id}`, { 
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}`,
+      },
+});
   };
 
   addIdea = (data: IdeaRawPartial) => {
@@ -309,6 +318,20 @@ export class LumanAPI extends Api implements ILumanAPI {
       { method: "GET" },
     );
   };
+
+  attitudeIdea = (userAttitudeIdea: UserAttitudeIdea) =>{
+    const bod=omit(userAttitudeIdea,'id');
+    console.log('attitudeIdea',userAttitudeIdea,bod)
+    return this.requestWithRefresh(`/attitudes/${userAttitudeIdea.id}`, {
+      method: "POST",
+      body: JSON.stringify({ ...omit(userAttitudeIdea,'id')}),      
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("accessToken")}` 
+      },
+    });
+
+  }
 
   // **********************************************
   // * Ключевые слова

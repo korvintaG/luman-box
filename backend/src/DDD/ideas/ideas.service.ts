@@ -134,8 +134,8 @@ export class IdeasService {
       ]) // Выбираем только нужные поля
       .where('idea.id = :id', { id })
       .getOne();
-    const attitude=await this.attitudesService.findOne(id,user);
-    return {...found,attitude}
+    const attitudes=await this.attitudesService.findOne(id,user);
+    return {...found,attitudes}
   }
 
   async update(id: number, user: IUser, updateIdeaDto: UpdateIdeaDto) {

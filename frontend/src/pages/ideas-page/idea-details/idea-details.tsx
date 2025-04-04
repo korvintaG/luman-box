@@ -16,6 +16,7 @@ import {
   approveIdea,
   rejectIdea,
   selectSliceState,
+  attitudeIdea,
 } from "../../../slices/ideas";
 import {
   selectSources,
@@ -35,7 +36,7 @@ import {
   getModerator,
   getUserCreator,
 } from "../../../utils/utils";
-import { KeywordPartial, IdeaRaw } from "../../../utils/type";
+import { KeywordPartial, IdeaRaw, UserAttitudeIdea } from "../../../utils/type";
 import { useForm } from "../../../hooks/useForm";
 import { selectCurrentUser } from "../../../slices/auth/index";
 
@@ -48,6 +49,7 @@ export const IdeaDetails = () => {
     content: "",
     date_time_create: "",
     keywords: [],
+    attitudes: {all:{like:[0,0,0,0,0],importance:[0,0,0,0,0], truth:[0,0,0,0,0]}}
   });
   const [searchParams] = useSearchParams();
   const findSourceId = searchParams.get("source_id");
@@ -147,6 +149,10 @@ export const IdeaDetails = () => {
     else dispatch(addIdea({ ...getFormDTO(), keywords: keywordsDTO() }));
   };
 
+  const setAttitude = (attitude: UserAttitudeIdea) => {
+    dispatch(attitudeIdea(attitude))
+  }
+
   const initialName = currentIdea ? currentIdea.name : "";
   const IdeaForm = useMemo(() => withFormStatus(IdeaDetailsUIFC), [setValues]);
 
@@ -176,6 +182,8 @@ export const IdeaDetails = () => {
       deleteKeyword={deleteKeyword}
       userName={getUserCreator(currentIdea, currentUser)}
       moderatorName={getModerator(currentIdea)}
+      attitudes={currentIdea?.attitudes}
+      setAttitude={setAttitude}
     />
   );
 };
