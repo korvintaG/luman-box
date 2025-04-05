@@ -175,6 +175,7 @@
       font-size: 8px;
       /*border: 1px blue solid;*/
       min-width: 25px;
+      min-height: 11px;
 }
 
 .label:first-child {

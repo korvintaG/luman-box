@@ -134,7 +134,7 @@ export const Attitude: FC<AttitudeProps> = ({ title, hintLike, hintDisLike,hintL
       "data-id":"1", 
       className:clsx(styles.icon, styles.iconFull)
   };
-  if (receivedUser)
+  if (receivedUser!=null)
     propsLike={...propsLike, onClick:pressIcon}
 
   // DISLIKE Icon
@@ -147,7 +147,7 @@ export const Attitude: FC<AttitudeProps> = ({ title, hintLike, hintDisLike,hintL
       "data-id":"4", 
       className:clsx(styles.icon, styles.iconFull)
   };
-  if (receivedUser)
+  if (receivedUser!=null)
     propsDisLike={...propsDisLike, onClick:pressIcon}
 
   return (<div className={styles.container}>
