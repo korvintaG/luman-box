@@ -152,7 +152,7 @@ export const Attitude: FC<AttitudeProps> = ({ title, hintLike, hintDisLike,hintL
 
   return (<div className={styles.container}>
       <LikeComponent {...propsLike} />
-      <Tooltip id={"like"+translit(title)}  delayShow={700} place="right" border="1px solid black" className={styles.hint} />
+      <Tooltip id={"like"+translit(title)}  delayShow={700} place="top-start" border="1px solid black" className={styles.hint} />
       <div className={styles.mainContainer}>
         <h6 className={styles.title}>{title}</h6>
         <Scale {...{title, handleClick , getHintByValue, selectedValue, orderArray, receivedUser}}/>
@@ -160,10 +160,10 @@ export const Attitude: FC<AttitudeProps> = ({ title, hintLike, hintDisLike,hintL
       </div>
       {/* выносим на уровень вверх подсказки, чтобы не глючили */}
       {orderArray.map((value)=>{
-        return <Tooltip id={`scale${value}`+translit(title)}  place="top" border="1px solid black" className={styles.hint} />      
+        return <Tooltip id={`scale${value}`+translit(title)}  place="top-start" border="1px solid black" className={styles.hint} />      
       })}
       <DisLikeComponent {...propsDisLike} />
-      <Tooltip id={"dislike"+translit(title)} place="left" border="1px solid black" className={styles.hint}/>
+      <Tooltip id={"dislike"+translit(title)} place="top" border="1px solid black" className={styles.hint}/>
   </div>
   );
 };

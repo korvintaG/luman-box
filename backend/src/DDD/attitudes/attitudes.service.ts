@@ -19,7 +19,7 @@ export class AttitudesService {
  ) {}
 
   async create(user: IUser,ideaID:number, createAttitudeDto: CreateAttitudeDto) {
-    console.log('AttitudesService create',user, ideaID, createAttitudeDto)
+    //console.log('AttitudesService create',user, ideaID, createAttitudeDto)
     const found=await this.attitudeRepository.find({
       where:{user_id:user.id, 
              idea_id:ideaID}
@@ -70,6 +70,12 @@ export class AttitudesService {
         });
       if (found.length===1) {// найдено      
         const attitudesUser=pick(found[0],attitudeNames);
+        return {...attitudesAll,user:attitudesUser};
+      }
+      else {
+        const attitudesUser = Object.fromEntries(
+          attitudeNames.map(key => [key, 0])
+        ) as { [key in typeof attitudeNames[number]]: number };
         return {...attitudesAll,user:attitudesUser};
       }
     }

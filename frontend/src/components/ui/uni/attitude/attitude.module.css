@@ -25,6 +25,10 @@
       /* border: 1px green solid; */
 }
 
+.icon:focus {
+      outline: none;    
+}
+
 .iconFull {
       color: var(--maincolor);
 }

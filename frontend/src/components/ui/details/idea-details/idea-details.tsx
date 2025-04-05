@@ -19,6 +19,9 @@ import styles from "./idea-details.module.css";
 import { Authorship } from "../authorship/authorship";
 import { Attitude } from "../../uni/attitude/attitude";
 import { AttitudeIdea } from "../../uni/attitude-idea/attitude-idea";
+import { Link } from "react-router-dom";
+import { getRouteParam, appRoutes } from "../../../../AppRoutes";
+import { LinkFieldUI } from "../../uni/link-field/link-field";
 
 
 export type IdeaDetailsUIProps = {
@@ -56,6 +59,13 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
   );
   const btnCaptione = props.id ? "Сохранить данные" : "Добавить идею";
 
+  let currentSourceName='';
+  const currentSource=props.sources.find((el) => el.id === props.values.source.id);
+  if (currentSource)
+    currentSourceName=currentSource.name + " // " + authorNameFromObj(currentSource.author);
+
+  const readOnly=props.editAccessStatus === EditAccessStatus.Readonly;
+
   return (
     <RecordEditUI
       header={header}
@@ -69,23 +79,31 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
           moderatorName={props.moderatorName}
           className={styles.label_info}
         />
-        <InputSelectUI
-          name="source.id"
-          label="Источник идеи:"
-          value={props.values.source.id}
-          readOnly={props.editAccessStatus === EditAccessStatus.Readonly}
-          handleChange={props.handleChange}
-          labelClassAdd={styles.label}
-          values={props.sources.map((el) => ({
-            id: el.id,
-            name: el.name + "//" + authorNameFromObj(el.author),
-          }))}
-        />
+        {readOnly ?
+          <LinkFieldUI
+            URL={getRouteParam(appRoutes.source, props.values.source.id)}
+            URLText={ currentSourceName }
+            labelClassAdd={styles.label}
+            label="Источник идеи:"
+          />
+          :
+          <InputSelectUI
+            name="source.id"
+            label="Источник идеи:"
+            value={props.values.source.id}
+            readOnly={false}
+            handleChange={props.handleChange}
+            labelClassAdd={styles.label}
+            values={props.sources.map((el) => ({
+              id: el.id,
+              name: el.name + "//" + authorNameFromObj(el.author),
+            }))}
+          />}
         <InputEditUI
           name="name"
           label="Название идеи:"
           value={props.values.name}
-          readOnly={props.editAccessStatus === EditAccessStatus.Readonly}
+          readOnly={readOnly}
           labelClassAdd={styles.label}
           placeholder="Укажите название идеи"
           handleChange={props.handleChange}
@@ -96,7 +114,7 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
           value={props.values.original_text}
           name="original_text"
           label="Вдохновивший текст"
-          readOnly={props.editAccessStatus === EditAccessStatus.Readonly}
+          readOnly={readOnly}
           classAdd={styles.original}
           textClassAdd={styles.original_text}
           handleChange={props.handleChange}
@@ -105,7 +123,7 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
           value={props.values.content}
           name="content"
           label="Суть идеи"
-          readOnly={props.editAccessStatus === EditAccessStatus.Readonly}
+          readOnly={readOnly}
           classAdd={styles.content}
           handleChange={props.handleChange}
         />
@@ -113,11 +131,11 @@ export const IdeaDetailsUI: FC<IdeaDetailsUIProps> = (
       <TopicKeywordsUI
         keywordsAll={props.keywords}
         keywordsSelected={props.values.keywords ? props.values.keywords : []}
-        readOnly={props.editAccessStatus === EditAccessStatus.Readonly}
+        readOnly={readOnly}
         deleteKeyword={props.deleteKeyword}
         addKeyword={props.addKeyword}
       />
-    {props.id && props.attitudes && 
+    {readOnly && props.id && props.attitudes &&
         <AttitudeIdea ideaID={props.id} attitudes={props.attitudes} setAttitudes={props.setAttitude}
     />}
       <RecordButtonBlockUI
