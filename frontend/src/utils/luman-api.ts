@@ -321,7 +321,7 @@ export class LumanAPI extends Api implements ILumanAPI {
 
   attitudeIdea = (userAttitudeIdea: UserAttitudeIdea) =>{
     const bod=omit(userAttitudeIdea,'id');
-    console.log('attitudeIdea',userAttitudeIdea,bod)
+    //console.log('attitudeIdea',userAttitudeIdea,bod)
     return this.requestWithRefresh(`/attitudes/${userAttitudeIdea.id}`, {
       method: "POST",
       body: JSON.stringify({ ...omit(userAttitudeIdea,'id')}),      
