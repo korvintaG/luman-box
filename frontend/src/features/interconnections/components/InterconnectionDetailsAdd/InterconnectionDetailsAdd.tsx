@@ -24,7 +24,7 @@ export type InterconnectionDetailsAddProp = {
 export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> = 
 ( {    idea_id, iitype_id,isReverse, currentUser, afterSuccessDMLAction, interconnectionTypeInfo : iti}) => {
 
-    const {form, status, record, moderate, findIdeaToAddByID, errorFind  } = 
+    const {form, status, record, moderate, find  } = 
     useInterconnectionDetailsAdd({currentUser, idea_id, iitype_id, 
          isReverse, interconnectionTypeInfo: iti});
 
@@ -39,13 +39,14 @@ export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> =
     />;
 
     const CurrentSelect =  <IdeaSelect
-            error={errorFind}
+            error={find.errorFind}
             iitype_name={isReverse?iti.name1_one:iti.name2_one}
             idValue={form.values.ideaID}
             handleChange={form.handleChange}
-            handleFindAction={findIdeaToAddByID}
+            handleFindAction={find.findIdeaToAddByID}
             ideaSelected={record.currentRecord?.ideaInterconnect}
             sliceState={status.sliceStates[0]}
+            resetFoundData={find.resetFoundData}
     />;        
    
     return <RecordEditForm

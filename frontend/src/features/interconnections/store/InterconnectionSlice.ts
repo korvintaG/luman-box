@@ -50,6 +50,12 @@ const interconnectionsSlice = createSlice({
     reducers: {
       clearCurrentInterconnection: (state) => {
         state.currentAdd = undefined;
+      },
+      resetFoundData: (state) => {
+        if (state.currentAdd)
+          state.currentAdd.ideaInterconnect=null;
+        state.status=RequestStatus.Idle;
+        state.errorFind='';
       }
     },
     selectors: {
@@ -160,6 +166,6 @@ export const {
     selectError,
     selectFindError
   } = interconnectionsSlice.selectors;
-export const { clearCurrentInterconnection } = interconnectionsSlice.actions;
+export const { clearCurrentInterconnection, resetFoundData } = interconnectionsSlice.actions;
 export default interconnectionsSlice.reducer;
   

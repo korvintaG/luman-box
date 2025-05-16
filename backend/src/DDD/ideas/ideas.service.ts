@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, FindManyOptions, MoreThan } from 'typeorm';
 import { Idea } from './entities/idea.entity';
@@ -8,7 +8,7 @@ import { IIdeaBySourceAndKeyword, IdeaForList } from '../../types/custom';
 import { isEmpty, omit } from 'lodash';
 import { KeywordsService } from '../keywords/keywords.service';
 import { IUser, Role } from '../../types/custom';
-import { checkAccess } from '../../utils/utils';
+import { checkAccess, getUserSQLFilter } from '../../utils/utils';
 import { AttitudesService } from '../attitudes/attitudes.service';
 import { InterconnectionsService } from '../interconnections/interconnections.service';
 
@@ -68,7 +68,7 @@ export class IdeasService {
 
   async findBySrcKw(user: IUser, cond: IIdeaBySourceAndKeyword) {
     let founds: { id: number }[] = [];
-    if (!user)
+    if (!user) 
       // неавторизован, выводим все отмодерированное
       founds = await this.ideaRepository.manager.query<{ id: number }[]>(
         `select ideas.id
@@ -117,10 +117,11 @@ export class IdeasService {
   }
 
   async findForList(id: number, user:IUser) {
+    const addCond=getUserSQLFilter(user,'ideas'); 
     const idea=await this.ideaRepository.manager.query<IdeaForList[]>(    
       `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
       from ideas, sources, authors
-      where ideas.id=${id} and sources.id=ideas.source_id and authors.id=sources.author_id`);
+      where ideas.id=${id} ${addCond} and sources.id=ideas.source_id and authors.id=sources.author_id`);
     if (isEmpty(idea[0]))
       throw new  NotFoundException(`Идеи с ID=${id} не найдено!`);
     else
@@ -150,7 +151,7 @@ export class IdeasService {
       .getOne();
     if (found.moderator) {
        const attitudes=await this.attitudesService.findOne(id,user);
-       const interconnections=await this.interconnectionsService.countAllByIdea(id);
+       const interconnections=await this.interconnectionsService.countAllByIdea(id, user);
        return {...found,attitudes,interconnections}
     }
     return found

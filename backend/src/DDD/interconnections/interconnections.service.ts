@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InterconnectionEntityDto } from './dto/create-interconnection.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateInterconnectionDto } from './dto/update-interconnection.dto';
-import { IInterconnectionWay, IUser, InterconnestionsCount, InterconnestionsReverseTypes, InterconnestionsTypes, InterconnestionsTypesArray } from '../../types/custom';
+import { IUser, InterconnestionsCount, InterconnestionsTypes } from '../../types/custom';
 import { Interconnection } from './entities/interconnection.entity';
+import { getUserSQLFilter } from 'src/utils/utils';
+import { isEmpty } from 'lodash';
 
 type ICTC={
   interconnection_type: number;
@@ -32,6 +34,8 @@ export class InterconnectionsService {
  ) {}
 
  create(user: IUser,interconnectionEntityDto: InterconnectionEntityDto) {
+    if (interconnectionEntityDto.idea1_id===interconnectionEntityDto.idea2_id)
+      throw new BadRequestException(`Взаимосвязь должна устанавливаться между разными идеями! Вы же пытаетесь внутри одной с ID=${interconnectionEntityDto.idea1_id}`);
     return this.interconnectionRepository.save({
       ...interconnectionEntityDto,
       user_id: user.id 
@@ -39,59 +43,65 @@ export class InterconnectionsService {
 ;
   }
 
-  async findOne(id: number/*, query: Partial<IInterconnectionWay>*/) {
+  async findOne(id: number, user:IUser) {
     const interconnection=await this.interconnectionRepository.findOne(
       {where: {id},relations: ['user', 'moderator'] });
+    if (isEmpty(interconnection))
+      throw new  NotFoundException(`Взаимосвязи с ID=${id} не найдено!`);
+    const addCond=getUserSQLFilter(user, 'ideas')
     const ideaCurrent=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
         `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
         from ideas, sources, authors, interconnections 
         where interconnections.id=${id} 
+          ${addCond}
           and ideas.id= interconnections.idea1_id
           and sources.id=ideas.source_id 
           and authors.id=sources.author_id`);
+    if (isEmpty(ideaCurrent))
+      throw new  NotFoundException(`Не найдено 1-й идеи для взаимосвязи ID=${id}!`);
     const ideaInterconnect=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
         `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
         from ideas, sources, authors, interconnections 
         where interconnections.id=${id} 
+          ${addCond}
           and ideas.id= interconnections.idea2_id
           and sources.id=ideas.source_id 
           and authors.id=sources.author_id`);
+    if (isEmpty(ideaInterconnect))
+      throw new  NotFoundException(`Не найдено 2-й идеи для взаимосвязи ID=${id}!`);
+
     return { ...interconnection, ideaCurrent:ideaCurrent[0], ideaInterconnect:ideaInterconnect[0] }
   }
 
-  async getIdeaToInterconnect(id: number, tid: number, iid: number) {
+  async getByIdeaAndType(idea_id: number, type_id: number, user:IUser) {
+    const addCond=getUserSQLFilter(user,'interconnections'); 
+    const addIdeaCond=getUserSQLFilter(user,'ideas'); 
     const idea=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
       `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
       from ideas, sources, authors
-      where ideas.id=${iid} and sources.id=ideas.source_id and authors.id=sources.author_id`);
-    return {...idea[0]}
-  }
-
-  async getByIdeaAndType(id: number, tid: number) {
-    const idea=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
-      `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
-      from ideas, sources, authors
-      where ideas.id=${id} and sources.id=ideas.source_id and authors.id=sources.author_id`);
+      where ideas.id=${idea_id} ${addIdeaCond} and sources.id=ideas.source_id and authors.id=sources.author_id`);
     const ideasDirect=await this.interconnectionRepository.manager.query<IdeaInfoWithIC[]>(    
       `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id,
         interconnections.name_direct as interconnection_name,
         interconnections.id as interconnection_id
       from ideas, sources, authors, interconnections 
-      where interconnections.idea1_id=${id} 
+      where interconnections.idea1_id=${idea_id} 
+        ${addCond}
         and sources.id=ideas.source_id 
         and authors.id=sources.author_id 
         and ideas.id=interconnections.idea2_id 
-        and interconnection_type=${tid}`);
+        and interconnection_type=${type_id}`);
     const ideasReverse=await this.interconnectionRepository.manager.query<IdeaInfoWithIC[]>(    
       `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id,
         interconnections.name_reverse as interconnection_name,
         interconnections.id as interconnection_id
       from ideas, sources, authors, interconnections 
-      where interconnections.idea2_id=${id} 
+      where interconnections.idea2_id=${idea_id} 
+        ${addCond}
         and sources.id=ideas.source_id 
         and authors.id=sources.author_id 
         and ideas.id=interconnections.idea1_id 
-        and interconnection_type=${tid}`);
+        and interconnection_type=${type_id}`);
     return {idea: idea[0], interconnections_direct: ideasDirect, interconnections_reverse: ideasReverse};
   }
   
@@ -105,19 +115,19 @@ export class InterconnectionsService {
         and authors.id=sources.author_id`);
   }*/
 
-  async countAllByIdea(id: number) {
-    /*for (const it of InterconnestionsTypesArray) {
-      console.log(it);
-    }*/
+  async countAllByIdea(idea_id: number, user: IUser) {
+    const addCond=getUserSQLFilter(user); 
     const ic1=await this.interconnectionRepository.manager.query<ICTC[]>(    
       `select interconnection_type, count(*) as cnt
       from interconnections
-      where idea1_id=${id}
+      where idea1_id=${idea_id}
+      ${addCond}
       group by interconnection_type`);
     const ic2=await this.interconnectionRepository.manager.query<ICTC[]>(    
       `select interconnection_type, count(*) as cnt
       from interconnections
-      where idea2_id=${id}
+      where idea2_id=${idea_id}
+      ${addCond}
       group by interconnection_type`);
       
     let res:InterconnestionsCount[]=[];

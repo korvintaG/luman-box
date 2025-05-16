@@ -46,3 +46,15 @@ export async function checkAccess(
       message: 'У Вас нет прав на редактирование записей, добавленных не Вами',
     });
 }
+
+export function getUserSQLFilter(user:IUser, prefix?: string): string {
+  let addCond=''; // по умолчанию админ, выводим все
+  let genPrefix=prefix? `${prefix}.` : '';
+  if (!user) // нет входа в систему
+    addCond=` and ${genPrefix}moderated>0 `
+  else {
+    if (user.role_id === Role.User) // простой пользователь - выводим отмодерированное и его
+      addCond=` and (${genPrefix}moderated>0 or ${genPrefix}user_id=${user.id})`
+  }
+  return addCond;
+}

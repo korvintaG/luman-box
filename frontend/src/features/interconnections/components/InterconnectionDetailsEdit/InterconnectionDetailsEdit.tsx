@@ -13,6 +13,8 @@ import { InterconnectionDescription } from "../InterconnectionDescription/Interc
 import { FillRecomendation } from "../FillRecomendation/FillRecomendation";
 import { InterconnectionTitle } from "../InterconnectionList/InterconnectionTitle/InterconnectionTitle";
 import { Authorship } from "../../../../shared/components/Authorship/Authorship";
+import { RequestStatus } from "../../../../shared/common-types";
+import { EditAccessStatus } from "../../../../shared/utils/utils";
 
 
 export type InterconnectionDetailsEditProp = {
@@ -64,6 +66,7 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> =
                 nameReverse={form.values.nameReverse}
                 handleChange={form.handleChange}
                 ideaTypeInfo={iitype}
+                readOnly={status.editAccessStatus===EditAccessStatus.Readonly}
             />
 
             {record.currentRecord && record.currentRecord.ideaInterconnect &&

@@ -20,30 +20,27 @@ export class InterconnectionsController {
     return this.interconnectionsService.create(req.user,interconnectionEntityDto);
   }
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string/*, @Query() query: Partial<IInterconnectionWay>,*/) {
-    return this.interconnectionsService.findOne(+id/*, query*/);
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.interconnectionsService.findOne(+id, req.user);
   }
 
-  @Get('/by-idea/:id')
-  findAllByIdea(@Param('id') id: string) {
-    return this.interconnectionsService.countAllByIdea(+id);
+  @UseGuards(OptionalJwtAuthGuard)
+  @Get('/count-by-idea/:idea_id')
+  countByIdea(@Param('idea_id') idea_id: string, @Req() req: Request) {
+    return this.interconnectionsService.countAllByIdea(+idea_id, req.user);
   }
 
-  @Get('/by-idea-and-type/:id/:tid')
-  findAllByIdeaAndType(@Param('id') id: string, @Param('tid') tid: string) {
-    return this.interconnectionsService.getByIdeaAndType(+id,+tid);
+  @UseGuards(OptionalJwtAuthGuard)
+  @Get('/by-idea-and-type/:idea_id/:type_id')
+  findAllByIdeaAndType(@Param('idea_id') idea_id: string, @Param('type_id') type_id: string, @Req() req: Request) {
+    return this.interconnectionsService.getByIdeaAndType(+idea_id,+type_id, req.user);
   }
 
-  @Get('/idea-for-interconnect/:id/:tid/:iid')
+  /*@Get('/idea-for-interconnect/:id/:tid/:iid')
   findIdeaToInterconnect(@Param('id') id: string, @Param('tid') tid: string, @Param('iid') iid: string) {
     return this.interconnectionsService.getIdeaToInterconnect(+id,+tid,+iid);
-  }
-
-  /*@Get('/for-add/:idea_id/:iitype_id')
-  findForInterconnectAdd(@Param('idea_id') idea_id: string, 
-    @Param('iitype_id') iitype_id: string) {
-    return this.interconnectionsService.getForInterconnectAdd(+idea_id,+iitype_id);
   }*/
 
   @UseGuards(JwtAuthGuard)

@@ -16,11 +16,17 @@ export type IdeaSelectProps = {
     handleFindAction: (e: SyntheticEvent) => void;
     ideaSelected:  IdeaForList | null | undefined;
     error: string;
-    sliceState: RequestStatus
+    sliceState: RequestStatus;
+    resetFoundData: ()=>void;
 }
 export const IdeaSelect: FC<IdeaSelectProps> = 
-    ({sliceState, error, iitype_name, idValue, handleChange, handleFindAction, ideaSelected}) =>
+    ({sliceState, error, iitype_name, idValue, handleChange, handleFindAction, ideaSelected, resetFoundData}) =>
 {
+    const handleChangeAction= (event: React.ChangeEvent<HTMLEditElement>) : void => {
+        handleChange(event);
+        resetFoundData();
+    }
+
     return <div className={styles.container}>
         <h3>[{iitype_name}]</h3>
         <div className={styles.subcontainer}>
@@ -30,7 +36,7 @@ export const IdeaSelect: FC<IdeaSelectProps> =
                     value={idValue?idValue:''}
                     name="ideaID"
                     label=""
-                    handleChange={handleChange}
+                    handleChange={handleChangeAction}
                     classReplace={styles.ID_input}
                     isNumber
                 />

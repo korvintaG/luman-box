@@ -76,14 +76,14 @@ export type InterconnestionsCount = {
 }
 
 export enum InterconnestionsTypes {
-  Details = 3,
+  Hierarchy = 3,
   SolvesProblem = 5 
 }
 
-export enum InterconnestionsReverseTypes { // временно не нужен
+/*export enum InterconnestionsReverseTypes { // временно не нужен
   Generalizes = 3,
   IsProblemSolution = 5
-}
+}*/
 
 
 // Фильтрация числовых ключей

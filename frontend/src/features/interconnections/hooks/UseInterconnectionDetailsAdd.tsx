@@ -1,9 +1,11 @@
 import { useEffect, SyntheticEvent } from "react";
 import { useForm } from "../../../shared/hooks/useForm"; 
-import { InterconnectionAddData, InterconnectionAddForm, InterconnectionCreateDTO, InterconnectionEditForm, InterconnectionTypeInfo, InterconnectionUpdateDTO } 
+import { InterconnectionAddData, InterconnectionAddForm, InterconnectionCreateDTO, 
+   InterconnectionTypeInfo} 
 from "../InterconnectionTypes";
 import { useSelector, useDispatch } from "../../../shared/services/store";
-import { fetchCurrentIdea, selectError, selectSliceState, addInterconnection, selectInterconnectionAdd, fetchInterconnection, setInterconnection, fetchIdeaToSet, selectFindError } 
+import { fetchCurrentIdea, selectError, selectSliceState, addInterconnection, 
+  selectInterconnectionAdd, fetchIdeaToSet, selectFindError, resetFoundData } 
 from "../store/InterconnectionSlice";
 import { DetailsHookProps, IDetailsHookRes, RequestStatus } from "../../../shared/common-types";
 import { IdeaForList } from "../../ideas/IdeaTypes";
@@ -20,8 +22,11 @@ export interface DetailsAddHookProps extends DetailsHookProps {
 
 export interface DetailsAddHookRes<FormValues, Record> extends
   IDetailsHookRes<FormValues, Record> {
-    findIdeaToAddByID: (e: SyntheticEvent) => void;
-    errorFind: string;
+    find: {
+      findIdeaToAddByID: (e: SyntheticEvent) => void;
+      errorFind: string;
+      resetFoundData: ()=>void;
+    }
 }
 
 
@@ -50,28 +55,9 @@ export const useInterconnectionDetailsAdd = (
       fetchRecord();
     }, [idea_id]);
 
-    /*useEffect(() => {
-      if (currentIdea)
-        setValues({ ...values,currentIdea});
-    }, [currentIdea]);
-    */
-   /* useEffect(() => {
-      if (currentRecord) {
-        setValues({ 
-          ...values,
-          interconnectionTypeID:currentRecord.interconnection_type,
-          nameDirect:currentRecord.name_direct,
-          nameReverse:currentRecord.name_reverse,
-          interconnectionIdea:{
-            id:currentRecord.ideaInterconnect.id,
-            name:currentRecord.ideaInterconnect.name
-          },
-          currentIdea:{
-            id:currentRecord.ideaCurrent.id,
-            name:currentRecord.ideaCurrent.name
-          }});
-      }
-    }, [currentRecord]);*/
+    const resetFoundDataAction = ()=>{
+      dispatch(resetFoundData())
+    }
     
     const deleteRecordAction = (e: SyntheticEvent) => {
       e.preventDefault();
@@ -125,8 +111,11 @@ export const useInterconnectionDetailsAdd = (
       moderate:{
          approveRecordAction, rejectRecordAction 
       },
+      find: {
        findIdeaToAddByID,
-       errorFind: errorFindText
+       errorFind: errorFindText,
+       resetFoundData:resetFoundDataAction
+      }
     }
 
 }

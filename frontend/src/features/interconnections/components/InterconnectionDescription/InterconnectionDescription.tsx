@@ -11,10 +11,11 @@ export type InterconnectionDescriptionProp = {
     nameDirect: string;
     nameReverse: string;
     handleChange: (event: ChangeEvent<HTMLEditElement>) => void;
-    ideaTypeInfo?: InterconnectionTypeInfo
+    ideaTypeInfo?: InterconnectionTypeInfo;
+    readOnly?: boolean;
 }
 export const InterconnectionDescription: FC<InterconnectionDescriptionProp> = 
-    ( { nameDirect, nameReverse, handleChange, ideaTypeInfo}) => {
+    ( { nameDirect, nameReverse, handleChange, ideaTypeInfo, readOnly}) => {
     return <div className={styles.middle}>
         <InputTextUI
             value={nameDirect}
@@ -24,6 +25,7 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             handleChange={handleChange}
             classAdd={styles.direct}
             textClassAdd={styles.input}
+            readOnly={readOnly}
         />
         <Arrow className={styles.arrow}/>
         {ideaTypeInfo && <ideaTypeInfo.icon className={styles.icon}/>}
@@ -36,6 +38,7 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             handleChange={handleChange}
             classAdd={styles.reverse}
             textClassAdd={styles.input}
+            readOnly={readOnly}
         />
     </div>;
     }    
