@@ -1,0 +1,40 @@
+:root {
+  --title-table-background-color:#1d9cb5;
+  --caption-table:#167487;
+  --idea-color: #B8D9F9;
+}
+
+.App {
+  text-align: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  margin: 30px 30px;
+  gap: 15px;
+}
+
+.record-header {
+  text-align: left;
+  padding-left: calc(100vw / 60);
+  padding-top: calc(100vw / 60);
+  font-size: 16px;
+  font-weight: normal;
+  font-family: 'Montserrat';
+}
+
+.moderated-need {
+  color:chocolate;
+}
+
+.moderated-cancel {
+  color:red;
+}
+
+
+@media (max-width: 750px) {
+  .main {
+      margin: 10px;
+  }
+}

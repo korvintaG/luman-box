@@ -32,6 +32,18 @@ export interface IIdeaBySourceAndKeyword {
   keyword_id: number;
 }
 
+export interface IInterconnectionWay {
+  is_reverse: number;
+}
+
+
+export interface IdeaForList {
+  id: number,
+  name: string,
+  source_id: number,
+  source_name: string
+}
+
 export interface IModerate {
   action: 'approve' | 'reject';
 }
@@ -55,3 +67,25 @@ export const enum Role {
 export interface IUser extends SimpleEntity {
   role_id: Role;
 }
+
+export type InterconnestionsCount = {
+  id: number;
+  name: string;
+  cnt1: number;
+  cnt2: number;
+}
+
+export enum InterconnestionsTypes {
+  Details = 3,
+  SolvesProblem = 5 
+}
+
+export enum InterconnestionsReverseTypes { // временно не нужен
+  Generalizes = 3,
+  IsProblemSolution = 5
+}
+
+
+// Фильтрация числовых ключей
+export const InterconnestionsTypesArray = Object.values(InterconnestionsTypes)
+  .filter(value => typeof value === 'number') as InterconnestionsTypes[];

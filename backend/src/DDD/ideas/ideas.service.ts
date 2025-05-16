@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, FindManyOptions, MoreThan } from 'typeorm';
 import { Idea } from './entities/idea.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
-import { IIdeaBySourceAndKeyword } from '../../types/custom';
+import { IIdeaBySourceAndKeyword, IdeaForList } from '../../types/custom';
 import { isEmpty, omit } from 'lodash';
 import { KeywordsService } from '../keywords/keywords.service';
 import { IUser, Role } from '../../types/custom';
 import { checkAccess } from '../../utils/utils';
 import { AttitudesService } from '../attitudes/attitudes.service';
+import { InterconnectionsService } from '../interconnections/interconnections.service';
 
 @Injectable()
 export class IdeasService {
@@ -18,6 +19,7 @@ export class IdeasService {
     private readonly ideaRepository: Repository<Idea>,
     private keywordsService: KeywordsService,
     private attitudesService: AttitudesService,
+    private interconnectionsService: InterconnectionsService
   ) {}
 
   async create(user: IUser, createIdeaDto: CreateIdeaDto) {
@@ -114,8 +116,20 @@ export class IdeasService {
     return this.ideaRepository.find(cond);
   }
 
+  async findForList(id: number, user:IUser) {
+    const idea=await this.ideaRepository.manager.query<IdeaForList[]>(    
+      `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
+      from ideas, sources, authors
+      where ideas.id=${id} and sources.id=ideas.source_id and authors.id=sources.author_id`);
+    if (isEmpty(idea[0]))
+      throw new  NotFoundException(`Идеи с ID=${id} не найдено!`);
+    else
+      return {...idea[0]}
+  }
+
+
   async findOne(id: number, user:IUser) {
-    const found=await this.ideaRepository
+    let found=await this.ideaRepository
       .createQueryBuilder('idea')
       .leftJoinAndSelect('idea.keywords', 'keywords')
       .leftJoinAndSelect('idea.source', 'source')
@@ -134,8 +148,12 @@ export class IdeasService {
       ]) // Выбираем только нужные поля
       .where('idea.id = :id', { id })
       .getOne();
-    const attitudes=await this.attitudesService.findOne(id,user);
-    return {...found,attitudes}
+    if (found.moderator) {
+       const attitudes=await this.attitudesService.findOne(id,user);
+       const interconnections=await this.interconnectionsService.countAllByIdea(id);
+       return {...found,attitudes,interconnections}
+    }
+    return found
   }
 
   async update(id: number, user: IUser, updateIdeaDto: UpdateIdeaDto) {

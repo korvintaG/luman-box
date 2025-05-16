@@ -1,0 +1,44 @@
+.container {
+    width: 100%;
+    border: 1px black solid;
+}
+
+.container h3 {
+    text-align: left;
+    padding-left: 20px;
+    font-weight: normal;
+}
+
+
+.subcontainer {
+    border-radius: 7px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    column-gap: 5px;
+    padding: 5px;
+}
+
+.subcontainer label {
+    text-align: right;
+    padding-left: 10px;
+}
+
+.find_block {
+    display: flex;
+    gap: 15px;
+    padding-left: 15px;
+}
+
+.ID_input {
+    display: flex;
+    width: 100px;
+}
+
+.subcontainer p, .subcontainer a {
+    text-align: left;
+}
+
+.source_name {
+    font-style: italic;
+}

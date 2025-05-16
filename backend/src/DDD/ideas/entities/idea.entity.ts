@@ -19,7 +19,7 @@ export class Idea {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', select: false, nullable: true })
+  @Column({ type: 'varchar', select: false, unique: true, nullable: true })
   id_out: string;
 
   @Column('varchar')

@@ -56,6 +56,13 @@ export class IdeasController {
     return this.ideasService.findOne(+id,req.user);
   }
 
+  @Get('/for-list/:id')
+  @UseGuards(OptionalJwtAuthGuard)
+  findForList(@Param('id') id: string, @Req() req: Request) {
+    return this.ideasService.findForList(+id,req.user);
+  }
+
+
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(

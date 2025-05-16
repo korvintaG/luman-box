@@ -1,0 +1,28 @@
+.block {
+    position: relative;
+    border: 1px black solid;
+}
+
+.header {
+    position: absolute;
+    top: -10px;
+    left: 5px;
+    z-index: 1;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.text {
+    position: relative;
+    resize:none;
+    border: none;
+    width: 99%;
+    padding: 10px;
+    font-family: 'Montserrat';
+    height: 100%;
+}
+
+.block:focus-within {
+    border: none;
+}

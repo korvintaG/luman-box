@@ -4,9 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
-import "./fonts/fonts.css";
-import { store } from "./services/store";
-import App from "./App";
+import "./assets/fonts/fonts.css";
+import { store } from "./shared/services/store";
+import App from "./app/App";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,

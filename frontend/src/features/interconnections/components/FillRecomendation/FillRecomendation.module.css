@@ -1,0 +1,9 @@
+.recomendation {
+    text-align: justify;
+    font-size: 14px;
+}
+
+.recomendation span{
+    font-size: 16px;
+    text-decoration: underline;
+}

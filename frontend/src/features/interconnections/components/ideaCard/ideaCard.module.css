@@ -1,0 +1,22 @@
+.container {
+    background-color: var(--idea-color);
+    border-radius: 7px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    column-gap: 5px;
+    padding: 5px;
+}
+
+.container label {
+    text-align: right;
+    padding-left: 10px;
+}
+
+.container p, .container a {
+    text-align: left;
+}
+
+.source_name {
+    font-style: italic;
+}

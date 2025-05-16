@@ -20,6 +20,8 @@ import { TelegramMessage } from './DDD/telegram/messages/entities/telegram-messa
 import { ScheduleModule } from '@nestjs/schedule';
 import { Attitude } from './DDD/attitudes/entities/attitude.entity';
 import { AttitudesModule } from './DDD/attitudes/attitudes.module';
+import { Interconnection } from './DDD/interconnections/entities/interconnection.entity';
+import { InterconnectionsModule } from './DDD/interconnections/interconnections.module';
 
 @Module({
   imports: [
@@ -43,6 +45,7 @@ import { AttitudesModule } from './DDD/attitudes/attitudes.module';
             Source,
             Keyword,
             Attitude,
+            Interconnection,
             Idea,
             User,
             TelegramSessions,
@@ -61,7 +64,8 @@ import { AttitudesModule } from './DDD/attitudes/attitudes.module';
     IdeasModule,
     UsersModule,
     AuthModule,
-    AttitudesModule
+    AttitudesModule,
+    InterconnectionsModule
   ],
   providers: [configProvider],
 })

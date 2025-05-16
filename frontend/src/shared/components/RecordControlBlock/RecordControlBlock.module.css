@@ -1,0 +1,13 @@
+.container {
+  margin: 0 auto;
+  z-index: 999;
+}
+
+.button-block {
+    padding-top: 20px;
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
