@@ -9,7 +9,6 @@
     font-weight: normal;
 }
 
-
 .subcontainer {
     border-radius: 7px;
     width: 100%;
@@ -26,8 +25,9 @@
 
 .find_block {
     display: flex;
-    gap: 15px;
-    padding-left: 15px;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    /*padding-left: 15px;*/
 }
 
 .ID_input {

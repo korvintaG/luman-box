@@ -3,11 +3,10 @@ import { InterconnectionTypeInfo } from "../../InterconnectionTypes";
 import { FC } from "react";
 import styles from "./InterconnectionList.module.css";
 import { ButtonAddUI } from "../../../../shared/ui/buttons/button-add"; 
-import { IdeaTitle } from "../../../../shared/components/Titles/IdeaTitle/IdeaTitle";
-import { SourceTitle } from "../../../../shared/components/Titles/SourceTitle/SourceTitle"; 
 import { useInterconnectionList } from "../../hooks/UseInterconnectionList";
 import { IdeasTable } from "../IdeasTable/IdeasTable";
 import { Preloader } from "../../../../shared/ui/Preloader";
+import { InterconnectionsListTitle } from "../InterconnectionsListTitle/InterconnectionsListTitle";
 
 
 export type InterconnectionListProps = {
@@ -31,20 +30,10 @@ export const InterconnectionList: FC<InterconnectionListProps> = (
         return <Preloader/>
 
     return <main className={styles.container}>
-        <h1 className={styles.title}>
-            <IdeaTitle 
-                ideaID={interconnections.idea.id}
-                ideaName={interconnections.idea.name}
-            />
-            <SourceTitle 
-                sourceID={interconnections.idea.source_id}
-                sourceName={interconnections.idea.source_name}
-            />
-            <span>Тип взаимосвязи:&nbsp; 
-                <div className={styles.interconnections_type_comment}>
-                    {iTI.name}</div>
-            </span>
-        </h1>
+        <InterconnectionsListTitle
+            idea={interconnections.idea}
+            iitype_name={iTI.name}
+        />
         <section className={styles.left_section}>
             <IdeasTable
                 sectionClass={styles.left_section_table}

@@ -21,7 +21,7 @@ export const MsgErrorModalUI: FC<MsgErrorModalUIProps> = (props) => {
       ariaHideApp={false}
       preventScroll={false}
       style={{
-        overlay: {zIndex: 222},
+        overlay: {zIndex: 999},
         content: {
           maxWidth: 500,
           height: "min-content",

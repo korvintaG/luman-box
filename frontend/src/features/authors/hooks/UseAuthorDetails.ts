@@ -18,11 +18,11 @@ import {
  import {
     getEditAccess,
   } from "../../../shared/utils/utils";
-import { DetailsHookProps, IDetailsHookRes } from "../../../shared/common-types";
+import { DetailsHookProps, IDetailsEditHookRes } from "../../../shared/common-types";
   
 
 export const useAuthorDetails =({id, currentUser}: DetailsHookProps)
-  : IDetailsHookRes<AuthorInner, Author> =>{
+  : IDetailsEditHookRes<AuthorInner, Author> =>{
     const { values, handleChange, setValues, getFormDTO } = useForm <AuthorInner>({
         name: "",
       });

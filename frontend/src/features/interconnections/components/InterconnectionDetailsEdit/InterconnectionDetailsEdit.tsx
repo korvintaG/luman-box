@@ -11,7 +11,7 @@ import styles from "./InterconnectionDetailsEdit.module.css";
 import { IdeaCard } from "../ideaCard/ideaCard";
 import { InterconnectionDescription } from "../InterconnectionDescription/InterconnectionDescription";
 import { FillRecomendation } from "../FillRecomendation/FillRecomendation";
-import { InterconnectionTitle } from "../InterconnectionList/InterconnectionTitle/InterconnectionTitle";
+import { InterconnectionDetailsTitle } from "../InterconnectionDetailsTitle/InterconnectionDetailsTitle";
 import { Authorship } from "../../../../shared/components/Authorship/Authorship";
 import { RequestStatus } from "../../../../shared/common-types";
 import { EditAccessStatus } from "../../../../shared/utils/utils";
@@ -42,7 +42,7 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> =
         error={status.errorText}
         fetchRecord={record.fetchRecord}
       >
-            <InterconnectionTitle typeName={iitype?.name} />
+            <InterconnectionDetailsTitle typeName={iitype?.name} />
             {record.currentRecord && record.currentRecord.user && <Authorship
                 userName={record.currentRecord.user.name}
                 moderatorName={record.currentRecord.moderator?
@@ -60,7 +60,7 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> =
                             id: record.currentRecord.ideaCurrent.source_id, 
                             name: record.currentRecord.ideaCurrent.source_name
                         }}/>
-                </div>}
+                    </div>}
             <InterconnectionDescription
                 nameDirect={form.values.nameDirect}
                 nameReverse={form.values.nameReverse}
@@ -79,7 +79,7 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> =
                             id: record.currentRecord.ideaInterconnect.source_id, 
                             name: record.currentRecord.ideaInterconnect.source_name
                         }}/>
-                </div>}
+                    </div>}
         <FillRecomendation/>
         <RecordControlBlock
             id={id}
@@ -88,7 +88,6 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> =
             editAccessStatus={status.editAccessStatus}
             deleteRecord={record.deleteRecordAction}
             afterSuccessDMLAction={()=>{
-                //console.log('afterSuccessDMLAction',isReverse);
                 afterSuccessDMLAction(
                     isReverse?
                         record!.currentRecord!.idea2_id

@@ -16,3 +16,15 @@
     margin-left: auto;
 }
 
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 780px) {
+    .authorship {
+        min-width: auto;
+    }
+    .idea_top, .idea_bottom {
+        width: calc(100% - 20px);
+    }
+    
+}

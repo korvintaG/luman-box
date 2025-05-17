@@ -59,17 +59,24 @@ export interface IFormHookRes<FormValues> {
 
 }
 
-export interface IDetailsHookRes<FormValues, Record> {
+export interface IDetailsAddHookRes<FormValues, Record> {
   form: IFormHookRes<FormValues>,
   record: {
     fetchRecord: ()=>void;
     handleSubmitAction: (e:SyntheticEvent) => void;
-    deleteRecordAction: (e:SyntheticEvent) => void;
     currentRecord: Record | null | undefined;
   },
   status: {
     sliceStates: RequestStatus[];
     errorText: string;
+  }
+}
+
+export interface IDetailsEditHookRes<FormValues, Record> extends IDetailsAddHookRes<FormValues, Record>{
+  record: IDetailsAddHookRes<FormValues, Record>['record'] & {
+    deleteRecordAction: (e:SyntheticEvent) => void;
+  },
+  status:  IDetailsAddHookRes<FormValues, Record>['status'] & {
     editAccessStatus: EditAccessStatus; 
   }
   moderate: {

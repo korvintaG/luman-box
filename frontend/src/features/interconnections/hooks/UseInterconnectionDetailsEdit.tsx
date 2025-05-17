@@ -4,22 +4,17 @@ import { InterconnectionCreateDTO, InterconnectionEditForm, InterconnectionTypeI
 from "../InterconnectionTypes";
 import { useSelector, useDispatch } from "../../../shared/services/store";
 import { fetchCurrentIdea, selectError, selectSliceState, selectInterconnectionEdit, 
-  fetchInterconnection, setInterconnection, delInterconnection, approveInterconnection } 
+  fetchInterconnection, setInterconnection, delInterconnection, approveInterconnection, setUpdateError } 
 from "../store/InterconnectionSlice";
-import { DetailsHookProps, IDetailsHookRes } from "../../../shared/common-types";
+import { DetailsHookProps, IDetailsEditHookRes } from "../../../shared/common-types";
 import { IdeaForList } from "../../ideas/IdeaTypes";
 import { InterconnectionEditData } from "../InterconnectionTypes";
 import { getEditAccess } from "../../../shared/utils/utils";
 import { interconnectionsTypeInfo } from "../../../shared/constants/InterconnectionTypeInfo";
 
-/*export interface DetailsEditHookRes<FormValues, Record> 
-  extends DetailsHookRes<FormValues, Record> {
-    interconnectionTypeInfo?:InterconnectionTypeInfo
-}*/
-
 export const useInterconnectionDetailsEdit = (
   {id, currentUser}: DetailsHookProps)
-  :IDetailsHookRes<InterconnectionEditForm,InterconnectionEditData> =>{
+  :IDetailsEditHookRes<InterconnectionEditForm,InterconnectionEditData> =>{
 
   const { values, handleChange, setValues, getFormDTO } = useForm<InterconnectionEditForm>({
         //interconnectionTypeID: undefined,
@@ -72,12 +67,17 @@ export const useInterconnectionDetailsEdit = (
 
     const handleSubmitAction = (e: SyntheticEvent) => {
       e.preventDefault();
+      if (values.nameDirect.length>=10 && values.nameReverse.length>=10) {
         const upObj:InterconnectionUpdateDTO = {
           id:Number(id),
           name_direct: values.nameDirect,
           name_reverse: values.nameReverse,
         }
         dispatch(setInterconnection(upObj));
+      }
+      else 
+        dispatch(setUpdateError('Комментарий к связи должен быть длиной от 10-ти символов!'))
+
     };    
 
 

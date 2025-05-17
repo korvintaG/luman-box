@@ -17,7 +17,7 @@ export type InterconnectionDescriptionProp = {
 export const InterconnectionDescription: FC<InterconnectionDescriptionProp> = 
     ( { nameDirect, nameReverse, handleChange, ideaTypeInfo, readOnly}) => {
     return <div className={styles.middle}>
-        <InputTextUI
+        {<InputTextUI
             value={nameDirect}
             name="nameDirect"
             rows={2}
@@ -26,9 +26,10 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             classAdd={styles.direct}
             textClassAdd={styles.input}
             readOnly={readOnly}
-        />
+            minLength={10}
+        />}
         <Arrow className={styles.arrow}/>
-        {ideaTypeInfo && <ideaTypeInfo.icon className={styles.icon}/>}
+        {ideaTypeInfo && <div className={styles.icon_container}><ideaTypeInfo.icon className={styles.icon}/></div>}
         <Arrow className={clsx(styles.arrow, styles.arrow_reverse)}/>
         <InputTextUI
             value={nameReverse}
@@ -39,6 +40,9 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             classAdd={styles.reverse}
             textClassAdd={styles.input}
             readOnly={readOnly}
+            minLength={10}
         />
+
     </div>;
     }    
+

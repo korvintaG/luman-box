@@ -1,19 +1,7 @@
 .container {
 }
 
-.title {
-    font-size: 20px;
-    line-height: normal;
-    margin-bottom: 20px;
-}
-.title span {
-    display: block;
-}
 
-.interconnections_type_comment {
-    display: inline;
-    color: var(--caption-table);
-}
 
 .left_section {
     width: calc(50% - 25px);
@@ -57,3 +45,28 @@
     color: darkgreen;
 }
 
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 1000px) {
+    .left_section {
+        width: calc(80% - 25px);
+    }
+    .right_section {
+        width: calc(80% - 25px);
+    }
+    .icon {
+        width: 70px;
+        margin-top: 17px;
+        margin-bottom: 17px;
+    }
+}
+
+@media (max-width: 650px) {
+    .left_section {
+        width: calc(100% - 25px);
+    }
+    .right_section {
+        width: calc(100% - 25px);
+    }
+}

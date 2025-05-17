@@ -51,6 +51,13 @@ const interconnectionsSlice = createSlice({
       clearCurrentInterconnection: (state) => {
         state.currentAdd = undefined;
       },
+      resetSliceState: (state) => {
+        state.status=RequestStatus.Idle;
+      },
+      setUpdateError : (state, error) =>{
+        state.status=RequestStatus.FailedUpdate;
+        state.error=error.payload 
+      },
       resetFoundData: (state) => {
         if (state.currentAdd)
           state.currentAdd.ideaInterconnect=null;
@@ -166,6 +173,6 @@ export const {
     selectError,
     selectFindError
   } = interconnectionsSlice.selectors;
-export const { clearCurrentInterconnection, resetFoundData } = interconnectionsSlice.actions;
+export const { clearCurrentInterconnection, resetFoundData, resetSliceState, setUpdateError } = interconnectionsSlice.actions;
 export default interconnectionsSlice.reducer;
   

@@ -1,0 +1,20 @@
+.title {
+    font-weight: normal;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.title span {
+    font-weight: bold;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 780px) {
+    .title {
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+}

@@ -19,12 +19,12 @@ import {
   
 } from "../../../shared/utils/utils";
 import { Keyword, KeywordInner } from "../KeywordTypes";
-import { DetailsHookProps, IDetailsHookRes } from "../../../shared/common-types";
+import { DetailsHookProps, IDetailsEditHookRes } from "../../../shared/common-types";
 
 
 
 export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
-  : IDetailsHookRes<KeywordInner, Keyword> => {
+  : IDetailsEditHookRes<KeywordInner, Keyword> => {
   const { values, handleChange, setValues, getFormDTO } = useForm<KeywordInner>({
     name: "",
   });

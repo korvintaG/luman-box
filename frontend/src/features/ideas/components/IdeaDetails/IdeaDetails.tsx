@@ -29,7 +29,7 @@ export type IdeaDetailsProps = {
 export const IdeaDetails: FC<IdeaDetailsProps> = (
   {id, currentUser,  afterSuccessDMLAction, findSourceId, findKeywordId}) => {
 
-  const {form, record, status, moderate, setAttitude, sources, keywordsGroup} = 
+  const {form, record, status, moderate } = 
      useIdeaDetails({id, currentUser, findSourceId, findKeywordId });
      
   const header = genHeaderText(
@@ -77,7 +77,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = (
             readOnly={false}
             handleChange={form.handleChange}
             labelClassAdd={styles.label}
-            values={sources.map((el) => ({
+            values={record.sources.map((el) => ({
               id: el.id,
               name: el.name + "//" + authorNameFromObj(el.author),
             }))}
@@ -112,17 +112,17 @@ export const IdeaDetails: FC<IdeaDetailsProps> = (
         />
       </div>
       <TopicKeywordsUI
-        keywordsAll={keywordsGroup.keywords}
+        keywordsAll={record.keywords}
         keywordsSelected={form.values.keywords ? form.values.keywords : []}
         readOnly={readOnly}
-        deleteKeyword={keywordsGroup.deleteKeyword}
-        addKeyword={keywordsGroup.addKeyword}
+        deleteKeyword={form.deleteKeyword}
+        addKeyword={form.addKeyword}
       />
     {readOnly && id && record.currentRecord && record.currentRecord.attitudes &&
         <AttitudeIdeaBlock 
           ideaID={Number(id)} 
           attitudes={record.currentRecord.attitudes} 
-          setAttitudes={setAttitude}
+          setAttitudes={form.setAttitude}
         />}
     {id && record.currentRecord && record.currentRecord.interconnections && 
       <InterconnectionsIconBlock 

@@ -5,12 +5,10 @@ import { InterconnectionAddData, InterconnectionAddForm, InterconnectionCreateDT
 from "../InterconnectionTypes";
 import { useSelector, useDispatch } from "../../../shared/services/store";
 import { fetchCurrentIdea, selectError, selectSliceState, addInterconnection, 
-  selectInterconnectionAdd, fetchIdeaToSet, selectFindError, resetFoundData } 
+  selectInterconnectionAdd, fetchIdeaToSet, selectFindError, resetFoundData, setUpdateError, resetSliceState } 
 from "../store/InterconnectionSlice";
-import { DetailsHookProps, IDetailsHookRes, RequestStatus } from "../../../shared/common-types";
+import { DetailsHookProps, IDetailsAddHookRes } from "../../../shared/common-types";
 import { IdeaForList } from "../../ideas/IdeaTypes";
-import { InterconnectionEditData } from "../InterconnectionTypes";
-import { EditAccessStatus, getEditAccess } from "../../../shared/utils/utils";
 
 
 export interface DetailsAddHookProps extends DetailsHookProps {
@@ -21,7 +19,10 @@ export interface DetailsAddHookProps extends DetailsHookProps {
 }
 
 export interface DetailsAddHookRes<FormValues, Record> extends
-  IDetailsHookRes<FormValues, Record> {
+  IDetailsAddHookRes<FormValues, Record> {
+    status: IDetailsAddHookRes<FormValues, Record>['status'] & {
+      resetSliceState:()=>void;
+    }
     find: {
       findIdeaToAddByID: (e: SyntheticEvent) => void;
       errorFind: string;
@@ -29,58 +30,47 @@ export interface DetailsAddHookRes<FormValues, Record> extends
     }
 }
 
-
 export const useInterconnectionDetailsAdd = (
   {interconnectionTypeInfo : iti, currentUser, isReverse, idea_id, iitype_id}: DetailsAddHookProps)
   :DetailsAddHookRes<InterconnectionAddForm,InterconnectionAddData>     =>{
-  
-  
 
-    const { values, handleChange, setValues, getFormDTO } = useForm<InterconnectionAddForm>({
+  const { values, handleChange, setValues, getFormDTO } = useForm<InterconnectionAddForm>({
         nameDirect:'',
         nameReverse:'',
         ideaID: null
       });
-    const currentRecord = useSelector(selectInterconnectionAdd)
-    const errorText = useSelector(selectError)
-    const errorFindText = useSelector(selectFindError)
-    const sliceState = useSelector(selectSliceState)
-    const dispatch = useDispatch();   
-     
-    const fetchRecord = ()=>{
-      dispatch(fetchCurrentIdea(Number(idea_id)));
-    }
-        
-    useEffect(() => {
-      fetchRecord();
-    }, [idea_id]);
-
-    const resetFoundDataAction = ()=>{
-      dispatch(resetFoundData())
-    }
+  const currentRecord = useSelector(selectInterconnectionAdd)
+  const errorText = useSelector(selectError)
+  const errorFindText = useSelector(selectFindError)
+  const sliceState = useSelector(selectSliceState)
+  const dispatch = useDispatch();   
     
-    const deleteRecordAction = (e: SyntheticEvent) => {
-      e.preventDefault();
-    };
+  const fetchRecord = ()=>{
+    dispatch(fetchCurrentIdea(Number(idea_id)));
+  }
 
-    const approveRecordAction = (e: SyntheticEvent) => {
-      e.preventDefault();
-    };
-   
-    const rejectRecordAction = (e: SyntheticEvent) => {
-      e.preventDefault();
-    };
+  const resetSliceStateAction =()=>{
+    dispatch(resetSliceState());
+  }
+      
+  useEffect(() => {
+    fetchRecord();
+  }, [idea_id]);
 
+  const resetFoundDataAction = ()=>{
+    dispatch(resetFoundData())
+  }
+  
+  const findIdeaToAddByID=(e: SyntheticEvent)=>{
+    e.preventDefault();
+    if (values.ideaID)
+      dispatch(fetchIdeaToSet(Number(values.ideaID)));
+  }
 
-    const findIdeaToAddByID=(e: SyntheticEvent)=>{
-      e.preventDefault();
-      if (values.ideaID)
-        dispatch(fetchIdeaToSet(Number(values.ideaID)));
-    }
-
-    const handleSubmitAction = (e: SyntheticEvent) => {
-      e.preventDefault();
-      if (values.ideaID && currentRecord && currentRecord.ideaCurrent) {
+  const handleSubmitAction = (e: SyntheticEvent) => {
+    e.preventDefault();
+    if (values.ideaID && currentRecord && currentRecord.ideaInterconnect && currentRecord.ideaCurrent) {
+      if (values.nameDirect.length>=10 && values.nameReverse.length>=10) {
         const addObj:InterconnectionCreateDTO  = { 
           idea1_id : isReverse?Number(values.ideaID) :currentRecord.ideaCurrent.id, 
           interconnection_type:  iti.id,
@@ -89,33 +79,36 @@ export const useInterconnectionDetailsAdd = (
           name_reverse: isReverse?values.nameDirect:values.nameReverse,
           };
         dispatch(addInterconnection(addObj));
-        }
-    };    
-
-    return {
-      form: {
-        values,
-        handleChange
-      },
-      record: {
-        fetchRecord,
-        currentRecord,
-        deleteRecordAction, 
-        handleSubmitAction
-      },
-      status: {
-        sliceStates:[sliceState],
-        errorText,
-        editAccessStatus: EditAccessStatus.Editable
-      }, 
-      moderate:{
-         approveRecordAction, rejectRecordAction 
-      },
-      find: {
-       findIdeaToAddByID,
-       errorFind: errorFindText,
-       resetFoundData:resetFoundDataAction
       }
+      else 
+        dispatch(setUpdateError('Комментарий к связи должен быть длиной от 10-ти символов!'))
     }
+    else {
+      dispatch(setUpdateError('Не указана идея для связывания!'))
+
+    }
+  };    
+
+  return {
+    form: {
+      values,
+      handleChange
+    },
+    record: {
+      fetchRecord,
+      currentRecord,
+      handleSubmitAction
+    },
+    status: {
+      sliceStates:[sliceState],
+      errorText,
+      resetSliceState:resetSliceStateAction
+    }, 
+    find: {
+      findIdeaToAddByID,
+      errorFind: errorFindText,
+      resetFoundData:resetFoundDataAction
+    }
+  }
 
 }

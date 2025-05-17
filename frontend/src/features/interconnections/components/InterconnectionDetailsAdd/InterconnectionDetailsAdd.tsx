@@ -5,7 +5,7 @@ import { User } from "../../../auth/user-types";
 import { InterconnectionTypeInfo } from "../../InterconnectionTypes";
 import { useInterconnectionDetailsAdd } from "../../hooks/UseInterconnectionDetailsAdd";
 import { RecordEditForm } from "../../../../shared/components/RecordEditForm/RecordEditForm";
-import { InterconnectionTitle } from "../InterconnectionList/InterconnectionTitle/InterconnectionTitle";
+import { InterconnectionDetailsTitle } from "../InterconnectionDetailsTitle/InterconnectionDetailsTitle";
 import { IdeaCard } from "../ideaCard/ideaCard";
 import { InterconnectionDescription } from "../InterconnectionDescription/InterconnectionDescription";
 import { IdeaSelect } from "../IdeaSelect/IdeaSelect";
@@ -24,7 +24,7 @@ export type InterconnectionDetailsAddProp = {
 export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> = 
 ( {    idea_id, iitype_id,isReverse, currentUser, afterSuccessDMLAction, interconnectionTypeInfo : iti}) => {
 
-    const {form, status, record, moderate, find  } = 
+    const {form, status, record, find  } = 
     useInterconnectionDetailsAdd({currentUser, idea_id, iitype_id, 
          isReverse, interconnectionTypeInfo: iti});
 
@@ -55,7 +55,7 @@ export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> =
         error={status.errorText}
         fetchRecord={record.fetchRecord}
     >    
-        <InterconnectionTitle typeName={iti?.name} />
+        <InterconnectionDetailsTitle typeName={iti?.name} />
         <div className={styles.idea_top}>
             {!isReverse && CurrentIdea}
             {isReverse && CurrentSelect}
@@ -75,10 +75,8 @@ export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> =
             saveButtonCaption="Добавить взаимосвязь"
             sliceState={status.sliceStates[0]}
             error={status.errorText}
-            editAccessStatus={status.editAccessStatus}
             afterSuccessDMLAction={()=>{afterSuccessDMLAction()}}
-            approveRecord={moderate.approveRecordAction}
-            rejectRecord={moderate.rejectRecordAction}
+            resetSliceState={status.resetSliceState}
         />
     </RecordEditForm>
 }

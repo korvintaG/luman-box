@@ -19,7 +19,7 @@ import {
 import { Keyword, KeywordPartial } from "../../keywords/KeywordTypes";
 import { SyntheticEvent, useEffect } from "react";
 import { EditAccessStatus, getEditAccess } from "../../../shared/utils/utils";
-import { DetailsHookProps, IDetailsHookRes } from "../../../shared/common-types";
+import { DetailsHookProps, IDetailsEditHookRes } from "../../../shared/common-types";
 import { Source } from "../../sources/SourceTypes";
 
 
@@ -29,11 +29,13 @@ export interface DetailsIdeaHookProps extends  DetailsHookProps  {
 }
 
 export interface DetailsIdeaHookRes<FormValues, Record> extends
-  IDetailsHookRes<FormValues, Record> {
-    sources: Source[];
-    setAttitude : (attitude: UserAttitudeIdea) => void;
-    keywordsGroup: {
+  IDetailsEditHookRes<FormValues, Record> {
+    record: IDetailsEditHookRes<FormValues, Record>['record'] & {
+      sources: Source[];
       keywords: Keyword[];
+    }
+    form: IDetailsEditHookRes<FormValues, Record>['form'] & {
+      setAttitude : (attitude: UserAttitudeIdea) => void;
       addKeyword: (id: number) => void;
       deleteKeyword: (e: SyntheticEvent, id: number) => void;
     }
@@ -159,13 +161,18 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
   return {
     form: {
       values,
-      handleChange
+      handleChange,
+      addKeyword,
+      deleteKeyword,
+      setAttitude
     },
     record: {
       fetchRecord,
       currentRecord,
       deleteRecordAction, 
-      handleSubmitAction
+      handleSubmitAction,
+      sources, 
+      keywords      
     },
     status: {
       sliceStates:[sliceState, sourcesSliceState, keywordsSliceState],
@@ -174,15 +181,8 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
     }, 
     moderate:{
        approveRecordAction, rejectRecordAction 
-    },
-    sources, 
-    keywordsGroup: {
-      keywords,
-      addKeyword,
-      deleteKeyword
-    },
-    setAttitude
-  }
+    }
+}
 
 
   

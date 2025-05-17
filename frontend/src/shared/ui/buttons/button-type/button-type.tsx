@@ -15,7 +15,7 @@ export const ButtonUI: FC<ButtonUIProps> = ({
   disabled,
   action,
   classReplace,
-  classAdd,
+  classAdd
 }) => {
   const newCaption = caption ? caption : "OK";
   const classes = combineClasses(styles.button, classReplace, classAdd);

@@ -11,6 +11,7 @@
     max-height: 70px;
     border: 1px solid var(--idea-color);
     align-self: center;
+    min-width: 100px;
 }
 
 .input {
@@ -25,6 +26,12 @@
     object-fit: fill;
 }
 
+.icon_container {
+    width: 70px;
+    align-self: center;
+}
+
+
 .icon {
     width: 70px;
     align-self: center;
@@ -32,4 +39,30 @@
 
 .arrow_reverse {
     transform: rotate(180deg);
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 780px) {
+
+  .middle {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .icon_container {
+    margin: 15px 0;
+    width: 100%;
+    align-self: center;
+   }
+
+   .arrow {
+      height:60px;
+   }
+
+
+  .direct, .reverse {
+    max-width: calc(100vw - 100px);
+  }
 }

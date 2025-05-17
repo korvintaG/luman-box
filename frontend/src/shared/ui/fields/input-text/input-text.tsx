@@ -16,6 +16,7 @@ export type InputTextUIProps = {
   textClassReplace?: string;
   textClassAdd?: string;
   readOnly?: boolean;
+  minLength?: number;
 };
 
 export const InputTextUI: FC<InputTextUIProps> = (props) => {
@@ -37,6 +38,7 @@ export const InputTextUI: FC<InputTextUIProps> = (props) => {
         {props.label}
       </h6>
       <textarea
+        minLength={props.minLength}
         readOnly={props.readOnly}
         className={combineClasses(
           styles.text,

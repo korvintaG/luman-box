@@ -42,9 +42,9 @@ export const IdeaSelect: FC<IdeaSelectProps> =
                 />
                 <button onClick={handleFindAction} >Найти</button>
                 {sliceState===RequestStatus.Finding && <SandClockLoader size="small" />}
-                {error && <ErrorMessageUI
-                    error={error}
-                />}
+                {error && <div className={styles.error_container}>
+                    <ErrorMessageUI error={error}/>
+                </div>}
             </div>
             <label>Название:</label> 
             {ideaSelected && ideaSelected.id && ideaSelected.name ? 

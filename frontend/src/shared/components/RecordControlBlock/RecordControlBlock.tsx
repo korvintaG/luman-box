@@ -12,14 +12,15 @@ import { MsgErrorModalUI } from "../../ui/Modal/MsgErrorModal/MsgErrorModal";
 import { ModerateBlockUI } from "../ModerateBlock/ModerateBlock";
 
 export type RecordControlBlockProps = {
-  editAccessStatus: EditAccessStatus;
+  editAccessStatus?: EditAccessStatus;
   deleteRecord?: (e: SyntheticEvent) => void; // действия по удалению записи
   afterSuccessDMLAction: () => void;
+  resetSliceState?: ()=>void;
   //handleSubmit: (e: SyntheticEvent) => void;
   sliceState: RequestStatusValue;
   error: string;
-  approveRecord: (e: SyntheticEvent) => void; // действия по одобрению записи
-  rejectRecord: (e: SyntheticEvent) => void; // действия по отвержению записи
+  approveRecord?: (e: SyntheticEvent) => void; // действия по одобрению записи
+  rejectRecord?: (e: SyntheticEvent) => void; // действия по отвержению записи
   blockClass?: string;
   id?: string;
   saveButtonCaption?:string;
@@ -48,6 +49,12 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
     navigate(-1);
   };
 
+  const errorCloseAction=()=>{
+    if (props.resetSliceState)
+      props.resetSliceState();
+    msgErrorHook.closeDialog();
+  }
+
   return (
     <div className={styles.container}>
       {props.deleteRecord &&  msgDeleteHook.dialogWasOpened && (
@@ -59,7 +66,7 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
       {msgErrorHook.dialogWasOpened && (
         <MsgErrorModalUI
           message={`${getErrorTypeBySlice(props.sliceState)} ${props.error}`}
-          closeAction={msgErrorHook.closeDialog}
+          closeAction={errorCloseAction}
         />
       )}
 
@@ -68,7 +75,7 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
       >
       <ButtonBackUI caption="Назад" action={back} />
       {props.editAccessStatus !== EditAccessStatus.Readonly && <>
-        <ButtonAgreeUI caption={saveCaption} />
+        <ButtonAgreeUI  caption={saveCaption} />
         {props.id && <ButtonAlertUI
             caption={
               "Удалить запись"
@@ -77,7 +84,8 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
           />}
           </>}
       </div>
-      {props.editAccessStatus === EditAccessStatus.Moderatable && (
+      {props.editAccessStatus === EditAccessStatus.Moderatable 
+        && props.approveRecord && props.rejectRecord && (
         <ModerateBlockUI
           approveRecord={props.approveRecord}
           rejectRecord={props.rejectRecord}

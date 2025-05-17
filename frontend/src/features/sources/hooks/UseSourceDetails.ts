@@ -21,12 +21,12 @@ import { Source, SourceInner } from "../SourceTypes";
 import { fetchAuthors, selectAuthors, 
   selectError as selectAuthorError,
   selectSliceState as selectAuthorsSliceState } from "../../authors/store/AuthorSlice";
-import { DetailsHookProps, IDetailsHookRes } from "../../../shared/common-types";
+import { DetailsHookProps, IDetailsEditHookRes } from "../../../shared/common-types";
 import { Author } from "../../authors/AuthorTypes";
 
 
 export interface DetailsSourceHookRes<FormValues, Record> extends
-   IDetailsHookRes<FormValues, Record> {
+  IDetailsEditHookRes<FormValues, Record> {
     authors: Author[];
 }
 
