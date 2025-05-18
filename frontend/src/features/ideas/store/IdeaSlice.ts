@@ -129,7 +129,8 @@ const ideasSlice = createSlice({
           getIdea.fulfilled,
           getIdeaBySrcKw.fulfilled,
           fetchIdeas.fulfilled,
-          fetchIdeasBySrcKw.fulfilled
+          fetchIdeasBySrcKw.fulfilled,
+          //attitudeIdea.fulfilled
         ),
         (state) => {
           state.status = RequestStatus.Success;
@@ -142,7 +143,7 @@ const ideasSlice = createSlice({
           delIdea.pending,
           approveIdea.pending,
           rejectIdea.pending,
-          attitudeIdea.pending
+         // attitudeIdea.pending
         ), (state) => {
         state.status = RequestStatus.Loading;
         state.error = "";
