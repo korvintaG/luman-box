@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
-import "./index.css";
 import "./assets/fonts/fonts.css";
+import "./index.css";
 import { store } from "./shared/services/store";
 import App from "./app/App";
 
