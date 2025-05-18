@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useSelector } from "../../shared/services/store";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
-import { KeywordList } from "../../features/keywords/components/KeywordsList";
+import { KeywordList } from "../../features/keywords/components/KeywordsList/KeywordsList";
 import { useNavigate } from "react-router-dom";
 import { genKeywordAddURL } from "../../app/router/navigation";
 

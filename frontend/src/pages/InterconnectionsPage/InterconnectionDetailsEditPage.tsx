@@ -5,7 +5,7 @@ import { useSelector } from "../../shared/services/store";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
 import { genInterconnectionsURL } from "../../app/router/navigation";
 import { ErrorMessageUI } from "../../shared/ui/ErrorMessage/ErrorMessage";
-import { InterconnectionDetailsEdit } from "../../features/interconnections/components/InterconnectionDetailsEdit/InterconnectionDetailsEdit";
+import { InterconnectionDetailsEdit } from "../../features/interconnections/components/smart/InterconnectionDetailsEdit/InterconnectionDetailsEdit";
 
 
 export const InterconnectionDetailsEditPage: FC = () => {

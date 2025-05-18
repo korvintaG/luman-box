@@ -3,7 +3,7 @@ import { RecordEditForm } from "../../../../shared/components/RecordEditForm/Rec
 import { InputEditUI } from "../../../../shared/ui/fields/input-edit/input-edit"; 
 import { genHeaderText, EditAccessStatus, getUserCreator, getModerator, isDMLRequestOK } from "../../../../shared/utils/utils";
 import { Authorship } from "../../../../shared/components/Authorship/Authorship";
-import { RelationListUI } from "../../../../shared/components/RelationList/RelationList"; 
+import { RelationList } from "../../../../shared/components/RelationList/RelationList"; 
 import styles from "./AuthorDetails.module.css";
 import { User } from "../../../auth/user-types";
 import { useAuthorDetails } from "../../hooks/UseAuthorDetails";
@@ -67,17 +67,17 @@ export const AuthorDetails: FC<AuthorDetailsProps> = (
         approveRecord={moderate.approveRecordAction}
         rejectRecord={moderate.rejectRecordAction}
       />      
-      <RelationListUI
+      <RelationList
         title="Список источников автора:"
         genEntityURL={genSourceURL}
         list={record.currentRecord?.sources}
       />
-      <RelationListUI
+      <RelationList
         title="Список идей по источникам автора:"
         genEntityURL={genIdeaURL}
         list={record.currentRecord?.ideas}
       />
-      <RelationListUI
+      <RelationList
         title="Список ключевых слов по источникам автора:"
         genEntityURL={genKeywordURL}
         list={record.currentRecord?.keywords}

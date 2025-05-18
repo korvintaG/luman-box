@@ -22,8 +22,9 @@ export const fetchSources = createAsyncThunk(
   sourceAPI.getSources,
 );
 export const getSource = createAsyncThunk("getSource", sourceAPI.getSource);
-export const setSource = createAsyncThunk("setSource", sourceAPI.setSource);
 export const addSource = createAsyncThunk("addSource", sourceAPI.addSource);
+export const setSource = createAsyncThunk("setSource", sourceAPI.setSource);
+export const delSource = createAsyncThunk("delSource", sourceAPI.delSource);
 export const approveSource = createAsyncThunk(
   "approveSource",
   sourceAPI.approveSource,
@@ -32,15 +33,14 @@ export const rejectSource = createAsyncThunk(
   "approveSource",
   sourceAPI.rejectSource,
 );
-export const delSource = createAsyncThunk("delSource", sourceAPI.delSource);
 
-export function isPendingSourceAction(action: PayloadAction) {
+/*export function isPendingSourceAction(action: PayloadAction) {
   return action.type.endsWith("pending") && action.type.includes("Source");
 }
 
 export function isRejectedSourceAction(action: PayloadAction) {
   return action.type.endsWith("rejected") && action.type.includes("Source");
-}
+}*/
 
 /**
  * Слайс для источников
@@ -125,11 +125,29 @@ const sourcesSlice = createSlice({
           state.status = RequestStatus.Success;
         },
       )
-      .addMatcher(isPendingSourceAction, (state) => {
+      .addMatcher(
+        isAnyOf(
+          fetchSources.pending,
+          getSource.pending,
+          addSource.pending,
+          setSource.pending,
+          delSource.pending,
+          approveSource.pending,
+          rejectSource.pending
+        ), (state) => {
         state.status = RequestStatus.Loading;
         state.error = "";
       })
-      .addMatcher(isRejectedSourceAction, (state, action: ErrorAction) => {
+      .addMatcher(        
+        isAnyOf(
+          fetchSources.rejected,
+          getSource.rejected,
+          addSource.rejected,
+          setSource.rejected,
+          delSource.rejected,
+          approveSource.rejected,
+          rejectSource.rejected
+        ), (state, action) => {
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status = RequestStatus.FailedUnAuth;

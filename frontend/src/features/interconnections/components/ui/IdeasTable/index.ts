@@ -1,0 +1,1 @@
+export { IdeasTable } from "./IdeasTable";

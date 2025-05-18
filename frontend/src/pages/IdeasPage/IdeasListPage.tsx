@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useSelector } from "../../shared/services/store";
-import { IdeasList } from "../../features/ideas/components/IdeaList/IdeasList";
+import { IdeasList } from "../../features/ideas/components/smart/IdeasList/IdeasList";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
 import { genIdeaAddURL } from "../../app/router/navigation";
 

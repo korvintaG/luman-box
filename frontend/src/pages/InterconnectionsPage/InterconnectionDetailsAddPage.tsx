@@ -3,7 +3,7 @@ import { ErrorMessageUI } from "../../shared/ui/ErrorMessage/ErrorMessage";
 import { useSelector } from "../../shared/services/store";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
 import { genInterconnectionsURL } from "../../app/router/navigation";
-import { InterconnectionDetailsAdd } from "../../features/interconnections/components/InterconnectionDetailsAdd/InterconnectionDetailsAdd";
+import { InterconnectionDetailsAdd } from "../../features/interconnections/components/smart/InterconnectionDetailsAdd/InterconnectionDetailsAdd";
 import { interconnectionsTypeInfo } from "../../shared/constants/InterconnectionTypeInfo";
 
 export const InterconnectionDetailsAddPage = () => {

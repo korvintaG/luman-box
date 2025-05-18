@@ -3,14 +3,14 @@ import { SimpleNameObject } from "../../common-types";
 import { Link } from "react-router-dom";
 import styles from "./RelationList.module.css";
 
-export type RelationListUIProps = {
+export type RelationListProps = {
   title: string;
   list: SimpleNameObject[] | undefined;
   genEntityURL: (id:number) => string;
   prefix?:string;
 };
 
-export const RelationListUI: FC<RelationListUIProps> = ({
+export const RelationList: FC<RelationListProps> = ({
   list,
   title,
   genEntityURL,

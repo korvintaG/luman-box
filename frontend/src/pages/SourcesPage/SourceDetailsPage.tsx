@@ -5,7 +5,7 @@ import {
   selectAuthors,
 } from '../../features/authors/store/AuthorSlice';
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
-import { SourceDetails } from "../../features/sources/components/SourceDetails/SourceDetails";
+import { SourceDetails } from "../../features/sources/components/smart/SourceDetails/SourceDetails";
 import { appRoutes } from "../../app/router/AppRoutes";
 
 export const SourceDetailsPage = () => {

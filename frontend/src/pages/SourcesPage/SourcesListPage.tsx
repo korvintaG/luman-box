@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "../../shared/services/store";
-import { SourcesList } from "../../features/sources/components/SourcesList/SourcesList";
+import { SourcesList } from "../../features/sources/components/smart/SourcesList/SourcesList";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
 import { genSourceAddURL } from "../../app/router/navigation";
 

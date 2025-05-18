@@ -1,0 +1,1 @@
+export { InterconnectionDescription } from "./InterconnectionDescription";

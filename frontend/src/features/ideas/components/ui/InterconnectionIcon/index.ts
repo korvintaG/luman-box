@@ -1,0 +1,1 @@
+export { InterconnectionIcon as InterconnectionIconUI } from "./InterconnectionIcon";

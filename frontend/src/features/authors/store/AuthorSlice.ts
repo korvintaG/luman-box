@@ -34,13 +34,13 @@ export const getAuthor = createAsyncThunk("getAuthor", authorAPI.getAuthor);
 export const addAuthor = createAsyncThunk("addAuthor", authorAPI.addAuthor);
 export const delAuthor = createAsyncThunk("delAuthor", authorAPI.delAuthor);
 
-export function isPendingAuthorAction(action: PayloadAction) {
+/*export function isPendingAuthorAction(action: PayloadAction) {
   return action.type.endsWith("pending") && action.type.includes("Author");
 }
 
 export function isRejectedAuthorAction(action: PayloadAction) {
   return action.type.endsWith("rejected") && action.type.includes("Author");
-}
+}*/
 
 /**
  * Слайс для авторов
@@ -122,11 +122,29 @@ const authorsSlice = createSlice({
           state.status = RequestStatus.Success;
         },
       )
-      .addMatcher(isPendingAuthorAction, (state) => {
+      .addMatcher(
+        isAnyOf(
+          fetchAuthors.pending,
+          setAuthor.pending,
+          approveAuthor.pending,
+          rejectAuthor.pending,
+          getAuthor.pending,
+          addAuthor.pending,
+          delAuthor.pending
+        ), (state) => {
         state.status = RequestStatus.Loading;
         state.error = "";
       })
-      .addMatcher(isRejectedAuthorAction, (state, action: ErrorAction) => {
+      .addMatcher(
+        isAnyOf(
+          fetchAuthors.rejected,
+          setAuthor.rejected,
+          approveAuthor.rejected,
+          rejectAuthor.rejected,
+          getAuthor.rejected,
+          addAuthor.rejected,
+          delAuthor.rejected
+      ), (state, action) => {
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status = RequestStatus.FailedUnAuth;

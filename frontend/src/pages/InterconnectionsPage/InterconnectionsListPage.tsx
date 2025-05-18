@@ -6,7 +6,7 @@ import { interconnectionsTypeInfo } from "../../shared/constants/Interconnection
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
 import { genInterconnectionAddURL } from "../../app/router/navigation";
 import { ErrorMessageUI } from "../../shared/ui/ErrorMessage/ErrorMessage";
-import { InterconnectionList } from "../../features/interconnections/components/InterconnectionList/InterconnectionList";
+import { InterconnectionList } from "../../features/interconnections/components/smart/InterconnectionList/InterconnectionList";
   
 
 export const InterconnectionsPage = () => {

@@ -7,16 +7,17 @@ import { RequestStatus } from "../../common-types";
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
 
 export type RecordListProps = {
-  header: string;
   children: React.ReactNode;
-  captionAddButton: string;
-  addRecord: () => void;
-  fetchRecords?: ()=>void;
   sliceState: RequestStatus;
   error:string;
+  fetchRecords: ()=>void;
+  captionAddButton?: string;
+  header?: string;
+  addRecord?: () => void;
   skipUl?: boolean; // не писать UL в начале списка
   liMobileAlteration?: boolean; // чередование полос списка в мобильном варианте
   readOnly?: boolean;
+  mainClassName?: string;
 };
 
 export const RecordsList: FC<RecordListProps> = (
@@ -35,27 +36,27 @@ export const RecordsList: FC<RecordListProps> = (
 
   return (
     <main
-      className={clsx(styles.main, "main", {
-        [styles["main-shrink"]]: props.liMobileAlteration,
-      })}
+      className={props.mainClassName ? props.mainClassName
+         :clsx(styles.main, "main", {[styles["main-shrink"]]: props.liMobileAlteration})
+      }
     >
-      <h1 className={styles["page-header"]}>{props.header}</h1>
-          {props.skipUl ? (
-            props.children
-          ) : (
-            <ul
-              className={clsx(styles.list, {
-                [styles["list-mobile-alterarion"]]: props.liMobileAlteration,
-              })}
-            >
-              {props.children}
-            </ul>
-          )}
-          <ButtonAddUI
-            action={props.addRecord}
-            disabled={props.readOnly}
-            caption={props.captionAddButton}
-          />
+      {props.header && <h1 className={styles["page-header"]}>{props.header}</h1>}
+      {props.skipUl ? (
+        props.children
+      ) : (
+        <ul
+          className={clsx(styles.list, {
+            [styles["list-mobile-alterarion"]]: props.liMobileAlteration,
+          })}
+        >
+          {props.children}
+        </ul>
+      )}
+      {props.addRecord && <ButtonAddUI
+        action={props.addRecord}
+        disabled={props.readOnly}
+        caption={props.captionAddButton}
+      />}
       </main>
   );
 };

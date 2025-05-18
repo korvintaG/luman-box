@@ -4,7 +4,7 @@ import { RecordControlBlock } from "../../../../shared/components/RecordControlB
 import { InputEditUI } from "../../../../shared/ui/fields/input-edit/input-edit"; 
 import { genHeaderText, EditAccessStatus, getUserCreator, getModerator } from "../../../../shared/utils/utils";
 import { Authorship } from "../../../../shared/components/Authorship/Authorship";
-import { RelationListUI } from "../../../../shared/components/RelationList/RelationList"; 
+import { RelationList } from "../../../../shared/components/RelationList/RelationList"; 
 import styles from "./KeywordDetails.module.css";
 import { genAuthorURL, genIdeaURL, genSourceURL } from "../../../../app/router/navigation";
 import { User } from "../../../auth/user-types";
@@ -65,17 +65,17 @@ export const KeywordDetails: FC<KeywordDetailsProps> = (
         approveRecord={moderate.approveRecordAction}
         rejectRecord={moderate.rejectRecordAction}
       />
-      <RelationListUI
+      <RelationList
         title="Список авторов, в идеях по источникам которых есть ключевое слово:"
         genEntityURL={genAuthorURL}
         list={record.currentRecord?.authors}
       />
-      <RelationListUI
+      <RelationList
         title="Список источников, в идеях по которым есть ключевое слово:"
         genEntityURL={genSourceURL}
         list={record.currentRecord?.sources}
       />
-      <RelationListUI
+      <RelationList
         title="Список идей, по которым есть ключевое слово:"
         genEntityURL={genIdeaURL}
         list={record.currentRecord?.ideas}

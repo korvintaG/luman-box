@@ -1,0 +1,1 @@
+export { IdeaCard } from "./ideaCard";

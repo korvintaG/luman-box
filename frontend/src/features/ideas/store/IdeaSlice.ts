@@ -27,24 +27,20 @@ export const getIdeaBySrcKw = createAsyncThunk(
   "getIdeaBySrcKw",
   ideaAPI.getIdeaBySourceKeyword,
 );
-export const setIdea = createAsyncThunk("setIdea", ideaAPI.setIdea);
 export const addIdea = createAsyncThunk("addIdea", ideaAPI.addIdea);
-export const approveIdea = createAsyncThunk(
-  "approveIdea",
-  ideaAPI.approveIdea,
-);
-export const rejectIdea = createAsyncThunk("approveIdea", ideaAPI.rejectIdea);
+export const setIdea = createAsyncThunk("setIdea", ideaAPI.setIdea);
 export const delIdea = createAsyncThunk("delIdea", ideaAPI.delIdea);
-
+export const approveIdea = createAsyncThunk("approveIdea",ideaAPI.approveIdea);
+export const rejectIdea = createAsyncThunk("approveIdea", ideaAPI.rejectIdea);
 export const attitudeIdea = createAsyncThunk("attitudeIdea", ideaAPI.attitudeIdea);
 
-export function isPendingIdeaAction(action: PayloadAction) {
+/*export function isPendingIdeaAction(action: PayloadAction) {
   return action.type.endsWith("pending") && action.type.includes("Idea") && !action.type.includes("attitude");
 }
 
 export function isRejectedIdeaAction(action: PayloadAction) {
   return action.type.endsWith("rejected") && action.type.includes("Idea");
-}
+}*/
 
 /**
  * Слайс для идей
@@ -107,7 +103,9 @@ const ideasSlice = createSlice({
         isAnyOf(fetchIdeas.pending, fetchIdeasBySrcKw.pending),
         (state) => {
           state.list = [];
-        },
+          state.status = RequestStatus.Loading;
+          state.error = "";
+          },
       )
       .addMatcher(
         isAnyOf(fetchIdeas.fulfilled, fetchIdeasBySrcKw.fulfilled),
@@ -117,6 +115,8 @@ const ideasSlice = createSlice({
       )
       .addMatcher(isAnyOf(getIdea.pending, getIdeaBySrcKw.pending), (state) => {
         state.current = null;
+        state.status = RequestStatus.Loading;
+        state.error = "";
       })
       .addMatcher(
         isAnyOf(getIdea.fulfilled, getIdeaBySrcKw.fulfilled),
@@ -135,11 +135,25 @@ const ideasSlice = createSlice({
           state.status = RequestStatus.Success;
         },
       )
-      .addMatcher(isPendingIdeaAction, (state) => {
+      .addMatcher( 
+        isAnyOf(
+          addIdea.pending,
+          setIdea.pending,
+          delIdea.pending,
+          approveIdea.pending,
+          rejectIdea.pending,
+          attitudeIdea.pending
+        ), (state) => {
         state.status = RequestStatus.Loading;
         state.error = "";
       })
-      .addMatcher(isRejectedIdeaAction, (state, action: ErrorAction) => {
+      .addMatcher(
+        isAnyOf(
+          fetchIdeas.rejected, 
+          fetchIdeasBySrcKw.rejected,
+          getIdea.rejected, 
+          getIdeaBySrcKw.rejected
+        ), (state, action) => {
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status = RequestStatus.FailedUnAuth;

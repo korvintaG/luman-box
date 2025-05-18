@@ -34,13 +34,13 @@ export const rejectKeyword = createAsyncThunk(
 );
 export const delKeyword = createAsyncThunk("delKeyword", keywordAPI.delKeyword);
 
-export function isPendingKeywordAction(action: PayloadAction) {
+/*export function isPendingKeywordAction(action: PayloadAction) {
   return action.type.endsWith("pending") && action.type.includes("Keyword");
 }
 
 export function isRejectedKeywordAction(action: PayloadAction) {
   return action.type.endsWith("rejected") && action.type.includes("Keyword");
-}
+}*/
 
 /**
  * Слайс для ключевых слов
@@ -116,11 +116,29 @@ const keywordsSlice = createSlice({
           state.status = RequestStatus.Success;
         },
       )
-      .addMatcher(isPendingKeywordAction, (state) => {
+      .addMatcher(
+        isAnyOf(
+          fetchKeywords.pending,
+          setKeyword.pending,
+          getKeyword.pending,
+          addKeyword.pending,
+          approveKeyword.pending,
+          rejectKeyword.pending,
+          delKeyword.pending
+        ), (state) => {
         state.status = RequestStatus.Loading;
         state.error = "";
       })
-      .addMatcher(isRejectedKeywordAction, (state, action: ErrorAction) => {
+      .addMatcher(
+        isAnyOf(
+          fetchKeywords.rejected,
+          setKeyword.rejected,
+          getKeyword.rejected,
+          addKeyword.rejected,
+          approveKeyword.rejected,
+          rejectKeyword.rejected,
+          delKeyword.rejected
+        ), (state, action) => {
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
           state.status = RequestStatus.FailedUnAuth;

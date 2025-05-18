@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useSelector } from "../../shared/services/store";
 import { appRoutes } from "../../app/router/AppRoutes";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
-import { IdeaDetails } from "../../features/ideas/components/IdeaDetails/IdeaDetails";
+import { IdeaDetails } from "../../features/ideas/components/smart/IdeaDetails/IdeaDetails";
 
 export const IdeaDetailsPage = () => {
   const { id } = useParams();
