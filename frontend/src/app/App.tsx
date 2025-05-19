@@ -18,6 +18,7 @@ import { NotFoundPage } from "../pages/NotFoundPage/not-found-page";
 import LoginPage from "../pages/LoginPage/login-page";
 import { InterconnectionDetailsEditPage } from "../pages/InterconnectionsPage/InterconnectionDetailsEditPage";
 import { InterconnectionDetailsAddPage } from "../pages/InterconnectionsPage/InterconnectionDetailsAddPage";
+import { CMSPage } from "../pages/CMSPage/CMSPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <AppHeaderUI />
       <Routes>
         <Route path={appRoutes.home} element={<AboutPage />} />
+        <Route path={appRoutes.CMS} element={<CMSPage />} />
         <Route path={appRoutes.authors} element={<AuthorsListPage />} />
         <Route path={appRoutes.author} element={<AuthorDetailsPage />} />
         <Route path={appRoutes.authorAdd} element={<AuthorDetailsPage />} />

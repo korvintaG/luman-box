@@ -3,7 +3,6 @@
   font-style: normal;
   font-display: block;
   src: url(./Montserrat-Regular.woff2) format('woff2');
-  /*+src: url(./Montserrat-Regular.woff2) format('woff2');*/
 }
 
 @font-face {
@@ -11,6 +10,5 @@
   font-style: bold;
   font-display: block;
   src: url(./Montserrat-Bold.woff2) format('woff2');
- /* +src: url(./Montserrat-Bold.woff2) format('woff2');*/
 }
  

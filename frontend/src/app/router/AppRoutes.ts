@@ -14,6 +14,7 @@ export const appRoutes = {
   ideaFind: "/ideas/find",
   ideaInterconnection: "/interconnections/:id",
   ideaInterconnectionAdd: "/interconnections/add/:idea_id/:iitype_id",
+  CMS: "/CMS/:article",
   keywords: "/keywords",
   keyword: "/keywords/:id",
   keywordAdd: "/keywords/add",

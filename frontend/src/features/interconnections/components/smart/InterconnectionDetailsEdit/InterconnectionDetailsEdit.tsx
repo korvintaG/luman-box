@@ -71,7 +71,7 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> =
                         ideaTypeInfo={iitype?.name2_one}
                     />
                 </div>}
-        <FillRecomendation/>
+        {status.editAccessStatus===EditAccessStatus.Editable && <FillRecomendation/>}
         <RecordControlBlock
             id={id}
             sliceState={status.sliceStates[0]}

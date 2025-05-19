@@ -1,0 +1,21 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
+.main p {
+    text-align: justify;
+
+}
+
+.main span {
+    font-weight: bold;
+}
+
+.list li {
+    margin-left: 30px;
+    list-style:disc ;
+    text-align: left;
+}
