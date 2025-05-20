@@ -1,3 +1,5 @@
+export const telegramBotURL="https://t.me/Sferatum_bot";
+
 export const appRoutes = {
   home: "/",
   auth: "/auth",
@@ -40,4 +42,8 @@ export function getRouteWParam(route: string): string {
   const pos = route.indexOf(":");
   if (pos === -1) return route;
   else return route.substring(0, pos);
+}
+
+export function genPath(path:string):string{
+  return `/${path}`
 }

@@ -7,15 +7,26 @@
 
 .main p {
     text-align: justify;
-
+    text-indent: 10px;
 }
 
 .main span {
     font-weight: bold;
 }
 
-.list li {
+.main li span {
+    font-weight: normal;
+    font-style: italic;
+}
+
+
+.main li {
     margin-left: 30px;
     list-style:disc ;
     text-align: left;
+    text-indent: 0px;
+}
+
+.main li li {
+    list-style:circle ;
 }
