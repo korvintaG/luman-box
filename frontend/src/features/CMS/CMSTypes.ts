@@ -6,7 +6,7 @@ import { MortimerAdlerCMS } from "./components/MortimerAdler/MortimerAdler";
 import { PremoderationCMS } from "./components/Premoderation/Premoderation";
 import { TelegramAuthorizationCMS } from "./components/TelegramAuthorization/TelegramAuthorization";
 import { WikipediaDictatorshipCMS } from "./components/WikipediaDictatorship/WikipediaDictatorship";
-import { ZettelKastenCMS } from "./components/Zettelkasten/Zettelkasten";
+import { ZettelKastenCMS } from "./components/ZettelKasten/ZettelKasten";
 
 export type SimpleComponentType = () => JSX.Element;
 
