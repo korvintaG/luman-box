@@ -1,5 +1,5 @@
-import FolderSlave from "../ui/icons/folder-slave/folder-slave"; 
-import MosaicLamp from "../ui/icons/mosaic-lamp/mosaic-lamp"; 
+import FolderSlave from "../ui/icons/FolderSlaveIcon/FolderSlave"; 
+import MosaicLampIcon from "../ui/icons/MosaicLampIcon/MosaicLampIcon"; 
 import { InterconnectionTypeInfo,  InterconnestionPosition } from "../../features/interconnections/InterconnectionTypes"; 
 
 export const interconnectionsTypeInfo:InterconnectionTypeInfo[]=[
@@ -24,7 +24,7 @@ export const interconnectionsTypeInfo:InterconnectionTypeInfo[]=[
       name1_one: 'Является проблемой',
       name2_many: 'Решения проблемы текущей идеи',
       name2_one: 'Является решением проблемы',
-      icon: MosaicLamp,
+      icon: MosaicLampIcon,
       //isIconCntReverce: false
     }
   ];

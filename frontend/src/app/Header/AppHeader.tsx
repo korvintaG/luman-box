@@ -3,13 +3,17 @@ import { useLocation } from "react-router";
 import clsx from "clsx";
 import { appRoutes } from "../router/AppRoutes";
 import { LinkActionUI } from "../../shared/ui/LinkAction/LinkAction";
-import { MenuItem, BurgerMenuUI } from "../../shared/ui/BurgerMenu/BurgerMenu";
+import { MenuItem, BurgerMenu } from "./BurgerMenu/BurgerMenu";
 import styles from "./AppHeader.module.css";
 import logoImg from "../../assets/images/logo.svg";
 import authImg from "../../assets/images/auth.svg";
 import exitImg from "../../assets/images/exit.svg";
 import { useSelector, useDispatch } from "../../shared/services/store";
 import { getUser, selectCurrentUser } from "../../features/auth/store/AuthSlice";
+import WorldBookIcon from "../../shared/ui/icons/WorldBookIcon/WorldBookIcon";
+import AuthIcon from "../../shared/ui/icons/AuthIcon/AuthIcon";
+import ExitIcon from "../../shared/ui/icons/ExitIcon/ExitIcon";
+import { ArrowRightCircleIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 /**
  * Компонент header приложения (меню)
@@ -34,7 +38,7 @@ export const AppHeaderUI = () => {
 
   return (
     <header className={styles.header}>
-      <nav className={`${styles.menu} p-4`}>
+      <nav className={styles.menu}>
         <div className={styles.menu_part_left}>
           <LinkActionUI
             to={appRoutes.home}
@@ -43,9 +47,10 @@ export const AppHeaderUI = () => {
               [styles.link_active]: location.pathname === appRoutes.home,
             })}
           >
-            <img className={styles.logo} src={logoImg} alt="логотип сайта" />
+            <WorldBookIcon className={styles.logo} />
+            {/*alt="логотип сайта"*/}
           </LinkActionUI>
-          <BurgerMenuUI
+          <BurgerMenu
             menu={menu}
             burgerActivated={burgerActivated}
             setBurgerActivated={setBurgerActivated}
@@ -53,18 +58,16 @@ export const AppHeaderUI = () => {
         </div>
         <LinkActionUI to={appRoutes.auth} actionHandle={burgerDeactivate}>
           {currentUser ? (
-            <img
+            <ExitIcon
               className={styles.auth}
-              src={exitImg}
-              alt="иконка выхода из системы"
             />
           ) : (
-            <img
+            <AuthIcon
               className={styles.auth}
-              src={authImg}
-              alt="иконка авторизации"
             />
           )}
+        {/*alt="иконка авторизации" alt="иконка выхода из системы" */}
+
         </LinkActionUI>
       </nav>
     </header>

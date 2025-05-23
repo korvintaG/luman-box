@@ -1,16 +1,17 @@
 .header {
   --menu-height: 56px;
-  --background-color: #4e7bf0;
   --logo-width: 30px;
 }
 .header {
   display: flex;
   width: 100%;
-  background-color: var(--background-color);
+  /*background-color: var(--menu-background-color);*/
+  background: var(--menu-background);
   align-items: center;
-  font-family: "Montserrat-Bold";
-  font-size: 18px;
-  text-transform: uppercase;
+  font-family: "SegoeUI";
+  font-size: 15px;
+  font-weight: 500;
+  /*text-transform: uppercase;*/
   color: #fff;
   font-style: normal;
   line-height: normal;
@@ -25,7 +26,6 @@
   align-items: center;
 }
 
-
 .menu_part_left {
   display: flex;
   align-items: center;
@@ -37,25 +37,31 @@
   justify-content: flex-end;
 }
 
-.logo {
+.logo, .auth {
   display: flex;
   align-items: center;
-  margin: 0 auto;
+
+  color: white;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.logo {
   margin: 5px;
-  width: var(--logo-width);
-  height: 30px;
+  width: var(--logo-width) ;
+  /*height: 30px;*/
   flex-grow: 0;
+}
+
+.logo:hover, .auth:hover {
+  color: #a8d0ff;
+  transform: scale(1.1);
 }
 
 .auth {
   margin: 5px;
-  width: 25px;
-  height: 25px;
+  width: calc(var(--logo-width) - 5px);
   flex-grow: 0;
 }
-
-
-
 
 @media (max-width: 750px) {
   .menu_part_left {
@@ -63,4 +69,6 @@
     justify-content: space-between;
   }
 
+
 }
+

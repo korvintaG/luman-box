@@ -10,7 +10,7 @@
     font-size: 1.5em;
     font-weight: bold;
     text-align: left;
-    background-color: var(--caption-table);
+    background-color: var(--title-table-background); 
     color: white;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -18,7 +18,7 @@
 }
 
 .table thead th {
-    background-color: var(--title-table-background-color);
+    background: var(--header-table-background);
     color: white;
     padding: 12px 9px;
     text-align: left;

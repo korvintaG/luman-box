@@ -1,0 +1,93 @@
+.article {
+    height: 300px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+.article:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.article h3 {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  line-height: 16px;
+}
+
+
+.header {
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  flex-grow: 0;
+}
+
+.header_block {
+  display: flex;
+  gap: 10px;
+  /*border: 1px green solid;*/
+  align-items: center;
+}
+
+  .overlay {
+    /* универсальная разметка для полупрозрачности */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.85) 0%, rgba(42, 82, 152, 0.85) 100%);
+    flex-grow: 0;
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
+    /*border: 1px red solid;*/
+    gap: 5px;
+  }
+  
+  .text {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 15px 0;
+    padding: 10px;
+    flex-grow: 0;
+    text-align: left;
+  }
+
+  .card_icon {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+  .icon {
+    flex-grow: 0;
+    width: 27px;
+    color: white;
+  }
+  
+  
+
+  /********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+  .article {
+    font-size: 16px;
+  }
+  .icon {
+    width: 27px;
+  }
+
+}

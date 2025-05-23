@@ -12,16 +12,17 @@
 ********************************************/
 .card_list {
   display: flex;
-  gap: 10px;
+  gap: 30px;
   margin: 10px auto;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .list_element {
-  min-height: 450px;
+  min-height: 300px;
   min-width: 300px;
   max-width: 430px;
+  /*border: 1px red solid;*/
 }
 
 
@@ -32,6 +33,7 @@
   display: flex;
   flex-grow: 0;
   margin: 40px auto;
+  padding: 15px;
 }
 
 .wikino_img {
@@ -49,11 +51,9 @@
   font-family: "Montserrat";
   align-items: flex-start;
   text-align: left;
-  font-size: 20px;
-}
+  font-size: 16px;
+  line-height: 1.5;
 
-.wikino_article a {
-  color: blue;
 }
 
 .wikino_header {
@@ -69,15 +69,8 @@
 ********************************************/
 @media (max-width: 750px) {
   .list_element {
-    min-height: 350px;
+    min-height: 300px;
   }
-  .article {
-    font-size: 16px;
-  }
-  .icon {
-    width: 60px;
-  }
-
   .wikino {
     margin: 10px auto;
     flex-wrap: wrap;

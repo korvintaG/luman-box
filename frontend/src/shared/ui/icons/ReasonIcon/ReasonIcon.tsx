@@ -1,12 +1,6 @@
 import React from "react";
 
-interface ReasonProps extends React.SVGProps<SVGSVGElement> {
-  // Дополнительные пропсы, если нужно
-  customProp?: string;
-}
-
-// 
-export const Reason: React.FC<ReasonProps> = ({ customProp, ...props }) => (
+export const ReasonIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({  ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512" 
@@ -27,4 +21,4 @@ export const Reason: React.FC<ReasonProps> = ({ customProp, ...props }) => (
   </svg>
 );
 
-export default Reason;
+export default ReasonIcon;

@@ -6,7 +6,7 @@ interface MosaicLampProps extends React.SVGProps<SVGSVGElement> {
 }
 
 // 
-export const MosaicLamp: React.FC<MosaicLampProps> = ({ customProp, ...props }) => (
+export const MosaicLampIcon: React.FC<MosaicLampProps> = ({ customProp, ...props }) => (
   <svg
     id="Capa_1"
     xmlns="http://www.w3.org/2000/svg"
@@ -29,4 +29,4 @@ export const MosaicLamp: React.FC<MosaicLampProps> = ({ customProp, ...props }) 
     </svg>
 );
 
-export default MosaicLamp;
+export default MosaicLampIcon;

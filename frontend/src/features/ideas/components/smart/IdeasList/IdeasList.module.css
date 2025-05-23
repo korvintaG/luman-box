@@ -15,8 +15,10 @@
   }
   
   .list thead {
-    background-color: var(--title-table-background-color);
+    background: var(--header-table-background);
     color: white;
+    font-weight: normal;
+    font-size: 14px;
   }
   
   .list th {

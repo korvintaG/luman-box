@@ -1,6 +1,11 @@
-/*.main a {
+.main a {
+    font-weight: normal;
     color: blue;
-}*/
+}
+
+.main {
+  /*background-color: white;*/
+}
 
 .page-header {
     text-transform: uppercase;

@@ -1,11 +1,21 @@
 :root {
-  --title-table-background-color:#1d9cb5;
+  /*--menu-background-color: #4e7bf0;*/
+  --menu-background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  --app-background-color:  #f5f7fa;
+  --title-table-background: #1a3360; /*#1d9cb5;*/
+  --header-table-background: #2a5298; /* linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);*/
   --caption-table:#167487;
   --idea-color: #B8D9F9;
 }
 
 .App {
   text-align: center;
+  background-color: var(--app-background-color);
+}
+
+.App a {
+  color: #2a5298;
+  font-weight: bold;
 }
 
 .main {
@@ -30,6 +40,18 @@
 
 .moderated-cancel {
   color:red;
+}
+
+.card-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 

@@ -1,24 +1,23 @@
 import { FC, SyntheticEvent } from "react";
 import { useLocation } from "react-router";
-import { LinkActionUI } from "../LinkAction/LinkAction";
+import { LinkActionUI } from "../../../shared/ui/LinkAction/LinkAction";
 import styles from "./BurgerMenu.module.css";
-import clsx from "clsx";
 
 export type MenuItem = {
   name: string;
   link: string;
 };
 
-export type BurgerMenuUIProps = {
+export type BurgerMenuProps = {
   menu: MenuItem[];
   burgerActivated: boolean;
   setBurgerActivated: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const BurgerMenuUI: FC<BurgerMenuUIProps> = ({
+export const BurgerMenu: FC<BurgerMenuProps> = ({
   menu,
   burgerActivated,
-  setBurgerActivated,
+  setBurgerActivated
 }) => {
   const location = useLocation();
 
@@ -39,15 +38,16 @@ export const BurgerMenuUI: FC<BurgerMenuUIProps> = ({
       <ul className={styles.menu}>
         {menu.map((el, cnt) => (
           <li key={cnt}>
-            <LinkActionUI
-              to={el.link}
-              actionHandle={(e: SyntheticEvent) => setBurgerActivated(false)}
-              className={clsx(styles.item, {
-                [styles["item-active"]]: location.pathname === el.link,
-              })}
-            >
-              {el.name}
-            </LinkActionUI>
+            {location.pathname === el.link ? 
+              <p className={styles["item-active"]}>{el.name}</p>
+              : <LinkActionUI
+                  to={el.link}
+                  actionHandle={(e: SyntheticEvent) => setBurgerActivated(false)}
+                  className={styles.item}
+                >
+                {el.name}
+                </LinkActionUI>
+            }
           </li>
         ))}
       </ul>

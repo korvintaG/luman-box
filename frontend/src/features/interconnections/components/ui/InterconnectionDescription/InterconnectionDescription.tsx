@@ -2,7 +2,7 @@ import { ChangeEvent, FC } from "react"
 import styles from "./InterconnectionDescription.module.css";
 import { HTMLEditElement } from "../../../../../shared/common-types";
 import { InputTextUI } from "../../../../../shared/ui/fields/input-text/input-text";
-import Arrow from "../../../../../shared/ui/icons/arrow/arrow";
+import ArrowIcon from "../../../../../shared/ui/icons/ArrowIcon/ArrowIcon";
 import { InterconnectionTypeInfo } from "../../../InterconnectionTypes";
 import clsx from "clsx";
 
@@ -28,9 +28,9 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             readOnly={readOnly}
             minLength={10}
         />}
-        <Arrow className={styles.arrow}/>
+        <ArrowIcon className={styles.arrow}/>
         {ideaTypeInfo && <div className={styles.icon_container}><ideaTypeInfo.icon className={styles.icon}/></div>}
-        <Arrow className={clsx(styles.arrow, styles.arrow_reverse)}/>
+        <ArrowIcon className={clsx(styles.arrow, styles.arrow_reverse)}/>
         <InputTextUI
             value={nameReverse}
             rows={2}

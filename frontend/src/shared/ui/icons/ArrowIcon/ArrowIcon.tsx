@@ -6,7 +6,7 @@ interface FolderSlaveProps extends React.SVGProps<SVGSVGElement> {
 }
 
 // 
-export const Arrow: React.FC<FolderSlaveProps> = ({ customProp, ...props }) => (
+export const ArrowIcon: React.FC<FolderSlaveProps> = ({ customProp, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 32 32"
@@ -20,4 +20,4 @@ export const Arrow: React.FC<FolderSlaveProps> = ({ customProp, ...props }) => (
   </svg>
 );
 
-export default Arrow;
+export default ArrowIcon;
