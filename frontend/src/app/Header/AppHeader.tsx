@@ -38,16 +38,19 @@ export const AppHeaderUI = () => {
 
   return (
     <header className={styles.header}>
-      <nav className={styles.menu}>
-        <div className={styles.menu_part_left}>
+      <nav className={styles.navigation}>
+        <div className={styles.navigation_left}>
           <LinkActionUI
             to={appRoutes.home}
             actionHandle={burgerDeactivate}
-            className={clsx(styles.link, {
-              [styles.link_active]: location.pathname === appRoutes.home,
-            })}
           >
-            <WorldBookIcon className={styles.logo} />
+            <div className={styles.logo_block}>
+              <WorldBookIcon className={styles.logo_icon} />
+              <div className={styles.logo_text}>
+                <p>SFERATUM</p>
+                <p>база знаний</p>
+              </div>
+            </div>
             {/*alt="логотип сайта"*/}
           </LinkActionUI>
           <BurgerMenu

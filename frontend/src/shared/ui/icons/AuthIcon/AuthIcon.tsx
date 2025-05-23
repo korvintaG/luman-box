@@ -7,7 +7,6 @@ export const AuthIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({  ...props })
     viewBox="0 0 40 40"
     stroke="currentColor"
     fill="currentColor" 
-    preserveAspectRatio="none"
     {...props}
   >
       <g clip-path="url(#clip0_143_23)">
