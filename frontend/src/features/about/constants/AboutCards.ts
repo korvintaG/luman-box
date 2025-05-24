@@ -1,4 +1,4 @@
-import { AboutCards } from "../AboutCardTypes";
+import { IAboutCard } from "../AboutCardTypes";
 import BaseImage from "../../../assets/images/BannedBackground.png";
 import ModerateImage from "../../../assets/images/ModerateBackground.png";
 import CompetitionImage from "../../../assets/images/CompetitionBackground.png";
@@ -7,31 +7,33 @@ import SupporterImage from "../../../assets/images/SupporterBackground.png";
 import BannedImage from "../../../assets/images/BannedBackground.png";
 import { CMSPath, genCMSPath } from "../../CMS/CMSTypes";
 import { appRoutes } from "../../../app/router/AppRoutes";
-import BookLampIcon from "../../../shared/ui/icons/BookLampIcon/BookLampIcon";
 import { CogManIcon } from "../../../shared/ui/icons/CogManIcon/CogManIcon";
 import { TugOfWarIcon } from "../../../shared/ui/icons/TugOfWarIcon/TugOfWarIcon";
 import { BannedIcon } from "../../../shared/ui/icons/BannedIcon/BannedIcon";
 import { TeamWorkIcon } from "../../../shared/ui/icons/TeamWorkIcon/TeamWorkIcon";
 import { TelegramIcon } from "../../../shared/ui/icons/TelegramIcon/TelegramIcon";
+import IdeasNetworkIcon from "../../../shared/ui/icons/IdeasNetwork/IdeasNetwork";
 
 /**
  * Данные для карточек - нюансов о системе
  */
-export const aboutCards: AboutCards[] = [
+export const aboutCards: IAboutCard[] = [
   {
     id: 1,
-    title: 'Публичная база знаний',
-    text: `Добро пожаловать в бесплатную публичную базу знаний  по саморазвитию, 
-      и связанным с ним гуманитарным наукам. Знания в базе организованы по 
+    title: 'Публичная сеть идей',
+    titleURL: genCMSPath(CMSPath.ZettelKasten),
+    text: `Добро пожаловать в бесплатную публичную сеть идей по саморазвитию, 
+      и связанным с ним гуманитарным наукам. Идеи в системе организованы по 
       <a href="${genCMSPath(CMSPath.ZettelKasten)}">методу ZettelKasten</a>. 
       Дискуссии и ветвления знаний происходят по принципам,  
       изложенным <a href="${genCMSPath(CMSPath.MortimerAdler)}">Мортимером Адлером</a>.`,
-    icon: BookLampIcon,
+    icon: IdeasNetworkIcon,
     image: BaseImage,
   },
   {
     id: 2,
     title: 'Премодерация',
+    titleURL: genCMSPath(CMSPath.Premoderation),
     text: `Данный ресурс не является развлекательным, а исключительно информационным. 
       Потому все новые идеи, добавляемые Вами, проходят 
       <a href="${genCMSPath(CMSPath.Premoderation)}">премодерацию</a>. 
@@ -43,7 +45,8 @@ export const aboutCards: AboutCards[] = [
   {
     id: 3,
     title: 'Конкурирующие интерпретации',
-    text: `Основным принципом построения нашей базы знаний являются 
+    titleURL: genCMSPath(CMSPath.CompetingInterpretations),
+    text: `Основным принципом построения нашей сети идей являются 
       <a href="${genCMSPath(CMSPath.CompetingInterpretations)}">конкурирующие интерпретации</a>. 
       Потому иное мнение не только разрешается, но и всячески приветствуется! 
       В спорах рождается истина! А мы гарантируем, что никакой спор никогда не 
@@ -54,7 +57,8 @@ export const aboutCards: AboutCards[] = [
   {
     id: 4,
     title: 'Регистрация через Telegram',
-    text: `Чтобы пользоваться полным функционалом нашей базы знаний, необходимо 
+    titleURL: genCMSPath(CMSPath.TelegramAuthorization),
+    text: `Чтобы пользоваться полным функционалом нашей сети, необходимо 
       <a href="${genCMSPath(CMSPath.TelegramAuthorization)}">зарегестрироваться через 
       мессенджер Telegram</a>. Это очень просто, делается всего лишь один раз и не займет
       более пяти минут. Данный метод авторизации был выбран нами, как компромисс между 
@@ -65,6 +69,7 @@ export const aboutCards: AboutCards[] = [
   {
     id: 5,
     title: 'Поиск единомышленников',
+    titleURL: genCMSPath(CMSPath.LikeMindedPeople),
     text: `С помощью нашей системы Вы не только легко сможете 
       <a href="${genCMSPath(CMSPath.LikeMindedPeople)}">находить себе единомышленников</a>, 
       но и самому <a href="${genCMSPath(CMSPath.CommunicationLevel)}">выбирать уровень 
@@ -76,6 +81,7 @@ export const aboutCards: AboutCards[] = [
   {
     id: 6,
     title: 'Нет банов!',
+    titleURL: appRoutes.authors,
     text: `В отличии от других ресурсов, мы никогда никого не баним. Любое мнение имеет 
       право на существование! Не противоречащее законодательству РФ, разумеется! 
       Не бойтесь, <a href=${appRoutes.authors}>добавляйте новых авторов</a>, 

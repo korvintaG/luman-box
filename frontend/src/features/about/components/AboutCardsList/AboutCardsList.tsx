@@ -16,12 +16,7 @@ export const AboutCardsList: FC = () => {
       <ul className={styles.card_list}>
         {aboutCards.map((el, cnt) => (
           <li key={cnt} className={styles.list_element}>
-            <AboutCard
-              backgroundImage={el.image}
-              title={el.title}
-              Icon={el.icon}
-              text={el.text}
-            />
+            <AboutCard {...el}/>
           </li>
         ))}
       </ul>
@@ -29,7 +24,7 @@ export const AboutCardsList: FC = () => {
         <section className={clsx(styles.wikino,'card-container')}>
           <img src={wiki_no} className={styles.wikino_img} />
           <article className={styles.wikino_article}>
-            <h2 className={styles.wikino_header}>Wikipedia</h2>
+            <h3 className={styles.wikino_header}>Wikipedia</h3>
             <p>
               Здесь вы не найдете Wiki или нечто на нее похожее.{" "}
               <a href={genCMSPath(CMSPath.WikipediaDictatorship)}>

@@ -13,7 +13,14 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.article h3 {
+.header {
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+  flex-grow: 0;
+}
+
+.title {
   color: white;
   font-size: 18px;
   font-weight: 600;
@@ -22,19 +29,13 @@
 }
 
 
-.header {
-  height: 100px;
-  background-size: cover;
-  background-position: center;
-  flex-grow: 0;
-}
-
 .header_block {
   display: flex;
   gap: 10px;
   /*border: 1px green solid;*/
   align-items: center;
 }
+
 
   .overlay {
     /* универсальная разметка для полупрозрачности */

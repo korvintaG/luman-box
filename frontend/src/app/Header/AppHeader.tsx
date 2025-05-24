@@ -48,7 +48,7 @@ export const AppHeaderUI = () => {
               <WorldBookIcon className={styles.logo_icon} />
               <div className={styles.logo_text}>
                 <p>SFERATUM</p>
-                <p>база знаний</p>
+                <p>сеть идей</p>
               </div>
             </div>
             {/*alt="логотип сайта"*/}

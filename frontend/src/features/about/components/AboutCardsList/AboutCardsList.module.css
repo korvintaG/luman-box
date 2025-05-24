@@ -58,10 +58,12 @@
 
 .wikino_header {
   position: relative;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   text-decoration: line-through;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 4px;
+  text-decoration-color: #332f2c;
   font-size: 40px;
+  color: darkgray
 }
 
 /********************************************
