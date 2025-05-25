@@ -1,10 +1,4 @@
 import { IAboutCard } from "../AboutCardTypes";
-import BaseImage from "../../../assets/images/BannedBackground.png";
-import ModerateImage from "../../../assets/images/ModerateBackground.png";
-import CompetitionImage from "../../../assets/images/CompetitionBackground.png";
-import TelegramImage from "../../../assets/images/TelegramBackground.png";
-import SupporterImage from "../../../assets/images/SupporterBackground.png";
-import BannedImage from "../../../assets/images/BannedBackground.png";
 import { CMSPath, genCMSPath } from "../../CMS/CMSTypes";
 import { appRoutes } from "../../../app/router/AppRoutes";
 import { CogManIcon } from "../../../shared/ui/icons/CogManIcon/CogManIcon";
@@ -28,7 +22,6 @@ export const aboutCardData: IAboutCard[] = [
       Дискуссии и ветвления знаний происходят по принципам,  
       изложенным <a href="${genCMSPath(CMSPath.MortimerAdler)}">Мортимером Адлером</a>.`,
     icon: IdeasNetworkIcon,
-    image: BaseImage,
   },
   {
     id: 2,
@@ -40,7 +33,6 @@ export const aboutCardData: IAboutCard[] = [
       Тем самым Вы видите только качественно оформленные знания, и взаимодействуете с 
       системой комфортно и только по существу.`,
     icon: CogManIcon,
-    image: ModerateImage,
   },
   {
     id: 3,
@@ -52,7 +44,6 @@ export const aboutCardData: IAboutCard[] = [
       В спорах рождается истина! А мы гарантируем, что никакой спор никогда не 
       перерастет в ругань!`,
     icon: TugOfWarIcon,
-    image: CompetitionImage,
   },
   {
     id: 4,
@@ -64,7 +55,6 @@ export const aboutCardData: IAboutCard[] = [
       более пяти минут. Данный метод авторизации был выбран нами, как компромисс между 
       анонимностью и безопасностью.`,
     icon: TelegramIcon,
-    image: TelegramImage,
   },
   {
     id: 5,
@@ -76,7 +66,6 @@ export const aboutCardData: IAboutCard[] = [
       общения с ними</a> - от самого плотного в реальном мире до обезличенного, просто 
       удаленно  работая над одними и теми же знаниями на сайте.`,
     icon: TeamWorkIcon,
-    image: SupporterImage,
   },
   {
     id: 6,
@@ -88,6 +77,5 @@ export const aboutCardData: IAboutCard[] = [
       <a href=${appRoutes.sources}>новые источники</a>, <a href=${appRoutes.ideas}>идеи</a>, 
       <a href=${appRoutes.keywords}>ключевые слова</a>! Мы подскажем, научим, поможем! `,
     icon: BannedIcon,
-    image: BannedImage,
   },
 ];

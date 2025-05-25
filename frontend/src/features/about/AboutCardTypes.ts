@@ -4,5 +4,4 @@ export interface IAboutCard {
   titleURL: string;
   text: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  image: string;
 };
