@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { aboutCards } from "../../constants/AboutCards"; 
+import { aboutCardData } from "../../constants/AboutCardData"; 
 import { AboutCard } from "../AboutCard/AboutCard";
 import styles from "./AboutCardsList.module.css";
 import wiki_no from "../../../../assets/images/wiki-no.png";
@@ -14,7 +14,7 @@ export const AboutCardsList: FC = () => {
   return (
     <main className={styles.main}>
       <ul className={styles.card_list}>
-        {aboutCards.map((el, cnt) => (
+        {aboutCardData.map((el, cnt) => (
           <li key={cnt} className={styles.list_element}>
             <AboutCard {...el}/>
           </li>

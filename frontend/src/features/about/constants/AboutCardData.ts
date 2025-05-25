@@ -17,11 +17,11 @@ import IdeasNetworkIcon from "../../../shared/ui/icons/IdeasNetwork/IdeasNetwork
 /**
  * Данные для карточек - нюансов о системе
  */
-export const aboutCards: IAboutCard[] = [
+export const aboutCardData: IAboutCard[] = [
   {
     id: 1,
     title: 'Публичная сеть идей',
-    titleURL: genCMSPath(CMSPath.ZettelKasten),
+    titleURL: genCMSPath(CMSPath.IdeasNet),
     text: `Добро пожаловать в бесплатную публичную сеть идей по саморазвитию, 
       и связанным с ним гуманитарным наукам. Идеи в системе организованы по 
       <a href="${genCMSPath(CMSPath.ZettelKasten)}">методу ZettelKasten</a>. 
@@ -81,7 +81,7 @@ export const aboutCards: IAboutCard[] = [
   {
     id: 6,
     title: 'Нет банов!',
-    titleURL: appRoutes.authors,
+    titleURL: genCMSPath(CMSPath.NotBan),
     text: `В отличии от других ресурсов, мы никогда никого не баним. Любое мнение имеет 
       право на существование! Не противоречащее законодательству РФ, разумеется! 
       Не бойтесь, <a href=${appRoutes.authors}>добавляйте новых авторов</a>, 

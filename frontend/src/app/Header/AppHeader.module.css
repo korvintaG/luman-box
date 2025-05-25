@@ -42,19 +42,20 @@
   flex-grow:0;
   transition: transform 0.3s ease, color 0.3s ease;
   color: #ffff7a;
+  padding-right: 7px;
+  border-right: 2px #ffff7a dotted;
 }
 
 .logo_block:hover {
 /*  transform: scale(1.05);*/
   color: orange;
+  border-right: 2px orange solid;
 }
 
 .link_position_last {
   display: flex;
   justify-content: flex-end;
 }
-
-
 
 .logo_icon {
   transition: transform 0.3s ease, color 0.3s ease;
@@ -107,8 +108,18 @@
   .navigation_left {
     width: calc(50% + var(--logo-width) / 2);
     justify-content: space-between;
-
   }
+
+  .logo_block {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .logo_block:hover {
+    border-right: none;
+    padding-right: 0;
+  }
+
 
 }
 

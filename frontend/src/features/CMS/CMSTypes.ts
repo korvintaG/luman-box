@@ -1,18 +1,15 @@
-import { BasicInstructionsCMS } from "./components/BasicInstructions/BasicInstructions";
-import { CommunicationLevelCMS } from "./components/CommunicationLevel/CommunicationLevel";
-import { CompetingInterpretationsCMS } from "./components/CompetingInterpretations/CompetingInterpretations";
-import { LikeMindedPeopleCMS } from "./components/LikeMindedPeople/LikeMindedPeople";
-import { MortimerAdlerCMS } from "./components/MortimerAdler/MortimerAdler";
-import { PremoderationCMS } from "./components/Premoderation/Premoderation";
-import { TelegramAuthorizationCMS } from "./components/TelegramAuthorization/TelegramAuthorization";
-import { WikipediaDictatorshipCMS } from "./components/WikipediaDictatorship/WikipediaDictatorship";
-import { ZettelKastenCMS } from "./components/ZettelKasten/ZettelKasten";
+import { FunctionComponent } from "react";
 
 export type SimpleComponentType = () => JSX.Element;
 
+export type AsPartOfProps =  {
+    asPartOf?:boolean;
+}
+
+
 export type CMS = {
     name: string;
-    element: SimpleComponentType
+    element: SimpleComponentType | FunctionComponent<AsPartOfProps>
 }
 
 export enum CMSPath {
@@ -24,47 +21,10 @@ export enum CMSPath {
     LikeMindedPeople='Like-Minded_People',
     Premoderation='Premoderation',
     TelegramAuthorization='Telegram_Authorization',
-    WikipediaDictatorship='Wikipedia_Dictatorship'
+    WikipediaDictatorship='Wikipedia_Dictatorship',
+    NotBan='Not_Ban',
+    IdeasNet='Ideas_Net'
 }
-
-export const CMSData: CMS[] = [
-    {
-        name: CMSPath.ZettelKasten,
-        element: ZettelKastenCMS
-    },
-    {
-        name: CMSPath.MortimerAdler,
-        element: MortimerAdlerCMS
-    },
-    {
-        name: CMSPath.BasicInstructions,
-        element: BasicInstructionsCMS
-    },
-    {
-        name: CMSPath.CommunicationLevel,
-        element: CommunicationLevelCMS
-    },
-    {
-        name: CMSPath.CompetingInterpretations,
-        element: CompetingInterpretationsCMS
-    },
-    {
-        name: CMSPath.LikeMindedPeople,
-        element: LikeMindedPeopleCMS
-    },
-    {
-        name: CMSPath.Premoderation,
-        element: PremoderationCMS
-    },
-    {
-        name: CMSPath.TelegramAuthorization,
-        element: TelegramAuthorizationCMS
-    },
-    {
-        name: CMSPath.WikipediaDictatorship,
-        element: WikipediaDictatorshipCMS
-    },
-]
 
 export const genCMSPath= (article: CMSPath) : string =>{
     return `/CMS/${article}`

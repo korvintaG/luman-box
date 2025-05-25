@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { ErrorMessageUI } from "../../shared/ui/ErrorMessage/ErrorMessage";
-import { CMSData } from "../../features/CMS/CMSTypes";
+import { CMSData } from "../../features/CMS/constants/CMSData";
 
 export const CMSPage: FC = () => {
     const { article } = useParams();

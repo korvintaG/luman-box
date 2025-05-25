@@ -5,6 +5,39 @@
     padding: 20px;
 }
 
+.main h2 {
+    margin-top: 100px;
+}
+
+.main section {
+    display: flex;
+    gap: 20px;
+}
+
+.main img {
+    margin-top: 10px;
+    max-height: 40vh;
+    max-width: 30vw;
+}
+
+.main figure {
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+}
+
+
+.main figcaption {
+    font-style: italic;
+    font-size: 14px;
+}
+
+.main div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .main p {
     text-align: justify;
     text-indent: 10px;
@@ -17,6 +50,7 @@
 .main li span {
     font-weight: normal;
     font-style: italic;
+    /*text-decoration: underline;*/
 }
 
 
@@ -29,4 +63,21 @@
 
 .main li li {
     list-style:circle ;
+}
+
+.main a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 750px) {
+    .main img {
+        max-height: 90vh;
+        max-width: 90vw;
+    }
+    .main section {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+
 }

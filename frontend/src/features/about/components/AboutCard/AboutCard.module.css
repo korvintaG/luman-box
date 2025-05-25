@@ -36,6 +36,11 @@
   align-items: center;
 }
 
+.header_block:hover {
+  text-decoration: underline;
+  color: white;
+}
+
 
   .overlay {
     /* универсальная разметка для полупрозрачности */
@@ -59,6 +64,10 @@
     flex-grow: 0;
     text-align: left;
   }
+
+.text a:hover {
+  text-decoration: underline;
+}
 
   .card_icon {
     color: white;
