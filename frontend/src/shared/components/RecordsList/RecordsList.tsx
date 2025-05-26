@@ -1,10 +1,13 @@
-import { FC } from "react";
+import { FC, SyntheticEvent } from "react";
 import clsx from "clsx";
 import { ButtonAddUI } from "../../ui/buttons/button-add"; 
 import styles from "./RecordsList.module.css";
 import { Preloader } from "../../ui/Preloader";
 import { RequestStatus } from "../../common-types";
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
+import { Breadcrumb, BreadcrumbSimpeType, Breadcrumbs } from "../Breadcrumbs/Breadcrumbs";
+import { ButtonBackUI } from "../../ui/buttons/button-type-back";
+import { useNavigate } from "react-router-dom";
 
 export type RecordListProps = {
   children: React.ReactNode;
@@ -18,11 +21,14 @@ export type RecordListProps = {
   liMobileAlteration?: boolean; // чередование полос списка в мобильном варианте
   readOnly?: boolean;
   mainClassName?: string;
+  breadcrumbs?: Breadcrumb[];
+  showBackButton?:boolean;
 };
 
 export const RecordsList: FC<RecordListProps> = (
   props: RecordListProps,
 ) => {
+  const navigate = useNavigate();
   if (props.sliceState === RequestStatus.Loading)
     return <Preloader />;
 
@@ -34,13 +40,25 @@ export const RecordsList: FC<RecordListProps> = (
       okCaption="Повторить запрос"
     />
 
+  const back = (e: SyntheticEvent<Element, Event>) => {
+    e.preventDefault();
+    navigate(-1);
+  };
+
+
   return (
     <main
       className={props.mainClassName ? props.mainClassName
          :clsx(styles.main, "main", {[styles["main-shrink"]]: props.liMobileAlteration})
       }
     >
-      {props.header && <h1 className={styles["page-header"]}>{props.header}</h1>}
+      {props.breadcrumbs && 
+        <Breadcrumbs 
+          breadcrumbElementTypes={props.breadcrumbs} 
+          header={props.header}
+        />
+      }
+      {props.header && !props.breadcrumbs && <h1 className={styles["page-header"]}>{props.header}</h1>}
       {props.skipUl ? (
         props.children
       ) : (
@@ -57,6 +75,7 @@ export const RecordsList: FC<RecordListProps> = (
         disabled={props.readOnly}
         caption={props.captionAddButton}
       />}
+      {props.showBackButton && <ButtonBackUI caption="Назад" action={back} />}
       </main>
   );
 };

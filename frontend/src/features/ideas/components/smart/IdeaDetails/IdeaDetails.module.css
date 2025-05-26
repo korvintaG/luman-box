@@ -1,5 +1,5 @@
 .form {
-    margin: 40px auto;
+    margin: 20px auto;
     display: flex;
     flex-direction: row;
     align-items:flex-start;
@@ -13,7 +13,7 @@
 }*/
 
 .main {
-    margin: 20px;
+    margin: 0 20px 20px;
 }
 
 .input {

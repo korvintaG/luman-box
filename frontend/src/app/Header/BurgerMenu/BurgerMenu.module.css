@@ -84,10 +84,14 @@
     color: white;
 }
 
+.menu a:visited {
+    color: white;
+}
+
+
 .item:hover {
     cursor: pointer;
     color: #a8d0ff;
-  
 }
 
 .item:after {

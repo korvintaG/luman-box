@@ -2,7 +2,13 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    padding: 20px;
+    padding: 0 20px ;
+}
+
+
+.main h1 {
+    text-align: left;
+    font-size: 34px;
 }
 
 .main h2 {
@@ -15,7 +21,7 @@
 }
 
 .main img {
-    margin-top: 10px;
+    margin-top: 20px;
     max-height: 40vh;
     max-width: 30vw;
 }
@@ -40,7 +46,7 @@
 
 .main p {
     text-align: justify;
-    text-indent: 10px;
+    text-indent: 40px;
 }
 
 .main span {

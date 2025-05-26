@@ -87,7 +87,6 @@
 .auth {
   display: flex;
   align-items: center;
-
   color: white;
   transition: transform 0.3s ease, color 0.3s ease;
 }

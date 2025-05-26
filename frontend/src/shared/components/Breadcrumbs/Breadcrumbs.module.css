@@ -1,0 +1,26 @@
+.nav {
+    display: flex;
+    padding: 10px;
+    text-align: left;
+    column-gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nav h1 {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.nav a {
+    display: block;
+    width: fit-content;
+    text-decoration: underline;
+    transition: transform 0.3s ease, color 0.3s ease;    
+}
+
+.nav a:hover {
+    /*transform: scale(1.1);*/
+    color: blue;
+
+}

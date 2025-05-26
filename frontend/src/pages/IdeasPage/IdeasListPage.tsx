@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { Helmet } from "react-helmet-async";
 import { useSelector } from "../../shared/services/store";
 import { IdeasList } from "../../features/ideas/components/smart/IdeasList/IdeasList";
 import { selectCurrentUser } from "../../features/auth/store/AuthSlice";
@@ -18,15 +18,21 @@ export const IdeasPage: FC = () => {
   const navigate = useNavigate();
 
   const gotoIdeaAdd = () => {
-    navigate(genIdeaAddURL)
-  }
+    navigate(genIdeaAddURL);
+  };
 
   return (
-    <IdeasList
-      readOnly={!currentUser}
-      gotoIdeaAdd={gotoIdeaAdd}
-      condSrc={condSrc}
-      condKw={condKw}
-    />
+    <>
+      <Helmet>
+        <title>Список идей</title>
+      </Helmet>
+
+      <IdeasList
+        readOnly={!currentUser}
+        gotoIdeaAdd={gotoIdeaAdd}
+        condSrc={condSrc}
+        condKw={condKw}
+      />
+    </>
   );
 };

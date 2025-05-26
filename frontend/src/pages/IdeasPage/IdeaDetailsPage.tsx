@@ -16,16 +16,16 @@ export const IdeaDetailsPage = () => {
   const findKeywordId = searchParams.get("keyword_id");
 
   const afterSuccessDMLAction = () => {
-    navigate(appRoutes.ideas)
-  }
+    navigate(appRoutes.ideas);
+  };
 
   return (
     <IdeaDetails
-    id={id}
-    currentUser={currentUser}
-    findSourceId={findSourceId}
-    findKeywordId={findKeywordId}
-    afterSuccessDMLAction={afterSuccessDMLAction}
-  />
+      id={id}
+      currentUser={currentUser}
+      findSourceId={findSourceId}
+      findKeywordId={findKeywordId}
+      afterSuccessDMLAction={afterSuccessDMLAction}
+    />
   );
 };

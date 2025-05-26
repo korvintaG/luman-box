@@ -62,6 +62,15 @@ export function getEditAccess(
       : EditAccessStatus.Readonly;
 }
 
+export type HeaderParType= [
+    readOnly: boolean, 
+    id: number | null, 
+    name: string | null | undefined, 
+    text: string, 
+    gender?: "муж" | "жен" 
+  ];
+  
+
 export function genHeaderText(
   readOnly: boolean,
   id: number | null,
@@ -74,6 +83,20 @@ export function genHeaderText(
   else if (readOnly) return `Просмотр ${text}`;
   else return `Редактирование ${text} [${name}]`;
 }
+
+export function genTabHeaderText(
+  readOnly: boolean,
+  id: number | null,
+  name: string | null | undefined,
+  text: string,
+  gender: "муж" | "жен" = "муж",
+): string {
+  const newWord = gender === "муж" ? "нового" : "новой";
+  if (!id) return `Добавление ${newWord} ` + text;
+  else if (readOnly) return `Просмотр ${text} [${name}]`;
+  else return `Редактирование ${text} [${name}]`;
+}
+
 
 export function getUserCreator(
   currentRecord: any,

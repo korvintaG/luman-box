@@ -3,6 +3,7 @@ import styles from "./RecordEditForm.module.css";
 import { RequestStatus } from "../../common-types";
 import { Preloader } from "../../ui/Preloader"; 
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
+import { BreadcrumbSimpeType, Breadcrumbs, BreadcrumbSimple } from "../Breadcrumbs/Breadcrumbs";
 
 export type RecordEditFormProps = {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ export type RecordEditFormProps = {
   header?: string;
   formClass?: string;
   mainClass?: string;
+  breadcrumbs: BreadcrumbSimpeType[];
 };
 
 export const RecordEditForm: FC<RecordEditFormProps> = (
@@ -28,10 +30,15 @@ export const RecordEditForm: FC<RecordEditFormProps> = (
       errorTitle="Ошибка"
       okCaption="Повторить запрос"
     />
-
+//{props.header && <h1 className={styles["record-header"]}>{props.header}</h1>}
   return (
     <main className={props.mainClass ? props.mainClass : ""}>
-      {props.header && <h1 className={styles["record-header"]}>{props.header}</h1>}
+      {props.breadcrumbs && 
+        <Breadcrumbs 
+          breadcrumbElementTypes={props.breadcrumbs} 
+          header={props.header}
+        />
+      }
       <form
         onSubmit={props.onSubmit}
         className={props.formClass ? props.formClass : styles.form}

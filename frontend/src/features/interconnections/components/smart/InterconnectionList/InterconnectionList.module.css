@@ -9,6 +9,7 @@
     text-align: left;
     margin-left: 10px;
     margin-right: auto;
+    margin-top: 20px;
 }
 
 .left_section_table {
@@ -23,6 +24,7 @@
     text-align: right;
     margin-right: 10px;
     margin-left: auto;
+    margin-bottom: 20px;
     /*border: 1px red solid;*/
 }
 
