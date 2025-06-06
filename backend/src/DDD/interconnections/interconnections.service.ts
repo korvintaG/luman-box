@@ -18,6 +18,7 @@ type IdeaInfo ={
   name:string;
   source_name: string;
   source_id: number;
+  SVG: string | null;
 }
 
 type IdeaInfoWithIC = IdeaInfo & {
@@ -77,11 +78,11 @@ export class InterconnectionsService {
     const addCond=getUserSQLFilter(user,'interconnections'); 
     const addIdeaCond=getUserSQLFilter(user,'ideas'); 
     const idea=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
-      `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
+      `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG"
       from ideas, sources, authors
       where ideas.id=${idea_id} ${addIdeaCond} and sources.id=ideas.source_id and authors.id=sources.author_id`);
     const ideasDirect=await this.interconnectionRepository.manager.query<IdeaInfoWithIC[]>(    
-      `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id,
+      `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG",
         interconnections.name_direct as interconnection_name,
         interconnections.id as interconnection_id
       from ideas, sources, authors, interconnections 
@@ -92,7 +93,7 @@ export class InterconnectionsService {
         and ideas.id=interconnections.idea2_id 
         and interconnection_type=${type_id}`);
     const ideasReverse=await this.interconnectionRepository.manager.query<IdeaInfoWithIC[]>(    
-      `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id,
+      `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG",
         interconnections.name_reverse as interconnection_name,
         interconnections.id as interconnection_id
       from ideas, sources, authors, interconnections 

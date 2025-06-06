@@ -21,7 +21,7 @@ export const ButtonUI: FC<ButtonUIProps> = ({
   const classes = combineClasses(styles.button, classReplace, classAdd);
   if (action)
     return (
-      <button className={classes} disabled={disabled} onClick={action}>
+      <button type="button" className={classes} disabled={disabled} onClick={action}>
         {newCaption}
       </button>
     );

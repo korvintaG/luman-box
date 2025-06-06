@@ -1,27 +1,27 @@
 import { generatePath} from "react-router-dom"
-import { appRoutes } from "./AppRoutes"
+import { appRoutesURL } from "./AppRoutesURL"
 
-export const genIdeaURL=(id:number)=>generatePath (appRoutes.idea,{id})
-export const genAuthorURL=(id:number)=>generatePath (appRoutes.author,{id})
-export const genKeywordURL=(id:number)=>generatePath (appRoutes.keyword,{id})
-export const genSourceURL=(sid:number)=>generatePath (appRoutes.source,{id:sid})
+export const genIdeaURL=(id:number)=>generatePath (appRoutesURL.idea,{id})
+export const genAuthorURL=(id:number)=>generatePath (appRoutesURL.author,{id})
+export const genKeywordURL=(id:number)=>generatePath (appRoutesURL.keyword,{id})
+export const genSourceURL=(sid:number)=>generatePath (appRoutesURL.source,{id:sid})
 
 export const genInterconnectionURL=(icid:number, isReverse: boolean = false)=>{
-    let URL=generatePath (appRoutes.ideaInterconnection,{id:icid});
+    let URL=generatePath (appRoutesURL.interconnection,{id:icid});
     if (isReverse)
         URL+='?is_reverse=1';
     return URL;
 }
 
 export const genInterconnectionsURL=(idea_id:number, iitype_id: number)=>
-    generatePath (appRoutes.ideaInterconnections,{idea_id, iitype_id})
-export const genAuthorAddURL = appRoutes.authorAdd;
-export const genKeywordAddURL = appRoutes.keywordAdd;
-export const genSourceAddURL = appRoutes.sourceAdd;
-export const genIdeaAddURL = appRoutes.ideaAdd;
+    generatePath (appRoutesURL.interconnections,{idea_id, iitype_id})
+export const genAuthorAddURL = appRoutesURL.authorAdd;
+export const genKeywordAddURL = appRoutesURL.keywordAdd;
+export const genSourceAddURL = appRoutesURL.sourceAdd;
+export const genIdeaAddURL = appRoutesURL.ideaAdd;
 export const genInterconnectionAddURL= (idea_id: number, iitype_id: number, isReverse: boolean) =>
     { 
-        return generatePath (appRoutes.ideaInterconnectionAdd,{idea_id, iitype_id}) 
+        return generatePath (appRoutesURL.interconnectionAdd,{idea_id, iitype_id}) 
             + (isReverse? '?is_reverse=1' : '');
     }
 

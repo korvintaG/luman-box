@@ -14,7 +14,7 @@ export const CompetingInterpretationsCMS: SimpleComponentType = () => {
         <title>Конкуренция в осмыслении</title>
       </Helmet>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs breadcrumbElementTypes={[BreadcrumbSimpeType.CMSAbout]} />
         <section>
           <figure>
@@ -53,7 +53,7 @@ export const CompetingInterpretationsCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

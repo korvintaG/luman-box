@@ -1,6 +1,12 @@
 import { User } from "../auth/user-types";
 import { IdeaForList } from "../ideas/IdeaTypes"; 
 
+export type InterconnectionsParamsType = {
+  idea_id: string,
+  iitype_id: string
+}
+
+
 export type InterconnectionsCount = {
     id: number;
     name:string;
@@ -33,6 +39,7 @@ export type InterconnectionsCount = {
     source_id:number;
     interconnection_name: string;
     interconnection_id: number;
+    SVG?: string;
   }
   
   export type IdeaInterconnections = {
@@ -41,6 +48,7 @@ export type InterconnectionsCount = {
       name:string;
       source_name: string;
       source_id:number;
+      SVG: string | undefined;
     }
     interconnections_direct: InterconnectionIdeas[];
     interconnections_reverse: InterconnectionIdeas[];

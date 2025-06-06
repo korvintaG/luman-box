@@ -23,8 +23,9 @@ export const AuthorsList: FC<AuthorsListProps> = ({readOnly, gotoAuthorAdd}) => 
               addRecord={addNewAuthor}
             >
               {authors.map((author) => (
-                <li key={author.id}>
+                <li key={`author_list_${author.id}`}>
                   <Link
+                    key={`author_link_${author.id}`}
                     className={clsx({ "moderated-need": !author.moderated })}
                     to={genAuthorURL(author.id)}
                   >

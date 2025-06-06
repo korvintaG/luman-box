@@ -32,7 +32,7 @@ export const RecordEditForm: FC<RecordEditFormProps> = (
     />
 //{props.header && <h1 className={styles["record-header"]}>{props.header}</h1>}
   return (
-    <main className={props.mainClass ? props.mainClass : ""}>
+    <div className={props.mainClass ? props.mainClass : ""}>
       {props.breadcrumbs && 
         <Breadcrumbs 
           breadcrumbElementTypes={props.breadcrumbs} 
@@ -45,6 +45,6 @@ export const RecordEditForm: FC<RecordEditFormProps> = (
       >
         {props.children}
       </form>
-    </main>
+    </div>
   );
 };

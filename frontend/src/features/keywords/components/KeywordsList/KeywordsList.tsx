@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { RecordsList } from "../../../../shared/components/RecordsList"; 
 import { useKeywordsList } from "../../hooks/UseKeywordsList";
 import { genKeywordURL } from "../../../../app/router/navigation";
+import styles from "./KeywordsList.module.css";
 
 export type KeywordListUIProps = {
   readOnly?: boolean;
@@ -14,8 +15,7 @@ export const KeywordList: FC<KeywordListUIProps> = ({
   readOnly, gotoKeywordAdd
 }) => {
     const {keywords, addNewKeyword, sliceState , error, fetchRecords } = useKeywordsList(gotoKeywordAdd);
-  return (
-    <RecordsList
+  return (<RecordsList
       header="Список ключевых слов"
       captionAddButton="Добавить ключевое слово"
       readOnly={readOnly}
@@ -23,17 +23,18 @@ export const KeywordList: FC<KeywordListUIProps> = ({
       fetchRecords={fetchRecords}
       sliceState={sliceState}
       error={error}
-    >
+   
+  >
       {keywords.map((keyword) => (
         <li key={keyword.id}>
           <Link
-            className={clsx({ "moderated-need": !keyword.moderated })}
             to={genKeywordURL(keyword.id)}
           >
             {keyword.name}
           </Link>
         </li>
       ))}
-    </RecordsList>
+      </RecordsList> 
   );
 };
+//            className={clsx({ "moderated-need": !keyword.moderated })}

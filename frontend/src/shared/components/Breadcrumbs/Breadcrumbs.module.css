@@ -1,4 +1,4 @@
-.nav {
+.nav ul {
     display: flex;
     padding: 10px;
     text-align: left;
@@ -7,16 +7,41 @@
     flex-wrap: wrap;
 }
 
+.nav li {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.nav li:not(:last-child)::after {
+    position: relative;
+    margin-left: 10px;
+    content: ">"; /* Ваш разделитель */
+}
+
 .nav h1 {
     font-size: 18px;
     font-weight: normal;
 }
 
 .nav a {
-    display: block;
+    display: flex;
     width: fit-content;
     text-decoration: underline;
     transition: transform 0.3s ease, color 0.3s ease;    
+}
+
+.icon_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.icon {
+    width: 25px;
+    fill: darkblue;
+    display: flex;
 }
 
 .nav a:hover {

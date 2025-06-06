@@ -13,6 +13,7 @@ export type IdeaInner = NameObject & {
     keywords: KeywordPartial[];
     attitudes?:IdeaAttitudes;
     interconnections?: InterconnectionsCount[];
+    SVG: string | null;
   };
   
   

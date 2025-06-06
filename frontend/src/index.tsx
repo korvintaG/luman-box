@@ -1,26 +1,43 @@
-import React from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { RouterProvider, useNavigation } from "react-router-dom";
 import { Provider } from "react-redux";
 import reportWebVitals from "./reportWebVitals";
 import { HelmetProvider } from "react-helmet-async";
 import "./assets/fonts/fonts.css";
 import "./index.css";
 import { store } from "./shared/services/store";
-import App from "./app/App";
+import { appRoutes } from "./app/router/AppRoutes";
+import { Preloader } from "./shared/ui/Preloader";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+/*future={{ v7_relativeSplatPath: true, v7_startTransition: true }}*/
+
+function GlobalLoader() {
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  useEffect(() => {
+    setIsInitialLoad(false);
+  }, []);
+
+  if (isInitialLoad) {
+    return <Preloader />;
+  }
+
+  return null;
+}
+
 root.render(
   <Provider store={store}>
-    <BrowserRouter
-      future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-    >
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <RouterProvider
+        router={appRoutes}
+        fallbackElement={<Preloader />}
+        future={{ v7_startTransition: true }}
+      />
+    </HelmetProvider>
   </Provider>
 );
 

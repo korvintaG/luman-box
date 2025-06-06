@@ -6,7 +6,6 @@ import {
     clearCurrentInterconnection,
     selectError
   } from "../store/InterconnectionSlice";
-import { useEffect } from "react";
 
 
 export type useInterconnectionsListProps = {
@@ -38,9 +37,9 @@ export const useInterconnectionList = (
       gotoInterconnectionAdd(isReverse)
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetchRecords()
-  }, [idea_id]);
+  }, [idea_id]);*/
 
   return {interconnections, sliceState, error, addNewInterconnection, fetchRecords}
 }

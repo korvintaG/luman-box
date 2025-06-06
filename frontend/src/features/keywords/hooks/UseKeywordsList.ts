@@ -19,9 +19,9 @@ export const useKeywordsList = (gotoKeywordAdd: ()=>void) => {
     dispatch(fetchKeywords());
   }
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetchRecords();
-  }, [dispatch]);
+  }, [dispatch]);*/
 
   const addNewKeyword = () => {
     dispatch(clearCurrentKeyword());

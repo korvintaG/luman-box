@@ -8,6 +8,7 @@ import {
   Min,
   ValidateNested,
   ArrayMinSize,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateIdeaSourceDto {
@@ -45,6 +46,12 @@ export class CreateIdeaDto {
     message: 'Исходная цитата должна быть от 10-ти до 8000 символов длиной',
   })
   original_text: string;
+
+  @IsOptional()
+  @IsString({ message: 'Поле [SVG] должно быть строкой' })
+  @Length(0, 14000, {
+    message: 'SVG должен быть длиной от 0 до 14000 символов',
+  })SVG: string;
 
   @IsNotEmpty({ message: 'Поле $property не может быть пустым' })
   @IsString({ message: 'Поле $property должно быть строкой' })

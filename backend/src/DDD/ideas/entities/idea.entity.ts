@@ -39,6 +39,9 @@ export class Idea {
   @Column('text')
   content: string;
 
+  @Column({ type: 'varchar', nullable: true})
+  SVG: string;
+
   //@Column({ type: 'timestamp', nullable: true })
   @CreateDateColumn()
   date_time_create: Date;

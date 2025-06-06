@@ -14,7 +14,7 @@ export const MortimerAdlerCMS: SimpleComponentType = () => {
       <Helmet>
         <title>Принципы Мортимера Адлера</title>
       </Helmet>
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs
           breadcrumbElementTypes={[
             BreadcrumbSimpeType.CMSAbout,
@@ -83,7 +83,7 @@ export const MortimerAdlerCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

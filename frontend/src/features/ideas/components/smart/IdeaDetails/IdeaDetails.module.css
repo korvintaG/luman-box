@@ -16,6 +16,16 @@
     margin: 0 20px 20px;
 }
 
+.idea_icon {
+    width: 90px;
+    max-height: 100px;
+    fill: darkblue;
+}
+
+.inputs_block {
+    display: flex;
+}
+
 .input {
     max-width: calc(100% - 150px);   
 }
@@ -69,6 +79,11 @@
 
 .original_text  {
     font-style: italic;
+}
+
+.content_SVG {
+    min-width: calc(100% - 12px);
+    height: 50vh;
 }
 
 

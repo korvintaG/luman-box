@@ -14,7 +14,7 @@ export const WikipediaDictatorshipCMS: SimpleComponentType = () => {
         <title>Главный недостаток Wikipedia</title>
       </Helmet>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs breadcrumbElementTypes={[BreadcrumbSimpeType.CMSAbout]} />
         <section>
           <figure>
@@ -57,7 +57,7 @@ export const WikipediaDictatorshipCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

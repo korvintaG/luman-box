@@ -1,7 +1,7 @@
 import { useState, SyntheticEvent, useEffect } from "react";
 import { useLocation } from "react-router";
 import clsx from "clsx";
-import { appRoutes } from "../router/AppRoutes";
+import { appRoutesURL } from "../router/AppRoutesURL";
 import { LinkActionUI } from "../../shared/ui/LinkAction/LinkAction";
 import { MenuItem, BurgerMenu } from "./BurgerMenu/BurgerMenu";
 import styles from "./AppHeader.module.css";
@@ -24,10 +24,10 @@ export const AppHeaderUI = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const menu: MenuItem[] = [
-    { name: "Авторы", link: appRoutes.authors },
-    { name: "Источники", link: appRoutes.sources },
-    { name: "Идеи", link: appRoutes.ideas },
-    { name: "Ключевые слова", link: appRoutes.keywords },
+    { name: "Авторы", link: appRoutesURL.authors },
+    { name: "Источники", link: appRoutesURL.sources },
+    { name: "Идеи", link: appRoutesURL.ideas },
+    { name: "Ключевые слова", link: appRoutesURL.keywords },
   ];
 
   const currentUser = useSelector(selectCurrentUser);
@@ -41,7 +41,7 @@ export const AppHeaderUI = () => {
       <nav className={styles.navigation}>
         <div className={styles.navigation_left}>
           <LinkActionUI
-            to={appRoutes.home}
+            to={appRoutesURL.home}
             actionHandle={burgerDeactivate}
           >
             <div className={styles.logo_block}>
@@ -59,7 +59,7 @@ export const AppHeaderUI = () => {
             setBurgerActivated={setBurgerActivated}
           />
         </div>
-        <LinkActionUI to={appRoutes.auth} actionHandle={burgerDeactivate}>
+        <LinkActionUI to={appRoutesURL.auth} actionHandle={burgerDeactivate}>
           {currentUser ? (
             <ExitIcon
               className={styles.auth}

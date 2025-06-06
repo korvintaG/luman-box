@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent } from "react";
+import { FC, SyntheticEvent, useRef } from "react";
 import clsx from "clsx";
 import { ButtonAddUI } from "../../ui/buttons/button-add"; 
 import styles from "./RecordsList.module.css";
@@ -28,6 +28,8 @@ export type RecordListProps = {
 export const RecordsList: FC<RecordListProps> = (
   props: RecordListProps,
 ) => {
+  const listRef = useRef();
+  
   const navigate = useNavigate();
   if (props.sliceState === RequestStatus.Loading)
     return <Preloader />;
@@ -41,13 +43,13 @@ export const RecordsList: FC<RecordListProps> = (
     />
 
   const back = (e: SyntheticEvent<Element, Event>) => {
-    e.preventDefault();
+    //e.preventDefault();
     navigate(-1);
   };
 
 
   return (
-    <main
+    <div 
       className={props.mainClassName ? props.mainClassName
          :clsx(styles.main, "main", {[styles["main-shrink"]]: props.liMobileAlteration})
       }
@@ -76,6 +78,6 @@ export const RecordsList: FC<RecordListProps> = (
         caption={props.captionAddButton}
       />}
       {props.showBackButton && <ButtonBackUI caption="Назад" action={back} />}
-      </main>
+      </div>
   );
 };

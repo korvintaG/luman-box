@@ -1,11 +1,16 @@
-.main a {
-    font-weight: normal;
-    color: blue;
-}
-
 .main {
   /*background-color: white;*/
 }
+
+.main a {
+  font-weight: normal;
+  color: blue;
+}
+
+.main a:hover {
+  text-decoration: underline;
+}
+
 
 .page-header {
     text-transform: uppercase;

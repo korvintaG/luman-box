@@ -13,7 +13,7 @@ import {
   AuthStatus,
 } from "../../features/auth/store/AuthSlice";
 import { useNavigate } from "react-router-dom";
-import { appRoutes } from "../../app/router/AppRoutes";
+import { appRoutesURL } from "../../app/router/AppRoutesURL";
 import { LoginForm } from "../../features/auth/components/login-form/login-form";
 import { UserInner } from "../../features/auth/user-types";
 
@@ -50,7 +50,7 @@ export default function LoginPage() {
       if (currentLogin) {
         setValues(emptyUser); // сброс логина-пароля на странице логина
         dispatch(setStatus(AuthStatus.Idle));
-        navigate(appRoutes.home);
+        navigate(appRoutesURL.home);
       }
     }
   }, [sliceStatus, currentUser]);

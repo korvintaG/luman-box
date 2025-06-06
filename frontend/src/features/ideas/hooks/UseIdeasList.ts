@@ -1,4 +1,3 @@
-import { FC, useEffect } from "react";
 import { useSelector, useDispatch } from "../../../shared/services/store";
 import { clearCurrentIdea, fetchIdeas, fetchIdeasBySrcKw, selectError, selectIdeas, selectSliceState } from "../store/IdeaSlice";
 
@@ -28,9 +27,9 @@ export const useIdeasList =({gotoIdeaAdd, condSrc, condKw}:useIdeasListProps)=>{
   }
  
 
-    useEffect(() => {
+   /* useEffect(() => {
         fetchRecords();
-    }, []);
+    }, []);*/
 
   const addNewIdea = () => {
     dispatch(clearCurrentIdea());

@@ -59,3 +59,17 @@
     color: darkgreen;
 }
 
+.idea {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.idea_icon {
+    width: 40px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    fill: darkblue;
+    flex-grow: 0;
+}
+

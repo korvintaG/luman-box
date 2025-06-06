@@ -15,7 +15,7 @@ export const ZettelKastenCMS: SimpleComponentType = () => {
         <title>Метод ZettelKasten</title>
       </Helmet>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs
           breadcrumbElementTypes={[
             BreadcrumbSimpeType.CMSAbout,
@@ -98,7 +98,7 @@ export const ZettelKastenCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

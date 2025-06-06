@@ -138,7 +138,7 @@ export function translit(word:string):string{
 		'О': 'O',    'П': 'P',    'Р': 'R',    'С': 'S',    'Т': 'T',
 		'У': 'U',    'Ф': 'F',    'Х': 'H',    'Ц': 'C',    'Ч': 'Ch',
 		'Ш': 'Sh',   'Щ': 'Sch',  'Ь': '',     'Ы': 'Y',    'Ъ': '',
-		'Э': 'E',    'Ю': 'Yu',   'Я': 'Ya'
+		'Э': 'E',    'Ю': 'Yu',   'Я': 'Ya',   ' ': '_'
 	};
  
 	for (var i = 0; i < word.length; ++i ) {
@@ -216,3 +216,23 @@ export function isDMLRequestOK(request: RequestStatus): boolean {
 
 
 
+export function isSafeSvg(svgString: string): boolean {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svgString, "image/svg+xml");
+    
+    // Проверяем, что корневой элемент — это SVG
+    const rootElement = doc.documentElement;
+    if (rootElement.nodeName.toLowerCase() !== "svg") {
+      return false;
+    }
+
+    // Проверяем, что нет опасных элементов
+    const hasScriptTags = doc.querySelector("script, foreignobject");
+    const hasEventListeners = svgString.includes("onload=") || svgString.includes("onerror=");
+    
+    return !hasScriptTags && !hasEventListeners;
+  } catch (err) {
+    return false; // Если парсинг не удался — это не SVG
+  }
+}

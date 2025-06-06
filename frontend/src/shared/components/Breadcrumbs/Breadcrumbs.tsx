@@ -1,7 +1,9 @@
 import { FC } from "react";
-import { appRoutes } from "../../../app/router/AppRoutes";
+import { appRoutesURL } from "../../../app/router/AppRoutesURL";
 import { CMSPath, genCMSPath } from "../../../features/CMS/CMSTypes";
 import styles from "./Breadcrumbs.module.css";
+import { Link } from "react-router-dom";
+import SvgIcon from "../SvgIcon/SvgIcon";
 
 export const enum BreadcrumbSimpeType {
     CMSAbout= 'CMSAbout',
@@ -16,6 +18,7 @@ export const enum BreadcrumbSimpeType {
 export type BreadcrumbContent ={
     name: string;
     path: string;
+    svg?: string;
 }
 
 export type Breadcrumb = BreadcrumbSimpeType | BreadcrumbContent;
@@ -28,7 +31,7 @@ export const BreadcrumbsData:BreadcrumbSimple[] =[
     {
         id:BreadcrumbSimpeType.CMSAbout,
         name:'О проекте',
-        path:appRoutes.home
+        path:appRoutesURL.home
     },
     {
         id:BreadcrumbSimpeType.CMSIdeasNet,
@@ -43,22 +46,22 @@ export const BreadcrumbsData:BreadcrumbSimple[] =[
     {
         id:BreadcrumbSimpeType.AuthorsList,
         name:'Список авторов',
-        path: appRoutes.authors
+        path: appRoutesURL.authors
     },
     {
         id:BreadcrumbSimpeType.SourcesList,
         name:'Список источников',
-        path: appRoutes.sources
+        path: appRoutesURL.sources
     },
     {
         id:BreadcrumbSimpeType.IdeasList,
         name:'Список идей',
-        path: appRoutes.ideas
+        path: appRoutesURL.ideas
     },
     {
         id:BreadcrumbSimpeType.KeywordsList,
         name:'Список ключевых слов',
-        path: appRoutes.keywords
+        path: appRoutesURL.keywords
     },
 
 ];
@@ -70,6 +73,7 @@ export type BreadcrumbsProps = {
 
 export const Breadcrumbs:FC<BreadcrumbsProps>=({breadcrumbElementTypes : bets, header})=>{
     return <nav className={styles.nav}>
+        <ul>
         {bets.map((bet,cnt)=>{
             let bd:BreadcrumbContent;
             if (typeof bet !=='object') {
@@ -81,16 +85,20 @@ export const Breadcrumbs:FC<BreadcrumbsProps>=({breadcrumbElementTypes : bets, h
             }
             else 
                 bd=bet;
-            const BC=<a href={bd.path}>{bd.name}</a>;
-            if (cnt!==bets.length-1 || header)
-                return <>
-                    {BC}
-                    {'>'} 
-                </>
-            else
-                return BC;
+            return <li key={cnt}><Link to={bd.path}
+                key={`bc_${cnt}`}
+                className={styles.icon_item}>
+                {bd.svg && bd.svg.length>0 && 
+                    <SvgIcon
+                        svgString={bd.svg}
+                        className={styles.icon}
+                />}
+                <p>{bd.name}</p></Link>
+                </li>;
+            
         })}
-        {header && <h1>{header}</h1>}
+        {header && <li key="header"><h1>{header}</h1></li>}
+        </ul>
     </nav>
 
 }

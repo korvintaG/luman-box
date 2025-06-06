@@ -3,7 +3,7 @@ import styles from "./RecordControlBlock.module.css";
 import { ButtonAgreeUI } from "../../ui/buttons/button-type-agree"; 
 import { ButtonAlertUI } from "../../ui/buttons/button-type-alert";
 import { ButtonBackUI } from "../../ui/buttons/button-type-back";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Route  } from "react-router-dom";
 import { EditAccessStatus, getErrorTypeBySlice, isDMLRequestFailed, isDMLRequestOK } from "../../utils/utils";
 import { useMsgModal } from "../../hooks/useMsgModal";
 import { MsgQuestionUI } from "../../ui/Modal/MsgQuestion";
@@ -30,6 +30,7 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
   const msgDeleteHook = useMsgModal();
   const msgErrorHook = useMsgModal();
   const navigate = useNavigate();
+  const location = useLocation();
   let saveCaption = props.saveButtonCaption ? 
     props.saveButtonCaption :
     (props.id ? "Сохранить данные" : "Добавить данные");
@@ -46,7 +47,10 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
 
   const back = (e: SyntheticEvent<Element, Event>) => {
     e.preventDefault();
+    //window.history.go(-1);
     navigate(-1);
+    //console.log(window.history)
+    
   };
 
   const errorCloseAction=()=>{

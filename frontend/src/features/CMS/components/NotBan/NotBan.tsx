@@ -14,7 +14,7 @@ export const NotBanCMS: SimpleComponentType = () => {
         <title>У нас нет банов!</title>
       </Helmet>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs breadcrumbElementTypes={[BreadcrumbSimpeType.CMSAbout]} />
 
         <section>
@@ -62,7 +62,7 @@ export const NotBanCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

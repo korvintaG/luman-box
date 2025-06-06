@@ -1,4 +1,4 @@
-import { useEffect, SyntheticEvent } from "react";
+import { SyntheticEvent } from "react";
 import { useForm } from "../../../shared/hooks/useForm"; 
 import { InterconnectionAddData, InterconnectionAddForm, InterconnectionCreateDTO, 
    InterconnectionTypeInfo} 
@@ -53,9 +53,9 @@ export const useInterconnectionDetailsAdd = (
     dispatch(resetSliceState());
   }
       
-  useEffect(() => {
+  /*useEffect(() => {
     fetchRecord();
-  }, [idea_id]);
+  }, [idea_id]);*/
 
   const resetFoundDataAction = ()=>{
     dispatch(resetFoundData())

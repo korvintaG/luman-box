@@ -40,7 +40,7 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
   };
 
 
-  useEffect(() => fetchRecord(), []);
+  /*useEffect(() => fetchRecord(), []);*/
 
   useEffect(() => {
     if (currentRecord)

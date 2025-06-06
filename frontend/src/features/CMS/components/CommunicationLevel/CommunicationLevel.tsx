@@ -13,7 +13,7 @@ export const CommunicationLevelCMS: SimpleComponentType = () => {
       <Helmet>
         <title>Управление доступностью в Sferatum</title>
       </Helmet>
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs
           breadcrumbElementTypes={[
             BreadcrumbSimpeType.CMSAbout,
@@ -53,7 +53,7 @@ export const CommunicationLevelCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { Idea } from "../../../IdeaTypes";
 import { RecordsList } from "../../../../../shared/components/RecordsList";
-import { getRouteParam, appRoutes } from "../../../../../app/router/AppRoutes";
+import { getRouteParam, appRoutesURL } from "../../../../../app/router/AppRoutesURL";
 import { parseISO, format } from "date-fns";
 import styles from "./IdeasList.module.css";
 import { sourceFullNameFromObj } from "../../../../../shared/utils/utils";
 import { RequestStatus } from "../../../../../shared/common-types";
 import { useIdeasList } from "../../../hooks/UseIdeasList";
 import { genIdeaURL, genSourceURL } from "../../../../../app/router/navigation";
+import SvgIcon from "../../../../../shared/components/SvgIcon/SvgIcon";
 
 export type IdeasListProps = {
   readOnly: boolean;
@@ -44,17 +45,21 @@ export const IdeasList: FC<IdeasListProps> = ({
             <th>Источник</th>
             <th>Пользователь</th>
             <th>Добавлено</th>
-          </tr>
+          </tr> 
         </thead>
         <tbody>
           {ideas.map((idea) => {
             return (
               <tr key={idea.id}>
-                <td>
+                <td >
                   <Link
-                    className={clsx({ "moderated-need": !idea.moderated })}
+                    className={clsx(styles.name_cell, { "moderated-need": !idea.moderated })}
                     to={genIdeaURL(idea.id)}
                   >
+                    {idea.SVG && idea.SVG.length>0 && <SvgIcon
+                      svgString={idea.SVG}
+                      className={styles.idea_icon}
+                    />} 
                     {idea.name}
                   </Link>
                 </td>

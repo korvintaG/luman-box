@@ -62,13 +62,10 @@ export const InterconnectionList: FC<InterconnectionListProps> = ({
           {
             name: `Идея: [${interconnections.idea.name}, ID=${interconnections.idea.id}]`,
             path: genIdeaURL(interconnections.idea.id),
+            svg: interconnections.idea.SVG
           },
         ]}
       >
-        {/*<InterconnectionsListTitle
-            idea={interconnections.idea}
-            iitype_name={iTI.name}
-    />*/}
         <section className={styles.left_section}>
           <IdeasTable
             sectionClass={styles.left_section_table}

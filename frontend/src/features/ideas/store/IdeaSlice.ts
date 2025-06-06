@@ -95,8 +95,9 @@ const ideasSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(setIdea.rejected, approveIdea.rejected, rejectIdea.rejected, attitudeIdea.rejected),
-        (state) => {
+        (state, action) => {
           state.status = RequestStatus.FailedUpdate;
+          state.error = action.error.message!
         },
       )
       .addMatcher(

@@ -1,6 +1,6 @@
 import { IAboutCard } from "../AboutCardTypes";
 import { CMSPath, genCMSPath } from "../../CMS/CMSTypes";
-import { appRoutes } from "../../../app/router/AppRoutes";
+import { appRoutesURL } from "../../../app/router/AppRoutesURL";
 import { CogManIcon } from "../../../shared/ui/icons/CogManIcon/CogManIcon";
 import { TugOfWarIcon } from "../../../shared/ui/icons/TugOfWarIcon/TugOfWarIcon";
 import { BannedIcon } from "../../../shared/ui/icons/BannedIcon/BannedIcon";
@@ -73,9 +73,9 @@ export const aboutCardData: IAboutCard[] = [
     titleURL: genCMSPath(CMSPath.NotBan),
     text: `В отличии от других ресурсов, мы никогда никого не баним. Любое мнение имеет 
       право на существование! Не противоречащее законодательству РФ, разумеется! 
-      Не бойтесь, <a href=${appRoutes.authors}>добавляйте новых авторов</a>, 
-      <a href=${appRoutes.sources}>новые источники</a>, <a href=${appRoutes.ideas}>идеи</a>, 
-      <a href=${appRoutes.keywords}>ключевые слова</a>! Мы подскажем, научим, поможем! `,
+      Не бойтесь, <a href=${appRoutesURL.authors}>добавляйте новых авторов</a>, 
+      <a href=${appRoutesURL.sources}>новые источники</a>, <a href=${appRoutesURL.ideas}>идеи</a>, 
+      <a href=${appRoutesURL.keywords}>ключевые слова</a>! Мы подскажем, научим, поможем! `,
     icon: BannedIcon,
   },
 ];

@@ -37,7 +37,7 @@ export const useAuthorDetails =({id, currentUser}: DetailsHookProps)
         if (id) dispatch(getAuthor(Number(id)));
       }
     
-      useEffect(() => fetchRecord(), []);
+      /*useEffect(() => fetchRecord(), []);*/
     
       useEffect(() => {
         if (currentRecord) 

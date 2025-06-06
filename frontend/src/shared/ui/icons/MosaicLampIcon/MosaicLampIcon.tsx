@@ -10,7 +10,7 @@ export const MosaicLampIcon: React.FC<MosaicLampProps> = ({ customProp, ...props
   <svg
     id="Capa_1"
     xmlns="http://www.w3.org/2000/svg"
-    enable-background="new 0 0 511.87 511.87"
+    enableBackground="new 0 0 511.87 511.87"
     viewBox="0 0 511.87 511.87"
     stroke="currentColor"
     fill="currentColor"

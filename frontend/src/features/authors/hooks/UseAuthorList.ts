@@ -17,7 +17,7 @@ export const useAuthorList =(gotoAuthorAdd:()=>void)=>{
     const dispatch = useDispatch();
 
     const fetchRecords = ()=>{
-      dispatch(fetchAuthors());
+      //dispatch(fetchAuthors());
     }
 
     const addNewAuthor = () => {
@@ -25,9 +25,9 @@ export const useAuthorList =(gotoAuthorAdd:()=>void)=>{
         gotoAuthorAdd();
       };
 
-    useEffect(() => {
+    /*useEffect(() => {
       fetchRecords()
       }, []);
- 
+ */
     return {authors, sliceState, addNewAuthor, fetchRecords, error}
 }

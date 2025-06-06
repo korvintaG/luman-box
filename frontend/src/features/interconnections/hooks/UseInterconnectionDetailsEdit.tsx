@@ -34,9 +34,9 @@ export const useInterconnectionDetailsEdit = (
       dispatch(fetchInterconnection(Number(id)));
     }
         
-    useEffect(() => {
+    /*useEffect(() => {
       fetchRecord();
-    }, [id]);
+    }, [id]);*/
 
     
     useEffect(() => {

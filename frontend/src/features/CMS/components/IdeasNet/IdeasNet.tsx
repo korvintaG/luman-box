@@ -6,6 +6,7 @@ import {
   Breadcrumbs,
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 export const IdeasNetCMS: SimpleComponentType = () => {
   return (
@@ -13,7 +14,7 @@ export const IdeasNetCMS: SimpleComponentType = () => {
       <Helmet>
         <title>О сети идей Sferatum</title>
       </Helmet>
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs breadcrumbElementTypes={[BreadcrumbSimpeType.CMSAbout]} />
         <section>
           <figure>
@@ -67,27 +68,27 @@ export const IdeasNetCMS: SimpleComponentType = () => {
             </p>
             <p>
               Новые идеи заносятся в систему по модифицированному{" "}
-              <a href={genCMSPath(CMSPath.ZettelKasten)}>методу ZettelKasten</a>
+              <Link to={genCMSPath(CMSPath.ZettelKasten)}>методу ZettelKasten</Link>
               .
             </p>
             <p>
               Организация дискуссий произодится по{" "}
-              <a href={genCMSPath(CMSPath.MortimerAdler)}>
+              <Link to={genCMSPath(CMSPath.MortimerAdler)}>
                 принципам, изложенным Мортимером Адлером
-              </a>{" "}
+              </Link>{" "}
               в его книге «Как читать книги. Руководство по чтению великих
               произведений».
             </p>
             <p>
               Чтобы начать работать с системой, ознакомьтесь с{" "}
-              <a href={genCMSPath(CMSPath.BasicInstructions)}>
+              <Link to={genCMSPath(CMSPath.BasicInstructions)}>
                 краткой инструкцией
-              </a>
+              </Link>
               .
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

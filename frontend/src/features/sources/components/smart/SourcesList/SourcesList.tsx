@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Source } from "../../../SourceTypes";
 import { RecordsList } from "../../../../../shared/components/RecordsList";
 import { Link } from "react-router-dom";
-import { getRouteParam, appRoutes } from "../../../../../app/router/AppRoutes";
+import { getRouteParam, appRoutesURL } from "../../../../../app/router/AppRoutesURL";
 import styles from "./SourcesList.module.css";
 import { sourceFullNameFromObj } from "../../../../../shared/utils/utils";
 import { RequestStatus } from "../../../../../shared/common-types";
@@ -37,7 +37,7 @@ export const SourcesList: FC<SourcesListProps> = ({
             className={clsx(styles.link, {
               "moderated-need": !source.moderated,
             })}
-            to={getRouteParam(appRoutes.source, source.id)}
+            to={getRouteParam(appRoutesURL.source, source.id)}
           >
             {sourceFullNameFromObj(source)}
           </Link>

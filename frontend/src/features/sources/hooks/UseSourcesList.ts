@@ -12,9 +12,9 @@ export const useSourcesList = (gotoSourceAdd: ()=>void) => {
     dispatch(fetchSources());
   }
 
-  useEffect(() => {
+/*  useEffect(() => {
     fetchRecords();
-  }, [dispatch]);
+  }, [dispatch]);*/
 
   const addNewSource = () => {
     dispatch(clearCurrentSource());

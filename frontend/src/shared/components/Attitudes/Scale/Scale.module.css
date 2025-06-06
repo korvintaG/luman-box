@@ -1,0 +1,86 @@
+.scaleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    position: relative;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 0;      
+    gap: 0;
+    /*border: 1px maroon solid;*/
+}
+
+.line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: calc(100%);
+    height: 1px;
+    border-radius: 1px;
+    background-color: var(--maincolor);
+    z-index: 0;
+}
+
+.tick {
+    /*position: relative;
+    z-index: 1;*/
+    z-index: 1;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+    /*border: 1px indianred solid;*/
+}
+
+.tick_active {
+    cursor: pointer;
+}
+
+
+.circle {
+    width: 15px;
+    height: 15px;
+    margin: 1px;
+    border-radius: 50%;
+    border: 2px solid var(--maincolor);
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    
+    caret-color: transparent;
+}
+
+.circle.selected {
+    background-color: var(--maincolor);
+}
+
+.circle.selectedBit {
+    border: 2px solid var(--maincolor);
+    background-color: var(--maincolor);
+}
+
+
+.circle.zero {
+    background-color: white;
+    z-index: 1;
+}
+
+.dashMax {
+    width: 1px;
+    height: 60%;
+    background-color: var(--maincolor);
+}
+
+.dashMiddle {
+    width: 1px;
+    height: 40%;
+    background-color: var(--maincolor);
+}
+
+.dashMin {
+    width: 1px;
+    height: 30%;
+    background-color: var(--maincolor);
+}

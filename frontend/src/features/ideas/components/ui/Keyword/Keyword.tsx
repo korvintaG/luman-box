@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent } from "react";
 import styles from "./Keyword.module.css";
 import { Link } from "react-router-dom";
-import { getRouteParam, appRoutes } from "../../../../../app/router/AppRoutes";
+import { getRouteParam, appRoutesURL } from "../../../../../app/router/AppRoutesURL";
 
 export type KeywordProps = {
   id: number;
@@ -18,7 +18,7 @@ export const Keyword: FC<KeywordProps> = ({
 }) => {
   return (
     <div className={styles.keyword}>
-      <Link to={getRouteParam(appRoutes.keyword, id)}>{"#" + name}</Link>
+      <Link to={getRouteParam(appRoutesURL.keyword, id)}>{"#" + name}</Link>
       {!readOnly && (
         <button
           className={styles.btnClose}

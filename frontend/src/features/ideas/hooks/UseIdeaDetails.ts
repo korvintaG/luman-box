@@ -51,6 +51,7 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
     original_text: "",
     content: "",
     date_time_create: "",
+    SVG:"",
     keywords: [],
     attitudes: {all:{like:[0,0,0,0,0],importance:[0,0,0,0,0], truth:[0,0,0,0,0]}}
   });
@@ -67,7 +68,7 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
   const editAccessStatus = getEditAccess(id, currentUser, currentRecord)
 
   const fetchRecord = () => {
-    if (id && Number(id) > 0) dispatch(getIdea(Number(id)));
+  /*  if (id && Number(id) > 0) dispatch(getIdea(Number(id)));
     else if (findSourceId && findKeywordId)
       dispatch(
         getIdeaBySrcKw({
@@ -76,15 +77,15 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
         }),
       );
     else
-        fetchAdditional();
+        fetchAdditional();*/
   };
 
-  const fetchAdditional= () =>{
+  /*const fetchAdditional= () =>{
       if (editAccessStatus!== EditAccessStatus.Readonly && sources.length === 0) 
         dispatch(fetchSources());
       if (keywords.length === 0) // всегда тянем ключевые слова
         dispatch(fetchKeywords());
-  }
+  }*/
 
   const keywordsDTO = (): KeywordPartial[] => {
     if (values.keywords)
@@ -94,14 +95,15 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
     else return [];
   };
 
-  useEffect(() => {
+ /* useEffect(() => {
     fetchRecord();
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     if (currentRecord) {
       setValues({
         ...pick(currentRecord, [
+          "SVG",
           "name",
           "original_text",
           "content",
@@ -110,7 +112,7 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
         ]),
         source: { id: currentRecord.source ? Number(currentRecord.source.id) : 0 },
       });
-      fetchAdditional();
+      //fetchAdditional();
     }
   }, [currentRecord]);
 
@@ -143,14 +145,17 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
 
   const handleSubmitAction = (e: SyntheticEvent) => {
     e.preventDefault();
-    if (id)
+    if (id) {
+      const upd={
+        ...getFormDTO(),
+        id: Number(id),
+        keywords: keywordsDTO(),
+      };
+      //console.log('handleSubmitAction', upd)
       dispatch(
-        setIdea({
-          ...getFormDTO(),
-          id: Number(id),
-          keywords: keywordsDTO(),
-        }),
+        setIdea(upd),
       );
+    }
     else dispatch(addIdea({ ...getFormDTO(), keywords: keywordsDTO() }));
   };
 

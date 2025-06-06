@@ -49,16 +49,16 @@ export const useSourceDetails = ({id, currentUser}: DetailsHookProps)
   const fetchRecord = () => {
     if (id) 
       dispatch(getSource(Number(id)))
-    else
-      fetchAdditional();
+   /* else
+      fetchAdditional();*/
   };
 
-  const fetchAdditional = () => {
+  /*const fetchAdditional = () => {
     if (editAccessStatus!== EditAccessStatus.Readonly && authors.length===0)
       dispatch(fetchAuthors());
-  }
+  }*/
 
-  useEffect(() => fetchRecord(), []);
+  /*useEffect(() => fetchRecord(), []);*/
 
   useEffect(() => {
     if (currentRecord) {
@@ -66,7 +66,7 @@ export const useSourceDetails = ({id, currentUser}: DetailsHookProps)
         ...pick(currentRecord, ["name","author"]),
         author: { id: currentRecord.author ? currentRecord.author.id : 0 },
       });
-      fetchAdditional();      
+      //fetchAdditional();      
     }
   }, [currentRecord]);
 

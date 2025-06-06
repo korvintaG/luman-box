@@ -14,7 +14,7 @@ export const PremoderationCMS: SimpleComponentType = () => {
         <title>Зачем нужна премодерация?</title>
       </Helmet>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs breadcrumbElementTypes={[BreadcrumbSimpeType.CMSAbout]} />
         <section>
           <figure>
@@ -107,7 +107,7 @@ export const PremoderationCMS: SimpleComponentType = () => {
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

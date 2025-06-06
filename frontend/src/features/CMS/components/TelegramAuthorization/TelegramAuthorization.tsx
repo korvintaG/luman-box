@@ -1,4 +1,4 @@
-import { appRoutes, telegramBotURL } from "../../../../app/router/AppRoutes";
+import { appRoutesURL, telegramBotURL } from "../../../../app/router/AppRoutesURL";
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import telegram from "../../../../assets/images/Telegram.png";
@@ -7,6 +7,7 @@ import {
   Breadcrumbs,
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 
 export const TelegramAuthorizationCMS: SimpleComponentType = () => {
   return (
@@ -15,7 +16,7 @@ export const TelegramAuthorizationCMS: SimpleComponentType = () => {
         <title>Регистрация через Telegram</title>
       </Helmet>
 
-      <main className={styles.main}>
+      <div className={styles.main}>
         <Breadcrumbs breadcrumbElementTypes={[BreadcrumbSimpeType.CMSAbout]} />
         <section>
           <figure>
@@ -43,13 +44,13 @@ export const TelegramAuthorizationCMS: SimpleComponentType = () => {
             </p>
             <p>
               Чтобы зарегистрироваться в нашей системе, Вам нужно перейти в наш{" "}
-              <a href={telegramBotURL}>Telegram-бот</a>, выбрать желаемый логин
+              <Link to={telegramBotURL}>Telegram-бот</Link>, выбрать желаемый логин
               и пароль. И уже с этими логином/паролем{" "}
-              <a href={appRoutes.auth}>войти в систему</a>.
+              <Link to={appRoutesURL.auth}>войти в систему</Link>.
             </p>
           </div>
         </section>
-      </main>
+      </div>
     </>
   );
 };

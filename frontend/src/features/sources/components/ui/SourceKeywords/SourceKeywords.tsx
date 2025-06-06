@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { appRoutes } from "../../../../../app/router/AppRoutes";
+import { appRoutesURL } from "../../../../../app/router/AppRoutesURL";
 
 import styles from "./SourceKeywords.module.css";
 import { SimpleNameObjectWithCnt } from "../../../../../shared/common-types";
@@ -25,7 +25,7 @@ export const SourceKeywords: FC<SourceKeywordsProps> = (props) => {
                   key={el.id}
                   className={styles.element}
                   to={
-                    appRoutes.ideaFind +
+                    appRoutesURL.ideaFind +
                     "?source_id=" +
                     props.source_id +
                     "&keyword_id=" +
@@ -41,7 +41,7 @@ export const SourceKeywords: FC<SourceKeywordsProps> = (props) => {
                   key={el.id}
                   className={styles.element}
                   to={
-                    appRoutes.ideas +
+                    appRoutesURL.ideas +
                     "?source_id=" +
                     props.source_id +
                     "&keyword_id=" +

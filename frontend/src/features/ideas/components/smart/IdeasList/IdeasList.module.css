@@ -6,6 +6,10 @@
     text-align: left;
   }
   
+  /*.list tbody tr:hover {
+    background-color: #e9f7fe;
+  }*/
+
   table {
     border-spacing: 0;
   }
@@ -28,7 +32,21 @@
   .list td {
     padding: 5px;
   }
-  
+
+  .name_cell {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    
+  }
+
+  .idea_icon {
+    width: 27px;
+    fill: darkblue;
+    display: flex;
+  }
+
   .date_time {
     min-width: 100px;
   }
