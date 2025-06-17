@@ -5,6 +5,7 @@ import {
   Length,
   ValidateNested,
   Min,
+  IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -29,6 +30,24 @@ export class CreateSourceDto {
     message: 'Название источника должно быть от 5-ти до 400 символов длиной',
   })
   name: string;
+
+  @IsOptional()
+  @IsString({ message: 'Поле [image_URL] должно быть строкой' })
+  @Length(0, 400, {
+    message: 'image_URL должен быть длиной от 0 до 400 символов',
+  })image_URL: string;
+
+  @IsOptional()
+  @IsString({ message: 'Поле [publication_year] должно быть строкой' })
+  @Length(0, 100, {
+    message: 'publication_year должен быть длиной от 0 до 100 символов',
+  })publication_year: string;
+
+  @IsOptional()
+  @IsString({ message: 'Поле [about_source] должно быть строкой' })
+  @Length(0, 1000, {
+    message: 'about_source должен быть длиной от 0 до 1000 символов',
+  })about_source: string;
 
   @ValidateNested({ each: true })
   @Type(() => CreateSourceAuthorDto)

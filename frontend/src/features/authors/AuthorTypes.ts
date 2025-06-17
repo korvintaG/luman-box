@@ -2,7 +2,14 @@ import { IDObject, NameObject, SimpleNameObject } from "../../shared/common-type
 import { UserPartial } from "../auth/user-types";
 
 // Авторы
-export type AuthorInner = NameObject;
+export type AuthorInner = NameObject & {
+  birth_date: string;
+  birth_place: string;
+  about_author: string;
+  image_URL: string | null;
+  new_image_URL?: string | null;
+};
+
 export type AuthorRaw = AuthorInner & {
   user?: UserPartial;
   moderator?: UserPartial;

@@ -1,19 +1,35 @@
-.block {
+.group_block {
     position: relative;
     border: 1px black solid;
+    height: 100%;
+    max-height: 80vh;
 }
 
-.header {
+.group_block:focus-within {
+    border: none;
+}
+
+.group_label, .group_label_readonly {
     position: absolute;
     top: -10px;
     left: 5px;
     z-index: 1;
-    background-color: white;
     padding-left: 5px;
     padding-right: 5px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-.text {
+.group_label {
+    background-color: white;
+}
+
+
+.group_label_readonly {
+    background-color: var(--app-background-color);
+}
+
+.group_text {
     position: relative;
     resize:none;
     border: none;
@@ -23,6 +39,64 @@
     height: 100%;
 }
 
-.block:focus-within {
+.group_text_readonly {
+    text-align: justify;
+    position: relative;
     border: none;
+    width: 99%;
+    padding: 10px;
+    font-family: 'Montserrat';
+    height: 100%;
+    overflow:auto;
+    font-size: 14px;
+}
+
+.left_block {
+    display: flex;
+    border: none;
+    gap: 5px;
+    font-family: 'Montserrat';
+}
+
+.left_label,
+.left_text,
+.left_text_readonly {
+}
+
+.left_label {
+    text-align: right;
+}
+
+
+.left_text {
+    width: 100%;
+}
+
+.left_text_readonly {
+    width: 100%;
+    text-align: left;
+    padding-left: 2px;
+    font-size: 14px;
+}
+
+
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+    .left_block {
+        flex-direction: column;
+    }
+    .left_label {
+        text-align: left;
+        min-width: 100%;
+    }
+    .left_text_readonly {
+        padding-left: 7px;
+        width: 100%;
+        font-size: 16px;
+    }
+    
+    
 }

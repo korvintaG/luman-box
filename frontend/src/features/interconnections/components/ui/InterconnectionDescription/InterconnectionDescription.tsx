@@ -5,6 +5,7 @@ import { InputTextUI } from "../../../../../shared/ui/fields/input-text/input-te
 import ArrowIcon from "../../../../../shared/ui/icons/ArrowIcon/ArrowIcon";
 import { InterconnectionTypeInfo } from "../../../InterconnectionTypes";
 import clsx from "clsx";
+import { Classes } from "../../../../../shared/ui/UITypes";
 
 
 export type InterconnectionDescriptionProp = {
@@ -16,18 +17,19 @@ export type InterconnectionDescriptionProp = {
 }
 export const InterconnectionDescription: FC<InterconnectionDescriptionProp> = 
     ( { nameDirect, nameReverse, handleChange, ideaTypeInfo, readOnly}) => {
+    const classes:Classes = {classInputAdd:styles.input, classAdd: styles.input_block};
     return <div className={styles.middle}>
         {<InputTextUI
             value={nameDirect}
             name="nameDirect"
             rows={2}
             label="Комментарий к прямой связи:"
-            handleChange={handleChange}
-            classAdd={styles.direct}
-            textClassAdd={styles.input}
+            onChange={handleChange}
+            classes={classes}
             readOnly={readOnly}
             minLength={10}
         />}
+        {/*classBlockAdd={styles.direct}*/}
         <ArrowIcon className={styles.arrow}/>
         {ideaTypeInfo && <div className={styles.icon_container}><ideaTypeInfo.icon className={styles.icon}/></div>}
         <ArrowIcon className={clsx(styles.arrow, styles.arrow_reverse)}/>
@@ -36,12 +38,12 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             rows={2}
             name="nameReverse"
             label="Комментарий к обратной связи:"
-            handleChange={handleChange}
-            classAdd={styles.reverse}
-            textClassAdd={styles.input}
+            onChange={handleChange}
+            classes={classes}
             readOnly={readOnly}
             minLength={10}
         />
+        {/*classBlockAdd={styles.reverse}*/}
 
     </div>;
     }    

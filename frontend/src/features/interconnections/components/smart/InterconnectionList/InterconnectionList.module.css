@@ -4,7 +4,7 @@
 
 
 .left_section {
-    width: calc(50% - 25px);
+    width: calc(60% - 25px);
     /*border: 1px red solid;*/
     text-align: left;
     margin-left: 10px;
@@ -20,7 +20,7 @@
 
 
 .right_section {
-    width: calc(50% - 25px);
+    width: calc(60% - 25px);
     text-align: right;
     margin-right: 10px;
     margin-left: auto;

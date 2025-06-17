@@ -1,12 +1,12 @@
 import { FC, SyntheticEvent, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { UserInner, User } from "../../user-types";
-import { InputEditUI } from "../../../../shared/ui/fields/input-edit/input-edit"; 
+import { InputEditUI } from "../../../../shared/ui/fields/input-edit/input-edit";
 import { AuthStatus } from "../../store/AuthSlice";
-import { Preloader } from "../../../../shared/ui/Preloader"; 
+import { Preloader } from "../../../../shared/ui/Preloader";
 import { ErrorMessageUI } from "../../../../shared/ui/ErrorMessage/ErrorMessage";
-import { ButtonAgreeUI } from "../../../../shared/ui/buttons/button-type-agree"; 
-import { ButtonAlertUI } from "../../../../shared/ui/buttons/button-type-alert"; 
+import { ButtonAgreeUI } from "../../../../shared/ui/buttons/button-type-agree";
+import { ButtonAlertUI } from "../../../../shared/ui/buttons/button-type-alert";
 import styles from "./login-form.module.css";
 import { HTMLEditElement } from "../../../../shared/common-types";
 
@@ -33,6 +33,8 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
       />
     );
 
+  const classes = { classLabelAdd: styles.label, classInputAdd: styles.input };
+
   return (
     <form
       onSubmit={props.handleSubmit}
@@ -46,21 +48,21 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
       ) : (
         <>
           <h1>Вход в систему</h1>
-          <section className={styles.login_inputs}>
+          <section className={styles.form__content}>
             <InputEditUI
               name="name"
-              labelClassAdd={styles.label}
-              label="Никнэйм"
+              classes={classes}
+              label="Никнэйм:"
               value={props.values.name}
-              handleChange={props.handleChange}
+              onChange={props.handleChange}
             />
             <InputEditUI
               name="password"
-              labelClassAdd={styles.label}
-              isPassword
-              label="Пароль"
+              classes={classes}
+              type="password"
+              label="Пароль:"
               value={props.values.password}
-              handleChange={props.handleChange}
+              onChange={props.handleChange}
             />
           </section>
           <ButtonAgreeUI caption="Войти" />

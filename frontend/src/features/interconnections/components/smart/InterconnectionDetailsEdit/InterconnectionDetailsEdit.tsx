@@ -11,7 +11,6 @@ import styles from "./InterconnectionDetailsEdit.module.css";
 import { IdeaCard } from "../../ui/ideaCard/ideaCard";
 import { InterconnectionDescription } from "../../ui/InterconnectionDescription/InterconnectionDescription";
 import { FillRecomendation } from "../../ui/FillRecomendation/FillRecomendation";
-import { InterconnectionDetailsTitle } from "../../ui/InterconnectionDetailsTitle/InterconnectionDetailsTitle";
 import { Authorship } from "../../../../../shared/components/Authorship/Authorship";
 import { EditAccessStatus } from "../../../../../shared/utils/utils";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
@@ -66,16 +65,17 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> = ({
       >
         {/*<InterconnectionDetailsTitle typeName={iitype?.name} />*/}
         {record.currentRecord && record.currentRecord.user && (
-          <Authorship
-            userName={record.currentRecord.user.name}
-            moderatorName={
-              record.currentRecord.moderator
-                ? record.currentRecord.moderator.name
-                : null
-            }
-            className={styles.authorship}
-            label="Взаимосвязь"
-          />
+          <div className={styles.authorship}>
+            <Authorship
+              userName={record.currentRecord.user.name}
+              moderatorName={
+                record.currentRecord.moderator
+                  ? record.currentRecord.moderator.name
+                  : null
+              }
+              label="Взаимосвязь"
+            />
+          </div>
         )}
         {record.currentRecord && record.currentRecord.ideaCurrent && (
           <div className={styles.idea_top}>

@@ -8,6 +8,7 @@ import { UpdateSourceDto } from './dto/update-source.dto';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
 import { SimpleEntityWithCnt, SimpleEntity } from '../../types/custom';
 import { IUser, Role } from '../../types/custom';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class SourcesService {
@@ -15,7 +16,8 @@ export class SourcesService {
     @InjectRepository(Source)
     private readonly sourceRepository: Repository<Source>,
     private ideasService: IdeasService,
-  ) {}
+    private filesService: FilesService,
+  ) { }
 
   create(user: IUser, createSourceDto: CreateSourceDto) {
     return this.sourceRepository.save({
@@ -96,13 +98,38 @@ export class SourcesService {
 
   async update(id: number, user: IUser, updateSourceDto: UpdateSourceDto) {
     await checkAccess(this.sourceRepository, id, user);
-    return await this.sourceRepository.update({ id }, updateSourceDto);
+    const old_image_URL = await this.getImageURL(id);
+    const new_image_URL: string | undefined = updateSourceDto.image_URL;
+    const update_image_URL = await this.filesService.updateRecordImage(
+      old_image_URL,
+      new_image_URL,
+      'source_from_',
+    );
+
+    return await this.sourceRepository.update({ id },
+      { ...updateSourceDto, image_URL: update_image_URL }
+    );
   }
 
   async moderate(id: number, user: IUser) {
     //await checkAccess(this.authorRepository,id, user.id);
     return this.sourceRepository.update({ id }, { moderated: user.id });
   }
+
+  async getImageURL(id: number): Promise<string | null> {
+    try {
+      const imageURL = await this.sourceRepository.manager.query<{ image_URL: (string | null) }[]>(
+        `select "image_URL"
+        from sources
+        where id=$1`,
+        [id],
+      );
+      return imageURL[0].image_URL;
+    } catch {
+      return null;
+    }
+  }
+
 
   async remove(id: number, user: IUser) {
     await checkAccess(this.sourceRepository, id, user);

@@ -1,24 +1,23 @@
-.info-block {
+.block {
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
     color: gray;
   }
   
-  .info-label,
-  .info-field {
+ .label,
+ .field {
     font-family: 'Montserrat';
     font-size: 10px;
   }
   
-  .info-label {
-    display: inline-block;
-    display: block;
+  .label {
+    /*display: block;*/
     text-align: right;
     font-size: 10px;
   }
   
-  .info-field {
+  .field {
     text-align: left;
   }
   
@@ -26,10 +25,10 @@
 * адаптивность
 ********************************************/
 @media (max-width: 750px) {
-  .info-label {
+  .label {
     text-align: left;
   }
-  .info-block {
+  .block {
     flex-direction: row;
   }  
  

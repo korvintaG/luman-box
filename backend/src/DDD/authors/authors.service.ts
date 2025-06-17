@@ -5,8 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
-import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
+import {
+  joinSimpleEntityFirst,
+  checkAccess,
+  safeRename,
+} from '../../utils/utils';
 import { IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
+import { basename, join } from 'path';
+import { rename, unlink } from 'fs/promises';
+import { FilesService } from 'src/files/files.service';
 
 @Injectable()
 export class AuthorsService {
@@ -14,7 +21,8 @@ export class AuthorsService {
     @InjectRepository(Author)
     private readonly authorRepository: Repository<Author>,
     private sourcesService: SourcesService,
-  ) {}
+    private filesService: FilesService,
+  ) { }
 
   create(user: IUser, createAuthorDto: CreateAuthorDto) {
     return this.authorRepository.save({
@@ -38,13 +46,14 @@ export class AuthorsService {
           .where('author.moderated >0 ')
           .orWhere('author.user_id = :user', { user: user.id })
           .orderBy('name')
-          .getMany(); // админ, выводим все
+          .getMany();
+      // админ, выводим все
       else return this.authorRepository.find({ order: { name: 'ASC' } });
     }
   }
 
   async findOne(id: number) {
-    const author= await this.authorRepository
+    const author = await this.authorRepository
       .createQueryBuilder('author')
       .leftJoinAndSelect('author.sources', 'source')
       .leftJoinAndSelect('author.user', 'user')
@@ -82,13 +91,38 @@ export class AuthorsService {
         order by keywords.name`,
       [id],
     );
-  
-    return {...author,sources,ideas,keywords}
+
+    return { ...author, sources, ideas, keywords };
+  }
+
+  async getImageURL(id: number): Promise<string | null> {
+    try {
+      const imageURL = await this.authorRepository.manager.query<{image_URL:(string | null)}[]>(
+        `select "image_URL"
+        from authors
+        where id=$1`,
+        [id],
+      );
+      //console.log('getImageURL',imageURL)
+      return imageURL[0].image_URL;
+    } catch {
+      return null;
+    }
   }
 
   async update(id: number, user: IUser, updateAuthorDto: UpdateAuthorDto) {
     await checkAccess(this.authorRepository, id, user);
-    return this.authorRepository.update({ id }, updateAuthorDto);
+    const old_image_URL = await this.getImageURL(id); 
+    const new_image_URL: string | undefined = updateAuthorDto.image_URL;
+    const update_image_URL = await this.filesService.updateRecordImage(
+      old_image_URL,
+      new_image_URL,
+      'author_from_',
+    );
+    return this.authorRepository.update(
+      { id },
+      { ...updateAuthorDto, image_URL: update_image_URL },
+    );
   }
 
   async moderate(id: number, user: IUser, { action }: IModerate) {

@@ -20,6 +20,18 @@ export class Author {
   @Column('varchar')
   name: string;
 
+  @Column({ type: 'varchar', nullable: true})
+  birth_date: string;
+
+  @Column({ type: 'varchar', nullable: true})
+  birth_place: string;
+
+  @Column({ type: 'varchar', nullable: true})
+  about_author: string;
+
+  @Column({ type: 'varchar', nullable: true})
+  image_URL: string;
+
   @Column({ type: 'int', nullable: true, name: 'moderated' })
   moderated: number;
 

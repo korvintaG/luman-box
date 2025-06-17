@@ -1,8 +1,8 @@
 import { useState, FC, ChangeEvent, SyntheticEvent } from "react";
 import clsx from "clsx";
-import { KeywordPartial, Keyword} from "../../../../keywords/KeywordTypes";
+import { KeywordPartial, Keyword } from "../../../../keywords/KeywordTypes";
 import { KeywordUI } from "../Keyword";
-import { InputSelectUI } from "../../../../../shared/ui/fields/input-select/input-select"; 
+import { InputSelectUI } from "../../../../../shared/ui/fields/input-select/input-select";
 import styles from "./TopicKeywords.module.css";
 import { HTMLEditElement } from "../../../../../shared/common-types";
 
@@ -50,17 +50,17 @@ export const TopicKeywords: FC<TopicKeywordsProps> = (props) => {
       ) : null}
 
       {!props.readOnly && (
-        <InputSelectUI
-          classAdd={styles.input_block}
-          name="keyword_id"
-          label="Добавить ключевое слово:"
-          value={keywordToAdd}
-          values={props.keywordsAll.filter(
-            (el) => !props.keywordsSelected.find((fel) => fel.id === el.id),
-          )} // только новые
-          selectClassAdd={styles["keywords-select"]}
-          handleChange={changeKeywordToAdd}
-        />
+        <div className={styles.keyword_select}>
+          <InputSelectUI
+            name="keyword_id"
+            label="Добавить ключевое слово:"
+            value={keywordToAdd}
+            values={props.keywordsAll.filter(
+              (el) => !props.keywordsSelected.find((fel) => fel.id === el.id)
+            )} // только новые
+            onChange={changeKeywordToAdd}
+          />
+        </div>
       )}
     </div>
   );

@@ -22,6 +22,7 @@ import { Attitude } from './DDD/attitudes/entities/attitude.entity';
 import { AttitudesModule } from './DDD/attitudes/attitudes.module';
 import { Interconnection } from './DDD/interconnections/entities/interconnection.entity';
 import { InterconnectionsModule } from './DDD/interconnections/interconnections.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { InterconnectionsModule } from './DDD/interconnections/interconnections.
     ScheduleModule.forRoot(),
     AuthorsModule,
     SourcesModule,
+    FilesModule,
     KeywordsModule,
     IdeasModule,
     UsersModule,

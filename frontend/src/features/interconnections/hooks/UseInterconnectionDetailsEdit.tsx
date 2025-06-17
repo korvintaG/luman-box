@@ -84,7 +84,8 @@ export const useInterconnectionDetailsEdit = (
     return {
       form: {
         values,
-        handleChange
+        handleChange,
+        setValues
       },
       record: {
         fetchRecord,

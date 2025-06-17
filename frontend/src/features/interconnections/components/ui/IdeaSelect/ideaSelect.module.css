@@ -1,44 +1,71 @@
-.container {
+.container {  
     width: 100%;
     border: 1px black solid;
 }
 
-.container h3 {
+.container h3 {  
     text-align: left;
     padding-left: 20px;
     font-weight: normal;
 }
 
-.subcontainer {
+.idea {  
     border-radius: 7px;
     width: 100%;
     display: grid;
-    grid-template-columns: min-content 1fr;
+    grid-template-columns: max-content min-content 1fr;
     column-gap: 5px;
     padding: 5px;
+    grid-template-areas:
+    "name_id id button"
+    "name_label name name"
+    "source_label source source";
 }
 
-.subcontainer label {
+.idea label {  
     text-align: right;
-    padding-left: 10px;
+    padding-left: 3px;
 }
 
-.find_block {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 15px;
-    /*padding-left: 15px;*/
-}
-
-.ID_input {
-    display: flex;
+.ID_input {  
     width: 100px;
+    grid-area: id;
+    align-self: center;
+    height: 22px;
 }
 
-.subcontainer p, .subcontainer a {
-    text-align: left;
-}
-
-.source_name {
+.source {
     font-style: italic;
+    grid-area: source;
+    font-size: 14px;
+    width: 100%;
+    align-self: center;
+}
+
+.name_label {
+    grid-area: name_label;
+}
+
+.source_label {
+    grid-area: source_label;
+    align-self: flex-start;
+}
+
+.name {
+    grid-area: name;
+    align-self: center;
+}
+
+
+.button_block {  
+    align-self: center;
+    justify-self: flex-start;
+    grid-area: button;
+    display: flex;
+    gap: 10px;
+}
+
+.button_block button {  
+    height: 24px;
+    padding: 0 15px;
 }

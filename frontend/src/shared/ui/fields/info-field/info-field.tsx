@@ -15,32 +15,33 @@ export type InfoFieldUIProps = {
 };
 
 export const InfoFieldUI: FC<InfoFieldUIProps> = (props) => {
-  return (
-    <div
-      className={combineClasses(
-        styles["info-block"],
-        props.classReplace,
-        props.classAdd,
-      )}
-    >
-      <label
-        className={combineClasses(
-          styles["info-label"],
-          props.labelClassReplace,
-          props.labelClassAdd,
-        )}
-      >
-        {props.label}
-      </label>
-      <div
-        className={combineClasses(
-          styles["info-field"],
-          props.textClassReplace,
-          props.textClassAdd,
-        )}
-      >
-        {props.text}
-      </div>
-    </div>
+  const blockClass = combineClasses(
+    styles["block"],
+    props.classReplace,
+    props.classAdd
   );
+  const labelClass = combineClasses(
+    styles["label"],
+    props.labelClassReplace,
+    props.labelClassAdd
+  );
+  const infoClass = combineClasses(
+    styles["field"],
+    props.textClassReplace,
+    props.textClassAdd
+  );
+  if (window.innerWidth <= 765)
+    return (
+      <div className={blockClass}>
+        <label className={labelClass}>{props.label}</label>
+        <p className={infoClass}>{props.text}</p>
+      </div>
+    );
+  else
+    return (
+      <>
+        <label className={labelClass}>{props.label}</label>
+        <p className={infoClass}>{props.text}</p>
+      </>
+    );
 };

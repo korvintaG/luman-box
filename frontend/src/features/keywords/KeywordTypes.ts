@@ -2,7 +2,9 @@ import { IDObject, NameObject, SimpleNameObject } from "../../shared/common-type
 import { UserPartial } from "../auth/user-types";
 
 // ключевые слова
-export type KeywordInner = NameObject;
+export type KeywordInner = NameObject & {
+  definition: string;
+};
 export type KeywordRaw = KeywordInner & {
   user?: UserPartial;
   moderator?: UserPartial;

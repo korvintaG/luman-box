@@ -55,9 +55,13 @@ type RejectedAction = ReturnType<GenericAsyncThunk["rejected"]>;
 type PendingAction = ReturnType<GenericAsyncThunk["pending"]>;
 type FulfilledAction = ReturnType<GenericAsyncThunk["fulfilled"]>;
 
-export interface ListToWork<T> {
-  list: T[];
-  current: T | null;
+export interface SliceToWork<T> {
+  current: T | null | undefined;
   status: RequestStatusValue;
   error: string;
+}
+
+export interface ListToWork<T> extends SliceToWork<T> {
+  current: T | null ;
+  list: T[];
 }

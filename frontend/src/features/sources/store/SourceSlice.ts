@@ -52,6 +52,9 @@ const sourcesSlice = createSlice({
     clearCurrentSource: (state) => {
       state.current = null;
     },
+    setSliceStatus: (state, action) => {
+      state.status = action.payload; //RequestStatus.Success;
+    },
     setStateSuccess: (state) => {
       state.status = RequestStatus.Success;
     },
@@ -162,5 +165,5 @@ export const {
   selectIsDataLoading,
   selectError,
 } = sourcesSlice.selectors;
-export const { clearCurrentSource, setStateSuccess } = sourcesSlice.actions;
+export const { clearCurrentSource, setStateSuccess, setSliceStatus} = sourcesSlice.actions;
 export default sourcesSlice.reducer;

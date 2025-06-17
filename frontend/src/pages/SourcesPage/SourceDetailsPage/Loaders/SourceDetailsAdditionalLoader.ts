@@ -2,8 +2,10 @@ import store from "../../../../shared/services/store";
 import { EditAccessStatus, getEditAccess } from "../../../../shared/utils/utils";
 import { Source } from "../../../../features/sources/SourceTypes";
 import { fetchAuthors } from "../../../../features/authors/store/AuthorSlice";
+import { resetState } from "../../../../features/files/store/filesSlice";
 
 export async function sourceAdditionalLoad(source: Source | null) {
+    store.dispatch(resetState());
     const state = store.getState();
     const currentUser = state.auth.currentUser;
   

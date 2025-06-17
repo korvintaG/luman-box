@@ -28,7 +28,7 @@ export async function ideaEditLoad({ params, request }:
       }))
     if (!getIdeaBySrcKw.fulfilled.match(result))
       throw new Error(state.ideas.error);
-    await ideaAdditionalLoad(state.ideas.current!);
+    await ideaAdditionalLoad(state.ideas.current!); 
     return null;
   }
   else

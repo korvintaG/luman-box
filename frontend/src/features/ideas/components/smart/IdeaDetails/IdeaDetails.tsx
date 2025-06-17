@@ -14,11 +14,11 @@ import {
   HeaderParType,
   genTabHeaderText,
   isSafeSvg,
+  sourceFullNameFromObj,
 } from "../../../../../shared/utils/utils";
 import styles from "./IdeaDetails.module.css";
 import { Authorship } from "../../../../../shared/components/Authorship/Authorship";
 import { AttitudesBlock } from "../../ui/AttitudesBlock/AttitudesBlock";
-import { LinkFieldUI } from "../../../../../shared/ui/fields/link-field/link-field";
 import { InterconnectionsIconBlock } from "../../ui/InterconnectionIconsBlock/InterconnectionIconsBlock";
 import { User } from "../../../../auth/user-types";
 import { useIdeaDetails } from "../../../hooks/UseIdeaDetails";
@@ -29,6 +29,7 @@ import {
 import { RecordControlBlock } from "../../../../../shared/components/RecordControlBlock/RecordControlBlock";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import SvgIcon from "../../../../../shared/components/SvgIcon/SvgIcon";
+import { Classes } from "../../../../../shared/ui/UITypes";
 
 export type IdeaDetailsProps = {
   id: string | undefined;
@@ -38,9 +39,6 @@ export type IdeaDetailsProps = {
   findKeywordId: string | null;
 };
 
-/**
- * Компонент редактирования идеи чистый
- */
 export const IdeaDetails: FC<IdeaDetailsProps> = ({
   id,
   currentUser,
@@ -65,18 +63,11 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
   const header = genHeaderText(...params) + (id ? ` ID=${id}` : "");
   const tabHeader = genTabHeaderText(...params);
 
-  let currentSourceName = "";
-  if (
-    record.currentRecord &&
-    record.currentRecord.source &&
-    record.currentRecord.source.author
-  )
-    currentSourceName =
-      record.currentRecord.source.name +
-      " // " +
-      record.currentRecord.source.author.name;
-
   const readOnly = status.editAccessStatus === EditAccessStatus.Readonly;
+  const classes:Classes={
+    classInputAdd:styles.input,
+    classLabelAdd:styles.label
+  }
 
   return (
     <>
@@ -91,82 +82,78 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
         breadcrumbs={[BreadcrumbSimpeType.IdeasList]}
         header={header}
         onSubmit={record.handleSubmitAction}
-        formClass={styles.form}
         mainClass={styles.main}
+        formClass={styles.form}
       >
-        <div className={styles.inputs_block}>
-          {form.values.SVG && form.values.SVG.length>0 && isSafeSvg(form.values.SVG) &&
-            <SvgIcon
-              svgString={form.values.SVG}
-              className={styles.idea_icon}
-            />}
-          <div className={styles.inputs}>
+        <div className={styles.form_header}>
+          {form.values.SVG &&
+            form.values.SVG.length > 0 &&
+            isSafeSvg(form.values.SVG) && (
+              <SvgIcon
+                svgString={form.values.SVG}
+                className={styles.idea_icon}
+              />
+            )}
+          <div className={styles.form_header_inputs}>
             <Authorship
               userName={getUserCreator(record.currentRecord, currentUser)}
               moderatorName={getModerator(record.currentRecord)}
-              className={styles.label_info}
             />
-            {readOnly ? (
-              <LinkFieldUI
-                URL={genSourceURL(form.values.source.id)}
-                URLText={currentSourceName}
-                labelClassAdd={styles.label}
-                label="Источник идеи:"
-              />
-            ) : (
-              <InputSelectUI
-                name="source.id"
-                label="Источник идеи:"
-                value={form.values.source.id}
-                readOnly={false}
-                handleChange={form.handleChange}
-                labelClassAdd={styles.label}
-                values={record.sources.map((el) => ({
-                  id: el.id,
-                  name: el.name + "//" + authorNameFromObj(el.author),
-                }))}
-              />
-            )}
+            <InputSelectUI
+              name="source.id"
+              readOnly={readOnly}
+              label="Источник идеи:"
+              value={form.values.source.id}
+              onChange={form.handleChange}
+              URL={genSourceURL(form.values.source.id)}
+              valueText={sourceFullNameFromObj(record.currentRecord?.source)}
+              classes={classes}
+              values={record.sources.map((el) => ({
+                id: el.id,
+                name: el.name + "//" + authorNameFromObj(el.author),
+              }))}
+            />
             <InputEditUI
               name="name"
               label="Название идеи:"
               value={form.values.name}
               readOnly={readOnly}
-              labelClassAdd={styles.label}
               placeholder="Укажите название идеи"
-              handleChange={form.handleChange}
+              onChange={form.handleChange}
+              classes={classes}
             />
           </div>
         </div>
-        <div className={styles.idea}>
+        <div className={styles.idea_core}>
           <InputTextUI
             value={form.values.original_text}
             name="original_text"
             label="Вдохновивший текст"
             readOnly={readOnly}
-            classAdd={styles.original}
-            textClassAdd={styles.original_text}
-            handleChange={form.handleChange}
+            classes={{ classInputAdd: styles.original_text }}
+            onChange={form.handleChange}
           />
           <InputTextUI
             value={form.values.content}
             name="content"
             label="Суть идеи"
             readOnly={readOnly}
-            classAdd={styles.content}
-            handleChange={form.handleChange}
+            onChange={form.handleChange}
           />
         </div>
-        {!readOnly && <InputTextUI
-            value={form.values.SVG?form.values.SVG:''}
+        
+        {!readOnly && (
+          <div className={styles.content_SVG}>
+          <InputTextUI
+            value={form.values.SVG ? form.values.SVG : ""}
             name="SVG"
             label="Код SVG-иконки идеи (необязательно)"
             readOnly={readOnly}
-            classAdd={styles.content_SVG}
-            handleChange={form.handleChange}
-          />}
-
-        <TopicKeywords
+            onChange={form.handleChange}
+          />
+          </div>
+        )}
+       <TopicKeywords
           keywordsAll={record.keywords}
           keywordsSelected={form.values.keywords ? form.values.keywords : []}
           readOnly={readOnly}
@@ -203,7 +190,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
           afterSuccessDMLAction={afterSuccessDMLAction}
           approveRecord={moderate.approveRecordAction}
           rejectRecord={moderate.rejectRecordAction}
-        />
+            />
       </RecordEditForm>
     </>
   );

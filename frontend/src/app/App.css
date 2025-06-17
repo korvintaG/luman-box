@@ -16,6 +16,7 @@
 .App a {
   color: #2a5298;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .App a:visited {

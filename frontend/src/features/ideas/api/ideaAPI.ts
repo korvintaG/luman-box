@@ -5,7 +5,7 @@ import { getCookie } from '../../../shared/utils/cookie';
 import { omit } from "lodash";
 import { generatePath } from "react-router-dom";
 
-export const API_URL = process.env.REACT_APP_API_URL ?? "http://localhost:3000";
+export const API_URL = process.env.REACT_APP_API_URL!;
 
 export interface IIdeaAPI {
   getIdeas: () => Promise<Idea[]>;

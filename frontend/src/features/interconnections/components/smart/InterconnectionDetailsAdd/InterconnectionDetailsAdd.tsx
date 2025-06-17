@@ -4,7 +4,6 @@ import { User } from "../../../../auth/user-types";
 import { InterconnectionTypeInfo } from "../../../InterconnectionTypes";
 import { useInterconnectionDetailsAdd } from "../../../hooks/UseInterconnectionDetailsAdd";
 import { RecordEditForm } from "../../../../../shared/components/RecordEditForm/RecordEditForm";
-import { InterconnectionDetailsTitle } from "../../ui/InterconnectionDetailsTitle/InterconnectionDetailsTitle";
 import { IdeaCard } from "../../ui/ideaCard/ideaCard";
 import { InterconnectionDescription } from "../../ui/InterconnectionDescription/InterconnectionDescription";
 import { IdeaSelect } from "../../ui/IdeaSelect/IdeaSelect";

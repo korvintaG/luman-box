@@ -5,6 +5,7 @@ import ideasSliceReducer from "../../features/ideas/store/IdeaSlice";
 import keywordsSliceReducer from "../../features/keywords/store/KeywordSlice";
 import authSliceReducer from "../../features/auth/store/AuthSlice";
 import interconnectionsReducer from "../../features/interconnections/store/InterconnectionSlice";
+import filesReducer from "../../features/files/store/filesSlice";
 
 import {
   TypedUseSelectorHook,
@@ -18,7 +19,8 @@ export const rootReducer = combineReducers({
   ideas: ideasSliceReducer,
   keywords: keywordsSliceReducer,
   auth: authSliceReducer,
-  interconnections: interconnectionsReducer
+  interconnections: interconnectionsReducer,
+  files: filesReducer
 });
 
 export const store = configureStore({

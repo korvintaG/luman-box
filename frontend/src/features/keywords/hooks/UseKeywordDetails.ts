@@ -27,6 +27,7 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
   : IDetailsEditHookRes<KeywordInner, Keyword> => {
   const { values, handleChange, setValues, getFormDTO } = useForm<KeywordInner>({
     name: "",
+    definition:""
   });
 
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
   useEffect(() => {
     if (currentRecord)
       setValues({
-        ...pick(currentRecord, ["name"]),
+        ...pick(currentRecord, ["name", "definition"]),
       });
   }, [currentRecord]);
 
@@ -62,11 +63,11 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
   };
 
   const handleSubmitAction = (e: SyntheticEvent) => {
-    console.log('useKeywordDetails','handleSubmitAction id=',id)
+    //console.log('useKeywordDetails','handleSubmitAction id=',id)
     e.preventDefault();
     if (id) {
       const newo = { ...getFormDTO(), id: Number(id) };
-      console.log('useKeywordDetails','handleSubmitAction newo=',newo)
+      //console.log('useKeywordDetails','handleSubmitAction newo=',newo)
       dispatch(setKeyword(newo));
     }
     else dispatch(addKeyword({ ...getFormDTO() }));
@@ -75,7 +76,8 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
   return {
     form: {
       values,
-      handleChange
+      handleChange,
+      setValues
     },
     record: {
       fetchRecord,

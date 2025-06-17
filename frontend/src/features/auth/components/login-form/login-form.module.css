@@ -20,14 +20,24 @@
     align-items: center;
 }
 
-.login_inputs {
-    display: flex;
-    flex-direction: column;
+.form__content {
+    display: grid;
+    grid-template-columns: 100px 200px;
+    align-items:center;
     gap: 10px;
 }
 
 .label {
+    display: flex;
+    padding-top: 0;
     min-width: 80px;
+    align-items: center;
+    justify-content: end;
+  }
+
+.input {
+    width: 100%;
+    padding-top: 0;
 }
 
 /********************************************

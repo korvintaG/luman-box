@@ -3,8 +3,6 @@ import store from "../../../../shared/services/store";
 import { getSource } from "../../../../features/sources/store/SourceSlice";
 import { sourceAdditionalLoad } from "./SourceDetailsAdditionalLoader";
 
-
-
 export async function sourceEditLoad({ params }: { params: Params<"id"> }) {
   const { id } = params;
   if (id) {

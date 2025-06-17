@@ -4,7 +4,7 @@ import { RecordEditForm } from "../../../../../shared/components/RecordEditForm/
 import { InputEditUI } from "../../../../../shared/ui/fields/input-edit/input-edit";
 import { InputSelectUI } from "../../../../../shared/ui/fields/input-select/input-select";
 import { RelationList } from "../../../../../shared/components/RelationList/RelationList";
-import styles from "./SourceDetails.module.css";
+import styles from "../../../../../shared/CSS/StandartForm.module.css";
 import {
   genHeaderText,
   EditAccessStatus,
@@ -21,6 +21,11 @@ import { User } from "../../../../auth/user-types";
 import { useSourceDetails } from "../../../hooks/UseSourceDetails";
 import { RecordControlBlock } from "../../../../../shared/components/RecordControlBlock/RecordControlBlock";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
+import {
+  InputTextUI,
+  LabelPosition,
+} from "../../../../../shared/ui/fields/input-text/input-text";
+import { RecordImage } from "../../../../../shared/components/RecordImage/RecordImage";
 
 export type SourceDetailsProps = {
   id: string | undefined;
@@ -40,14 +45,24 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
     id,
     currentUser,
   });
-  const params:HeaderParType=[status.editAccessStatus === EditAccessStatus.Readonly,
+  const params: HeaderParType = [
+    status.editAccessStatus === EditAccessStatus.Readonly,
     id ? Number(id) : null,
     record.currentRecord?.name,
-    "источника"];
+    "источника",
+  ];
   const header = genHeaderText(...params);
-  const tabHeader = genTabHeaderText(...params);   
-  
-  const btnCaptione = id ? "Сохранить данные" : "Добавить источник";
+  const tabHeader = genTabHeaderText(...params);
+
+  const inputProps = {
+    classes: {
+      classBlockAdd: styles.input_block,
+      classLabelAdd: styles.label,
+      classInputAdd: styles.input,
+    },
+    readOnly: status.editAccessStatus === EditAccessStatus.Readonly,
+    onChange: form.handleChange,
+  };
 
   return (
     <>
@@ -64,46 +79,58 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
         error={status.errorText}
         fetchRecord={record.fetchRecord}
       >
-        <Authorship
-          userName={getUserCreator(record.currentRecord, currentUser)}
-          moderatorName={getModerator(record.currentRecord)}
-          className={styles.label_info}
-        />
-        <InputEditUI
-          labelClassAdd={styles.label}
-          name="name"
-          label="Название источника:"
-          value={form.values.name}
-          placeholder="Укажите название источника"
-          inputClassAdd={styles.input}
-          classAdd={styles.input_block}
-          readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
-          handleChange={form.handleChange}
-        />
-        {status.editAccessStatus === EditAccessStatus.Readonly ? (
-          <LinkFieldUI
-            label="Автор:"
-            URL={genAuthorURL(form.values.author!.id)}
-            URLText={record.currentRecord?.author?.name}
-            classAdd={styles.input_block}
-            labelClassAdd={styles.label}
+        <section className={styles.form__content}>
+          <RecordImage
+            imageURL={form.values.image_URL}
+            newImageURL={form.values.new_image_URL}
+            readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
+            uploadFileAction={record.uploadFileAction}
+            deleteImage={() =>
+              form.setValues({ ...form.values, new_image_URL: null })
+            }
           />
-        ) : (
-          <InputSelectUI
-            labelClassAdd={styles.label}
-            name="author.id"
-            label="Автор:"
-            value={form.values.author ? form.values.author.id : 0}
-            readOnly={false}
-            selectClassAdd={styles.input}
-            classAdd={styles.input_block}
-            handleChange={form.handleChange}
-            values={authors}
-          />
-        )}
+          <div className={styles.form__content__text}>
+            <Authorship
+              userName={getUserCreator(record.currentRecord, currentUser)}
+              moderatorName={getModerator(record.currentRecord)}
+            />
+            <InputEditUI
+              name="name"
+              label="Название источника:"
+              value={form.values.name}
+              placeholder="Укажите название источника"
+              {...inputProps}
+            />
+            <InputSelectUI
+              name="author.id"
+              label="Автор:"
+              values={authors}
+              value={form.values.author ? form.values.author.id : 0}
+              valueText={record.currentRecord?.author?.name}
+              URL={genAuthorURL(form.values.author!.id)}
+              {...inputProps}
+            />
+            <InputEditUI
+              name="publication_year"
+              label="Год публикации:"
+              value={form.values.publication_year}
+              placeholder="Укажите год публикации"
+              {...inputProps}
+            />
+            <InputTextUI
+              value={form.values.about_source}
+              name="about_source"
+              label="Об источнике:"
+              labelPosition={LabelPosition.left}
+              {...inputProps}
+            />
+          </div>
+        </section>
+
         <RecordControlBlock
           id={id}
           sliceState={status.sliceStates[0]}
+          preparedSliceState={status.sliceStates[1]}
           error={status.errorText}
           editAccessStatus={status.editAccessStatus}
           deleteRecord={record.deleteRecordAction}
@@ -112,7 +139,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
           rejectRecord={moderate.rejectRecordAction}
         />
         {id && (
-          <>
+          <section className={styles.aggregation}>
             <RelationList
               title="Список идей по источнику:"
               genEntityURL={genIdeaURL}
@@ -123,7 +150,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               source_id={Number(id)}
               keywordsAll={record.currentRecord?.keywords}
             />
-          </>
+          </section>
         )}
       </RecordEditForm>
     </>

@@ -3,7 +3,7 @@ import {LoginData,LoginResult,User, } from '../user-types'
 import { Api } from '../../../shared/api/api'; 
 import { getCookie } from '../../../shared/utils/cookie'; 
 
-export const API_URL = process.env.REACT_APP_API_URL ?? "http://localhost:3000";
+export const API_URL = process.env.REACT_APP_API_URL!;
 
 export interface IAuthAPI {
   login: (data: LoginData) => Promise<ServerResponse<LoginResult>>;

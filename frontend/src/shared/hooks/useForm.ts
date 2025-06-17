@@ -15,7 +15,7 @@ export function useForm<T>(inputValues: T) {
     let key: keyof Partial<T>;
     for (key in obj) {
       if (typeof obj[key] === "object") {
-        //try {
+        try {
           let anaPart: any = obj[key]; // тут без any никак
           if (!anaPart.id)
             // считаем, что объект только для .id, если изменится, нужно будет доработать код
@@ -24,7 +24,7 @@ export function useForm<T>(inputValues: T) {
             anaPart.id = Number(anaPart.id);
             obj[key] = anaPart;
           }
-        //}        catch {}
+        } catch { }
       }
     }
     return obj;

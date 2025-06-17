@@ -2,7 +2,7 @@ import {  Author,  AuthorPartial,  AuthorRawPartial}  from '../AuthorTypes'
 import { Api } from '../../../shared/api/api'; 
 import { getCookie } from '../../../shared/utils/cookie'; 
 
-export const API_URL = process.env.REACT_APP_API_URL ?? "http://localhost:3000";
+export const API_URL = process.env.REACT_APP_API_URL!;
 
 export interface IAuthorAPI {
   getAuthors: () => Promise<Author[]>;
@@ -79,8 +79,6 @@ export class AuthorAPI extends Api implements IAuthorAPI {
       headers: { Authorization: `Bearer ${getCookie("accessToken")}` },
     });
   };
-
-
 
 }
 

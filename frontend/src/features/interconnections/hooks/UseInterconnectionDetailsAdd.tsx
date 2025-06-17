@@ -92,7 +92,8 @@ export const useInterconnectionDetailsAdd = (
   return {
     form: {
       values,
-      handleChange
+      handleChange,
+      setValues
     },
     record: {
       fetchRecord,

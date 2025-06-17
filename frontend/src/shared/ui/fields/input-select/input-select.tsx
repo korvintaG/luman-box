@@ -1,79 +1,119 @@
-import { FC, ChangeEvent } from "react";
+import React, { FC, useCallback, useId } from "react";
 import { combineClasses } from "../../../utils/utils";
-import { HTMLEditElement } from "../../../common-types";
 import styles from "./input-select.module.css";
+import { CustomInput } from "../../UITypes";
+import { Link } from "react-router-dom";
 
 export type SelectedValues = {
   id: number;
   name: string;
 };
 
-export type InputSelectUIProps = {
-  label: string;
-  name: string;
-  value: number;
-  values: SelectedValues[];
-  handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
-  placeholder?: string;
-  classReplace?: string;
-  classAdd?: string;
-  labelClassReplace?: string;
-  labelClassAdd?: string;
-  selectClassReplace?: string;
-  selectClassAdd?: string;
-  hideEmpty?: boolean;
-  readOnly?: boolean;
+export type InputSelectUIProps = React.ComponentPropsWithoutRef<"select"> &
+  CustomInput & {
+    values: SelectedValues[];
+    hideEmpty?: boolean;
+    readOnly?: boolean;
+    URL?: string;
+    valueText?:string;
+  };
+
+type ValueReadOnlyProps = {
+  URL?: string;
+  id?: string;
+  className?: string;
+  text?: string;
 };
 
-export const InputSelectUI: FC<InputSelectUIProps> = (props) => {
+const ValueReadOnly: FC<ValueReadOnlyProps> = (props) => {
+  //console.log('ValueReadOnly',props)
+  if (props.URL)
+    return (
+      <Link id={props.id} to={props.URL} className={props.className}>
+        {props.text}
+      </Link>
+    );
+  else
+    return (
+      <p id={props.id} className={props.className}>
+        {props.text}
+      </p>
+    );
+};
+
+export const InputSelectUI: FC<InputSelectUIProps> = ({
+  label,
+  classes,
+  values,
+  valueText,
+  hideEmpty,
+  readOnly,
+  URL,
+  ...selectProps
+}) => {
+  const inputId = useId();
+
   const getSelectName = (): string => {
-    const found = props.values.find((el) => el.id === props.value);
+    const found = values.find((el) => el.id === selectProps.value);
     if (found) return found.name;
     else return "";
   };
 
+  const classLabel = combineClasses(
+    styles.label,
+    classes?.classLabelReplace,
+    classes?.classLabelAdd
+  );
+  const classEdit = combineClasses(
+    styles.field,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+  const classEditReadonly = combineClasses(
+    styles.field_readonly,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+
+  /*const ReadOnlyComp = () =>
+    URL ? (
+      <Link id={inputId} to={URL} className={classEditReadonly}>
+        {getSelectName()}
+      </Link>
+    ) : (
+      <p id={inputId} className={classEditReadonly}>
+        {getSelectName()}
+      </p>
+    );*/
+
   return (
-    <div
-      className={combineClasses(
-        styles["input-block"],
-        props.classReplace,
-        props.classAdd,
-      )}
-    >
-      <label
-        htmlFor={props.name}
-        className={combineClasses(
-          styles["input-label"],
-          props.labelClassReplace,
-          props.labelClassAdd,
-        )}
-      >
-        {props.label}
+    <>
+      <label htmlFor={inputId} className={classLabel}>
+        {label}
       </label>
-      {props.readOnly ? (
-        <span className={styles["input-select-readonly"]}>
-          {getSelectName()}
-        </span>
+      {readOnly ? (
+        <ValueReadOnly
+          URL={URL}
+          text={valueText}
+          id={inputId}
+          className={classEditReadonly}
+        />
       ) : (
         <select
-          value={props.value}
-          name={props.name}
-          disabled={props.readOnly}
-          onChange={props.handleChange}
-          className={combineClasses(
-            styles["input-select"],
-            props.selectClassReplace,
-            props.selectClassAdd,
-          )}
+          id={inputId}
+          value={selectProps.value}
+          name={selectProps.name}
+          onChange={selectProps.onChange}
+          className={classEdit}
         >
-          {props.hideEmpty ? null : <option value="0"></option>}
-          {props.values.map((el) => (
+          {hideEmpty ? null : <option value="0"></option>}
+          {values.map((el) => (
             <option className={styles.option} value={el.id} key={el.id}>
               {el.name}
             </option>
           ))}
         </select>
       )}
-    </div>
+    </>
   );
 };

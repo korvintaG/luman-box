@@ -11,11 +11,13 @@ export function combineClasses(
   inherited: classVar,
   replace: classVar,
   add: classVar,
+  add_general?: classVar
 ): string {
   let classRes = "";
   if (inherited) classRes = inherited;
   if (replace) classRes = replace;
   if (add) classRes = clsx(classRes, add);
+  if (add_general) classRes = clsx(classRes, add_general);
   return classRes;
 }
 

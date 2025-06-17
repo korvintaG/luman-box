@@ -56,7 +56,7 @@ export interface DetailsHookProps {
 export interface IFormHookRes<FormValues> {
   values: FormValues,
   handleChange: (event: ChangeEvent<HTMLEditElement>) => void;
-
+  setValues:(newValues: FormValues)=>void;
 }
 
 export interface IDetailsAddHookRes<FormValues, Record> {
@@ -82,5 +82,15 @@ export interface IDetailsEditHookRes<FormValues, Record> extends IDetailsAddHook
   moderate: {
     approveRecordAction: (e:SyntheticEvent) => void;
     rejectRecordAction: (e:SyntheticEvent) => void;
+  }
+}
+
+export interface IDetailsWithPhotoHookRes<FormValues, Record> extends
+  IDetailsEditHookRes<FormValues, Record> {
+  record: IDetailsEditHookRes<FormValues, Record>['record'] & {
+    uploadFileAction: (data: FormData) => void;
+  }
+  status: IDetailsEditHookRes<FormValues, Record>['status'] & {
+    resetSlicesStatus: () => void;
   }
 }

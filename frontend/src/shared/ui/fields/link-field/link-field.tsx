@@ -1,49 +1,44 @@
-import { FC } from "react";
-import { combineClasses } from "../../../utils/utils"; 
+import { FC, useId } from "react";
+import { combineClasses } from "../../../utils/utils";
 import styles from "./link-field.module.css";
-import { Link } from "react-router-dom";
+import { Link, LinkProps } from "react-router-dom";
+import { CustomInput } from "../../UITypes";
 
-export type LinkFieldUIProps = {
-  label: string;
-  URL: string;
-  URLText?: string;
-  classReplace?: string;
-  classAdd?: string;
-  labelClassReplace?: string;
-  labelClassAdd?: string;
-  inputClassReplace?: string;
-  inputClassAdd?: string;
-};
+export type LinkFieldUIProps = LinkProps & CustomInput;
 
-export const LinkFieldUI: FC<LinkFieldUIProps> = (props) => {
+export const LinkFieldUI: FC<LinkFieldUIProps> = ({
+  label,
+  classes,
+  ...linkProps
+}) => {
+  const inputId = useId();
+  const labelClass = combineClasses(
+    styles.label,
+    classes?.classLabelReplace,
+    classes?.classLabelAdd
+  );
+  const inputClass = combineClasses(
+    styles.field,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+  const inputEmptyClass = combineClasses(
+    '',
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );  
   return (
-    <div
-      className={combineClasses(
-        styles["input-block"],
-        props.classReplace,
-        props.classAdd,
-      )}
-    >
-      <label
-        htmlFor={props.label}
-        className={combineClasses(
-          styles["input-label"],
-          props.labelClassReplace,
-          props.labelClassAdd,
-        )}
-      >
-        {props.label}
+    <>
+      <label htmlFor={inputId} className={labelClass}>
+        {label}
       </label>
-       <Link
-          className={combineClasses(
-            styles["input-edit"],
-            props.inputClassReplace,
-            props.inputClassAdd,
-          )}
-          to={props.URL}
-        >
-            {props.URLText}
+      {linkProps.to === "" ? (
+        <div className={inputEmptyClass}></div>
+      ) : (
+        <Link id={inputId} className={inputClass} to={linkProps.to}>
+          {linkProps.children}
         </Link>
-    </div>
+      )}
+    </>
   );
 };

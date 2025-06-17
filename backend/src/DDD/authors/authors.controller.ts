@@ -9,6 +9,9 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthorsService } from './authors.service';
@@ -19,16 +22,37 @@ import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-au
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { IModerate, Role } from '../../types/custom';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from 'src/files/multer.config';
 
 @Controller('authors')
 export class AuthorsController {
-  constructor(private readonly authorsService: AuthorsService) {}
+  constructor(private readonly authorsService: AuthorsService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Req() req: Request, @Body() createAuthorDto: CreateAuthorDto) {
     return this.authorsService.create(req.user, createAuthorDto);
   }
+
+ /* @Post('upload-photo')
+  @UseInterceptors(FileInterceptor('image', multerConfig))
+  async uploadPhoto(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+    // Здесь file содержит информацию о загруженном файле
+    // Можно сохранить путь к файлу в базе данных
+    if (req.fileValidationError) {
+      throw new BadRequestException(req.fileValidationError);
+    }
+
+    if (!file) {
+      throw new BadRequestException('Файл не был загружен');
+    }
+    return {
+      message: 'Photo uploaded successfully',
+      filename: file.filename,
+      path: file.path,
+    };
+  }*/
 
   @Get()
   @UseGuards(OptionalJwtAuthGuard)

@@ -14,8 +14,12 @@
     min-width: 100px;
 }
 
+.input_block {
+  border-color: var(--idea-color);
+}
+
 .input {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .arrow {

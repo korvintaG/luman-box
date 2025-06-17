@@ -24,6 +24,15 @@ export class Source {
   @Column('varchar')
   name: string;
 
+  @Column({ type: 'varchar', nullable: true})
+  publication_year: string;
+
+  @Column({ type: 'varchar', nullable: true})
+  about_source: string;
+
+  @Column({ type: 'varchar', nullable: true})
+  image_URL: string;
+
   @Column({ type: 'int', nullable: true, name: 'moderated' })
   moderated: number;
 

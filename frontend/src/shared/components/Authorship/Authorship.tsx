@@ -5,14 +5,14 @@ import styles from "./Authorship.module.css";
 export type AuthorshipProps = {
   userName: string | null;
   moderatorName: string | null | undefined;
-  className: string;
+  className?: string;
   label?:string;
 };
 
 export const Authorship: FC<AuthorshipProps> = (props: AuthorshipProps) => {
   if (!props.userName && !props.moderatorName) return null;
   return (
-    <section className={styles.main}>
+    <>
       {props.userName && (
         <InfoFieldUI
           label={(props.label?props.label:"Запись")+" добавил:"}
@@ -27,6 +27,6 @@ export const Authorship: FC<AuthorshipProps> = (props: AuthorshipProps) => {
           text={props.moderatorName}
         />
       )}
-    </section>
+    </>
   );
 };

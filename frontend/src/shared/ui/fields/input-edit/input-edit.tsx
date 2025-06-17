@@ -1,70 +1,52 @@
-import { FC, ChangeEvent } from "react";
-import { HTMLEditElement } from "../../../common-types";
+import { FC, useId } from "react";
 import { combineClasses } from "../../../utils/utils";
 import styles from "./input-edit.module.css";
+import { CustomInput } from "../../UITypes";
 
-export type InputEditUIProps = {
-  label: string;
-  name: string;
-  value: string;
-  handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
-  placeholder?: string;
-  classReplace?: string;
-  classAdd?: string;
-  labelClassReplace?: string;
-  labelClassAdd?: string;
-  inputClassReplace?: string;
-  inputClassAdd?: string;
-  readOnly?: boolean;
-  isPassword?: boolean;
-  isNumber?: boolean;
-  required?: boolean;
-  minLength?: number;
-  maxLength?: number;
-};
+export type InputEditUIProps = React.ComponentPropsWithoutRef<"input"> & CustomInput;
 
-// clsx({[props.classAdd!]:props.classAdd},styles['input-block'])
-// clsx({[props.inputClassAdd!]:props.inputClassAdd},styles['input-edit'])
-export const InputEditUI: FC<InputEditUIProps> = (props) => {
+export const InputEditUI: FC<InputEditUIProps> = ({
+  label,
+  classes,
+  ...inputProps
+}) => {
+  const inputId = useId();
+  const classLabel = combineClasses(
+    styles.label,
+    classes?.classLabelReplace,
+    classes?.classLabelAdd
+  );
+  const classEdit = combineClasses(
+    styles.field,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+  const classEditReadonly = combineClasses(
+    styles.field_readonly,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+
   return (
-    <div
-      className={combineClasses(
-        styles["input-block"],
-        props.classReplace,
-        props.classAdd,
+    <>
+      {label !== "" && (
+        <label htmlFor={inputId} className={classLabel}>
+          {label}
+        </label>
       )}
-    >
-      {props.label!=='' && <label
-        htmlFor={props.name}
-        className={combineClasses(
-          styles["input-label"],
-          props.labelClassReplace,
-          props.labelClassAdd,
-        )}
-      >
-        {props.label}
-      </label>}
 
-      {props.readOnly ? (
-        <span className={styles["input-edit-readonly"]}>{props.value}</span>
+      {inputProps.readOnly ? (
+        <p id={inputId} className={classEditReadonly}>
+          {inputProps.value}
+        </p>
       ) : (
         <input
-          className={combineClasses(
-            styles["input-edit"],
-            props.inputClassReplace,
-            props.inputClassAdd,
-          )}
-          value={props.value}
-          name={props.name}
-          placeholder={props.placeholder ? props.placeholder : ""}
-          type={props.isPassword ? "password" : (props.isNumber? "number": "text")}
-          readOnly={props.readOnly}
-          required={props.required}
-          minLength={props.minLength}
-          maxLength={props.maxLength}
-          onChange={props.handleChange}
+          id={inputId}
+          className={classEdit}
+          {...inputProps}
+          value={inputProps.value !== null ? inputProps.value : ""}
         ></input>
       )}
-    </div>
+    </>
   );
 };

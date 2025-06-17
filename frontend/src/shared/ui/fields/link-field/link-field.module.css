@@ -1,35 +1,26 @@
-.input-block {
+/*.input-block {
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
-  }
+  }*/
   
-  .input-label,
-  .input-edit {
+  .label,
+  .field {
     font-family: 'Montserrat';
     font-size: 16px;
   }
   
-  .input-edit-readonly {
-    display: inline-block;
-    font-family: 'Montserrat';
-    font-size: 17px;
-    font-weight: bold;
-    text-align: left;
-  }
-
-
-  .input-label {
+  .label {
     display: block;
     text-align: right;
   }
   
-  .input-edit {
+  .field {
     box-sizing: border-box;
     text-align: left;
     flex: 1;
     max-width: min(1400px, calc(100vw - 60px));
-    width: calc(100% - 100px);
+    width: 100% ;
     cursor: pointer;
   }
   
@@ -37,22 +28,13 @@
 * адаптивность
 ********************************************/
 @media (max-width: 750px) {
-  .input-label {
+  .label {
     text-align: left;
   }
 
-  .input-edit {
+  .field {
     max-width: calc(100vw - 25px);
     width: calc(100% - 20px);
-  }
-
-  .input-block {
-    flex-direction: column;
-    gap: 0;
-  }
- 
-  .input-edit-readonly {
-    padding-left: 10px;
   }
 
 

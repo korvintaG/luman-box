@@ -13,7 +13,7 @@ import {
 } from "../../../../shared/utils/utils";
 import { Authorship } from "../../../../shared/components/Authorship/Authorship";
 import { RelationList } from "../../../../shared/components/RelationList/RelationList";
-import styles from "./KeywordDetails.module.css";
+import styles from "../../../../shared/CSS/StandartForm.module.css";
 import {
   genAuthorURL,
   genIdeaURL,
@@ -22,6 +22,10 @@ import {
 import { User } from "../../../auth/user-types";
 import { useKeywordDetails } from "../../hooks/UseKeywordDetails";
 import { BreadcrumbSimpeType } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
+import {
+  InputTextUI,
+  LabelPosition,
+} from "../../../../shared/ui/fields/input-text/input-text";
 
 export type KeywordDetailsProps = {
   id: string | undefined;
@@ -47,7 +51,15 @@ export const KeywordDetails: FC<KeywordDetailsProps> = ({
   ];
   const header = genHeaderText(...params);
   const tabHeader = genTabHeaderText(...params);
-  //const btnCaptione = id ? "Сохранить данные" : "Добавить ключевое слово";
+  const inputProps = {
+    classes: {
+      classLabelAdd: styles.label,
+      classInputAdd: styles.input,
+      classBlockAdd: styles.input_block,
+    },
+    readOnly: status.editAccessStatus === EditAccessStatus.Readonly,
+    onChange: form.handleChange,
+  };
 
   return (
     <>
@@ -64,22 +76,30 @@ export const KeywordDetails: FC<KeywordDetailsProps> = ({
         error={status.errorText}
         fetchRecord={record.fetchRecord}
       >
-        <Authorship
-          userName={getUserCreator(record.currentRecord, currentUser)}
-          moderatorName={getModerator(record.currentRecord)}
-          className={styles.label_info}
-        />
-        <InputEditUI
-          labelClassAdd={styles.label}
-          name="name"
-          label="Ключевое слово:"
-          value={form.values.name}
-          placeholder="Введите ключевое слово"
-          inputClassAdd={styles.input}
-          classAdd={styles.input_block}
-          readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
-          handleChange={form.handleChange}
-        />
+        <section className={styles.form__content}>
+          <div className={styles.form__content__text}>
+            <Authorship
+              userName={getUserCreator(record.currentRecord, currentUser)}
+              moderatorName={getModerator(record.currentRecord)}
+              className={styles.label_info}
+            />
+            <InputEditUI
+              name="name"
+              label="Ключевое слово:"
+              value={form.values.name}
+              placeholder="Введите ключевое слово"
+              {...inputProps}
+            />
+            <InputTextUI
+              value={form.values.definition}
+              name="definition"
+              label="Определение:"
+              labelPosition={LabelPosition.left}
+              {...inputProps}
+            />
+          </div>
+        </section>
+
         <RecordControlBlock
           id={id}
           sliceState={status.sliceStates[0]}
@@ -90,21 +110,25 @@ export const KeywordDetails: FC<KeywordDetailsProps> = ({
           approveRecord={moderate.approveRecordAction}
           rejectRecord={moderate.rejectRecordAction}
         />
-        <RelationList
-          title="Список авторов, в идеях по источникам которых есть ключевое слово:"
-          genEntityURL={genAuthorURL}
-          list={record.currentRecord?.authors}
-        />
-        <RelationList
-          title="Список источников, в идеях по которым есть ключевое слово:"
-          genEntityURL={genSourceURL}
-          list={record.currentRecord?.sources}
-        />
-        <RelationList
-          title="Список идей, по которым есть ключевое слово:"
-          genEntityURL={genIdeaURL}
-          list={record.currentRecord?.ideas}
-        />
+        {id && (
+          <section className={styles.aggregation}>
+            <RelationList
+              title="Список авторов, в идеях по источникам которых есть ключевое слово:"
+              genEntityURL={genAuthorURL}
+              list={record.currentRecord?.authors}
+            />
+            <RelationList
+              title="Список источников, в идеях по которым есть ключевое слово:"
+              genEntityURL={genSourceURL}
+              list={record.currentRecord?.sources}
+            />
+            <RelationList
+              title="Список идей, по которым есть ключевое слово:"
+              genEntityURL={genIdeaURL}
+              list={record.currentRecord?.ideas}
+            />
+          </section>
+        )}
       </RecordEditForm>
     </>
   );

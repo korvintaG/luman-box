@@ -33,6 +33,8 @@ export const rejectAuthor = createAsyncThunk(
 export const getAuthor = createAsyncThunk("getAuthor", authorAPI.getAuthor);
 export const addAuthor = createAsyncThunk("addAuthor", authorAPI.addAuthor);
 export const delAuthor = createAsyncThunk("delAuthor", authorAPI.delAuthor);
+//export const uploadAuthorPhoto = createAsyncThunk("uploadAuthorPhoto", authorAPI.uploadFile);
+
 
 /*export function isPendingAuthorAction(action: PayloadAction) {
   return action.type.endsWith("pending") && action.type.includes("Author");
@@ -54,6 +56,10 @@ const authorsSlice = createSlice({
     },
     setSliceStatus: (state, action) => {
       state.status = action.payload; //RequestStatus.Success;
+    },
+    setNewImageName: (state, action) => {
+      if (state.current)
+        state.current.new_image_URL = action.payload; //RequestStatus.Success;
     },
   },
   selectors: {
@@ -159,5 +165,5 @@ export const {
   selectSliceState,
   selectIsDataLoading,
 } = authorsSlice.selectors;
-export const { clearCurrentAuthor, setSliceStatus } = authorsSlice.actions;
+export const { clearCurrentAuthor, setSliceStatus, setNewImageName } = authorsSlice.actions;
 export default authorsSlice.reducer;

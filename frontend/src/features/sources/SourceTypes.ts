@@ -4,8 +4,13 @@ import { UserPartial } from "../auth/user-types";
 
 // Источники
 export type SourceInner = NameObject & {
+  publication_year: string;
+  about_source: string;
   author?: AuthorPartial;
+  image_URL: string | null;
+  new_image_URL?: string | null;  
 };
+
 export type SourceRaw = SourceInner & {
   user?: UserPartial;
   moderator?: UserPartial;

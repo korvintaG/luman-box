@@ -167,6 +167,7 @@ const { values, handleChange, setValues, getFormDTO } = useForm<IdeaInner>({
     form: {
       values,
       handleChange,
+      setValues,
       addKeyword,
       deleteKeyword,
       setAttitude

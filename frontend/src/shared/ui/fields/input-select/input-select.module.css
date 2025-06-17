@@ -1,56 +1,38 @@
-.input-block {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-  }
-  
-  .input-label,
-  .input-select {
-    font-family: 'Montserrat';
-    font-size: 16px;
-  }
-  
-  .input-select-readonly {
-    font-family: 'Montserrat';
-    font-size: 17px;
-    font-weight: bold;
-    text-align: left;
-    display: inline-block;
-  }
+.label {
+  display: block;
+  text-align: right;
+}
 
-  .input-label {
-    display: block;
-    text-align: right;
- }
-  
-  .input-select {
-    box-sizing: border-box;
-    flex: 1;
-    max-width: min(1400px, calc(100vw - 60px));
-    width: calc(100% - 100px);
-  }
-  
-  
+.label,
+.field {
+  font-family: "Montserrat";
+  font-size: 16px;
+}
+
+.field {
+  width: 100%;
+}
+
+.field_readonly {
+  font-family: "Montserrat";
+  font-size: 17px;
+  font-weight: bold;
+  text-align: left;
+  display: inline-block;
+}
+
 /********************************************
 * адаптивность
 ********************************************/
 @media (max-width: 750px) {
-  .input-label {
+  .label {
     text-align: left;
   }
 
-  .input-select {
-    max-width: calc(100vw - 25px);
-    width: calc(100% - 20px);
-  }
- 
-  .input-block {
-    flex-direction: column;
-    gap: 0;
+  .field { 
   }
 
-  .input-select-readonly {
+  .field_readonly {
     padding-left: 10px;
   }
-
 }

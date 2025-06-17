@@ -1,9 +1,8 @@
 .authorship {
-    min-width: 140px;
+    display: grid;
     font-family: 'Montserrat';
-    display: inline-block;
-    text-align: right;
     font-size: 10px;    
+    grid-template-columns: max-content 1fr;
 }
 
 
@@ -21,7 +20,7 @@
 ********************************************/
 @media (max-width: 780px) {
     .authorship {
-        min-width: auto;
+        grid-template-columns: 1fr;
     }
     .idea_top, .idea_bottom {
         width: calc(100% - 20px);

@@ -7,10 +7,9 @@ import { ButtonAddUI } from "../../../../../shared/ui/buttons/button-add";
 import { useInterconnectionList } from "../../../hooks/UseInterconnectionList";
 import { IdeasTable } from "../../ui/IdeasTable/IdeasTable";
 import { Preloader } from "../../../../../shared/ui/Preloader";
-import { InterconnectionsListTitle } from "../../ui/InterconnectionsListTitle/InterconnectionsListTitle";
 import { RecordsList } from "../../../../../shared/components/RecordsList";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
-import { genIdeaURL, genSourceURL } from "../../../../../app/router/navigation";
+import { genIdeaURL } from "../../../../../app/router/navigation";
 
 export type InterconnectionListProps = {
   interconnectionTypeInfo: InterconnectionTypeInfo;
@@ -54,10 +53,6 @@ export const InterconnectionList: FC<InterconnectionListProps> = ({
         header={`Взаимосвязи типа: ${iTI.name}`}
         mainClassName={styles.container}
         breadcrumbs={[
-          /*{
-                name: `Источник: [${interconnections.idea.source_name}]`, 
-                path:genSourceURL(interconnections.idea.source_id)
-            },*/
           BreadcrumbSimpeType.IdeasList,
           {
             name: `Идея: [${interconnections.idea.name}, ID=${interconnections.idea.id}]`,

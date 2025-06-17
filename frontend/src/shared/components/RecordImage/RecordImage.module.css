@@ -1,0 +1,92 @@
+.container {
+    display: flex;
+    min-width: 200px;
+    max-width: 200px;
+    /*max-height: 50vh;*/
+    align-items:start;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;    
+    object-fit:contain;
+    flex-grow: 0;
+    border: 1px lightgray solid;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);    
+}
+
+.label {
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.hidden {
+        opacity: 0;
+        height: 0;
+        width: 0;
+        line-height: 0;
+        overflow: hidden;
+        padding: 0;
+        margin: 0;
+        appearance: none;
+}
+
+.control {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.button, .button_del {
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    flex-grow: 1;
+    width: 100%;
+    
+}
+
+.button {
+    background-color: #28a745; /* Зеленый цвет */
+    color: white;
+}
+
+.button:hover {
+    background-color: #218838;
+  }
+
+.button:active {
+    transform: scale(0.95);
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 750px) {
+    .container {   
+        min-width: 90vw;
+        max-width: auto;
+        width: 100%;       
+        /*max-height: 50vh;*/
+ /*       overflow: hidden;*/
+    }
+    .container img {
+        margin: 0 auto;
+        max-height: 50vh;
+        align-items: center;
+        justify-content: center;        
+    }
+
+}

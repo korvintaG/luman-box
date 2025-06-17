@@ -20,6 +20,9 @@ export class Keyword {
   @Column('varchar')
   name: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  definition: string;
+  
   @Column({ type: 'int', nullable: true, name: 'moderated' })
   moderated: number;
 

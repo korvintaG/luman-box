@@ -7,7 +7,7 @@ import { SimpleNameObjectWithCnt } from "../../../../../shared/common-types";
 
 export type SourceKeywordsProps = {
   title: string;
-  source_id: number;
+  source_id: number; 
   keywordsAll: SimpleNameObjectWithCnt[] | undefined; // ключевые слова для выбора
 };
 

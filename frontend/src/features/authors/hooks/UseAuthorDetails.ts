@@ -14,84 +14,123 @@ import {
   addAuthor,
   selectSliceState,
   rejectAuthor,
- } from "../store/AuthorSlice";
- import {
-    getEditAccess,
-  } from "../../../shared/utils/utils";
-import { DetailsHookProps, IDetailsEditHookRes } from "../../../shared/common-types";
-  
+  setSliceStatus,
+} from "../store/AuthorSlice";
+import { selectCurrentFile, selectSliceState as selectFileSliceState, 
+  selectError as fileSelectError,
+  setSliceStatus as setFileSliceStatus,
+  uploadFile } from "../../files/store/filesSlice";
+import {
+  getEditAccess,
+} from "../../../shared/utils/utils";
+import { DetailsHookProps, IDetailsEditHookRes, IDetailsWithPhotoHookRes, RequestStatus } from "../../../shared/common-types";
+import { calcUpdateImage } from "../../files/utils";
 
-export const useAuthorDetails =({id, currentUser}: DetailsHookProps)
-  : IDetailsEditHookRes<AuthorInner, Author> =>{
-    const { values, handleChange, setValues, getFormDTO } = useForm <AuthorInner>({
-        name: "",
+
+export const useAuthorDetails = ({ id, currentUser }: DetailsHookProps)
+  : IDetailsWithPhotoHookRes<AuthorInner, Author> => {
+  const { values, handleChange, setValues, getFormDTO } = useForm<AuthorInner>({
+    name: "",
+    birth_date: "",
+    birth_place: "",
+    about_author: "",
+    image_URL: "",
+    new_image_URL: ""
+  });
+
+  const dispatch = useDispatch();
+  const sliceState = useSelector(selectSliceState);
+  const fileSliceState = useSelector(selectFileSliceState);
+  const currentFile = useSelector(selectCurrentFile);
+  const errorText = useSelector(selectError);
+  const fileErrorText=useSelector(fileSelectError);
+  const currentRecord = useSelector(selectCurrentAuthor);
+  const editAccessStatus = getEditAccess(id, currentUser, currentRecord)
+
+  function fetchRecord() {
+    if (id) dispatch(getAuthor(Number(id)));
+  }
+
+  /*useEffect(() => fetchRecord(), []);*/
+
+  useEffect(() => {
+    if (currentRecord) {
+      setValues({
+        ...pick(currentRecord,
+          ["name", "birth_date", "birth_place", "about_author", "image_URL"]),
+        new_image_URL: undefined
       });
-    
-      const dispatch = useDispatch();
-      const sliceState = useSelector(selectSliceState);
-      const errorText = useSelector(selectError);
-      const currentRecord = useSelector(selectCurrentAuthor);
-      const editAccessStatus = getEditAccess(id, currentUser, currentRecord)
-    
-      function fetchRecord() {
-        if (id) dispatch(getAuthor(Number(id)));
-      }
-    
-      /*useEffect(() => fetchRecord(), []);*/
-    
-      useEffect(() => {
-        if (currentRecord) 
-          setValues({ ...pick(currentRecord, ["name"]) });
-      }, [currentRecord, setValues]);
-    
-      const deleteRecordAction = (e: SyntheticEvent) => {
-        e.preventDefault();
-        dispatch(delAuthor(Number(id)));
-      };
-    
-      const approveRecordAction = (e: SyntheticEvent) => {
-        e.preventDefault();
-        dispatch(approveAuthor(Number(id)));
-      };
-     
-      const rejectRecordAction = (e: SyntheticEvent) => {
-        e.preventDefault();
-        dispatch(rejectAuthor(Number(id)));
-      };
-    
-      const handleSubmitAction = (e: SyntheticEvent) => {
-        //console.log('useAuthorDetails handleSubmit')
-        e.preventDefault();
-        if (id) {
-          //console.log('useAuthorDetails handleSubmit id')
-          const newo = { ...getFormDTO(), id: Number(id) };
-          dispatch(setAuthor(newo));
-        } 
-        else {
-          //console.log('useAuthorDetails handleSubmit not id',getFormDTO())
-          dispatch(addAuthor({ ...getFormDTO() }));
-        }
-      };
-    
-    return {
-        form: {
-          values,
-          handleChange
-        },
-        record: {
-          fetchRecord,
-          currentRecord,
-          deleteRecordAction, 
-          handleSubmitAction
-        },
-        status: {
-          sliceStates:[sliceState],
-          errorText, 
-          editAccessStatus
-        }, 
-        moderate:{
-           approveRecordAction, rejectRecordAction 
-        }
-      }
-       
+      //setCurrentFileName(currentRecord.image_URL);
+    }
+  }, [currentRecord, setValues]);
+
+  useEffect(() => {
+    if (currentFile) {
+      setValues({ ...values, new_image_URL: currentFile })
+    }
+  }, [currentFile])
+
+  const deleteRecordAction = (e: SyntheticEvent) => {
+    e.preventDefault();
+    dispatch(delAuthor(Number(id)));
+  };
+
+  const approveRecordAction = (e: SyntheticEvent) => {
+    e.preventDefault();
+    dispatch(approveAuthor(Number(id)));
+  };
+
+  const rejectRecordAction = (e: SyntheticEvent) => {
+    e.preventDefault();
+    dispatch(rejectAuthor(Number(id)));
+  };
+
+  const uploadFileAction = (data: FormData) => {
+    dispatch(uploadFile(data));
+  }
+
+  const resetSlicesStatus = ()=>{
+    dispatch(setSliceStatus(RequestStatus.Idle));
+    dispatch(setFileSliceStatus(RequestStatus.Idle));
+  }
+
+  const handleSubmitAction = (e: SyntheticEvent) => {
+    //console.log('useAuthorDetails handleSubmit')
+    e.preventDefault();
+    let newImageURL=calcUpdateImage( values.image_URL, values.new_image_URL);
+    if (id) {
+      //console.log('useAuthorDetails handleSubmit id')
+      const newo = { ...getFormDTO(), id: Number(id), image_URL: newImageURL };
+      dispatch(setAuthor(newo));
+    }
+    else { 
+      //console.log('useAuthorDetails handleSubmit not id',getFormDTO())
+      dispatch(addAuthor({ ...getFormDTO(), image_URL: newImageURL }));
+    }
+  };
+
+  return {
+    form: {
+      values,
+      handleChange,
+      setValues
+    },
+    record: {
+      fetchRecord,
+      currentRecord,
+      deleteRecordAction,
+      handleSubmitAction,
+      uploadFileAction
+    },
+    status: {
+      sliceStates: [sliceState, fileSliceState],
+      errorText: errorText + fileErrorText,
+      editAccessStatus,
+      resetSlicesStatus 
+    },
+    moderate: {
+      approveRecordAction, rejectRecordAction
+    }
+  }
+
 }

@@ -1,55 +1,97 @@
-import { FC, ChangeEvent } from "react";
-import { combineClasses } from "../../../utils/utils"; 
-import { HTMLEditElement } from "../../../common-types";
+import React, { FC, useId } from "react";
+import { combineClasses } from "../../../utils/utils";
 import styles from "./input-text.module.css";
+import { CustomInput } from "../../UITypes";
 
-export type InputTextUIProps = {
+export enum LabelPosition {
+  left = 0,
+  groupHeader = 1,
+}
+
+type ElementClasses = {
+  block: string;
   label: string;
-  name: string;
-  value: string;
-  handleChange: (e: ChangeEvent<HTMLEditElement>) => void; // для реактивности изменения данных
-  rows?: number;
-  classReplace?: string;
-  classAdd?: string;
-  labelClassReplace?: string;
-  labelClassAdd?: string;
-  textClassReplace?: string;
-  textClassAdd?: string;
-  readOnly?: boolean;
-  minLength?: number;
+  label_readonly: string;
+  memo: string;
+  memo_readonly: string;
 };
 
-export const InputTextUI: FC<InputTextUIProps> = (props) => {
+export type InputTextUIProps = React.ComponentPropsWithoutRef<"textarea"> &
+  CustomInput & {
+    labelPosition?: LabelPosition;
+  };
+
+export const InputTextUI: FC<InputTextUIProps> = ({
+  label,
+  labelPosition,
+  classes,
+  ...textareaProps
+}) => {
+  const inputId = useId();
+  const rows = textareaProps.rows ? textareaProps.rows : 13;
+
+  const elementClassesArray: ElementClasses[] = [
+    {
+      block: '',
+      label: styles.left_label,
+      label_readonly: styles.left_label,
+      memo: styles.left_text,
+      memo_readonly: styles.left_text_readonly,
+    },
+    {
+      block: styles.group_block,
+      label: styles.group_label,
+      label_readonly: styles.group_label_readonly,
+      memo: styles.group_text,
+      memo_readonly: styles.group_text_readonly,
+    },
+  ];
+  let curLabelPosition =
+    labelPosition !== undefined ? labelPosition : LabelPosition.groupHeader;
+
+  const classLabel = combineClasses(
+    textareaProps.readOnly
+      ? elementClassesArray[curLabelPosition].label_readonly
+      : elementClassesArray[curLabelPosition].label,
+    classes?.classLabelReplace,
+    classes?.classLabelAdd
+  );
+  const classBlock = combineClasses(
+    elementClassesArray[curLabelPosition].block,
+    classes?.classReplace,
+    classes?.classAdd
+  );
+
+  const classText = combineClasses(
+    elementClassesArray[curLabelPosition].memo,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+  const classTextReadOnly = combineClasses(
+    elementClassesArray[curLabelPosition].memo_readonly,
+    classes?.classInputReplace,
+    classes?.classInputAdd
+  );
+  
+  const isDiv = curLabelPosition === LabelPosition.groupHeader;
+  const Wrapper = isDiv ? "div" : React.Fragment;
   return (
-    <div
-      className={combineClasses(
-        styles.block,
-        props.classReplace,
-        props.classAdd,
+    <Wrapper {...(isDiv ? { className: classBlock } : {})}>
+      <label htmlFor={inputId} className={classLabel}>
+        {label}
+      </label>
+      {textareaProps.readOnly ? (
+        <p id={inputId} className={classTextReadOnly}>
+          {textareaProps.value}
+        </p>
+      ) : (
+        <textarea
+          id={inputId}
+          className={classText}
+          {...textareaProps}
+          rows={rows}
+        />
       )}
-    >
-      <h6
-        className={combineClasses(
-          styles.header,
-          props.labelClassReplace,
-          props.labelClassAdd,
-        )}
-      >
-        {props.label}
-      </h6>
-      <textarea
-        minLength={props.minLength}
-        readOnly={props.readOnly}
-        className={combineClasses(
-          styles.text,
-          props.textClassReplace,
-          props.textClassAdd,
-        )}
-        rows={props.rows ? props.rows : 15}
-        value={props.value}
-        name={props.name}
-        onChange={props.handleChange}
-      />
-    </div>
+    </Wrapper>
   );
 };
