@@ -20,6 +20,10 @@
     gap: 20px;
 }
 
+.main section ul {
+    margin-left:1em;    
+}
+
 .main img {
     margin-top: 20px;
     max-height: 40vh;
@@ -46,7 +50,7 @@
 
 .main p {
     text-align: justify;
-    text-indent: 40px;
+    text-indent: 1.25em;
 }
 
 .main span {
@@ -60,14 +64,14 @@
 }
 
 
-.main li {
-    margin-left: 30px;
+.main section li {
+    margin-left: 1.5em;
     list-style:disc ;
     text-align: left;
     text-indent: 0px;
 }
 
-.main li li {
+.main section li li {
     list-style:circle ;
 }
 

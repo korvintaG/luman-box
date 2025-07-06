@@ -8,9 +8,9 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { SyntheticEvent } from "react";
+import React, { SyntheticEvent } from "react";
 
-export const BasicInstructionsCMS: SimpleComponentType = () => {
+export const BasicInstructionsCMS = React.memo(() => {
   return (
     <>
       <Helmet>
@@ -67,4 +67,4 @@ export const BasicInstructionsCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

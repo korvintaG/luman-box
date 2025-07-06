@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import notban from "../../../../assets/images/notban.png";
@@ -7,7 +8,7 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const NotBanCMS: SimpleComponentType = () => {
+export const NotBanCMS = React.memo(() => {
   return (
     <>
       <Helmet>
@@ -65,4 +66,4 @@ export const NotBanCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

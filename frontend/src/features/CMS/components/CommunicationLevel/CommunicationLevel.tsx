@@ -1,4 +1,5 @@
 import { CMSPath, SimpleComponentType, genCMSPath } from "../../CMSTypes";
+import React from 'react';
 import styles from "../CMS.module.css";
 import access from "../../../../assets/images/access.jpg";
 import {
@@ -7,7 +8,7 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const CommunicationLevelCMS: SimpleComponentType = () => {
+export const CommunicationLevelCMS = React.memo (() => {
   return (
     <>
       <Helmet>
@@ -56,4 +57,4 @@ export const CommunicationLevelCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

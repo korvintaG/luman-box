@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import competition from "../../../../assets/images/Competitione.jpg";
@@ -7,7 +8,8 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const CompetingInterpretationsCMS: SimpleComponentType = () => {
+export const CompetingInterpretationsCMS=React.memo( /*SimpleComponentType*/  () => {
+  console.log(new Date,'CompetingInterpretationsCMS');
   return (
     <>
       <Helmet>
@@ -56,4 +58,4 @@ export const CompetingInterpretationsCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

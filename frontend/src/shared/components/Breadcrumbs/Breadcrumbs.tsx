@@ -93,7 +93,7 @@ export const Breadcrumbs:FC<BreadcrumbsProps>=({breadcrumbElementTypes : bets, h
                         svgString={bd.svg}
                         className={styles.icon}
                 />}
-                <p>{bd.name}</p></Link>
+                {bd.name}</Link>
                 </li>;
             
         })}

@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import likeMindedPeople from "../../../../assets/images/LikeMindedPeople.jpg";
@@ -7,7 +8,7 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const LikeMindedPeopleCMS: SimpleComponentType = () => {
+export const LikeMindedPeopleCMS = React.memo( () => {
   return (
     <>
       <Helmet>
@@ -69,4 +70,4 @@ export const LikeMindedPeopleCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

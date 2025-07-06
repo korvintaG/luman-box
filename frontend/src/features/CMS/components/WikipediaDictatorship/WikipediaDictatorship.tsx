@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import wikibad from "../../../../assets/images/wikibad.jpg";
@@ -7,7 +8,7 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const WikipediaDictatorshipCMS: SimpleComponentType = () => {
+export const WikipediaDictatorshipCMS = React.memo(() => {
   return (
     <>
       <Helmet>
@@ -60,4 +61,4 @@ export const WikipediaDictatorshipCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

@@ -1,3 +1,4 @@
+import React from 'react';
 import { CMSPath, SimpleComponentType, genCMSPath } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import ideanet from "../../../../assets/images/ideanet.jpg";
@@ -8,7 +9,7 @@ import {
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
-export const IdeasNetCMS: SimpleComponentType = () => {
+export const IdeasNetCMS=  React.memo(() => {
   return (
     <>
       <Helmet>
@@ -91,4 +92,4 @@ export const IdeasNetCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

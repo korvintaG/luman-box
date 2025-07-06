@@ -1,11 +1,11 @@
-import { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { ErrorMessageUI } from "../../shared/ui/ErrorMessage/ErrorMessage";
 import { CMSData } from "../../features/CMS/constants/CMSData";
 
-export const CMSPage: FC = () => {
+export const CMSPage:FC=() => {
     const { article } = useParams();
-    const found=CMSData.find(el=>el.name===article)
+    const found=useMemo(()=>CMSData.find(el=>el.name===article),[article]);
     if (found )
         return <found.element/>
     else

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { aboutCardData } from "../../constants/AboutCardData"; 
 import { AboutCard } from "../AboutCard/AboutCard";
 import styles from "./AboutCardsList.module.css";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
  * Страница "о системе"
  */
 
-export const AboutCardsList: FC = () => {
+export const AboutCardsList= React.memo( () => {
   return (
     <div className={styles.main}>
       <ul className={styles.card_list}>
@@ -51,4 +51,4 @@ export const AboutCardsList: FC = () => {
      
     </div>
   );
-};
+});

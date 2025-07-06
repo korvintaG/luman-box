@@ -1,3 +1,4 @@
+import React from 'react';
 import { appRoutesURL, telegramBotURL } from "../../../../app/router/AppRoutesURL";
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
@@ -9,7 +10,7 @@ import {
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
-export const TelegramAuthorizationCMS: SimpleComponentType = () => {
+export const TelegramAuthorizationCMS = React.memo(() => {
   return (
     <>
       <Helmet>
@@ -53,4 +54,4 @@ export const TelegramAuthorizationCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

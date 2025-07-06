@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import premoderation from "../../../../assets/images/premoderation.jpg";
@@ -7,7 +8,7 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const PremoderationCMS: SimpleComponentType = () => {
+export const PremoderationCMS = React.memo(() => {
   return (
     <>
       <Helmet>
@@ -110,4 +111,4 @@ export const PremoderationCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});

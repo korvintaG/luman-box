@@ -11,26 +11,26 @@
     font-weight: bold;
     text-align: left;
     color: var(--title-table-background); 
-    border: 1px solid var(--title-table-background); 
+    background-color: lightskyblue;
+    border-bottom: 1px solid var(--title-table-background); 
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    padding: 2px;
+    padding: 2px 2px 2px 9px;
 }
 
 .table thead th {
-    background: var(--header-table-background);
-    color: white;
+    background: lightskyblue;
+    color: var(--title-table-background); 
     padding: 12px 9px;
     text-align: left;
     font-weight: bold;
-    border: 1px solid var(--title-table-background);             
+    /*border: 1px solid var(--title-table-background);         */    
 }
 
 .table tbody tr {
-    border-bottom: 1px solid #e0e0e0;
-        font-weight: 500;
-        color: #2980b9;
-    border: 1px solid var(--title-table-background);         
+/*    border-bottom: 1px solid #e0e0e0;*/
+    font-weight: 500;
+    color: #2980b9;
 }
 
 .table tbody tr:nth-child(even) {

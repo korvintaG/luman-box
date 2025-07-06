@@ -1,3 +1,4 @@
+import React from 'react';
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import mortimer from "../../../../assets/images/mortimer.jpg";
@@ -7,7 +8,7 @@ import {
 } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import { Helmet } from "react-helmet-async";
 
-export const MortimerAdlerCMS: SimpleComponentType = () => {
+export const MortimerAdlerCMS = React.memo(() => {
   const title = "Принципы Мортимера Адлера по организации дискуссий";
   return (
     <>
@@ -86,4 +87,4 @@ export const MortimerAdlerCMS: SimpleComponentType = () => {
       </div>
     </>
   );
-};
+});
