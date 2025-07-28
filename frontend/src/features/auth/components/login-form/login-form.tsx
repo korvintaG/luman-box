@@ -5,8 +5,7 @@ import { InputEditUI } from "../../../../shared/ui/fields/input-edit/input-edit"
 import { AuthStatus } from "../../store/AuthSlice";
 import { Preloader } from "../../../../shared/ui/Preloader";
 import { ErrorMessageUI } from "../../../../shared/ui/ErrorMessage/ErrorMessage";
-import { ButtonAgreeUI } from "../../../../shared/ui/buttons/button-type-agree";
-import { ButtonAlertUI } from "../../../../shared/ui/buttons/button-type-alert";
+import { ButtonUI } from "../../../../shared/ui/button";
 import styles from "./login-form.module.css";
 import { HTMLEditElement } from "../../../../shared/common-types";
 
@@ -43,7 +42,7 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
       {props.currentUser ? (
         <>
           <h1>Вы вошли как [{`${props.currentUser.name}`}]</h1>
-          <ButtonAlertUI caption="Выйти" />
+          <ButtonUI logicType="alert" caption="Выйти" />
         </>
       ) : (
         <>
@@ -65,7 +64,7 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
               onChange={props.handleChange}
             />
           </section>
-          <ButtonAgreeUI caption="Войти" />
+          <ButtonUI logicType="agree" caption="Войти" />
           <section>
             Вы еще не зарегестрированы в системе?
             <br />

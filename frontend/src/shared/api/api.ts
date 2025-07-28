@@ -48,8 +48,8 @@ export class Api {
       const fetchError = error as FetchError;
 
       return Promise.reject({
-        StatusCode: fetchError.statusCode,
-        message: `${fetchError.statusCode}. ${fetchError.message}`,
+        statusCode: fetchError.statusCode,
+        message: fetchError.message,
       });
     }
   }
@@ -71,18 +71,48 @@ export class Api {
     try {
       return await this.request<T>(endpoint, options);
     } catch (error) {
-      const refreshData = await this.refreshToken();
-      if (!refreshData.success) {
-        return Promise.reject(refreshData);
+      const fetchError = error as FetchError;
+      
+      // Если ошибка не 401, то не пытаемся обновлять токен
+      if (fetchError.statusCode !== 401) {
+        return Promise.reject(fetchError);
       }
-      setCookie("accessToken", refreshData.access_token);
-      return await this.request<T>(endpoint, {
-        ...options,
-        headers: {
-          ...options.headers,
-          Authorization: `Bearer ${getCookie("accessToken")}`,
-        },
-      });
+      
+      try {
+        // Пытаемся обновить токен
+        const refreshData = await this.refreshToken();
+        
+        if (!refreshData.success) {
+          // Если refresh не удался, очищаем cookies
+          setCookie("accessToken", "", { expires: new Date(0) });
+          setCookie("refreshToken", "", { expires: new Date(0) });
+          return Promise.reject({
+            statusCode: 401,
+            message: "Authentication failed. Please login again."
+          });
+        }
+        
+        // Обновляем токен в cookies
+        setCookie("accessToken", refreshData.access_token);
+        
+        // Повторяем исходный запрос с новым токеном
+        return await this.request<T>(endpoint, {
+          ...options,
+          headers: {
+            ...options.headers,
+            Authorization: `Bearer ${refreshData.access_token}`,
+          },
+        });
+      } catch (refreshError) {
+        // Если refresh токен тоже не работает, очищаем cookies
+        setCookie("accessToken", "", { expires: new Date(0) });
+        setCookie("refreshToken", "", { expires: new Date(0) });
+        
+        return Promise.reject({
+          statusCode: 401,
+          message: "Session expired. Please login again."
+        });
+      }
     }
   };
 }

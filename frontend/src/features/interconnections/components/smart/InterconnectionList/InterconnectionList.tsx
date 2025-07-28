@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { InterconnectionTypeInfo } from "../../../InterconnectionTypes";
 
 import styles from "./InterconnectionList.module.css";
-import { ButtonAddUI } from "../../../../../shared/ui/buttons/button-add";
+import { ButtonUI } from "../../../../../shared/ui/button";
 import { useInterconnectionList } from "../../../hooks/UseInterconnectionList";
 import { IdeasTable } from "../../ui/IdeasTable/IdeasTable";
 import { Preloader } from "../../../../../shared/ui/Preloader";
@@ -69,10 +69,11 @@ export const InterconnectionList: FC<InterconnectionListProps> = ({
             ideas={interconnections.interconnections_reverse}
           />
           {!readOnly && (
-            <ButtonAddUI
-              classAdd={styles.button_add}
+            <ButtonUI
+              logicType="add"
+              // className={styles.button_add} 
               caption="Добавить взаимосвязь"
-              action={() => addNewInterconnection(true)}
+              onClick={() => addNewInterconnection(true)}
             />
           )}
         </section>
@@ -85,10 +86,11 @@ export const InterconnectionList: FC<InterconnectionListProps> = ({
             ideas={interconnections.interconnections_direct}
           />
           {!readOnly && (
-            <ButtonAddUI
-              classAdd={styles.button_add}
+            <ButtonUI
+              logicType="add"
+              // className={styles.button_add}
               caption="Добавить взаимосвязь"
-              action={() => addNewInterconnection(false)}
+              onClick={() => addNewInterconnection(false)}
             />
           )}
         </section>

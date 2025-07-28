@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import { FC, SyntheticEvent } from "react";
 import { ReactComponent as CloseIcon } from "../../../../assets/images/close-icon.svg";
 import styles from "./MsgErrorModal.module.css";
-import { ButtonAlertUI } from "../../buttons/button-type-alert";
+import { ButtonUI } from "../../button";
 
 export type MsgErrorModalUIProps = {
   message: string;
@@ -35,7 +35,7 @@ export const MsgErrorModalUI: FC<MsgErrorModalUIProps> = (props) => {
       </button>
       <p className={styles.error}>{props.message}</p>
       <div className={styles.buttons}>
-        <ButtonAlertUI action={yesAction} caption="OK" />
+        <ButtonUI logicType="alert" onClick={yesAction} caption="OK" />
       </div>
     </Modal>
   );

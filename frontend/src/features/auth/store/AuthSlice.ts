@@ -92,6 +92,8 @@ const authSlice = createSlice({
       .addCase(getUser.rejected, (state, action) => {
         state.status = AuthStatus.FailedGetUser;
         state.error = action.error.message!;
+        state.currentUser = null;
+        state.currentLogin = null;
       })
       .addCase(logout.pending, (state) => {
         state.error = "";

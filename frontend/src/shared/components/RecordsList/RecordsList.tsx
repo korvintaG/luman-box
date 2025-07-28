@@ -1,12 +1,11 @@
 import { FC, SyntheticEvent, useRef } from "react";
 import clsx from "clsx";
-import { ButtonAddUI } from "../../ui/buttons/button-add"; 
+import { ButtonUI } from "../../ui/button"; 
 import styles from "./RecordsList.module.css";
 import { Preloader } from "../../ui/Preloader";
 import { RequestStatus } from "../../common-types";
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
 import { Breadcrumb, BreadcrumbSimpeType, Breadcrumbs } from "../Breadcrumbs/Breadcrumbs";
-import { ButtonBackUI } from "../../ui/buttons/button-type-back";
 import { useNavigate } from "react-router-dom";
 
 export type RecordListProps = {
@@ -72,12 +71,13 @@ export const RecordsList: FC<RecordListProps> = (
           {props.children}
         </ul>
       )}
-      {props.addRecord && <ButtonAddUI
-        action={props.addRecord}
+      {props.addRecord && <ButtonUI
+        logicType="add"
+        onClick={props.addRecord}
         disabled={props.readOnly}
         caption={props.captionAddButton}
       />}
-      {props.showBackButton && <ButtonBackUI caption="Назад" action={back} />}
+      {props.showBackButton && <ButtonUI logicType="back" onClick={back} caption="Назад" />}
       </div>
   );
 };

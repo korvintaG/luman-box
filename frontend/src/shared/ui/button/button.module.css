@@ -1,0 +1,76 @@
+.button {
+    min-width: 200px;
+    max-width: 250px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    flex: 1 1 auto; /* Гибкость кнопок для адаптивности */    
+  }
+  
+ .button:disabled {
+    background-color:lightgray;
+    color: white;
+ }
+
+.button:enabled:active {
+     transform: scale(0.95);
+}
+
+.button-agree {
+   background-color: #28a745; /* Зеленый цвет */
+   color: white;
+ }
+ 
+ .button-agree:hover {
+   background-color: #218838;
+ }
+
+.button-add {
+   background-color: #28a745; /* Зеленый цвет */
+   color: white;
+}
+ 
+.button-add:hover {
+   background-color: #218838;
+}
+
+
+ .button-alert {
+   background-color: #dc3545; /* Красный цвет */
+   color: white;
+}
+
+.button-alert:hover {
+   background-color: #c82333;
+}
+
+.button-back {
+   background-color: #6c757d; /* Серый цвет */
+   color: white;
+}
+
+.button-back:hover {
+   background-color: #5a6268;
+}
+
+.button-moderate-approve {
+   background-color: #17a2b8; /* Голубой цвет */
+   color: white;
+}
+
+.button-moderate-approve:hover {
+   background-color: #138496;
+}
+
+.button-moderate-reject {
+      background-color: #ffc107; /* Желтый цвет */
+      color: black;
+}
+
+.button-moderate-reject:hover {
+      background-color: #e0a800;
+}

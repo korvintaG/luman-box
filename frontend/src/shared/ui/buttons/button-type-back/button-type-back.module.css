@@ -1,9 +1,0 @@
-  /* Стили для кнопки "Назад" */
-.button {
-    background-color: #6c757d; /* Серый цвет */
-    color: white;
-}
-
-.button:hover {
-    background-color: #5a6268;
-}

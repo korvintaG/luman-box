@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent } from "react";
-import { ButtonUI } from "../buttons/button-type"; 
+import { ButtonUI } from "../button"; 
 import styles from "./ErrorMessage.module.css";
 
 export type ErrorMessageUIProps = {
@@ -25,7 +25,7 @@ export const ErrorMessageUI: FC<ErrorMessageUIProps> = ({
           <h2 className={styles.title_error}>{errorTitle}</h2>
         ) : null}
         <p className={styles.error}>{error}</p>
-        <ButtonUI caption={okCaption ? okCaption : "OK"} action={okAction} />
+        <ButtonUI caption={okCaption ? okCaption : "OK"} onClick={okAction} />
       </section>
     );
 };

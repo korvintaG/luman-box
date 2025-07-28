@@ -27,27 +27,43 @@ export class FilesService {
     };
   }
 
+  async deleteImage(image: string) {
+    if (image) {
+      const delFile = join(STORE_FILE_PATH(), image)
+      await unlink(delFile)
+    }
+  }
+
+  async renameImage(newImage: string, prefix: string) {
+    const prefixedFileName = prefix + newImage;
+    const newFileName = join(UPLOAD_FILE_PATH(), newImage);
+    const storedNewFileName = join(STORE_FILE_PATH(), prefixedFileName);
+    await safeRename(newFileName, storedNewFileName);
+    return prefixedFileName
+  }
+
   async updateRecordImage(oldImage: string | null, newImage: string | null, prefix: string) {
     let returnImage = '';
     if (newImage !== oldImage) { // мучать фото
+      //console.log(`updateRecordImage`,oldImage,newImage,prefix);
       if (!newImage) {// удаление фото
-        if (oldImage) { // было ли?
-          const delFile = join(STORE_FILE_PATH(), oldImage)
-          await unlink(delFile)
-        }
+        //console.log(`updateRecordImage delete`);
+        await this.deleteImage(oldImage);
         returnImage = null;
       }
-      else
-        if (!oldImage) {// назначение фото 
-          const prefixedFileName = prefix + newImage;
-          const newFileName = join(UPLOAD_FILE_PATH(), newImage);
-          const storedNewFileName = join(STORE_FILE_PATH(), prefixedFileName);
-          await safeRename(newFileName, storedNewFileName);
-          returnImage = prefixedFileName
+      else {
+        if (!oldImage) {// назначение нового фото 
+          returnImage = await this.renameImage(newImage, prefix);
         }
+        else { // замена фото
+          await this.deleteImage(oldImage);
+          returnImage = await this.renameImage(newImage, prefix);
+        }
+      }
     }
     else
       returnImage = oldImage;
+
     return returnImage;
   }
 

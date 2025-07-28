@@ -2,6 +2,7 @@ import { FileFilterCallback, diskStorage } from 'multer';
 import { Request } from 'express';
 import { extname } from 'path';
 import { UPLOAD_FILE_PATH, calcFilesByMask, getFileNamePrefix } from './utils';
+import { ConfigService } from '@nestjs/config';
 
 export const multerConfig = {
     storage: diskStorage({
@@ -30,6 +31,9 @@ export const multerConfig = {
         })();
     },
     limits: {
-        fileSize: 1024 * 1024 * 0.5, // 0.5MB
+        fileSize: (() => {
+            const configService = new ConfigService();
+            return configService.get<number>('MAX_FILE_SIZE_MB', 1) * 1024 * 1024; // По умолчанию 1MB
+        })(),
     },
 };

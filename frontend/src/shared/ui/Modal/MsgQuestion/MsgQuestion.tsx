@@ -1,7 +1,6 @@
 import Modal from "react-modal";
 import { FC, SyntheticEvent } from "react";
-import { ButtonAgreeUI } from "../../buttons/button-type-agree"; 
-import { ButtonAlertUI } from "../../buttons/button-type-alert"; 
+import { ButtonUI, LogicButtonType } from "../../button"; 
 import { ReactComponent as CloseIcon } from "../../../../assets/images/close-icon.svg";
 import styles from "./MsgQuestion.module.css";
 
@@ -12,17 +11,13 @@ export type MsgQuestionUIProps = {
   yesIsAlert?: boolean;
 };
 
-const components = {
-  agree: ButtonAgreeUI,
-  alert: ButtonAlertUI,
-};
-
 export const MsgQuestionUI: FC<MsgQuestionUIProps> = (props) => {
-  let YesBtnComp = components.agree;
-  let NoBtnComp = components.alert;
+  let yesLogicType: LogicButtonType = "agree";
+  let noLogicType: LogicButtonType = "alert";
+  
   if (props.yesIsAlert) {
-    YesBtnComp = components.alert;
-    NoBtnComp = components.agree;
+    yesLogicType = "alert";
+    noLogicType = "agree";
   }
 
   const yesAction = (e: SyntheticEvent) => {
@@ -54,8 +49,8 @@ export const MsgQuestionUI: FC<MsgQuestionUIProps> = (props) => {
       </button>
       <p className={styles.question}>{props.question}</p>
       <div className={styles.buttons}>
-        <YesBtnComp action={yesAction} caption="Да" />
-        <NoBtnComp action={noAction} caption="Нет" />
+        <ButtonUI logicType={yesLogicType} onClick={yesAction} caption="Да" />
+        <ButtonUI logicType={noLogicType} onClick={noAction} caption="Нет" />
       </div>
     </Modal>
   );

@@ -1,8 +1,6 @@
 import { FC, SyntheticEvent, useEffect } from "react";
 import styles from "./RecordControlBlock.module.css";
-import { ButtonAgreeUI } from "../../ui/buttons/button-type-agree";
-import { ButtonAlertUI } from "../../ui/buttons/button-type-alert";
-import { ButtonBackUI } from "../../ui/buttons/button-type-back";
+import { ButtonUI } from "../../ui/button";
 import { useLocation, useNavigate, Route } from "react-router-dom";
 import {
   EditAccessStatus,
@@ -87,14 +85,15 @@ export const RecordControlBlock: FC<RecordControlBlockProps> = (props) => {
       <div
         className={props.blockClass ? props.blockClass : styles["button-block"]}
       >
-        <ButtonBackUI caption="Назад" action={back} />
+        <ButtonUI logicType="back" onClick={back} caption="Назад" />
         {props.editAccessStatus !== EditAccessStatus.Readonly && (
           <>
-            <ButtonAgreeUI caption={saveCaption} />
+            <ButtonUI logicType="agree" caption={saveCaption} />
             {props.id && (
-              <ButtonAlertUI
+              <ButtonUI
+                logicType="alert"
                 caption={"Удалить запись"}
-                action={msgDeleteHook.openDialog}
+                onClick={msgDeleteHook.openDialog}
               />
             )}
           </>

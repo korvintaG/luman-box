@@ -12,6 +12,8 @@ import { TextTelegram } from "../components/AboutCardListTexts/TextTeleram/TextT
 import { TextLikeMindedPeople } from "../components/AboutCardListTexts/TextLikeMindedPeople/TextLikeMindedPeople";
 import { TextNotBanned } from "../components/AboutCardListTexts/TextNotBanned/TextNotBanned";
 import { TextCompetingInterpretations } from "../components/AboutCardListTexts/TextCompetingInterpretations/TextCompetingInterpretations";
+import AboutUsIcon from "../../../shared/ui/icons/AboutUsIcon/AboutUsIcon";
+import { TextAboutUs } from "../components/AboutCardListTexts/TextAboutUs/TextAboutUs";
 
 /**
  * Данные для карточек - нюансов о системе
@@ -19,41 +21,48 @@ import { TextCompetingInterpretations } from "../components/AboutCardListTexts/T
 export const aboutCardData: IAboutCard[] = [
   {
     id: 1,
-    title: 'Публичная сеть идей',
+    title: 'О нас',
+    titleURL: genCMSPath(CMSPath.AboutUs),
+    text: TextAboutUs,
+    icon: AboutUsIcon,
+  },
+  {
+    id: 2,
+    title: 'О проекте',
     titleURL: genCMSPath(CMSPath.IdeasNet),
     text: TextPublicIdeaNet,
     icon: IdeasNetworkIcon,
   },
   {
-    id: 2,
+    id: 3,
     title: 'Премодерация',
     titleURL: genCMSPath(CMSPath.Premoderation),
     text: TextPremoderation,
     icon: CogManIcon,
   },
   {
-    id: 3,
+    id: 4,
     title: 'Конкурирующие интерпретации',
     titleURL: genCMSPath(CMSPath.CompetingInterpretations),
     text: TextCompetingInterpretations,
     icon: TugOfWarIcon,
   },
   {
-    id: 4,
+    id: 5,
     title: 'Регистрация через Telegram',
     titleURL: genCMSPath(CMSPath.TelegramAuthorization),
     text: TextTelegram,
     icon: TelegramIcon,
   },
   {
-    id: 5,
+    id: 6,
     title: 'Поиск единомышленников',
     titleURL: genCMSPath(CMSPath.LikeMindedPeople),
     text: TextLikeMindedPeople,
     icon: TeamWorkIcon,
   },
   {
-    id: 6,
+    id: 7,
     title: 'Нет банов!',
     titleURL: genCMSPath(CMSPath.NotBan),
     text: TextNotBanned,

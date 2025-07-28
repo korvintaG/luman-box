@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent, useId, useRef } from "react";
 import styles from "./RecordImage.module.css";
 import { RequestStatus } from "../../common-types";
-import { ButtonAlertUI } from "../../ui/buttons/button-type-alert";
+import { ButtonUI } from "../../ui/button";
 
 export const STORE_FILE_PATH =
   process.env.REACT_APP_IMAGE_URL! +
@@ -41,6 +41,10 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
     }
   };
 
+  const handleUploadClick = () => {
+    fileRef.current?.click();
+  };
+
   if (!src && props.readOnly)
     return null;
 
@@ -49,24 +53,25 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
       {src && <img src={src} />}
       {!props.readOnly && (
         <div className={styles.control}>
-          <label htmlFor={id} className={styles.label}>
-            <input
-              id={id}
-              ref={fileRef}
-              className={styles.hidden}
-              onChange={handleFileChange}
-              type="file"
-            />
-            <div className={styles.buttons}>
-              <div role="button" className={styles.button}>
-                Загрузить фото
-              </div>
-            </div>
-          </label>
+          <input
+            id={id}
+            ref={fileRef}
+            className={styles.hidden}
+            onChange={handleFileChange}
+            type="file"
+          />
+
+          <ButtonUI
+            type="button"
+            logicType="add"
+            caption="Загрузить фото"
+            onClick={handleUploadClick}
+          />
           {src && (
-            <ButtonAlertUI
-              classReplace={styles.button_del}
-              action={(e) => props.deleteImage()}
+            <ButtonUI
+              logicType="alert"
+              // className={styles.button_del}
+              onClick={(e) => props.deleteImage()}
               caption="Удалить фото"
             />
           )}

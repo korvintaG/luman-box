@@ -23,7 +23,8 @@ export enum CMSPath {
     TelegramAuthorization='Telegram_Authorization',
     WikipediaDictatorship='Wikipedia_Dictatorship',
     NotBan='Not_Ban',
-    IdeasNet='Ideas_Net'
+    IdeasNet='Ideas_Net',
+    AboutUs='About_Us'
 }
 
 export const genCMSPath= (article: CMSPath) : string =>{

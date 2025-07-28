@@ -1,0 +1,16 @@
+import { Request, Response, NextFunction } from 'express';
+import { ConfigService } from '@nestjs/config';
+
+export function requestSizeLimitMiddleware(req: Request, res: Response, next: NextFunction) {
+  const configService = new ConfigService();
+  const maxRequestSize = configService.get<number>('MAX_REQUEST_SIZE_KB', 100) * 1024; // По умолчанию 100KB
+  
+  // Лимит тела запроса
+  const contentLength = parseInt(req.headers['content-length'] || '0');
+  if (contentLength > maxRequestSize) {
+    return res.status(413).json({
+      message: `Request entity too large. Maximum size is ${configService.get('MAX_REQUEST_SIZE_KB', 100)}KB.`
+    });
+  }
+  next();
+} 
