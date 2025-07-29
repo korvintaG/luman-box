@@ -2,6 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { ConfigService } from '@nestjs/config';
 
 export function requestSizeLimitMiddleware(req: Request, res: Response, next: NextFunction) {
+  // Пропускаем webhook-запросы от Telegram
+  if (req.path.includes('/telegram') || req.headers['x-telegram-bot-api-secret-token']) {
+    return next();
+  }
+  
   const configService = new ConfigService();
   const maxRequestSize = configService.get<number>('MAX_REQUEST_SIZE_KB', 100) * 1024; // По умолчанию 100KB
   

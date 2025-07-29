@@ -13,6 +13,17 @@ export class ServerErrorExceptionFilter implements ExceptionFilter {
 
     let ctx = host.switchToHttp();
     let res = ctx.getResponse();
+    
+    // Проверяем, что это HTTP контекст и res имеет метод status
+    if (!res || typeof res.status !== 'function') {
+      console.error('ServerErrorExceptionFilter: res.status is not a function', {
+        exception: errMsg,
+        stack: errStack,
+        context: 'non-http-context'
+      });
+      return;
+    }
+    
     if (exception instanceof HttpException) {
       res.status(exception.getStatus()).json(exception.getResponse());
       return;
