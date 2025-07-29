@@ -9,6 +9,7 @@ import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { RateLimitInterceptor } from './interceptors/rate-limit.interceptor';
 import { requestSizeLimitMiddleware } from './middleware/request-size-limit.middleware';
 import { ConfigService } from '@nestjs/config';
+import { Request, Response, NextFunction } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -33,8 +34,17 @@ async function bootstrap() {
   app.enableCors({ origin: true, credentials: true });
   //["http://localhost:3006","192.168.50.151"]
   
-  // Настройка лимитов запросов
-  app.use(requestSizeLimitMiddleware);
+  // Настройка лимитов запросов (исключаем Telegram webhook)
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    // Пропускаем Telegram webhook запросы
+    if (req.path?.includes('/telegram') || 
+        req.headers['x-telegram-bot-api-secret-token'] || 
+        req.headers['user-agent']?.includes('TelegramBot') ||
+        req.headers['content-type']?.includes('application/json')) {
+      return next();
+    }
+    return requestSizeLimitMiddleware(req, res, next);
+  });
   
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
   app.useGlobalFilters(new ServerErrorExceptionFilter());

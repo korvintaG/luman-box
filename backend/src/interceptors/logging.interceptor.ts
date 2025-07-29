@@ -138,16 +138,17 @@ export class LoggingInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest<Request>();
     const response = context.switchToHttp().getResponse<Response>();
     
-    // Пропускаем Telegram webhook запросы
-    const userAgent = request.get('User-Agent') || '';
+    // Пропускаем Telegram webhook запросы и JSON запросы
     if (request.path?.includes('/telegram') || 
         request.headers['x-telegram-bot-api-secret-token'] || 
-        userAgent.includes('TelegramBot')) {
+        request.headers['user-agent']?.includes('TelegramBot') ||
+        request.headers['content-type']?.includes('application/json')) {
       return next.handle();
     }
     
     const start = Date.now();
     const { method, originalUrl, ip } = request;
+    const userAgent = request.get('User-Agent') || '';
     
     // Логируем входящий запрос в консоль
     this.logger.log(`${method} ${originalUrl} - ${ip} - ${userAgent}`);
