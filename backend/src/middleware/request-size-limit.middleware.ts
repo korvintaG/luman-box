@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 export function requestSizeLimitMiddleware(req: Request, res: Response, next: NextFunction) {
   // Пропускаем webhook-запросы от Telegram
-  if (req.path.includes('/telegram') || req.headers['x-telegram-bot-api-secret-token']) {
+  if (req.path.includes('/telegram') || req.headers['x-telegram-bot-api-secret-token'] || req.headers['user-agent']?.includes('TelegramBot')) {
     return next();
   }
   
