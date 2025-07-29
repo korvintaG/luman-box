@@ -2,6 +2,7 @@ import { CMS, CMSPath } from "../CMSTypes";
 import { BasicInstructionsCMS } from "../components/BasicInstructions/BasicInstructions";
 import { CommunicationLevelCMS } from "../components/CommunicationLevel/CommunicationLevel";
 import { CompetingInterpretationsCMS } from "../components/CompetingInterpretations/CompetingInterpretations";
+import { FrameworkCMS } from "../components/Framework/Framework";
 import { IdeasNetCMS } from "../components/IdeasNet/IdeasNet";
 import { LikeMindedPeopleCMS } from "../components/LikeMindedPeople/LikeMindedPeople";
 import { MortimerAdlerCMS } from "../components/MortimerAdler/MortimerAdler";
@@ -57,6 +58,10 @@ export const CMSData: CMS[] = [
     {
         name: CMSPath.NotBan,
         element: NotBanCMS
+    },
+    {
+        name: CMSPath.Framework,
+        element: FrameworkCMS
     },
 ]
 

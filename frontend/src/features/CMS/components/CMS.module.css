@@ -48,6 +48,12 @@
     gap: 10px;
 }
 
+.listHeader {
+    display: inline;
+    text-align: justify;
+    text-indent: 1.25em;
+}
+
 .main p {
     text-align: justify;
     text-indent: 1.25em;

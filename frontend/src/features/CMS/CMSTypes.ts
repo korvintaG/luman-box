@@ -24,7 +24,8 @@ export enum CMSPath {
     WikipediaDictatorship='Wikipedia_Dictatorship',
     NotBan='Not_Ban',
     IdeasNet='Ideas_Net',
-    AboutUs='About_Us'
+    AboutUs='About_Us',
+    Framework='Framework'
 }
 
 export const genCMSPath= (article: CMSPath) : string =>{
