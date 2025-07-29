@@ -36,6 +36,11 @@ async function bootstrap() {
   
   // Настройка лимитов запросов (исключаем Telegram webhook)
   app.use((req: Request, res: Response, next: NextFunction) => {
+    // Проверяем, что request существует и имеет необходимые свойства
+    if (!req || !req.headers || typeof req.get !== 'function') {
+      return next();
+    }
+    
     // Пропускаем Telegram webhook запросы
     if (req.path?.includes('/telegram') || 
         req.headers['x-telegram-bot-api-secret-token'] || 

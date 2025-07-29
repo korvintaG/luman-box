@@ -19,6 +19,11 @@ export class RateLimitInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest<Request>();
     
+    // Проверяем, что request существует и имеет необходимые свойства
+    if (!request || !request.headers || typeof request.get !== 'function') {
+      return next.handle();
+    }
+    
     // Пропускаем Telegram webhook запросы и JSON запросы
     if (request.path?.includes('/telegram') || 
         request.headers['x-telegram-bot-api-secret-token'] || 
