@@ -24,14 +24,14 @@ export class TelegramSessionsService {
   async create(createUserDto: CreateTelegramSessionsDto): Promise<TelegramSessions> {
     console.log('TelegramSessionsService create createUserDto=', createUserDto);
     const res = await this.saveUser(createUserDto);
-    console.log('TelegramSessionsService create SUPERADMIN_USER_ID=', this.configService.get('SUPERADMIN_USER_ID'));
-    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id=${res.chat_id}`);
     return res;
   }
 
-  saveUser(user: Partial<TelegramSessions>) {
+  async saveUser(user: Partial<TelegramSessions>) {
     console.log('TelegramSessionsService saveUser', user);
-    return this.telegramSessionsRepository.save(this._genUser(user));
+    console.log('TelegramSessionsService saveUser SUPERADMIN_USER_ID=', this.configService.get('SUPERADMIN_USER_ID'));
+    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id=${user.chat_id}`);
+    return await this.telegramSessionsRepository.save(this._genUser(user));
   }
 
   findByChatId(chat_id: string) {
