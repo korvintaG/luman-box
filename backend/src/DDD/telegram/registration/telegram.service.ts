@@ -17,24 +17,30 @@ export class TelegramSessionsService {
   ) {}
 
   private _genUser(user: Partial<TelegramSessions>) {
+    console.log('TelegramSessionsService _genUser', user);
     return plainToInstance(TelegramSessions, user);
   }
 
   async create(createUserDto: CreateTelegramSessionsDto): Promise<TelegramSessions> {
+    console.log('TelegramSessionsService create createUserDto=', createUserDto);
     const res = await this.saveUser(createUserDto);
-    this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый пользователь chat_id=${res.chat_id} с id ${res.id}`);
+    console.log('TelegramSessionsService create SUPERADMIN_USER_ID=', this.configService.get('SUPERADMIN_USER_ID'));
+    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id=${res.chat_id}`);
     return res;
   }
 
   saveUser(user: Partial<TelegramSessions>) {
+    console.log('TelegramSessionsService saveUser', user);
     return this.telegramSessionsRepository.save(this._genUser(user));
   }
 
   findByChatId(chat_id: string) {
+    console.log('TelegramSessionsService findByChatId', chat_id);
     return this.telegramSessionsRepository.findOneBy({ chat_id: chat_id });
   }
 
   findNameCaseInsensitive(name: string) {
+    console.log('TelegramSessionsService findNameCaseInsensitive', name);
     return this.telegramSessionsRepository.findBy({
       name: ILike(name),
     });
