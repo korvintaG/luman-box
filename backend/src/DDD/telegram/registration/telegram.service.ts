@@ -29,9 +29,10 @@ export class TelegramSessionsService {
 
   async saveUser(user: Partial<TelegramSessions>) {
     console.log('TelegramSessionsService saveUser', user);
-    console.log('TelegramSessionsService saveUser SUPERADMIN_USER_ID=', this.configService.get('SUPERADMIN_USER_ID'));
-    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id=${user.chat_id}`);
-    return await this.telegramSessionsRepository.save(this._genUser(user));
+    const userObj=this._genUser(user);
+    console.log('TelegramSessionsService saveUser SUPERADMIN_USER_ID=', this.configService.get('SUPERADMIN_USER_ID'),userObj);
+    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id=${userObj.chat_id}`);
+    return await this.telegramSessionsRepository.save(userObj);
   }
 
   findByChatId(chat_id: string) {
