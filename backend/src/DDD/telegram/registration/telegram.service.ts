@@ -18,22 +18,40 @@ export class TelegramSessionsService {
 
   private _genUser(user: Partial<TelegramSessions>) {
     console.log('TelegramSessionsService _genUser', user);
-    return plainToInstance(TelegramSessions, user);
+    
+    // Проверяем, что входные данные не пустые
+    if (!user || Object.keys(user).length === 0) {
+      console.error('TelegramSessionsService _genUser: empty or invalid input data', user);
+      return null;
+    }
+    
+    try {
+      const instance = plainToInstance(TelegramSessions, user);
+      console.log('Created instance:', instance);
+      return instance;
+    } catch (error) {
+      console.error('TelegramSessionsService _genUser: error creating instance', error);
+      return null;
+    }
   }
 
   async create(createUserDto: CreateTelegramSessionsDto): Promise<TelegramSessions> {
     console.log('TelegramSessionsService create createUserDto=', createUserDto);
     const res = await this.saveUser(createUserDto);
+    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id ${JSON.stringify(createUserDto, null, 2)}`);
     return res;
   }
 
   async saveUser(user: Partial<TelegramSessions>) {
-    console.log('TelegramSessionsService saveUser', user);
-    const userObj=this._genUser(user);
-    console.log('TelegramSessionsService saveUser SUPERADMIN_USER_ID=', this.configService.get('SUPERADMIN_USER_ID'),userObj);
-    const res=await this.telegramSessionsRepository.save(userObj);
-    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id=${res.chat_id}`);
-    return res;
+    const userInstance = this._genUser(user);
+    
+    // Проверяем, что userInstance не null/undefined
+    if (!userInstance) {
+      throw new Error('Failed to create TelegramSessions instance from input data');
+    }
+    
+    console.log('Chat ID:', userInstance.chat_id); // Теперь безопасно
+    return this.telegramSessionsRepository.save(userInstance);
   }
 
   findByChatId(chat_id: string) {
