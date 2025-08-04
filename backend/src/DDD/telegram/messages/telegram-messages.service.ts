@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, MoreThan } from 'typeorm';
 import { TelegramMessage } from './entities/telegram-message.entity';
 import { Telegraf } from 'telegraf';
 import { UsersService } from '../../users/users.service';
@@ -70,6 +70,27 @@ export class TelegramMessagingService implements OnModuleInit {
       );
       return;
     }
+
+    // Проверяем, есть ли дублирующее сообщение за последний час
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const existingMessage = await this.telegramMessageRepository.findOne({
+      where: {
+        user_id: userId,
+        text: text,
+        date_time_create: MoreThan(oneHourAgo),
+      },
+    });
+
+    if (existingMessage) {
+      customLog(
+        'TelegramMessage',
+        '',
+        '',
+        `Дублирующее сообщение для пользователя id:${userId} не будет отправлено (найдено сообщение id:${existingMessage.id} за последний час)`,
+      );
+      return;
+    }
+
     const message = new TelegramMessage();
     message.text = text;
     message.user_id = userId;

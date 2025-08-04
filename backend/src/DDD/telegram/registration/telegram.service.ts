@@ -52,7 +52,7 @@ export class TelegramSessionsService {
     //console.log('Chat ID:', userInstance.chat_id); // Теперь безопасно
     await this.messageService.sendMessage(
       this.configService.get('SUPERADMIN_USER_ID'), 
-      `Добавлен новый chat_id ${userInstance.chat_id}`
+      `Добавлена или обновлена запись о пользователе с chat_id ${userInstance.chat_id}`
     );
 
     return this.telegramSessionsRepository.save(userInstance);
