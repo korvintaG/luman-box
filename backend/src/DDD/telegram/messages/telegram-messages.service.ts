@@ -51,18 +51,17 @@ export class TelegramMessagingService implements OnModuleInit {
    * Добавляет сообщение в базу данных для последующей его обработки в очереди сообщений (функция handleTelegramMsgQueue)
    */
   async sendMessage(userId: number, text: string): Promise<void> {
-    const message = new TelegramMessage();
-    message.text = text;
-    message.user_id = userId;
-    await this.telegramMessageRepository.save(message);
     const user = await this.usersDB.findOne(userId);
-    const chatId = user.chat_id;
-
-    //если у user нет chat_id
-    if (!chatId) {
-      await this.telegramMessageRepository.update(message.id, {
-        status: 2,
-      });
+    if (!user) {
+      customLog(
+        'TelegramMessage',
+        '',
+        '',
+        `Попытка отправить сообщение пользователю id:${userId}, которого нет в базе данных`,
+      );
+      return;
+    }
+    if (!user.chat_id) {
       customLog(
         'TelegramMessage',
         '',
@@ -71,10 +70,11 @@ export class TelegramMessagingService implements OnModuleInit {
       );
       return;
     }
-    message.chat_id = chatId;
-    await this.telegramMessageRepository.update(message.id, {
-      chat_id: chatId,
-    });
+    const message = new TelegramMessage();
+    message.text = text;
+    message.user_id = userId;
+    message.chat_id = user.chat_id;
+    await this.telegramMessageRepository.save(message);
   }
 
   /**
@@ -112,52 +112,36 @@ export class TelegramMessagingService implements OnModuleInit {
       // Отправляем каждое сообщение
       for (const message of messages) {
         //если не задан chat_id сообщения
-        if (!message.chat_id) {
-          //ищем в базе chat_id по user_id
-          const databaseUser = await this.usersDB.findOne(message.user_id);
-          message.chat_id = databaseUser.chat_id;
-          //если у databaseUser нет chat_id
-          if (!message.chat_id) {
+        if (message.chat_id) {
+          //если у пользователя есть chat_id и chat_id добавлен в таблицу telegram_messages
+          try {
+            const telegramMessage = await this.bot.telegram.sendMessage(
+              message.chat_id,
+              message.text,
+            );
             await this.telegramMessageRepository.update(message.id, {
-              status: 2,
+              status: 1,
+              chat_id: message.chat_id,
+              date_time_send: () => `to_timestamp(${telegramMessage.date})`,
             });
             customLog(
               'TelegramMessage',
               '',
               '',
-              `Попытка добавить в очередь сообщение пользователю id:${message.user_id}, у которого нет chat_id`,
+              `Сообщение id: ${message.id}, text: ${message.text} отправлено пользователю id: ${message.user_id}`,
             );
-            return;
+          } catch (e) {
+            await this.telegramMessageRepository.update(message.id, {
+              status: 2,
+              chat_id: message.chat_id,
+            });
+            customLog(
+              'TelegramMessage',
+              '',
+              '',
+              `Сообщение id: ${message.id} пользователю id: ${message.user_id} не отправлено`,
+            );
           }
-        }
-        //если у пользователя есть chat_id и chat_id добавлен в таблицу telegram_messages
-        try {
-          const telegramMessage = await this.bot.telegram.sendMessage(
-            message.chat_id,
-            message.text,
-          );
-          await this.telegramMessageRepository.update(message.id, {
-            status: 1,
-            chat_id: message.chat_id,
-            date_time_send: () => `to_timestamp(${telegramMessage.date})`,
-          });
-          customLog(
-            'TelegramMessage',
-            '',
-            '',
-            `Сообщение id: ${message.id}, text: ${message.text} отправлено пользователю id: ${message.user_id}`,
-          );
-        } catch (e) {
-          await this.telegramMessageRepository.update(message.id, {
-            status: 2,
-            chat_id: message.chat_id,
-          });
-          customLog(
-            'TelegramMessage',
-            '',
-            '',
-            `Сообщение id: ${message.id} пользователю id: ${message.user_id} не отправлено`,
-          );
         }
       }
     } catch (e) {

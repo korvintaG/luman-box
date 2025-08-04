@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User } from './entities/user.entity';
+import { TelegramMessagingModule } from '../telegram/messages/telegram-messages.module';
+import { ConfigModule } from '@nestjs/config';
 //import { AuthService } from '../../guards/auth.service';
 
 @Module({

@@ -23,6 +23,8 @@ import {
   onStartOrMenuCommand,
   updateMessageState,
 } from '../utils';
+import { TelegramMessagingService } from '../../messages/telegram-messages.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 @Scene(ScenesNames.REGISTRATION)
@@ -31,6 +33,8 @@ export class RegistrationScene {
     private telegramUsersDB: TelegramSessionsService,
     private usersDB: UsersService,
     private authService: AuthService,
+    private messageService: TelegramMessagingService,
+    private configService: ConfigService,
   ) {}
 
   /**
@@ -154,6 +158,10 @@ export class RegistrationScene {
       );
       const authUser = await this.authService.register(ctx.session[chatId]);
       if (authUser.success) {
+        await this.messageService.sendMessage(
+          this.configService.get('SUPERADMIN_USER_ID'), 
+          `Создан новый пользователь ${ctx.session[chatId].name} с chat_id ${ctx.session[chatId].chat_id}`
+        );
         customLog(
           'TelegramBot',
           chatId,

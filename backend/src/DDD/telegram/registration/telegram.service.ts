@@ -38,7 +38,6 @@ export class TelegramSessionsService {
   async create(createUserDto: CreateTelegramSessionsDto): Promise<TelegramSessions> {
     console.log('TelegramSessionsService create createUserDto=', createUserDto);
     const res = await this.saveUser(createUserDto);
-    await this.messageService.sendMessage(this.configService.get('SUPERADMIN_USER_ID'), `Добавлен новый chat_id ${JSON.stringify(createUserDto, null, 2)}`);
     return res;
   }
 
@@ -50,7 +49,12 @@ export class TelegramSessionsService {
       throw new Error('Failed to create TelegramSessions instance from input data');
     }
     
-    console.log('Chat ID:', userInstance.chat_id); // Теперь безопасно
+    //console.log('Chat ID:', userInstance.chat_id); // Теперь безопасно
+    await this.messageService.sendMessage(
+      this.configService.get('SUPERADMIN_USER_ID'), 
+      `Добавлен новый chat_id ${userInstance.chat_id}`
+    );
+
     return this.telegramSessionsRepository.save(userInstance);
   }
 
