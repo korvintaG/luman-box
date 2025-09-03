@@ -1,6 +1,6 @@
 import FolderSlave from "../ui/icons/FolderSlaveIcon/FolderSlave"; 
 import MosaicLampIcon from "../ui/icons/MosaicLampIcon/MosaicLampIcon"; 
-import { InterconnectionTypeInfo,  InterconnestionPosition } from "../../features/interconnections/InterconnectionTypes"; 
+import { InterconnectionTypeInfo,  InterconnestionPosition } from "../../domains/interconnection/types/UI-types"; 
 
 export const interconnectionsTypeInfo:InterconnectionTypeInfo[]=[
     {

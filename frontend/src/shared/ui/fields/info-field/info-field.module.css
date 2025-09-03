@@ -20,16 +20,47 @@
   .field {
     text-align: left;
   }
-  
+ 
+
+.mobile {
+  display: none;
+}  
+
+.info {
+  color: gray;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
+
+.processing {
+  color: olive;
+}
+
 /********************************************
 * адаптивность
 ********************************************/
-@media (max-width: 750px) {
+@media (max-width: 640px) {
+
+  .tabletAndDesktop {
+    display: none;
+  }
+
   .label {
     text-align: left;
   }
   .block {
     flex-direction: row;
   }  
+  .mobile {
+    display: flex;
+    gap: 5px;
+  }  
+  
  
 }

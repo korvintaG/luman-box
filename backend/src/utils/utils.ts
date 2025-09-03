@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { IUser, SimpleEntity, Role } from '../types/custom';
 import fs from 'fs/promises'
 import path from 'path';
+import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 
 export function joinSimpleEntityFirst(
   relations: SimpleEntity[],
@@ -54,10 +55,10 @@ export function getUserSQLFilter(user: IUser, prefix?: string): string {
   let addCond = ''; // по умолчанию админ, выводим все
   let genPrefix = prefix ? `${prefix}.` : '';
   if (!user) // нет входа в систему
-    addCond = ` and ${genPrefix}moderated>0 `
+    addCond = ` and ${genPrefix}verification_status=${VerificationStatus.Moderated} `
   else {
     if (user.role_id === Role.User) // простой пользователь - выводим отмодерированное и его
-      addCond = ` and (${genPrefix}moderated>0 or ${genPrefix}user_id=${user.id})`
+      addCond = ` and (${genPrefix}verification_status=${VerificationStatus.Moderated} or ${genPrefix}user_id=${user.id})`
   }
   return addCond;
 }

@@ -1,32 +1,41 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
 import {
   joinSimpleEntityFirst,
-  checkAccess,
-  safeRename,
+  checkAccess
 } from '../../utils/utils';
 import { IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
-import { basename, join } from 'path';
-import { rename, unlink } from 'fs/promises';
 import { FilesService } from 'src/files/files.service';
+import { VerificationStatus } from 'src/shared/entities/abstract.entity';
+import { ModeratorService } from '../../shared/services/moderator.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthorsService {
   constructor(
     @InjectRepository(Author)
     private readonly authorRepository: Repository<Author>,
+    @Inject(forwardRef(() => SourcesService))
     private sourcesService: SourcesService,
     private filesService: FilesService,
+    private moderatorService: ModeratorService,
   ) { }
 
-  create(user: IUser, createAuthorDto: CreateAuthorDto) {
+  async create(user: IUser, createAuthorDto: CreateAuthorDto) {
+    await this.moderatorService.checkDraftCount(
+      this.authorRepository,
+      user,
+      'Автор'
+    );
+    const update_image_URL=await this.filesService.createRecordImage(createAuthorDto.image_URL, 'author_from_');
     return this.authorRepository.save({
       ...createAuthorDto,
+      image_URL: update_image_URL,
       user: { id: user.id },
     });
   }
@@ -35,7 +44,8 @@ export class AuthorsService {
     if (!user)
       // неавторизован, выводим все отмодерированное
       return this.authorRepository.find({
-        where: { moderated: MoreThan(1) },
+        select: ['id', 'name', 'birth_date', 'verification_status'],
+        where: { verification_status: VerificationStatus.Moderated },
         order: { name: 'ASC' },
       });
     else {
@@ -43,21 +53,21 @@ export class AuthorsService {
         // простой пользователь - выводим отмодерированное и его
         return this.authorRepository
           .createQueryBuilder('author')
-          .where('author.moderated >0 ')
+          .select(['author.id', 'author.name', 'author.birth_date', 'author.verification_status'])
+          .where('author.verification_status = :moderated', { moderated: VerificationStatus.Moderated })
           .orWhere('author.user_id = :user', { user: user.id })
           .orderBy('name')
           .getMany();
       // админ, выводим все
-      else return this.authorRepository.find({ order: { name: 'ASC' } });
+      else return this.authorRepository.find({
+        select: ['id', 'name', 'birth_date', 'verification_status'],
+         order: { name: 'ASC' } });
     }
   }
 
   async findOne(id: number) {
     const author = await this.authorRepository
       .createQueryBuilder('author')
-      .leftJoinAndSelect('author.sources', 'source')
-      .leftJoinAndSelect('author.user', 'user')
-      .leftJoinAndSelect('author.moderator', 'moderator')
       .select([
         'author',
         'source.id',
@@ -67,6 +77,9 @@ export class AuthorsService {
         'moderator.id',
         'moderator.name',
       ]) // Выбираем только нужные поля
+      .leftJoin('author.sources', 'source')
+      .leftJoin('author.user', 'user')
+      .leftJoin('author.moderator', 'moderator')
       .where('author.id = :id', { id })
       .getOne();
     const sources = await this.authorRepository.manager.query<SimpleEntity[]>(
@@ -119,23 +132,61 @@ export class AuthorsService {
       new_image_URL,
       'author_from_',
     );
-    return this.authorRepository.update(
+    const res = await this.authorRepository.update(
       { id },
       { ...updateAuthorDto, image_URL: update_image_URL },
     );
+    if (res.affected === 0)
+      throw new HttpException(
+        {
+          message: 'Автор не найден',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    else {
+      return this.authorRepository.findOne({ where: { id } });
+    }
   }
 
-  async moderate(id: number, user: IUser, { action }: IModerate) {
-    //await checkAccess(this.authorRepository,id, user.id);
-    if (action === 'approve')
-      return this.authorRepository.update({ id }, { moderated: user.id });
-    else return this.authorRepository.update({ id }, { moderated: -1 });
+  async toModerate(id: number, user: IUser, isCascade: boolean = false) {
+    return this.moderatorService.toModerateEntity(
+      this.authorRepository,
+      id,
+      user,
+      process.env.ROUTE_AUTHOR_DETAIL,
+      'Автор',
+      isCascade
+    );
+  }
+
+  async moderate(id: number, user: IUser, moderationResult: IModerate) {
+    return this.moderatorService.moderateEntity(
+      this.authorRepository,
+      id,
+      user,
+      moderationResult,
+      'Автор'
+    );
   }
 
   async remove(id: number, user: IUser) {
     await checkAccess(this.authorRepository, id, user);
     try {
-      return await this.authorRepository.delete({ id });
+      const res = await this.authorRepository.delete({ id });
+      if (res.affected === 0)
+        throw new HttpException(
+          {
+            message: 'Автор не найден',
+          },
+          HttpStatus.NOT_FOUND,
+        );
+      else {
+        return {
+          success: true,
+          message: "Author deleted successfully",
+          id: id
+        };
+      }
     } catch (err) {
       let errMessage = err.message;
       if (err.code === '23503') {
@@ -146,6 +197,7 @@ export class AuthorsService {
             where: { author: { id } },
             take: 5,
           });
+          console.log('remove res',res);
           errMessage += joinSimpleEntityFirst(
             res.map((el) => ({ id: el.id, name: el.name })),
           );

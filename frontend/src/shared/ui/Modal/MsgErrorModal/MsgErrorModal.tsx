@@ -24,6 +24,7 @@ export const MsgErrorModalUI: FC<MsgErrorModalUIProps> = (props) => {
         overlay: {zIndex: 999},
         content: {
           maxWidth: 500,
+          whiteSpace: 'pre-line',
           height: "min-content",
           margin: "auto",
         },

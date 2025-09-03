@@ -4,18 +4,26 @@ import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
 import { Repository, FindManyOptions, MoreThan } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
-import { SimpleEntity } from '../../types/custom';
+import { IModerate, SimpleEntity } from '../../types/custom';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
 import { IUser, Role } from '../../types/custom';
+import { VerificationStatus } from 'src/shared/entities/abstract.entity';
+import { ModeratorService } from '../../shared/services/moderator.service';
 
 @Injectable()
 export class KeywordsService {
   constructor(
     @InjectRepository(Keyword)
     private readonly keywordRepository: Repository<Keyword>,
+    private moderatorService: ModeratorService,
   ) {}
 
-  create(user: IUser, createKeywordDto: CreateKeywordDto) {
+  async create(user: IUser, createKeywordDto: CreateKeywordDto) {
+    await this.moderatorService.checkDraftCount(
+      this.keywordRepository,
+      user,
+      'Ключевое слово'
+    );
     return this.keywordRepository.save({
       ...createKeywordDto,
       user: { id: user.id },
@@ -26,7 +34,8 @@ export class KeywordsService {
     if (!user)
       // неавторизован, выводим все отмодерированное
       return this.keywordRepository.find({
-        where: { moderated: MoreThan(1) },
+        select: ['id', 'name', 'verification_status'],
+        where: { verification_status: VerificationStatus.Moderated },
         order: { name: 'ASC' },
       });
     else {
@@ -34,11 +43,15 @@ export class KeywordsService {
         // простой пользователь - выводим отмодерированное и его
         return this.keywordRepository
           .createQueryBuilder('keyword')
-          .where('keyword.moderated >0 ')
+          .select(['keyword.id','keyword.name', 'keyword.verification_status'])
+          .where('keyword.verification_status = :moderated', { moderated: VerificationStatus.Moderated })
           .orWhere('keyword.user_id = :user', { user: user.id })
           .orderBy('name')
           .getMany(); // админ, выводим все
-      else return this.keywordRepository.find({ order: { name: 'ASC' } });
+      else 
+        return this.keywordRepository.find({
+          select: ['id', 'name', 'verification_status'],
+          order: { name: 'ASC' } });
     }
   }
 
@@ -74,8 +87,6 @@ export class KeywordsService {
     //const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true, moderator: true }});
     const mainRes = await this.keywordRepository
       .createQueryBuilder('keyword')
-      .leftJoinAndSelect('keyword.user', 'user')
-      .leftJoinAndSelect('keyword.moderator', 'moderator')
       .select([
         'keyword',
         'user.id',
@@ -83,6 +94,8 @@ export class KeywordsService {
         'moderator.id',
         'moderator.name',
       ]) // Выбираем только нужные поля
+      .leftJoin('keyword.user', 'user')
+      .leftJoin('keyword.moderator', 'moderator')
       .where('keyword.id = :id', { id })
       .getOne();
 
@@ -94,9 +107,26 @@ export class KeywordsService {
     return await this.keywordRepository.update({ id }, updateKeywordDto);
   }
 
-  async moderate(id: number, user: IUser) {
-    //await checkAccess(this.authorRepository,id, user.id);
-    return this.keywordRepository.update({ id }, { moderated: user.id });
+  async toModerate(id: number, user: IUser, isCascade: boolean = false) {
+    return this.moderatorService.toModerateEntity(
+      this.keywordRepository,
+      id,
+      user,
+      process.env.ROUTE_KEYWORD_DETAIL,
+      'Ключевое слово',
+      isCascade
+    );
+  }
+
+
+  async moderate(id: number, user: IUser, moderationResult: IModerate) {
+    return this.moderatorService.moderateEntity(
+      this.keywordRepository,
+      id,
+      user,
+      moderationResult,
+      'Ключевое слово'
+    );
   }
 
   async remove(id: number, user: IUser) {

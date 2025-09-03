@@ -1,12 +1,15 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef, HttpException, HttpStatus } from '@nestjs/common';
 import { InterconnectionEntityDto } from './dto/create-interconnection.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateInterconnectionDto } from './dto/update-interconnection.dto';
-import { IUser, InterconnestionsCount, InterconnestionsTypes } from '../../types/custom';
+import { IUser, InterconnestionsCount, InterconnestionsTypes, IModerate } from '../../types/custom';
 import { Interconnection } from './entities/interconnection.entity';
 import { getUserSQLFilter } from 'src/utils/utils';
 import { isEmpty } from 'lodash';
+import { VerificationStatus } from 'src/shared/entities/abstract.entity';
+import { ModeratorService } from '../../shared/services/moderator.service';
+import { IdeasService } from '../ideas/ideas.service';
 
 type ICTC={
   interconnection_type: number;
@@ -32,12 +35,20 @@ export class InterconnectionsService {
   constructor(
     @InjectRepository(Interconnection)
     private readonly interconnectionRepository: Repository<Interconnection>,
+    @Inject(forwardRef(() => IdeasService))
+    private ideasService: IdeasService,
+    private moderatorService: ModeratorService,
  ) {}
 
- create(user: IUser,interconnectionEntityDto: InterconnectionEntityDto) {
+ async create(user: IUser,interconnectionEntityDto: InterconnectionEntityDto) {
     if (interconnectionEntityDto.idea1_id===interconnectionEntityDto.idea2_id)
       throw new BadRequestException(`Взаимосвязь должна устанавливаться между разными идеями! Вы же пытаетесь внутри одной с ID=${interconnectionEntityDto.idea1_id}`);
-    return this.interconnectionRepository.save({
+    await this.moderatorService.checkDraftCount(
+      this.interconnectionRepository,
+      user,
+      'Взаимосвязь'
+    );
+      return this.interconnectionRepository.save({
       ...interconnectionEntityDto,
       user_id: user.id 
     });        
@@ -71,7 +82,7 @@ export class InterconnectionsService {
     if (isEmpty(ideaInterconnect))
       throw new  NotFoundException(`Не найдено 2-й идеи для взаимосвязи ID=${id}!`);
 
-    return { ...interconnection, ideaCurrent:ideaCurrent[0], ideaInterconnect:ideaInterconnect[0] }
+    return { ...interconnection, idea_current:ideaCurrent[0], idea_interconnect:ideaInterconnect[0] }
   }
 
   async getByIdeaAndType(idea_id: number, type_id: number, user:IUser) {
@@ -82,9 +93,10 @@ export class InterconnectionsService {
       from ideas, sources, authors
       where ideas.id=${idea_id} ${addIdeaCond} and sources.id=ideas.source_id and authors.id=sources.author_id`);
     const ideasDirect=await this.interconnectionRepository.manager.query<IdeaInfoWithIC[]>(    
-      `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG",
+      `select ideas.id as id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG",
         interconnections.name_direct as interconnection_name,
-        interconnections.id as interconnection_id
+        interconnections.id as interconnection_id,
+        interconnections.verification_status
       from ideas, sources, authors, interconnections 
       where interconnections.idea1_id=${idea_id} 
         ${addCond}
@@ -93,9 +105,10 @@ export class InterconnectionsService {
         and ideas.id=interconnections.idea2_id 
         and interconnection_type=${type_id}`);
     const ideasReverse=await this.interconnectionRepository.manager.query<IdeaInfoWithIC[]>(    
-      `select ideas.id as idea_id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG",
+      `select ideas.id as id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id, ideas."SVG",
         interconnections.name_reverse as interconnection_name,
-        interconnections.id as interconnection_id
+        interconnections.id as interconnection_id,
+        interconnections.verification_status
       from ideas, sources, authors, interconnections 
       where interconnections.idea2_id=${idea_id} 
         ${addCond}
@@ -158,9 +171,58 @@ export class InterconnectionsService {
     return this.interconnectionRepository.delete({ id })
   }
 
-  async moderate(id: number, user: IUser) {
-    //await checkAccess(this.authorRepository,id, user.id);
-    return this.interconnectionRepository.update({ id }, { moderated: user.id });
+  async toModerate(id: number, user: IUser) {
+    const ideas = await this.interconnectionRepository.manager.query<
+      { id: number, verification_status: VerificationStatus }[]>
+      (`select 
+          ideas.id, 
+          ideas.verification_status
+        from ideas, interconnections as i
+        where i.id=$1 and ideas.id in (i.idea2_id, i.idea1_id)`, [id]);
+    for (const idea of ideas) {
+      if (idea.verification_status === VerificationStatus.Creating) {
+        await this.ideasService.toModerate(idea.id, user);
+      }
+    }
+
+    return this.moderatorService.toModerateEntity(
+      this.interconnectionRepository,
+      id,
+      user,
+      process.env.ROUTE_INTERCONNECTION_DETAIL,
+      'Взаимосвязь'
+    );
+  }
+
+  async moderate(id: number, user: IUser, moderationResult: IModerate) {
+    if (moderationResult.action === 'approve') {
+      const ideas = await this.interconnectionRepository.manager.query<
+        { id: number, verification_status: VerificationStatus }[]>
+        (`select 
+            ideas.id, 
+            ideas.verification_status 
+          from ideas, interconnections 
+          where interconnections.id=$1 and ideas.id in (interconnections.idea2_id, interconnections.idea1_id)`, [id]);
+      if (!ideas || ideas.length === 0) 
+        throw new HttpException(
+          { message: 'Не найдены идеи для взаимосвязи' },
+          HttpStatus.NOT_FOUND,
+        );
+      for (const idea of ideas) {
+        if (idea.verification_status !== VerificationStatus.Moderated) 
+          throw new HttpException(
+            { message: `Не одобрена идея. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_IDEA_DETAIL}/${idea.id}` },
+            HttpStatus.BAD_REQUEST,
+          );
+      }
+    }
+    return this.moderatorService.moderateEntity(
+      this.interconnectionRepository,
+      id,
+      user,
+      moderationResult,
+      'Взаимосвязь'
+    );
   }
 
 }

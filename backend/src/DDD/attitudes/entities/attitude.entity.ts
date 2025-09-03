@@ -2,19 +2,11 @@ import { JoinColumn, ManyToOne, Index, Column, Entity, PrimaryGeneratedColumn } 
 import { Min, Max, IsInt } from 'class-validator';
 import { Idea } from '../../ideas/entities/idea.entity';
 import { User } from '../../users/entities/user.entity';
+import { EntityCreation} from '../../../shared/entities/abstract.entity';
 
 @Entity({ name: 'attitudes' })
 @Index(['idea_id', 'user_id'], { unique: true })
-export class Attitude {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: 'integer', nullable: false }) 
-  user_id: number;
-
-  @ManyToOne(() => User, (user) => user.attitudes, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
-  user: User;  
+export class Attitude extends EntityCreation {
 
   @Column({ type: 'integer', nullable: false }) 
   idea_id: number;
@@ -40,12 +32,5 @@ export class Attitude {
   @Min(0)  // Минимальное значение = 0
   @Max(4)  // Максимальное значение = 4
   truth: number;
-  
-  @Column({
-    type: 'timestamp',
-    precision: 0,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  date_time_create: Date;
 
 }

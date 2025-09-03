@@ -2,15 +2,11 @@ import { JoinColumn, ManyToOne, Index, Column, Entity, PrimaryGeneratedColumn } 
 import { Min, Max, IsInt, IsString, MinLength, MaxLength } from 'class-validator';
 import { Idea } from '../../ideas/entities/idea.entity';
 import { User } from '../../users/entities/user.entity';
+import { EntityCommon } from 'src/shared/entities/abstract.entity';
 
 @Entity({ name: 'interconnections' })
 @Index(['idea1_id', 'idea2_id', 'interconnection_type'], { unique: true })
-export class Interconnection {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: 'varchar', select: false, nullable: true })
-  id_out: string;
+export class Interconnection extends EntityCommon{
 
   @Column({ type: 'smallint', nullable: false})
   @IsInt() // Проверка, что значение целое
@@ -26,14 +22,6 @@ export class Interconnection {
   @Index()
   @IsInt() // Проверка, что значение целое
   idea2_id: number;
-
-  @Column({ type: 'integer', nullable: false })  // кто добавил
-  @IsInt() // Проверка, что значение целое
-  user_id: number;
-
-  @ManyToOne(() => User, (user) => user.name, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  user: User;
 
   @ManyToOne(() => Idea, (idea) => idea.attitudes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'idea1_id' })
@@ -54,27 +42,6 @@ export class Interconnection {
   @MinLength(10)
   @MaxLength(250)
   name_reverse: string;
-
-  @Column({
-    type: 'timestamp',
-    precision: 0,
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  date_time_create: Date;
-
-  @Column({ type: 'int', nullable: true, name: 'moderated' })
-  moderated: number;
-
-  @ManyToOne(() => User, (user) => user.name, { nullable: true })
-  @JoinColumn({ name: 'moderated' })
-  moderator: User;
-
-  @Column({
-    type: 'timestamp',
-    nullable: true,
-    precision: 0
-  })
-  date_time_moderated: Date;
 
 }
 

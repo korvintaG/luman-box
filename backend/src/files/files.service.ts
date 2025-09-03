@@ -42,6 +42,18 @@ export class FilesService {
     return prefixedFileName
   }
 
+  async createRecordImage(image: string, prefix: string) {
+    if (image) {
+      return await this.updateRecordImage(
+        null,
+        image,
+        prefix);
+      
+    }
+    return null;
+  }
+
+
   async updateRecordImage(oldImage: string | null, newImage: string | null, prefix: string) {
     let returnImage = '';
     if (newImage !== oldImage) { // мучать фото

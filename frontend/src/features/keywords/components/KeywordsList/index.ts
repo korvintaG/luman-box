@@ -1,1 +1,0 @@
-export { KeywordList } from "./KeywordsList";

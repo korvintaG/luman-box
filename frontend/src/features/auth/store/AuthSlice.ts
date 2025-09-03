@@ -8,7 +8,7 @@ import {
 } from "../user-types";
 import authAPI from "../api/authAPI";
 import { setCookie } from "../../../shared/utils/cookie";
-import { ServerResponse } from "../../../shared/common-types";
+import { ServerResponse } from "../../../shared/types/types-for-hooks";
 
 export const enum AuthStatus {
   Idle = "idle",

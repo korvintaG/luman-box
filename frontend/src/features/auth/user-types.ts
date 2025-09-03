@@ -1,4 +1,5 @@
-import { NameObject, ServerResponse } from "../../shared/common-types";
+import {  ServerResponse } from "../../shared/types/types-for-hooks";
+import { NameObject  } from "../../shared/types/entity-types";
 
 export type UserInner = NameObject & { password: string };
 
@@ -8,6 +9,12 @@ export const enum Role {
   //Blocked = 2,
   SuperAdmin = 3,
 }
+
+export const RoleNames = {
+  [Role.User]: "Пользователь",
+  [Role.Admin]: "Админ",
+  [Role.SuperAdmin]: "Супермодератор",
+};
 
 export type User = {
   name: string;

@@ -1,4 +1,4 @@
-import { ServerResponse,  Success} from '../../../shared/common-types'
+import { ServerResponse,  Success} from '../../../shared/types/types-for-hooks'
 import {LoginData,LoginResult,User, } from '../user-types'
 import { Api } from '../../../shared/api/api'; 
 import { getCookie } from '../../../shared/utils/cookie'; 

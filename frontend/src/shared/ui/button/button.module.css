@@ -11,9 +11,10 @@
     flex: 1 1 auto; /* Гибкость кнопок для адаптивности */    
   }
   
- .button:disabled {
+ .button:disabled, .button:disabled:hover {
     background-color:lightgray;
     color: white;
+    cursor: not-allowed;
  }
 
 .button:enabled:active {
@@ -73,4 +74,13 @@
 
 .button-moderate-reject:hover {
       background-color: #e0a800;
+}
+
+.button-publish {
+   background-color: #007bff; /* Синий цвет для публикации */
+   color: white;
+}
+
+.button-publish:hover {
+   background-color: #0056b3;
 }

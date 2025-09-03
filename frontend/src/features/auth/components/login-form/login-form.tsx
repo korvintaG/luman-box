@@ -1,13 +1,13 @@
 import { FC, SyntheticEvent, ChangeEvent } from "react";
 import { Link } from "react-router-dom";
-import { UserInner, User } from "../../user-types";
+import { UserInner, User, RoleNames } from "../../user-types";
 import { InputEditUI } from "../../../../shared/ui/fields/input-edit/input-edit";
 import { AuthStatus } from "../../store/AuthSlice";
 import { Preloader } from "../../../../shared/ui/Preloader";
 import { ErrorMessageUI } from "../../../../shared/ui/ErrorMessage/ErrorMessage";
 import { ButtonUI } from "../../../../shared/ui/button";
 import styles from "./login-form.module.css";
-import { HTMLEditElement } from "../../../../shared/common-types";
+import { HTMLEditElement } from "../../../../shared/types/types-for-hooks";
 
 export type LoginFormProps = {
   values: UserInner; // поля
@@ -42,6 +42,7 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
       {props.currentUser ? (
         <>
           <h1>Вы вошли как [{`${props.currentUser.name}`}]</h1>
+          {props.currentUser.role_id!==null && <p>Ваша роль: {RoleNames[props.currentUser.role_id]}</p>}
           <ButtonUI logicType="alert" caption="Выйти" />
         </>
       ) : (

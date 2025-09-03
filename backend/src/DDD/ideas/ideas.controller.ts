@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { IdeasService } from './ideas.service';
-import { IIdeaBySourceAndKeyword, Role } from '../../types/custom';
+import { IIdeaBySourceAndKeyword, IModerate, Role } from '../../types/custom';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
@@ -73,11 +73,25 @@ export class IdeasController {
     return this.ideasService.update(+id, req.user, updateIdeaDto);
   }
 
+  @Post('to-moderate/:id')
+  @UseGuards(JwtAuthGuard)
+  toModerate(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.ideasService.toModerate(+id, req.user);
+  }
+
+
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
-  moderate(@Param('id') id: string, @Req() req: Request) {
-    return this.ideasService.moderate(+id, req.user);
+  moderate(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Query() query: IModerate,
+  ) {
+    return this.ideasService.moderate(+id, req.user, query);
   }
 
   @UseGuards(JwtAuthGuard)

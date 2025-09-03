@@ -2,6 +2,7 @@
     padding: 10px;
     text-align: center;
     color:#ff0000;
+    white-space: pre-line;
 }
 
 .error::before {

@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 export type LogicButtonType = 'default' | 
   'add' | 'agree' | 'alert' | 'back' | 
-  'moderate-approve' | 'moderate-reject';
+  'moderate-approve' | 'moderate-reject' | 'publish';
 
 export type ButtonUIProps = {
   logicType?: LogicButtonType;

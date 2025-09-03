@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In, FindManyOptions, MoreThan } from 'typeorm';
+import { Repository, In, FindManyOptions } from 'typeorm';
 import { JSDOM } from 'jsdom';
 import { Idea } from './entities/idea.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
-import { IIdeaBySourceAndKeyword, IdeaForList } from '../../types/custom';
+import { IIdeaBySourceAndKeyword, IdeaForList, IModerate } from '../../types/custom';
 import { isEmpty, omit } from 'lodash';
 import { KeywordsService } from '../keywords/keywords.service';
 import { IUser, Role } from '../../types/custom';
@@ -13,7 +13,10 @@ import { checkAccess, getUserSQLFilter } from '../../utils/utils';
 import { AttitudesService } from '../attitudes/attitudes.service';
 import { InterconnectionsService } from '../interconnections/interconnections.service';
 import DOMPurify from 'dompurify';
-import sanitizeSVG from '@mattkrick/sanitize-svg'
+//import sanitizeSVG from '@mattkrick/sanitize-svg'
+import { VerificationStatus } from 'src/shared/entities/abstract.entity';
+import { ModeratorService } from '../../shared/services/moderator.service';
+import { SourcesService } from '../sources/sources.service';
 
 @Injectable()
 export class IdeasService {
@@ -22,7 +25,10 @@ export class IdeasService {
     private readonly ideaRepository: Repository<Idea>,
     private keywordsService: KeywordsService,
     private attitudesService: AttitudesService,
-    private interconnectionsService: InterconnectionsService
+    private interconnectionsService: InterconnectionsService,
+    private moderatorService: ModeratorService,
+    @Inject(forwardRef(() => SourcesService))
+    private sourcesService: SourcesService
   ) { }
 
   findSvgElement = (node: Node): Element | null => {
@@ -63,6 +69,18 @@ export class IdeasService {
   }
 
   async create(user: IUser, createIdeaDto: CreateIdeaDto) {
+    await this.moderatorService.checkDraftCount(
+      this.ideaRepository,
+      user,
+      'Идея'
+    );
+
+    if (!createIdeaDto.keywords)
+      throw new BadRequestException(`Для идеи должны быть назначены ключевые слова!`);
+
+    if (createIdeaDto.keywords.length > Number(process.env.MAX_KEYWORDS_FOR_IDEA))
+      throw new BadRequestException(`Для идеи может быть назначено не более ${process.env.MAX_KEYWORDS_FOR_IDEA} ключевых слов!`);
+      
     let onlyIdea = omit(createIdeaDto, ['keywords', 'date_time_create']);
     if (onlyIdea.source && onlyIdea.source.id === 0) {
       onlyIdea = omit(onlyIdea, ['source']);
@@ -91,7 +109,26 @@ export class IdeasService {
     if (!user)
       // неавторизован, выводим все отмодерированное
       return this.ideaRepository.find({
-        where: { moderated: MoreThan(1) },
+        select: {
+          id: true,
+          name: true,
+          date_time_create: true,
+          SVG: true,
+          verification_status: true,
+          source: {
+            id: true,
+            name: true,
+            author: {
+              id: true,
+              name: true
+            }
+          },
+          user: {
+            id: true,
+            name: true
+          }
+        },
+        where: { verification_status: VerificationStatus.Moderated },
         relations: ['source.author', 'user'],
         order: { name: 'ASC' },
       });
@@ -100,15 +137,48 @@ export class IdeasService {
         // простой пользователь - выводим отмодерированное и его
         return this.ideaRepository
           .createQueryBuilder('idea')
-          .leftJoinAndSelect('idea.source', 'source')
-          .leftJoinAndSelect('idea.user', 'user')
-          .leftJoinAndSelect('source.author', 'author')
-          .where('idea.moderated >0 ')
+          .select([
+            'idea.id',
+            'idea.name', 
+            'idea.date_time_create',
+            'idea.SVG',
+            'idea.verification_status',
+            'source.id',
+            'source.name',
+            'author.id',
+            'author.name',
+            'user.id',
+            'user.name'
+          ])
+          .leftJoin('idea.source', 'source')
+          .leftJoin('idea.user', 'user')
+          .leftJoin('source.author', 'author')
+          .where('idea.verification_status = :moderated', { moderated: VerificationStatus.Moderated })
           .orWhere('idea.user_id = :user', { user: user.id })
           .orderBy('idea.name')
-          .getMany(); // админ, выводим все
+          .getMany(); 
       else
+        // админ, выводим все
         return this.ideaRepository.find({
+          select: {
+            id: true,
+            name: true,
+            date_time_create: true,
+            SVG: true,
+            verification_status: true,
+            source: {
+              id: true,
+              name: true,
+              author: {
+                id: true,
+                name: true
+              }
+            },
+            user: {
+              id: true,
+              name: true
+            }
+          },
           relations: ['source.author', 'user'],
           order: { name: 'ASC' },
         });
@@ -122,8 +192,8 @@ export class IdeasService {
       founds = await this.ideaRepository.manager.query<{ id: number }[]>(
         `select ideas.id
         from ideas, idea_keywords as ik
-        where ideas.source_id=$1 and ideas.moderated>0 and ik.idea_id=ideas.id and ik.keyword_id=$2`,
-        [cond.source_id, cond.keyword_id],
+        where ideas.source_id=$1 and ideas.verification_status = $2 and ik.idea_id=ideas.id and ik.keyword_id=$3`,
+        [cond.source_id,  VerificationStatus.Moderated, cond.keyword_id],
       );
     else {
       if (user.role_id === Role.User)
@@ -131,8 +201,8 @@ export class IdeasService {
         founds = await this.ideaRepository.manager.query<{ id: number }[]>(
           `select ideas.id
           from ideas, idea_keywords as ik
-          where ideas.source_id=$1 and (ideas.moderated>0 or ideas.user_id=$2) and ik.idea_id=ideas.id and ik.keyword_id=$3`,
-          [cond.source_id, user.id, cond.keyword_id],
+          where ideas.source_id=$1 and (ideas.verification_status = $2 or ideas.user_id=$3) and ik.idea_id=ideas.id and ik.keyword_id=$4`,
+          [cond.source_id, VerificationStatus.Moderated, user.id, cond.keyword_id],
         );
       else {
         // админ, выводим все
@@ -181,21 +251,24 @@ export class IdeasService {
   async findOne(id: number, user: IUser) {
     let found = await this.ideaRepository
       .createQueryBuilder('idea')
-      .leftJoinAndSelect('idea.keywords', 'keywords')
-      .leftJoinAndSelect('idea.source', 'source')
-      .leftJoinAndSelect('source.author', 'author')
-      .leftJoinAndSelect('idea.user', 'user')
-      .leftJoinAndSelect('idea.moderator', 'moderator')
       .select([
         'idea',
-        'source',
-        'author',
-        'keywords',
+        'source.id',
+        'source.name',
+        'author.id',
+        'author.name',
+        'keywords.id',
+        'keywords.name',
         'user.id',
         'user.name',
         'moderator.id',
         'moderator.name',
       ]) // Выбираем только нужные поля
+      .leftJoin('idea.keywords', 'keywords')
+      .leftJoin('idea.source', 'source')
+      .leftJoin('source.author', 'author')
+      .leftJoin('idea.user', 'user')
+      .leftJoin('idea.moderator', 'moderator')
       .where('idea.id = :id', { id })
       .getOne();
     if (found.moderator) {
@@ -236,9 +309,96 @@ export class IdeasService {
     return idea;
   }
 
-  async moderate(id: number, user: IUser) {
-    //await checkAccess(this.authorRepository,id, user.id);
-    return this.ideaRepository.update({ id }, { moderated: user.id });
+  async toModerate(id: number, user: IUser) {
+    const source = await this.ideaRepository.manager.query<
+      { id: number, verification_status: VerificationStatus }[]>
+      (`select 
+          sources.id, 
+          sources.verification_status 
+        from ideas, sources 
+        where ideas.id=$1 and sources.id=ideas.source_id`, [id]);
+    if (!source || source.length === 0) {
+          throw new HttpException(
+            { message: 'Не найден источник идеи' },
+            HttpStatus.NOT_FOUND,
+          );
+    }
+    if (source[0].verification_status === VerificationStatus.Creating) {
+      await this.sourcesService.toModerate(source[0].id, user, true);
+    }
+
+    const keywords = await this.ideaRepository.manager.query<
+      { id: number, verification_status: VerificationStatus }[]>
+      (`select 
+          keywords.id, 
+          keywords.verification_status 
+        from keywords, idea_keywords 
+        where idea_keywords.idea_id=$1 and keywords.id=idea_keywords.keyword_id`, [id]);
+    if (!keywords || keywords.length === 0) 
+      throw new HttpException(
+        { message: 'Для идеи не назначены ключевые слова' },
+        HttpStatus.NOT_FOUND,
+      );
+    for (const keyword of keywords) {
+      if (keyword.verification_status === VerificationStatus.Creating) {
+        await this.keywordsService.toModerate(keyword.id, user, true);
+      }
+    }
+    return this.moderatorService.toModerateEntity(
+      this.ideaRepository,
+      id,
+      user,
+      process.env.ROUTE_IDEA_DETAIL,
+      'Идея'
+    );
+  }
+
+  async moderate(id: number, user: IUser, moderationResult: IModerate) {
+    if (moderationResult.action === 'approve') {
+      const source = await this.ideaRepository.manager.query<
+        { id: number, verification_status: VerificationStatus }[]>
+        (`select 
+            sources.id, 
+            sources.verification_status 
+          from ideas, sources 
+          where ideas.id=$1 and sources.id=ideas.source_id`, [id]);
+      if (!source || source.length === 0) 
+        throw new HttpException(
+          { message: 'Не найден источник идеи' },
+          HttpStatus.NOT_FOUND,
+        );
+      if (source[0].verification_status !== VerificationStatus.Moderated) 
+        throw new HttpException(
+          { message: `Не одобрен источник идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_SOURCE_DETAIL}/${source[0].id}` },
+          HttpStatus.BAD_REQUEST,
+        );
+      const keywords = await this.ideaRepository.manager.query<
+        { id: number, verification_status: VerificationStatus }[]>
+        (`select 
+            keywords.id, 
+            keywords.verification_status 
+          from keywords, idea_keywords 
+          where idea_keywords.idea_id=$1 and keywords.id=idea_keywords.keyword_id`, [id]);
+      if (!keywords || keywords.length === 0) 
+        throw new HttpException(
+          { message: 'Для идеи не назначены ключевые слова' },
+          HttpStatus.NOT_FOUND,
+        );
+      for (const keyword of keywords) {
+        if (keyword.verification_status !== VerificationStatus.Moderated) 
+          throw new HttpException(
+            { message: `Не одобрено ключевое слово идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_KEYWORD_DETAIL}/${keyword.id}` },
+            HttpStatus.BAD_REQUEST,
+          );
+      }
+    }
+    return this.moderatorService.moderateEntity(
+      this.ideaRepository,
+      id,
+      user,
+      moderationResult,
+      'Идею'
+    );
   }
 
   async remove(id: number, user: IUser) {

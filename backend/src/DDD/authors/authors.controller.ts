@@ -9,9 +9,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  UseInterceptors,
-  UploadedFile,
-  BadRequestException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthorsService } from './authors.service';
@@ -22,8 +19,6 @@ import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-au
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { IModerate, Role } from '../../types/custom';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { multerConfig } from 'src/files/multer.config';
 
 @Controller('authors')
 export class AuthorsController {
@@ -74,6 +69,16 @@ export class AuthorsController {
   ) {
     return this.authorsService.update(+id, req.user, updateAuthorDto);
   }
+
+  @Post('to-moderate/:id')
+  @UseGuards(JwtAuthGuard)
+  toModerate(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.authorsService.toModerate(+id, req.user);
+  }
+
 
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)

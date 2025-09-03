@@ -10,6 +10,7 @@ import { Not, IsNull } from 'typeorm';
 import { CronJob } from 'cron';
 import e from 'express';
 import { createDiffieHellman } from 'crypto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TelegramMessagingService implements OnModuleInit {
@@ -20,6 +21,7 @@ export class TelegramMessagingService implements OnModuleInit {
     private readonly telegramMessageRepository: Repository<TelegramMessage>,
     private readonly usersDB: UsersService,
     private readonly schedulerRegistry: SchedulerRegistry, // Добавляем SchedulerRegistry
+    private configService: ConfigService,
   ) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
     if (token) {
@@ -45,6 +47,11 @@ export class TelegramMessagingService implements OnModuleInit {
     );
 
     this.schedulerRegistry.addCronJob('handleTelegramMsgQueue', job);
+  }
+
+  async sendMessageToAdmin(text: string): Promise<void> {
+    const superAdminId = await this.configService.get('SUPERADMIN_USER_ID');
+    return await this.sendMessage(superAdminId, text);
   }
 
   /**

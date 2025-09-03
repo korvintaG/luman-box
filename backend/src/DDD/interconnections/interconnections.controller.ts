@@ -5,7 +5,7 @@ import { UpdateInterconnectionDto } from './dto/update-interconnection.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { Request } from 'express';
-import { IInterconnectionWay, Role } from 'src/types/custom';
+import { IInterconnectionWay, IModerate, Role } from 'src/types/custom';
 import { RoleGuard } from 'src/authorization/guards/role.guard';
 import { WithRole } from 'src/authorization/decorators/role.decorator';
 
@@ -55,11 +55,25 @@ export class InterconnectionsController {
     return this.interconnectionsService.remove(req.user,+id);
   }
 
+  @Post('to-moderate/:id')
+  @UseGuards(JwtAuthGuard)
+  toModerate(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.interconnectionsService.toModerate(+id, req.user);
+  }
+
+
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
-  moderate(@Param('id') id: string, @Req() req: Request) {
-    return this.interconnectionsService.moderate(+id, req.user);
+  moderate(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Query() query: IModerate,
+  ) {
+    return this.interconnectionsService.moderate(+id, req.user, query);
   }
 
 }

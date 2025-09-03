@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent, useId, useRef } from "react";
 import styles from "./RecordImage.module.css";
-import { RequestStatus } from "../../common-types";
+import { RequestStatus } from "../../types/types-for-hooks";
 import { ButtonUI } from "../../ui/button";
 
 export const STORE_FILE_PATH =

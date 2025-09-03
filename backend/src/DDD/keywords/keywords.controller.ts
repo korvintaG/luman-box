@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { KeywordsService } from './keywords.service';
@@ -17,11 +18,11 @@ import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-import { Role } from '../../types/custom';
+import { IModerate, Role } from '../../types/custom';
 
 @Controller('keywords')
 export class KeywordsController {
-  constructor(private readonly keywordsService: KeywordsService) {}
+  constructor(private readonly keywordsService: KeywordsService) { }
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -50,11 +51,25 @@ export class KeywordsController {
     return this.keywordsService.update(+id, req.user, updateKeywordDto);
   }
 
+  @Post('to-moderate/:id')
+  @UseGuards(JwtAuthGuard)
+  toModerate(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.keywordsService.toModerate(+id, req.user);
+  }
+
+
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
-  moderate(@Param('id') id: string, @Req() req: Request) {
-    return this.keywordsService.moderate(+id, req.user);
+  moderate(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Query() query: IModerate,
+  ) {
+    return this.keywordsService.moderate(+id, req.user, query);
   }
 
   @UseGuards(JwtAuthGuard)

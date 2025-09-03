@@ -22,7 +22,7 @@ export const appRoutesURL = {
   interconnectionAdd: "/interconnections/add/:idea_id/:iitype_id",
   CMS: "/CMS/:article",
   keywords: "/keywords",
-  keyword: "/keyword/:id",
+  keyword: "/keywords/:id",
   keywordAdd: "/keywords/add",
   user: "/users/:id",
 };

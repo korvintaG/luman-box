@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { SimpleNameObject } from "../../common-types";
+import { SimpleNameObject } from "../../types/entity-types";
 import { Link } from "react-router-dom";
 import styles from "./RelationList.module.css";
 import clsx from "clsx";

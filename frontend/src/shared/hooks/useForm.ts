@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { HTMLEditElement } from "../common-types";
+import { HTMLEditElement } from "../types/types-for-hooks";
 
 /**
  * Хук для работы с формой
@@ -8,6 +8,7 @@ import { HTMLEditElement } from "../common-types";
  */
 export function useForm<T>(inputValues: T) {
   const [values, setValues] = useState(inputValues);
+  const [editStarted, setEditStarted] = useState(false);
 
   const getFormDTO = (): Partial<T> => {
     let obj: Partial<T> = Object.assign({}, values);
@@ -17,7 +18,7 @@ export function useForm<T>(inputValues: T) {
       if (typeof obj[key] === "object") {
         try {
           let anaPart: any = obj[key]; // тут без any никак
-          if (!anaPart.id)
+          if (!anaPart?.id)
             // считаем, что объект только для .id, если изменится, нужно будет доработать код
             delete obj[key];
           else {
@@ -36,7 +37,7 @@ export function useForm<T>(inputValues: T) {
     for (key in obj) {
       if (typeof obj[key] === "object") {
         let anaPart: any = obj[key]; // тут без any никак
-        if (!anaPart.id)
+        if (!anaPart?.id)
           // считаем, что объект только для .id, если изменится, нужно будет доработать код
           delete obj[key];
         else {
@@ -48,7 +49,13 @@ export function useForm<T>(inputValues: T) {
     return obj;
   };
 
+  const initValues = (el: T) => {
+    setValues(el);
+    setEditStarted(false);
+  }
+
   const handleChange = (event: ChangeEvent<HTMLEditElement>) => {
+    setEditStarted(true);
     const { value, name } = event.target;
     if (name.indexOf(".") > 0) {
       const [a, b] = name.split(".");
@@ -61,8 +68,11 @@ export function useForm<T>(inputValues: T) {
     values,
     handleChange,
     setValues,
+    initValues,
     reset: () => setValues(inputValues),
     getFormDTO,
     getFormDTOObl,
+    editStarted,
+    setEditStarted,
   };
 }

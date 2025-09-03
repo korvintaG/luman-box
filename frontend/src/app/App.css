@@ -6,6 +6,9 @@
   --header-table-background: #2a5298; /* linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);*/
   --caption-table:#167487;
   --idea-color: #B8D9F9;
+  --breakpoint-mobile: 640px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;  
 }
 
 .App {
@@ -14,14 +17,14 @@
 }
 
 .App a {
-  color: #2a5298;
+  /*color: #2a5298;*/
   font-weight: bold;
   cursor: pointer;
 }
 
-.App a:visited {
+ /* .App a:visited {
   color: #483d8b ;
-}
+}*/
 
 .main {
   display: flex;
@@ -39,11 +42,19 @@
   font-family: 'Montserrat';
 }
 
-.moderated-need {
+.record-draft  {
+  color: darkgrey;
+}
+
+.record-to-moderate {
   color:chocolate;
 }
 
-.moderated-cancel {
+.record-moderated {
+  color: darkblue;
+}
+
+.record-canceled {
   color:red;
 }
 

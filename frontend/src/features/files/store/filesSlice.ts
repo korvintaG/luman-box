@@ -4,7 +4,7 @@ import {
   } from "@reduxjs/toolkit";
   import { SliceToWork } from "../../../shared/utils/ForSliceUtils";
   import filesAPI from "../api/filesAPI";
-  import { RequestStatus } from "../../../shared/common-types";
+  import { RequestStatus } from "../../../shared/types/types-for-hooks";
 
   
   export const initialState: SliceToWork<string> = {

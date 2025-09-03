@@ -21,6 +21,7 @@
     transition: stroke 0.3s;
     background: transparent;
     border: none;
+    cursor: pointer;
   }
   
   .close-button:hover {

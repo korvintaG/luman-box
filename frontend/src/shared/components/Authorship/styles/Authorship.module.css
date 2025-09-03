@@ -1,0 +1,30 @@
+.main {
+    display: flex;    
+    flex-direction: column;
+}
+
+.error_text {
+    color: red;
+}
+
+.creating {
+    color: gray;
+}
+
+.to-moderate {
+    color: olive;
+}
+
+.moderated {
+    color: green;
+}
+
+.rejected { 
+    color: red;
+}
+
+/********************************************
+* адаптивность
+********************************************/
+@media (max-width: 780px) {
+}

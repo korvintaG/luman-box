@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent } from "react";
 import styles from "./RecordEditForm.module.css";
-import { RequestStatus } from "../../common-types";
+import { RequestStatus } from "../../types/types-for-hooks";
 import { Preloader } from "../../ui/Preloader"; 
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
 import { BreadcrumbSimpeType, Breadcrumbs, BreadcrumbSimple } from "../Breadcrumbs/Breadcrumbs";

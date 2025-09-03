@@ -1,8 +1,18 @@
 .block {
     display: flex;
-    padding-top: 15px;
+    padding: 15px;
+    margin: 15px;
     gap: 15px;
     justify-content: center;
-    width: 100%;
     flex-wrap: wrap;
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.block input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }

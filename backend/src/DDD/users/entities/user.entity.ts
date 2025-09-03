@@ -28,7 +28,7 @@ export class User {
   @Column({ type: 'int', default: 0 })
   role_id: Role;
 
-  @OneToMany(() => Attitude, (attitude) => attitude.user)
-  attitudes: Attitude[];
+  /*@OneToMany(() => Attitude, (attitude) => attitude.user)
+  attitudes: Attitude[];*/
 
 }

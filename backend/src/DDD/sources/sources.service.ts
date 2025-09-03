@@ -1,14 +1,17 @@
 import { Repository, FindManyOptions, MoreThan } from 'typeorm';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Source } from './entities/source.entity';
 import { IdeasService } from '../ideas/ideas.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
 import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
-import { SimpleEntityWithCnt, SimpleEntity } from '../../types/custom';
+import { SimpleEntityWithCnt, SimpleEntity, IModerate } from '../../types/custom';
 import { IUser, Role } from '../../types/custom';
 import { FilesService } from 'src/files/files.service';
+import { VerificationStatus } from 'src/shared/entities/abstract.entity';
+import { ModeratorService } from '../../shared/services/moderator.service';
+import { AuthorsService } from '../authors/authors.service';
 
 @Injectable()
 export class SourcesService {
@@ -16,12 +19,22 @@ export class SourcesService {
     @InjectRepository(Source)
     private readonly sourceRepository: Repository<Source>,
     private ideasService: IdeasService,
+    @Inject(forwardRef(() => AuthorsService))
+    private authorsService: AuthorsService,
     private filesService: FilesService,
+    private moderatorService: ModeratorService,
   ) { }
 
-  create(user: IUser, createSourceDto: CreateSourceDto) {
+  async create(user: IUser, createSourceDto: CreateSourceDto) {
+    await this.moderatorService.checkDraftCount(
+      this.sourceRepository,
+      user,
+      'Источник'
+    );
+    const update_image_URL=await this.filesService.createRecordImage(createSourceDto.image_URL, 'source_from_');
     return this.sourceRepository.save({
       ...createSourceDto,
+      image_URL: update_image_URL,
       user: { id: user.id },
     });
   }
@@ -30,8 +43,17 @@ export class SourcesService {
     if (!user)
       // неавторизован, выводим все отмодерированное
       return this.sourceRepository.find({
+        select: {
+          id: true,
+          name: true,
+          verification_status: true,
+          author: {
+            id: true,
+            name: true
+          }
+        },
         relations: { author: true },
-        where: { moderated: MoreThan(1) },
+        where: { verification_status: VerificationStatus.Moderated },
         order: { name: 'ASC' },
       });
     else {
@@ -39,14 +61,30 @@ export class SourcesService {
         // простой пользователь - выводим отмодерированное и его
         return this.sourceRepository
           .createQueryBuilder('source')
-          .leftJoinAndSelect('source.author', 'author')
-          .where('source.moderated >0 ')
+          .select([
+            'source.id',
+            'source.name',
+            'source.verification_status',
+            'author.id',
+            'author.name'
+          ])
+          .leftJoin('source.author', 'author')
+          .where('source.verification_status = :moderated', { moderated: VerificationStatus.Moderated })
           .orWhere('source.user_id = :user', { user: user.id })
           .orderBy('source.name')
           .getMany();
       // админ, выводим все
       else
         return this.sourceRepository.find({
+          select: {
+            id: true,
+            name: true,
+            verification_status: true,
+            author: {
+              id: true,
+              name: true
+            }
+          },
           relations: { author: true },
           order: { name: 'ASC' },
         });
@@ -60,10 +98,6 @@ export class SourcesService {
   async findOne(id: number) {
     const mainRes = await this.sourceRepository
       .createQueryBuilder('source')
-      .leftJoinAndSelect('source.ideas', 'idea')
-      .leftJoinAndSelect('source.user', 'user')
-      .leftJoinAndSelect('source.moderator', 'moderator')
-      .leftJoinAndSelect('source.author', 'author')
       .select([
         'source',
         'idea.id',
@@ -75,6 +109,10 @@ export class SourcesService {
         'moderator.id',
         'moderator.name',
       ]) // Выбираем только нужные поля
+      .leftJoin('source.ideas', 'idea')
+      .leftJoin('source.user', 'user')
+      .leftJoin('source.moderator', 'moderator')
+      .leftJoin('source.author', 'author')
       .where('source.id = :id', { id })
       .getOne();
     const keywords = await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
@@ -111,9 +149,60 @@ export class SourcesService {
     );
   }
 
-  async moderate(id: number, user: IUser) {
-    //await checkAccess(this.authorRepository,id, user.id);
-    return this.sourceRepository.update({ id }, { moderated: user.id });
+  async toModerate(id: number, user: IUser, isCascade: boolean = false) {
+    const author = await this.sourceRepository.manager.query<
+      { id: number, verification_status: VerificationStatus }[]>
+      (`select 
+          authors.id, 
+          authors.verification_status 
+        from authors, sources 
+        where sources.id=$1 and sources.author_id=authors.id`, [id]);
+    if (!author || author.length === 0) {
+      throw new HttpException(
+        { message: 'Не найден автор источника' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    if (author[0].verification_status === VerificationStatus.Creating) {
+      await this.authorsService.toModerate(author[0].id, user, true);
+    }
+    return this.moderatorService.toModerateEntity(
+      this.sourceRepository,
+      id,
+      user,
+      process.env.ROUTE_SOURCE_DETAIL,
+      'Источник',
+      isCascade
+    );
+  }
+
+  async moderate(id: number, user: IUser, moderationResult: IModerate) {
+    if (moderationResult.action === 'approve') { // если одобряем источник, то проверяем, одобрен ли автор?
+      const author = await this.sourceRepository.manager.query<
+        { id: number, verification_status: VerificationStatus }[]>
+        (`select 
+            authors.id, 
+            authors.verification_status 
+          from authors, sources 
+          where sources.id=$1 and sources.author_id=authors.id`, [id]);
+      if (!author || author.length === 0) 
+        throw new HttpException(
+          { message: 'Не найден автор источника' },
+          HttpStatus.NOT_FOUND,
+        );
+      if (author && author.length > 0 && author[0].verification_status !== VerificationStatus.Moderated) 
+        throw new HttpException(
+          { message: `Не одобрен автор источника. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_AUTHOR_DETAIL}/${author[0].id}` },
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+    return this.moderatorService.moderateEntity(
+      this.sourceRepository,
+      id,
+      user,
+      moderationResult,
+      'Источник'
+    );
   }
 
   async getImageURL(id: number): Promise<string | null> {

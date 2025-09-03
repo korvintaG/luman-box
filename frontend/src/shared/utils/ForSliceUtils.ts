@@ -6,7 +6,7 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { RequestStatusValue } from "../common-types";
+import { RequestStatusValue } from "../types/types-for-hooks";
 
 const hasPrefix = (action: UnknownAction, prefix: string) =>
   action.type.startsWith(prefix);
@@ -61,7 +61,8 @@ export interface SliceToWork<T> {
   error: string;
 }
 
-export interface ListToWork<T> extends SliceToWork<T> {
-  current: T | null ;
-  list: T[];
+export interface ListToWork<TList, TDetail> extends SliceToWork<TDetail> {
+  current: TDetail | null ;
+  list: TList[];
+  newID?: number; // id новой записи
 }

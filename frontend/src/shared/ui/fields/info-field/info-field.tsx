@@ -2,46 +2,24 @@ import { FC } from "react";
 import { combineClasses } from "../../../utils/utils";
 
 import styles from "./info-field.module.css";
+import clsx from "clsx";
+
+export type InfoFieldType = "info" | "error" | "success" | "processing";
 
 export type InfoFieldUIProps = {
   label: string;
   text: string;
-  classReplace?: string;
-  classAdd?: string;
-  labelClassReplace?: string;
-  labelClassAdd?: string;
-  textClassAdd?: string;
-  textClassReplace?: string;
+  type?: InfoFieldType;
 };
 
-export const InfoFieldUI: FC<InfoFieldUIProps> = (props) => {
-  const blockClass = combineClasses(
-    styles["block"],
-    props.classReplace,
-    props.classAdd
-  );
-  const labelClass = combineClasses(
-    styles["label"],
-    props.labelClassReplace,
-    props.labelClassAdd
-  );
-  const infoClass = combineClasses(
-    styles["field"],
-    props.textClassReplace,
-    props.textClassAdd
-  );
-  if (window.innerWidth <= 765)
-    return (
-      <div className={blockClass}>
-        <label className={labelClass}>{props.label}</label>
-        <p className={infoClass}>{props.text}</p>
+export const InfoFieldUI: FC<InfoFieldUIProps> = ({label, text, type="info"}) => {
+    return (<>
+      <div className={styles.mobile}>
+        <label className={clsx(styles.label, styles[type])}>{label}</label>
+        <p className={clsx(styles.field, styles[type])}>{text}</p>
       </div>
-    );
-  else
-    return (
-      <>
-        <label className={labelClass}>{props.label}</label>
-        <p className={infoClass}>{props.text}</p>
-      </>
+      <label className={clsx(styles.label, styles.tabletAndDesktop, styles[type])}>{label}</label>
+      <p className={clsx(styles.field, styles.tabletAndDesktop, styles[type])}>{text}</p>
+    </>
     );
 };

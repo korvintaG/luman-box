@@ -13,25 +13,13 @@ import { Source } from '../../sources/entities/source.entity';
 import { Keyword } from '../../keywords/entities/keyword.entity';
 import { User } from '../../users/entities/user.entity';
 import { Attitude } from 'src/DDD/attitudes/entities/attitude.entity';
+import { EntityCommonFull} from '../../../shared/entities/abstract.entity';
 
 @Entity('ideas')
-export class Idea {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ type: 'varchar', select: false, unique: true, nullable: true })
-  id_out: string;
-
-  @Column('varchar')
-  name: string;
-
+export class Idea extends EntityCommonFull {
   @ManyToOne(() => Source, (source) => source.name, { nullable: true })
   @JoinColumn({ name: 'source_id' })
   source: Source;
-
-  @ManyToOne(() => User, (user) => user.name, { nullable: false })
-  @JoinColumn({ name: 'user_id' })
-  user: User;
 
   @Column('text')
   original_text: string;
@@ -42,16 +30,6 @@ export class Idea {
   @Column({ type: 'varchar', nullable: true})
   SVG: string;
 
-  //@Column({ type: 'timestamp', nullable: true })
-  @CreateDateColumn()
-  date_time_create: Date;
-
-  @Column({ type: 'int', nullable: true, name: 'moderated' })
-  moderated: number;
-
-  @ManyToOne(() => User, (user) => user.name, { nullable: true })
-  @JoinColumn({ name: 'moderated' })
-  moderator: User;
 
   @ManyToMany(() => Keyword, (keyword) => keyword.ideas)
   @JoinTable({

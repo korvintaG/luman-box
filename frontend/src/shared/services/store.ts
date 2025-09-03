@@ -1,10 +1,16 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import authorsSliceReducer from "../../features/authors/store/AuthorSlice";
-import sourcesSliceReducer from "../../features/sources/store/SourceSlice";
-import ideasSliceReducer from "../../features/ideas/store/IdeaSlice";
-import keywordsSliceReducer from "../../features/keywords/store/KeywordSlice";
+import authorDetailsSliceReducer from "../../domains/author/store/AuthorDetailsSlice";
+import authorListSliceReducer from "../../domains/author/store/AuthorListSlice";
+import sourceDetailsSliceReducer from "../../domains/source/store/SourceDetailsSlice";
+import sourceListSliceReducer from "../../domains/source/store/SourceListSlice";
+import ideaDetailSliceReducer from "../../domains/idea/store/idea-details-slice";
+import ideaListSliceReducer from "../../domains/idea/store/idea-list-slice";
+import keywordDetailSliceReducer from "../../domains/keyword/store/KeywordDetailSlice";
+import keywordListSliceReducer from "../../domains/keyword/store/KeywordListSlice";
 import authSliceReducer from "../../features/auth/store/AuthSlice";
-import interconnectionsReducer from "../../features/interconnections/store/InterconnectionSlice";
+import interconnectionListReducer from "../../domains/interconnection/store/interconnection-list-slice";
+import interconnectionAddReducer from "../../domains/interconnection/store/interconnection-add-slice";
+import interconnectionEditReducer from "../../domains/interconnection/store/interconnection-edit-slice";
 import filesReducer from "../../features/files/store/filesSlice";
 
 import {
@@ -14,12 +20,18 @@ import {
 } from "react-redux";
 
 export const rootReducer = combineReducers({
-  authors: authorsSliceReducer,
-  sources: sourcesSliceReducer,
-  ideas: ideasSliceReducer,
-  keywords: keywordsSliceReducer,
+  authorDetails: authorDetailsSliceReducer,
+  authorList: authorListSliceReducer,
+  sourceDetails: sourceDetailsSliceReducer,
+  sourceList: sourceListSliceReducer,
+  ideaDetail: ideaDetailSliceReducer,
+  ideaList: ideaListSliceReducer,
+  keywordDetail: keywordDetailSliceReducer,
+  keywordList: keywordListSliceReducer,
   auth: authSliceReducer,
-  interconnections: interconnectionsReducer,
+  interconnectionList: interconnectionListReducer,
+  interconnectionAdd: interconnectionAddReducer,
+  interconnectionEdit: interconnectionEditReducer,
   files: filesReducer
 });
 

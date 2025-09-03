@@ -42,10 +42,12 @@ export interface IdeaForList {
   name: string,
   source_id: number,
   source_name: string
+  SVG?: string;
 }
 
 export interface IModerate {
   action: 'approve' | 'reject';
+  notes?: string;
 }
 
 export type AccessToken = {

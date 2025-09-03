@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { SourcesService } from './sources.service';
@@ -17,7 +18,7 @@ import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-import { Role } from '../../types/custom';
+import { IModerate, Role } from '../../types/custom';
 
 @Controller('sources')
 export class SourcesController {
@@ -50,11 +51,25 @@ export class SourcesController {
     return this.sourcesService.update(+id, req.user, updateSourceDto);
   }
 
+  @Post('to-moderate/:id')
+  @UseGuards(JwtAuthGuard)
+  toModerate(
+    @Param('id') id: string,
+    @Req() req: Request,
+  ) {
+    return this.sourcesService.toModerate(+id, req.user);
+  }
+
+
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
-  moderate(@Param('id') id: string, @Req() req: Request) {
-    return this.sourcesService.moderate(+id, req.user);
+  moderate(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Query() query: IModerate,
+  ) {
+    return this.sourcesService.moderate(+id, req.user, query);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -3,35 +3,32 @@ import { appRoutesURL } from "./AppRoutesURL";
 import App from "../App";
 import { AboutPage } from "../../pages/AboutPage/AboutPage";
 import { CMSPage } from "../../pages/CMSPage/CMSPage";
-import { AuthorsListPage } from "../../pages/AuthorsPage/AuthorsListPage/AuthorsListPage";
-import { AuthorDetailsPage } from "../../pages/AuthorsPage/AuthorDetailsPage/AuthorDetailsPage";
-import { SourcesListPage } from "../../pages/SourcesPage/SourcesListPage/SourcesListPage";
-import { SourceDetailsPage } from "../../pages/SourcesPage/SourceDetailsPage/SourceDetailsPage";
-import { IdeasPage } from "../../pages/IdeasPage/IdeasListPage/IdeasListPage";
-import { IdeaDetailsPage } from "../../pages/IdeasPage/IdeaDetailsPage/IdeaDetailsPage";
-import { InterconnectionsPage } from "../../pages/InterconnectionsPage/InterconnectionsListPage/InterconnectionsListPage";
-import { InterconnectionDetailsEditPage } from "../../pages/InterconnectionsPage/InterconnectionDetailsPage/InterconnectionDetailsEditPage";
-import { InterconnectionDetailsAddPage } from "../../pages/InterconnectionsPage/InterconnectionDetailsPage/InterconnectionDetailsAddPage";
-import { KeywordsListPage } from "../../pages/KeywordsPage/KeywordsListPage/KeywordsListPage";
-import { KeywordDetailsPage } from "../../pages/KeywordsPage/KeywordDetailsPage/KeywordDetailsPage";
+import { AuthorListPage, AuthorDetailsPage, authorsLoad, authorLoad } from "../../domains/author/";
+import { SourceListPage } from "../../domains/source/pages/SourceListPage";
+import { SourceDetailsPage } from "../../domains/source/pages/SourceDetailsPage";
+import { IdeasPage } from "../../domains/idea/pages/IdeasListPage";
+import { IdeaDetailsPage } from "../../domains/idea/pages/IdeaDetailsPage";
+import { InterconnectionsPage } from "../../domains/interconnection/pages/InterconnectionsListPage";
+import { InterconnectionDetailsEditPage } from "../../domains/interconnection/pages/InterconnectionDetailsEditPage";
+import { InterconnectionDetailsAddPage } from "../../domains/interconnection/pages/InterconnectionDetailsAddPage";
+import { KeywordsListPage } from "../../domains/keyword/pages/KeywordsListPage";
+import { KeywordDetailsPage } from "../../domains/keyword/pages/KeywordDetailsPage";
 import LoginPage from "../../pages/LoginPage/login-page";
 import { NotFoundPage } from "../../pages/NotFoundPage/not-found-page";
 import { MainPage } from "../../pages/MainPage/MainPage";
 import { TestPage, getArrayLoader } from "../../pages/TestPage/TestPage";
-import { authorsLoad } from "../../pages/AuthorsPage/AuthorsListPage/Loaders/AuthorListLoader";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
-import { authorLoad } from "../../pages/AuthorsPage/AuthorDetailsPage/Loaders/AuthorDetailsLoader";
-import { ideasLoad } from "../../pages/IdeasPage/IdeasListPage/Loaders/IdeasListLoader";
-import { ideaEditLoad } from "../../pages/IdeasPage/IdeaDetailsPage/Loaders/IdeaDetailsEditLoader";
-import { ideaAddLoad } from "../../pages/IdeasPage/IdeaDetailsPage/Loaders/IdeaDetailsAddLoader";
-import { sourcesLoad } from "../../pages/SourcesPage/SourcesListPage/Loaders/SourcesListLoader";
-import { sourceEditLoad } from "../../pages/SourcesPage/SourceDetailsPage/Loaders/SourceDetailsEditLoader";
-import { sourceAddLoad } from "../../pages/SourcesPage/SourceDetailsPage/Loaders/SourceDetailsAddLoader";
-import { keywordsLoad } from "../../pages/KeywordsPage/KeywordsListPage/Loaders/KeywordsListLoader";
-import { keywordLoad } from "../../pages/KeywordsPage/KeywordDetailsPage/Loaders/KeywordDetailsLoader";
-import { interconnectionsLoad } from "../../pages/InterconnectionsPage/InterconnectionsListPage/Loaders/InterconnectionsLoader";
-import { interconnectionEditLoad } from "../../pages/InterconnectionsPage/InterconnectionDetailsPage/Loaders/InterconnectionDetailsEditLoader";
-import { interconnectionAddLoad } from "../../pages/InterconnectionsPage/InterconnectionDetailsPage/Loaders/InterconnectionDetailsAddLoader";
+import { ideasLoad } from "../../domains/idea/loaders/IdeasListLoader";
+import { ideaEditLoad } from "../../domains/idea/loaders/IdeaDetailsEditLoader";
+import { ideaAddLoad } from "../../domains/idea/loaders/IdeaDetailsAddLoader";
+import { sourceListLoad } from "../../domains/source/loaders/SourceListLoader";
+import { sourceEditLoad } from "../../domains/source/loaders/SourceDetailsEditLoader";
+import { sourceAddLoad } from "../../domains/source/loaders/SourceDetailsAddLoader";
+import { keywordsLoad } from "../../domains/keyword/loaders/KeywordsListLoader";
+import { keywordLoad } from "../../domains/keyword/loaders/KeywordDetailsLoader";
+import { interconnectionsLoad } from "../../domains/interconnection/loaders/InterconnectionsLoader";
+import { interconnectionEditLoad } from "../../domains/interconnection/loaders/InterconnectionDetailsEditLoader";
+import { interconnectionAddLoad } from "../../domains/interconnection/loaders/InterconnectionDetailsAddLoader";
 
 export const appRoutes = createBrowserRouter([
   {
@@ -48,7 +45,7 @@ export const appRoutes = createBrowserRouter([
       { path: appRoutesURL.CMS, element: <CMSPage /> },
       {
         path: appRoutesURL.authors,
-        Component: AuthorsListPage,
+        Component: AuthorListPage,
         loader: authorsLoad,
         errorElement: <ErrorPage />,
       },
@@ -61,8 +58,8 @@ export const appRoutes = createBrowserRouter([
       },
       {
         path: appRoutesURL.sources,
-        Component: SourcesListPage,
-        loader: sourcesLoad,
+        Component: SourceListPage,
+        loader: sourceListLoad,
         errorElement: <ErrorPage />,
       },
       {

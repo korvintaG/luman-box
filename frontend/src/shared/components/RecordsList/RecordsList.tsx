@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { ButtonUI } from "../../ui/button"; 
 import styles from "./RecordsList.module.css";
 import { Preloader } from "../../ui/Preloader";
-import { RequestStatus } from "../../common-types";
+import { RequestStatus } from "../../types/types-for-hooks";
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
 import { Breadcrumb, BreadcrumbSimpeType, Breadcrumbs } from "../Breadcrumbs/Breadcrumbs";
 import { useNavigate } from "react-router-dom";
