@@ -49,6 +49,10 @@ export async function checkAccess(
     throw new UnauthorizedException({
       message: 'У Вас нет прав на редактирование записей, добавленных не Вами',
     });
+  if (recordOld.verification_status !== VerificationStatus.Creating && user.role_id === Role.User)
+    throw new UnauthorizedException({
+      message: 'У Вас нет прав на редактирование записей, уже переданных на модерацию',
+    });
 }
 
 export function getUserSQLFilter(user: IUser, prefix?: string): string {

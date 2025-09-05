@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nest
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
 import {
@@ -39,6 +39,14 @@ export class AuthorsService {
       user: { id: user.id },
     });
   }
+
+  async findByCond(whereCond: FindOptionsWhere<Author>) {
+      return this.authorRepository.find({
+        where: { ...whereCond },
+        order: { name: 'ASC' },
+      });
+  }
+
 
   async findAll(user: IUser) {
     if (!user)
@@ -172,6 +180,7 @@ export class AuthorsService {
   async remove(id: number, user: IUser) {
     await checkAccess(this.authorRepository, id, user);
     try {
+      const author = await this.authorRepository.findOne({ where: { id } });
       const res = await this.authorRepository.delete({ id });
       if (res.affected === 0)
         throw new HttpException(
@@ -181,7 +190,10 @@ export class AuthorsService {
           HttpStatus.NOT_FOUND,
         );
       else {
-        return {
+          if (author.image_URL) {
+            await this.filesService.deleteImage(author.image_URL);
+          }
+          return {
           success: true,
           message: "Author deleted successfully",
           id: id
@@ -197,7 +209,7 @@ export class AuthorsService {
             where: { author: { id } },
             take: 5,
           });
-          console.log('remove res',res);
+          //console.log('remove res',res);
           errMessage += joinSimpleEntityFirst(
             res.map((el) => ({ id: el.id, name: el.name })),
           );

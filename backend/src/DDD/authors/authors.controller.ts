@@ -19,6 +19,8 @@ import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-au
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { IModerate, Role } from '../../types/custom';
+import { FindOptionsWhere } from 'typeorm';
+import { Author } from './entities/author.entity';
 
 @Controller('authors')
 export class AuthorsController {
@@ -30,29 +32,20 @@ export class AuthorsController {
     return this.authorsService.create(req.user, createAuthorDto);
   }
 
- /* @Post('upload-photo')
-  @UseInterceptors(FileInterceptor('image', multerConfig))
-  async uploadPhoto(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
-    // Здесь file содержит информацию о загруженном файле
-    // Можно сохранить путь к файлу в базе данных
-    if (req.fileValidationError) {
-      throw new BadRequestException(req.fileValidationError);
-    }
-
-    if (!file) {
-      throw new BadRequestException('Файл не был загружен');
-    }
-    return {
-      message: 'Photo uploaded successfully',
-      filename: file.filename,
-      path: file.path,
-    };
-  }*/
 
   @Get()
   @UseGuards(OptionalJwtAuthGuard)
   findAll(@Req() req: Request) {
     return this.authorsService.findAll(req.user);
+  }
+
+  @Get('find')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @WithRole(Role.SuperAdmin)
+  find(
+    @Body() findAuthorWhere: FindOptionsWhere<Author>,
+  ) {
+    return this.authorsService.findByCond(findAuthorWhere);
   }
 
   @Get(':id')
@@ -69,6 +62,7 @@ export class AuthorsController {
   ) {
     return this.authorsService.update(+id, req.user, updateAuthorDto);
   }
+
 
   @Post('to-moderate/:id')
   @UseGuards(JwtAuthGuard)
