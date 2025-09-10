@@ -1,7 +1,7 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
-import { IModerate, IUser } from '../../types/custom';
+import { IModerate, IUser, Role } from '../../types/custom';
 import { VerificationStatus } from '../entities/abstract.entity';
 import { TelegramMessagingService } from 'src/DDD/telegram/messages/telegram-messages.service';
 
@@ -36,6 +36,41 @@ export class ModeratorService {
   ) { }
 
   /**
+   * Проверяет права доступа к сущности для DML операций
+   * @param repository - репозиторий сущности
+   * @param id - ID сущности
+   * @param user - пользователь-модератор
+   * @returns найденная запись, если есть
+   */
+  async checkDMLAccess<T extends IModeratableEntity>(
+    repository: Repository<T>,
+    id: number,
+    user: IUser) {
+    const whereCondition = { id } as FindOptionsWhere<T>;
+    const [recordOld] = await repository.find({
+      where: whereCondition,
+      relations: ['user'],
+    });
+    if (!recordOld)
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Не найдена запись для операции',
+      });
+    if (recordOld.user_id !== user.id && user.role_id !== Role.SuperAdmin)
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: 'У Вас нет прав на редактирование записей, добавленных не Вами',
+      });
+    if (recordOld.verification_status !== VerificationStatus.Creating && user.role_id === Role.User)
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: 'У Вас нет прав на редактирование записей, уже переданных на модерацию',
+      });
+    return recordOld;
+  }
+
+
+  /**
    * Модерирует сущность (одобряет или отклоняет)
    * @param repository - репозиторий сущности
    * @param id - ID сущности
@@ -67,12 +102,10 @@ export class ModeratorService {
     );
 
     if (res.affected === 0) {
-      throw new HttpException(
-        {
-          message: `${entityName} не найден`,
-        },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: `${entityName} не найден`,
+      });
     }
 
     return {
@@ -93,7 +126,7 @@ export class ModeratorService {
    */
   async toModerateEntity<T extends IModeratableEntity>(
     repository: Repository<T>,
-    id: number, 
+    id: number,
     user: IUser,
     routeForModeration: string,
     entityName: string,
@@ -102,24 +135,24 @@ export class ModeratorService {
     if (!isCascade)
       await this.checkToModerateCount(repository, user, entityName);
     const record = await repository.findOne(
-        { where: { id } as FindOptionsWhere<T> });
+      { where: { id } as FindOptionsWhere<T> });
     if (!record) {
-      throw new HttpException(
-        { message: `${entityName} не найден` },
-        HttpStatus.NOT_FOUND, 
-      );
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: `${entityName} не найден`
+      });
     }
     if (record.verification_status !== VerificationStatus.Creating) {
-      throw new HttpException(
-        { message: `${entityName} находится не в статусе создания` },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: `${entityName} находится не в статусе создания`
+      });
     }
     if (record.user_id !== user.id) {
-      throw new HttpException(
-        { message: `Вы не можете перевести в статус на модерацию ${entityName.toLowerCase()}, которого не создавали` },
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: `Вы не можете перевести в статус на модерацию ${entityName.toLowerCase()}, которого не создавали`
+      });
     }
     const whereCondition = { id } as FindOptionsWhere<T>;
     const res = await repository.update(
@@ -130,14 +163,14 @@ export class ModeratorService {
       } as any // сложно типизировать update в typeorm
     );
     if (res.affected === 0)
-      throw new HttpException(
-        { message: `Не удалось перевести в статус на модерацию` },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: `Не удалось перевести в статус на модерацию`
+      });
     else {
       await this.TelegramMessagingService.sendMessageToAdmin(
         `Новая запись ${entityName} ${process.env.FRONTEND_URL}${routeForModeration}/${id} на модерации`);
-      return { 
+      return {
         success: true,
         id: id,
         message: `${entityName} переведен в статус на модерацию`,
@@ -165,14 +198,12 @@ export class ModeratorService {
         verification_status: VerificationStatus.Creating
       } as any
     });
-    
+
     if (draftUserCount > Number(process.env.MAX_USER_ENTITY_DRAFT)) {
-      throw new HttpException(
-        {
-          message: `Слишком много черновиков сущности [${entityName}] для пользователя`,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: `Слишком много черновиков сущности [${entityName}] для пользователя`
+      });
     }
   }
 
@@ -182,19 +213,17 @@ export class ModeratorService {
     entityName: string
   ): Promise<void> {
     const toModerateUserCount = await repository.count({
-        where: {
-          user_id: user.id,
-          verification_status: VerificationStatus.ToModerate
-        } as any
+      where: {
+        user_id: user.id,
+        verification_status: VerificationStatus.ToModerate
+      } as any
+    });
+
+    if (toModerateUserCount > Number(process.env.MAX_USER_ENTITY_TO_MODERATE)) {
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: `Слишком много сущности [${entityName}] на модерацию от пользователя`
       });
-      
-      if (toModerateUserCount > Number(process.env.MAX_USER_ENTITY_TO_MODERATE)) {
-        throw new HttpException(
-          {
-            message: `Слишком много сущности [${entityName}] на модерацию от пользователя`,
-          },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
     }
-  } 
+  }
+} 

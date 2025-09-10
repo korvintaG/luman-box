@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
 import { InterconnectionEntityDto } from './dto/create-interconnection.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { UpdateInterconnectionDto } from './dto/update-interconnection.dto';
 import { IUser, InterconnestionsCount, InterconnestionsTypes, IModerate } from '../../types/custom';
 import { Interconnection } from './entities/interconnection.entity';
@@ -42,7 +42,10 @@ export class InterconnectionsService {
 
  async create(user: IUser,interconnectionEntityDto: InterconnectionEntityDto) {
     if (interconnectionEntityDto.idea1_id===interconnectionEntityDto.idea2_id)
-      throw new BadRequestException(`Взаимосвязь должна устанавливаться между разными идеями! Вы же пытаетесь внутри одной с ID=${interconnectionEntityDto.idea1_id}`);
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: `Взаимосвязь должна устанавливаться между разными идеями! Вы же пытаетесь внутри одной с ID=${interconnectionEntityDto.idea1_id}`
+      });
     await this.moderatorService.checkDraftCount(
       this.interconnectionRepository,
       user,
@@ -59,7 +62,10 @@ export class InterconnectionsService {
     const interconnection=await this.interconnectionRepository.findOne(
       {where: {id},relations: ['user', 'moderator'] });
     if (isEmpty(interconnection))
-      throw new  NotFoundException(`Взаимосвязи с ID=${id} не найдено!`);
+      throw new  NotFoundException({
+        error: 'NotFound',
+        message: `Взаимосвязи с ID=${id} не найдено!`
+      });
     const addCond=getUserSQLFilter(user, 'ideas')
     const ideaCurrent=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
         `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
@@ -70,7 +76,10 @@ export class InterconnectionsService {
           and sources.id=ideas.source_id 
           and authors.id=sources.author_id`);
     if (isEmpty(ideaCurrent))
-      throw new  NotFoundException(`Не найдено 1-й идеи для взаимосвязи ID=${id}!`);
+      throw new  NotFoundException({
+        error: 'NotFound',
+        message: `Не найдено 1-й идеи для взаимосвязи ID=${id}!`
+      });
     const ideaInterconnect=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
         `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id
         from ideas, sources, authors, interconnections 
@@ -80,9 +89,16 @@ export class InterconnectionsService {
           and sources.id=ideas.source_id 
           and authors.id=sources.author_id`);
     if (isEmpty(ideaInterconnect))
-      throw new  NotFoundException(`Не найдено 2-й идеи для взаимосвязи ID=${id}!`);
+      throw new  NotFoundException({
+        error: 'NotFound',
+        message: `Не найдено 2-й идеи для взаимосвязи ID=${id}!`
+      });
 
     return { ...interconnection, idea_current:ideaCurrent[0], idea_interconnect:ideaInterconnect[0] }
+  }
+
+  async findByCond(findInterconnectionWhere: FindOptionsWhere<Interconnection>) {
+    return this.interconnectionRepository.find({where: findInterconnectionWhere});
   }
 
   async getByIdeaAndType(idea_id: number, type_id: number, user:IUser) {
@@ -164,11 +180,36 @@ export class InterconnectionsService {
 
 
   async update(user: IUser, id: number, updateInterconnectionDto: UpdateInterconnectionDto) {
-    return this.interconnectionRepository.update({id},updateInterconnectionDto)
+    const recordOld = await this.moderatorService.checkDMLAccess(this.interconnectionRepository, id, user);
+    const res = await this.interconnectionRepository.update({id},updateInterconnectionDto) 
+    if (res.affected === 0) {
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Не найдена взаимосвязь'
+      });
+    }
+    else {
+      return this.interconnectionRepository.findOne({ where: { id } });
+    }
   }
 
-  remove(user: IUser, id: number) {
-    return this.interconnectionRepository.delete({ id })
+  async remove(user: IUser, id: number) {
+    const recordOld = await this.moderatorService.checkDMLAccess(this.interconnectionRepository, id, user);
+    const res = await this.interconnectionRepository.delete({ id })
+    if (res.affected === 0) {
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Не найдена взаимосвязь'
+      });
+    }
+    else {
+      return {
+        success: true,
+        message: "Interconnection deleted successfully",
+        id: id
+      };
+    }
+
   }
 
   async toModerate(id: number, user: IUser) {
@@ -204,16 +245,16 @@ export class InterconnectionsService {
           from ideas, interconnections 
           where interconnections.id=$1 and ideas.id in (interconnections.idea2_id, interconnections.idea1_id)`, [id]);
       if (!ideas || ideas.length === 0) 
-        throw new HttpException(
-          { message: 'Не найдены идеи для взаимосвязи' },
-          HttpStatus.NOT_FOUND,
-        );
+        throw new NotFoundException({
+          error: 'NotFound',
+          message: 'Не найдены идеи для взаимосвязи'
+        });
       for (const idea of ideas) {
         if (idea.verification_status !== VerificationStatus.Moderated) 
-          throw new HttpException(
-            { message: `Не одобрена идея. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_IDEA_DETAIL}/${idea.id}` },
-            HttpStatus.BAD_REQUEST,
-          );
+          throw new BadRequestException({
+            error: 'Bad Request',
+            message: `Не одобрена идея. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_IDEA_DETAIL}/${idea.id}`
+          });
       }
     }
     return this.moderatorService.moderateEntity(

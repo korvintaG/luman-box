@@ -18,9 +18,10 @@ export class LoginRateLimiterService {
       await this.rateLimiter.consume(key); // Потребляем 1 попытку
     } catch (rateLimiterRes) {
       const waitTime = Math.ceil(rateLimiterRes.msBeforeNext / 1000 / 60);
-      throw new UnauthorizedException(
-        `Превышено количество попыток входа. Попробуйте снова через ${waitTime} минут.`,
-      );
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: `Превышено количество попыток входа. Попробуйте снова через ${waitTime} минут.`,
+      });
     }
   }
 

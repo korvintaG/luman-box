@@ -39,6 +39,7 @@ export class RateLimitInterceptor implements NestInterceptor {
       const waitTime = Math.ceil(rateLimiterRes.msBeforeNext / 1000);
       throw new HttpException(
         {
+          error: 'TooManyRequests',
           message: `Too many requests. Please try again in ${waitTime} seconds.`,
           retryAfter: waitTime,
         },

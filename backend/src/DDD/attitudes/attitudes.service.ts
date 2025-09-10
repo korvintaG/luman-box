@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAttitudeDto } from './dto/create-attitude.dto';
 import { IUser } from '../../types/custom';
 import { pick } from 'lodash';
 import { Attitude } from './entities/attitude.entity';
+import { Idea } from '../ideas/entities/idea.entity';
+import { IdeasService } from '../ideas/ideas.service';
 
 interface ILikeCount {
   value: number;
@@ -16,31 +18,86 @@ export class AttitudesService {
   constructor(
     @InjectRepository(Attitude)
     private readonly attitudeRepository: Repository<Attitude>,
+    @Inject(forwardRef(() => IdeasService))
+    private readonly ideasService: IdeasService
  ) {}
 
   async create(user: IUser,ideaID:number, createAttitudeDto: CreateAttitudeDto) {
-    //console.log('AttitudesService create',user, ideaID, createAttitudeDto)
-    const found=await this.attitudeRepository.find({
-      where:{user_id:user.id, 
-             idea_id:ideaID}
-      });
-    if (found.length===0) {// не найдено
-      if (createAttitudeDto.importance!==0 || createAttitudeDto.like!==0 || createAttitudeDto.truth!==0)
-        return this.attitudeRepository.save({
-          ...createAttitudeDto,
-          user_id: user.id ,
-          idea_id: ideaID
-        });        
-      else
-        return ({affected:0});
-    }
-    else {
-      if (createAttitudeDto.importance===0 && createAttitudeDto.like===0 && createAttitudeDto.truth===0) {
-        return this.attitudeRepository.delete({user_id:user.id, idea_id:ideaID});
+    /*const idea=await this.ideasService.findOne(ideaID, user);
+    if (!idea)
+      throw new NotFoundException({
+        error:'NotFound',
+        message: `Idea with id ${ideaID} not found`
+      });*/
+    if (!createAttitudeDto.importance)
+      createAttitudeDto.importance=0;
+    if (!createAttitudeDto.like)
+      createAttitudeDto.like=0;
+    if (!createAttitudeDto.truth)
+      createAttitudeDto.truth=0;
+    try {
+      const found=await this.attitudeRepository.find({
+        where:{user_id:user.id, 
+              idea_id:ideaID}
+        });
+      if (found.length===0) {// не найдено
+        if (createAttitudeDto.importance!==0 || createAttitudeDto.like!==0 || createAttitudeDto.truth!==0) {
+          const res=await this.attitudeRepository.save({
+            ...createAttitudeDto,
+            user_id: user.id ,
+            idea_id: ideaID
+          });     
+          return {
+            success: true,
+            id: res.id,
+            idea_id: ideaID,
+            user_id: user.id,
+            message: `Attitude created successfully`
+          };
+        }
+        else
+          return {
+            success: true,
+            id: null,
+            idea_id: ideaID,
+            user_id: user.id,
+            message: `Attitude not necessary to create`
+          };
       }
-      else
-        return this.attitudeRepository.update({user_id:user.id, idea_id:ideaID}, 
-          createAttitudeDto);      
+      else {
+        if (createAttitudeDto.importance===0 && createAttitudeDto.like===0 && createAttitudeDto.truth===0) {
+          const res= this.attitudeRepository.delete({user_id:user.id, idea_id:ideaID});
+          return {
+            success: true,
+            id: null,
+            idea_id: ideaID,
+            user_id: user.id,
+            message: `Attitude deleted successfully`
+          };
+        }
+        else {
+          const res=await this.attitudeRepository.update({user_id:user.id, idea_id:ideaID}, 
+            createAttitudeDto);      
+          if (res.affected===0) {
+            throw new NotFoundException({
+              error:'NotFound',
+              message: `Attitude with user_id ${user.id} and idea_id ${ideaID} not found to update`
+            });
+          }
+          return {
+            success: true,
+            id: undefined,
+            idea_id: ideaID,
+            user_id: user.id,
+            message: `Attitude updated successfully`
+          };
+        }
+    }
+    } catch (error) {
+      throw new NotFoundException({
+        error:'NotFound',
+        message: `Idea with id ${ideaID} not found: ${error}`
+      });
     }
   }
 

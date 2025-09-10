@@ -1,11 +1,11 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
-import { Repository, FindManyOptions, MoreThan } from 'typeorm';
+import { Repository, FindOptionsWhere } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
 import { IModerate, SimpleEntity } from '../../types/custom';
-import { joinSimpleEntityFirst, checkAccess } from '../../utils/utils';
+import { joinSimpleEntityFirst } from '../../utils/utils';
 import { IUser, Role } from '../../types/custom';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 import { ModeratorService } from '../../shared/services/moderator.service';
@@ -55,9 +55,14 @@ export class KeywordsService {
     }
   }
 
-  findByCond(cond: FindManyOptions) {
+  /*findByCond(cond: FindManyOptions) {
     return this.keywordRepository.find(cond);
+  }*/
+
+  findByCond(cond: FindOptionsWhere<Keyword>) {
+    return this.keywordRepository.find({where: cond});
   }
+
 
   async findOne(id: number) {
     const authors = await this.keywordRepository.manager.query<SimpleEntity[]>(
@@ -103,8 +108,18 @@ export class KeywordsService {
   }
 
   async update(id: number, user: IUser, updateKeywordDto: UpdateKeywordDto) {
-    await checkAccess(this.keywordRepository, id, user);
-    return await this.keywordRepository.update({ id }, updateKeywordDto);
+    const recordOld = await this.moderatorService.checkDMLAccess(this.keywordRepository, id, user); 
+    const res = await this.keywordRepository.update({ id }, updateKeywordDto);
+    if (res.affected === 0) 
+      throw new NotFoundException(
+        {
+          error: 'NotFound',
+          message: 'Ключевое слово не найдено'
+        }
+      );
+    else {
+      return this.keywordRepository.findOne({ where: { id } });
+    }
   }
 
   async toModerate(id: number, user: IUser, isCascade: boolean = false) {
@@ -130,7 +145,7 @@ export class KeywordsService {
   }
 
   async remove(id: number, user: IUser) {
-    await checkAccess(this.keywordRepository, id, user);
+    const recordOld = await this.moderatorService.checkDMLAccess(this.keywordRepository, id, user);
     try {
       return await this.keywordRepository.delete({ id });
     } catch (err) {
@@ -157,12 +172,10 @@ export class KeywordsService {
             ']';
         }
       }
-      throw new HttpException(
-        {
-          message: errMessage,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: errMessage
+      });
     }
   }
 }

@@ -1,0 +1,10 @@
+{
+  // Показывать диалог подтверждения при удалении (в корзину или навсегда)
+  "explorer.confirmDelete": true,
+
+  // Подтверждать перенос файлов/папок drag-and-drop
+  "explorer.confirmDragAndDrop": true,
+
+  // Всегда использовать корзину при удалении
+  "files.enableTrash": true
+} 

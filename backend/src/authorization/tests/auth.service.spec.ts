@@ -1,14 +1,11 @@
-import { INestApplication, UnauthorizedException } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { Response } from 'express';
-import request from 'supertest';
-import { AppModule } from '../app.module';
-import { AuthService } from './auth.service';
-import { LocalStrategy } from './strategies/local.strategy';
+import { INestApplication } from '@nestjs/common';
+import { setupTestApp } from 'src/test/tests.helpers';
+import { login, expectLoginAndCookies, refreshTokenAfterLogin } from './auth.helpers';
+import { StatusCode } from 'src/types/custom';
 
 describe('AuthService (integration)', () => {
   let app: INestApplication;
-  let authService: AuthService;
+  let server: any;
 
   const userLogin = process.env.USER_LOGIN;
   const userPassword = process.env.USER_PASSWORD;
@@ -24,81 +21,39 @@ describe('AuthService (integration)', () => {
     if (!userLogin || !userPassword || !errorLogin || !errorPassword || !adminLogin || !adminPassword || !superAdminLogin || !superAdminPassword) {
       throw new Error('ENV is missing USER_LOGIN/USER_PASSWORD/ERROR_LOGIN/ERROR_PASSWORD/ADMIN_LOGIN/ADMIN_PASSWORD/SUPER_ADMIN_LOGIN/SUPER_ADMIN_PASSWORD');
     }
-
-    app = await NestFactory.create(AppModule, { logger: false });
-    app.setGlobalPrefix('api');
-    await app.init();
-
-    authService = app.get(AuthService);
+    ({ app, server } = await setupTestApp(true));
   });
 
   afterAll(async () => {
     await app?.close();
   });
 
-  it('correct login and password should return a token pair', async () => {
-    const user = await authService.validateUser(userLogin as string, userPassword as string);
-    expect(user).toBeTruthy();
-
-    const res = { cookie: jest.fn() } as unknown as Response;
-    const result = await authService.login(res, user as any);
-
-    expect(result).toHaveProperty('access_token');
-    expect(typeof result.access_token).toBe('string');
-    expect(result).toHaveProperty('success', true);
-    expect(result).toHaveProperty('user');
-    expect(typeof result.user).toBe('object');
-    expect(result.user).toHaveProperty('role_id');
-    expect(result.user.role_id).toBeDefined();
-    expect(result.user.role_id).toBe(0);
-    expect(res.cookie).toHaveBeenCalledWith(
-      'refreshToken',
-      expect.any(String),
-      expect.any(Object)
-    );
-
-    expect(typeof result.access_token).toBe('string');
-    expect(result.access_token.length).toBeGreaterThan(100);
-    expect(result.access_token.length).toBeLessThan(300);
-
-    const cookieCalls = (res.cookie as unknown as jest.Mock).mock.calls;
-    const refreshCall = cookieCalls.find((args: any[]) => args[0] === 'refreshToken');
-    const refreshToken = refreshCall?.[1] as string;
-    expect(typeof refreshToken).toBe('string');
-    expect(refreshToken.length).toBeGreaterThan(100);
-    expect(refreshToken.length).toBeLessThan(300);
+  it('Логин пользователя выдает токены и роль пользователя', async () => {
+    await expectLoginAndCookies(server, userLogin as string, userPassword as string, 0);
   });
 
-  it('incorrect login should return an error', async () => {
-    if (!errorLogin || !errorPassword) {
-      throw new Error('ENV is missing ERROR_LOGIN/ERROR_PASSWORD');
-    }
-
-    const localStrategy = app.get(LocalStrategy);
-    await expect(
-      localStrategy.validate(errorLogin as string, errorPassword as string),
-    ).rejects.toBeInstanceOf(UnauthorizedException);
+  it('Обновление токена выдает токены и роль пользователя', async () => {
+    const res = await refreshTokenAfterLogin(server, userLogin as string, userPassword as string);
+    expect(res.body).toHaveProperty('access_token');
+    expect(typeof res.body.access_token).toBe('string');
+    expect(res.body.access_token.length).toBeGreaterThan(100);
+    expect(res.body.access_token.length).toBeLessThan(300);
   });
 
-  it('correct admin login and password should return admin role', async () => {
-    const user = await authService.validateUser(adminLogin as string, adminPassword as string);
-    expect(user).toBeTruthy();
-    expect(typeof user).toBe('object');
-    expect((user as any)).toHaveProperty('role_id');
-    expect((user as any).role_id).toBeDefined();
-    expect((user as any).role_id).toBe(1);
+  it('Логин админа выдает токены и роль админа', async () => {
+    await expectLoginAndCookies(server, adminLogin as string, adminPassword as string, 1);
   });
 
-  it('correct super admin login and password should return super admin role', async () => {
-    const user = await authService.validateUser(superAdminLogin as string, superAdminPassword as string);
-    expect(user).toBeTruthy();
-    expect(typeof user).toBe('object');
-    expect((user as any)).toHaveProperty('role_id');
-    expect((user as any).role_id).toBeDefined();
-    expect((user as any).role_id).toBe(3);
+  it('Логин супер админа выдает токены и роль супер админа', async () => {
+    await expectLoginAndCookies(server, superAdminLogin as string, superAdminPassword as string, 3);
   });
 
-
+  it('Неверный логин выдает ошибку', async () => {
+    const resEmpty = await login(server, null, null, StatusCode.Unauthorized);
+    const res = await login(server, errorLogin as string, errorPassword as string, StatusCode.Unauthorized);
+    expect(res.body).toHaveProperty('error');
+    expect(res.body.error).toBe('Unauthorized');
+  });
 
 
 }); 

@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException, BadRequestException, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In, FindManyOptions } from 'typeorm';
+import { Repository, In, FindManyOptions, FindOptionsWhere } from 'typeorm';
 import { JSDOM } from 'jsdom';
 import { Idea } from './entities/idea.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
@@ -9,7 +9,7 @@ import { IIdeaBySourceAndKeyword, IdeaForList, IModerate } from '../../types/cus
 import { isEmpty, omit } from 'lodash';
 import { KeywordsService } from '../keywords/keywords.service';
 import { IUser, Role } from '../../types/custom';
-import { checkAccess, getUserSQLFilter } from '../../utils/utils';
+import { getUserSQLFilter } from '../../utils/utils';
 import { AttitudesService } from '../attitudes/attitudes.service';
 import { InterconnectionsService } from '../interconnections/interconnections.service';
 import DOMPurify from 'dompurify';
@@ -17,6 +17,7 @@ import DOMPurify from 'dompurify';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 import { ModeratorService } from '../../shared/services/moderator.service';
 import { SourcesService } from '../sources/sources.service';
+import { Interconnection } from '../interconnections/entities/interconnection.entity';
 
 @Injectable()
 export class IdeasService {
@@ -76,10 +77,17 @@ export class IdeasService {
     );
 
     if (!createIdeaDto.keywords)
-      throw new BadRequestException(`Для идеи должны быть назначены ключевые слова!`);
+      throw new BadRequestException( {
+        error: 'Bad Request',
+        message: 'Для идеи должны быть назначены ключевые слова!'
+      });
 
     if (createIdeaDto.keywords.length > Number(process.env.MAX_KEYWORDS_FOR_IDEA))
-      throw new BadRequestException(`Для идеи может быть назначено не более ${process.env.MAX_KEYWORDS_FOR_IDEA} ключевых слов!`);
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: `Для идеи может быть назначено не более ${process.env.MAX_KEYWORDS_FOR_IDEA} ключевых слов!`
+      });
+
       
     let onlyIdea = omit(createIdeaDto, ['keywords', 'date_time_create']);
     if (onlyIdea.source && onlyIdea.source.id === 0) {
@@ -90,16 +98,19 @@ export class IdeasService {
       SVG = this.sanitizeSVG(createIdeaDto.SVG);
       if (!SVG || SVG.length === 0) {
         console.log('idea create bad SVG', SVG);
-        throw new BadRequestException(`SVG должно быть или пустым или корректным SVG рисунком!`);
+        throw new BadRequestException({
+          error: 'Bad Request',
+          message: `SVG должно быть или пустым или корректным SVG рисунком!`
+        });
       }
     }
 
     let idea = this.ideaRepository.create({ ...onlyIdea, SVG });
     if (createIdeaDto.keywords)
       if (createIdeaDto.keywords.length > 0) {
-        const keywords = await this.keywordsService.findByCond({
-          where: { id: In(createIdeaDto.keywords.map((el) => el.id)) },
-        });
+        const keywords = await this.keywordsService.findByCond(
+           { id: In(createIdeaDto.keywords.map((el) => el.id)) },
+        );
         idea.keywords = keywords;
       }
     return this.ideaRepository.save({ ...idea, user: { id: user.id } });
@@ -231,8 +242,8 @@ export class IdeasService {
     return this.findOne(founds[0].id, user);
   }
 
-  findByCond(cond: FindManyOptions) {
-    return this.ideaRepository.find(cond);
+  findByCond(cond: FindOptionsWhere<Idea> ) {
+    return this.ideaRepository.find({ where: cond });
   }
 
   async findForList(id: number, user: IUser) {
@@ -242,7 +253,10 @@ export class IdeasService {
       from ideas, sources, authors
       where ideas.id=${id} ${addCond} and sources.id=ideas.source_id and authors.id=sources.author_id`);
     if (isEmpty(idea[0]))
-      throw new NotFoundException(`Идеи с ID=${id} не найдено!`);
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: `Идеи с ID=${id} не найдено!`
+      });
     else
       return { ...idea[0] }
   }
@@ -271,6 +285,12 @@ export class IdeasService {
       .leftJoin('idea.moderator', 'moderator')
       .where('idea.id = :id', { id })
       .getOne();
+    if (!found) {
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: `Идея с ID=${id} не найдена!`
+      });
+    }
     if (found.moderator) {
       const attitudes = await this.attitudesService.findOne(id, user);
       const interconnections = await this.interconnectionsService.countAllByIdea(id, user);
@@ -280,7 +300,7 @@ export class IdeasService {
   }
 
   async update(id: number, user: IUser, updateIdeaDto: UpdateIdeaDto) {
-    await checkAccess(this.ideaRepository, id, user);
+    const recordOld = await this.moderatorService.checkDMLAccess(this.ideaRepository, id, user);
     const onlyIdea = omit(updateIdeaDto, ['keywords']);
     if (!isEmpty(onlyIdea)) {
       await this.ideaRepository.update({ id }, onlyIdea);
@@ -294,14 +314,17 @@ export class IdeasService {
       SVG = this.sanitizeSVG(updateIdeaDto.SVG);
       if (!SVG || SVG.length === 0) {
         console.log('idea update bad SVG', SVG);
-        throw new BadRequestException(`SVG должно быть или пустым или корректным SVG рисунком!`);
+        throw new BadRequestException({
+          error: 'Bad Request',
+          message: `SVG должно быть или пустым или корректным SVG рисунком!`
+        });
       }
     }
 
     if (updateIdeaDto.keywords && updateIdeaDto.keywords.length > 0) {
-      const keywords = await this.keywordsService.findByCond({
-        where: { id: In(updateIdeaDto.keywords.map((el) => el.id)) },
-      });
+      const keywords = await this.keywordsService.findByCond(
+        { id: In(updateIdeaDto.keywords.map((el) => el.id)) },
+      );
       idea.keywords = keywords;
 
       return this.ideaRepository.save({ ...idea, SVG });
@@ -318,10 +341,10 @@ export class IdeasService {
         from ideas, sources 
         where ideas.id=$1 and sources.id=ideas.source_id`, [id]);
     if (!source || source.length === 0) {
-          throw new HttpException(
-            { message: 'Не найден источник идеи' },
-            HttpStatus.NOT_FOUND,
-          );
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Не найден источник идеи'
+      });
     }
     if (source[0].verification_status === VerificationStatus.Creating) {
       await this.sourcesService.toModerate(source[0].id, user, true);
@@ -335,10 +358,10 @@ export class IdeasService {
         from keywords, idea_keywords 
         where idea_keywords.idea_id=$1 and keywords.id=idea_keywords.keyword_id`, [id]);
     if (!keywords || keywords.length === 0) 
-      throw new HttpException(
-        { message: 'Для идеи не назначены ключевые слова' },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: 'Для идеи не назначены ключевые слова'
+      });
     for (const keyword of keywords) {
       if (keyword.verification_status === VerificationStatus.Creating) {
         await this.keywordsService.toModerate(keyword.id, user, true);
@@ -363,15 +386,15 @@ export class IdeasService {
           from ideas, sources 
           where ideas.id=$1 and sources.id=ideas.source_id`, [id]);
       if (!source || source.length === 0) 
-        throw new HttpException(
-          { message: 'Не найден источник идеи' },
-          HttpStatus.NOT_FOUND,
-        );
+        throw new BadRequestException({
+          error: 'Bad Request',
+          message: 'Не найден источник идеи'
+        });
       if (source[0].verification_status !== VerificationStatus.Moderated) 
-        throw new HttpException(
-          { message: `Не одобрен источник идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_SOURCE_DETAIL}/${source[0].id}` },
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException({
+          error: 'Bad Request',
+          message: `Не одобрен источник идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_SOURCE_DETAIL}/${source[0].id}`
+        });
       const keywords = await this.ideaRepository.manager.query<
         { id: number, verification_status: VerificationStatus }[]>
         (`select 
@@ -380,16 +403,16 @@ export class IdeasService {
           from keywords, idea_keywords 
           where idea_keywords.idea_id=$1 and keywords.id=idea_keywords.keyword_id`, [id]);
       if (!keywords || keywords.length === 0) 
-        throw new HttpException(
-          { message: 'Для идеи не назначены ключевые слова' },
-          HttpStatus.NOT_FOUND,
-        );
+        throw new BadRequestException({
+          error: 'Bad Request',
+          message: 'Для идеи не назначены ключевые слова'
+        });
       for (const keyword of keywords) {
         if (keyword.verification_status !== VerificationStatus.Moderated) 
-          throw new HttpException(
-            { message: `Не одобрено ключевое слово идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_KEYWORD_DETAIL}/${keyword.id}` },
-            HttpStatus.BAD_REQUEST,
-          );
+          throw new BadRequestException({
+            error: 'Bad Request',
+            message: `Не одобрено ключевое слово идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_KEYWORD_DETAIL}/${keyword.id}`
+          });
       }
     }
     return this.moderatorService.moderateEntity(
@@ -402,7 +425,27 @@ export class IdeasService {
   }
 
   async remove(id: number, user: IUser) {
-    await checkAccess(this.ideaRepository, id, user);
-    return await this.ideaRepository.delete({ id });
+    const recordOld = await this.moderatorService.checkDMLAccess(this.ideaRepository, id, user);
+    const interconnections = await this.interconnectionsService.findByCond([
+      {idea1_id: id},
+      {idea2_id: id}] as FindOptionsWhere<Interconnection>);
+    if (interconnections.length > 0)
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: 'Идея связана с другими идеями'
+      });
+    const res = await this.ideaRepository.delete({ id });
+    if (res.affected === 0)
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Идея не найдена'
+      });
+    else {
+      return {
+        success: true,
+        message: 'Идея удалена успешно',
+        id: id
+      };
+    }
   }
 }

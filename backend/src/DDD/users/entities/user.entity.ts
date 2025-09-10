@@ -1,6 +1,5 @@
-import { OneToMany, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Role } from '../../../types/custom';
-import { Attitude } from '../../attitudes/entities/attitude.entity';
 
 @Entity('users')
 export class User {
@@ -11,7 +10,7 @@ export class User {
   id_out: string;
 
   //id по чату в TelegramBot
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, default: '' })
   chat_id: string;
 
   @Column({ type: 'varchar', unique: true })

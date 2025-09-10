@@ -1,5 +1,4 @@
 import {
-  InternalServerErrorException,
   Body,
   Get,
   Controller,
@@ -7,6 +6,8 @@ import {
   UseGuards,
   Req,
   Res,
+  UnauthorizedException,
+  HttpCode,
 } from '@nestjs/common';
 import { UsersService } from '../DDD/users/users.service';
 import { AuthService } from './auth.service';
@@ -19,7 +20,7 @@ import { UserDto } from '../DDD/users/dto/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { RoleGuard } from './guards/role.guard';
 import { WithRole } from './decorators/role.decorator';
-import { Role } from '../types/custom';
+import { Role, StatusCode } from '../types/custom';
 
 @Controller('auth')
 export class AuthController {
@@ -30,12 +31,14 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
+  @HttpCode(StatusCode.successAuth)
   signin(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     //console.log('AuthController login origin host',req.get('origin'),req.get('host'))
     return this.authService.login(res, req.user);
   }
 
   @Post('logout')
+  @HttpCode(StatusCode.successLogout)
   clearAuthCookie(@Res({ passthrough: true }) res: Response) {
     res.clearCookie(this.authService.getCookieConfig().refreshToken.name);
     return { success: true };
@@ -52,7 +55,10 @@ export class AuthController {
   @Get('token')
   refreshTokens(@Req() req: Request) {
     if (!req.user) {
-      throw new InternalServerErrorException();
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: 'Не удалось определить пользователя',
+      });
     }
     return this.authService.generateAccessToken(req.user);
   }

@@ -9,16 +9,19 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { IdeasService } from './ideas.service';
-import { IIdeaBySourceAndKeyword, IModerate, Role } from '../../types/custom';
+import { IIdeaBySourceAndKeyword, IModerate, Role, StatusCode } from '../../types/custom';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
+import { FindOptionsWhere } from 'typeorm';
+import { Idea } from './entities/idea.entity';
 
 @Controller('ideas')
 export class IdeasController {
@@ -50,6 +53,16 @@ export class IdeasController {
     return this.ideasService.findBySourceKw(src, kw,req.user);
   }
 
+  @Get('find')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @WithRole(Role.SuperAdmin)
+  find(
+    @Body() findIdeaWhere: FindOptionsWhere<Idea>,
+  ) {
+    return this.ideasService.findByCond(findIdeaWhere);
+  }
+  
+
   @Get(':id')
   @UseGuards(OptionalJwtAuthGuard)
   findOne(@Param('id') id: string, @Req() req: Request) {
@@ -75,6 +88,7 @@ export class IdeasController {
 
   @Post('to-moderate/:id')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(StatusCode.successToModerate)
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -86,6 +100,7 @@ export class IdeasController {
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
+  @HttpCode(StatusCode.successModerate)
   moderate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -96,6 +111,7 @@ export class IdeasController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(StatusCode.successDelete)
   remove(@Param('id') id: string, @Req() req: Request) {
     return this.ideasService.remove(+id, req.user);
   }

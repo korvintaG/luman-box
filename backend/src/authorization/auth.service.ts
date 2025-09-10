@@ -1,6 +1,5 @@
 import {
   Injectable,
-  InternalServerErrorException,
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
@@ -28,7 +27,10 @@ export class AuthService {
 
   async login(res: Response, user: IUser) {
     if (!user || !user.id) {
-      throw new InternalServerErrorException('User not set in request');
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: 'Не удалось определить пользователя',
+      });
     }
     const accessToken = await this.generateTokenPair(user, res);
     return { ...accessToken, success: true, user };
@@ -111,7 +113,10 @@ export class AuthService {
   async register(user: CreateUserDto) {
     const [existingUser] = await this.usersService.find(user.name);
     if (existingUser) {
-      throw new BadRequestException('name already exists');
+      throw new BadRequestException({
+        error: 'Bad Request',
+        message: 'Имя пользователя уже существует',
+      });
     }
     const salt = randomBytes(8).toString('hex');
     const hashedPassword = await this.hashPasswordWithSalt(user.password, salt);
@@ -123,7 +128,10 @@ export class AuthService {
   async update(user: ITelegramUser) {
     const [existingUser] = await this.usersService.find(user.name);
     if (!existingUser) {
-      throw new BadRequestException('user not found');
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Пользователь не найден',
+      });
     }
     const salt = randomBytes(8).toString('hex');
     const hashedPassword = await this.hashPasswordWithSalt(user.password, salt);

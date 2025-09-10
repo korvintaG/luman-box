@@ -11,6 +11,7 @@ import { Index } from 'typeorm';
 import { Source } from '../../sources/entities/source.entity';
 import { User } from '../../users/entities/user.entity';
 import { EntityCommonFull } from '../../../shared/entities/abstract.entity';
+import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 
 @Entity('authors')

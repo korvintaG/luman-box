@@ -24,7 +24,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     const user = await this.authService.validateUser(name, password);
     if (!user) {
-      throw new UnauthorizedException('Не найдено');
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: 'Не найдено пользователя',
+      });
     }
 
     // Если логин успешный, сбрасываем лимит

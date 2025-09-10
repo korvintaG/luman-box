@@ -9,6 +9,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  HttpCode,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { SourcesService } from './sources.service';
@@ -18,7 +19,9 @@ import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-import { IModerate, Role } from '../../types/custom';
+import { IModerate, Role, StatusCode } from '../../types/custom';
+import { FindOptionsWhere } from 'typeorm';
+import { Source } from './entities/source.entity';
 
 @Controller('sources')
 export class SourcesController {
@@ -35,6 +38,16 @@ export class SourcesController {
   findAll(@Req() req: Request) {
     return this.sourcesService.findAll(req.user);
   }
+
+  @Get('find')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @WithRole(Role.SuperAdmin)
+  find(
+    @Body() findSourceWhere: FindOptionsWhere<Source>,
+  ) {
+    return this.sourcesService.findByCond(findSourceWhere);
+  }
+
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -53,6 +66,7 @@ export class SourcesController {
 
   @Post('to-moderate/:id')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(StatusCode.successToModerate)
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -64,6 +78,7 @@ export class SourcesController {
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
+  @HttpCode(StatusCode.successModerate)
   moderate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -74,6 +89,7 @@ export class SourcesController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(StatusCode.successDelete)  
   remove(@Param('id') id: string, @Req() req: Request) {
     return this.sourcesService.remove(+id, req.user);
   }

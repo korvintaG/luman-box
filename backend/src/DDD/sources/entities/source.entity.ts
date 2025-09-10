@@ -4,19 +4,21 @@ import {
   OneToMany,
   ManyToOne,
   Entity,
-  PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
+  Index,
 } from 'typeorm';
 import { Author } from '../../authors/entities/author.entity';
-import { User } from '../../users/entities/user.entity';
 import { Idea } from '../../ideas/entities/idea.entity';
 import { EntityCommonFull } from 'src/shared/entities/abstract.entity';
 
 //{ id:1, author_id:1, name:'Как делать полезные заметки'},
 
 @Entity('sources')
+@Index('UQ_source_author_id_name', ['author_id', 'name' ], { unique: true })
 export class Source extends EntityCommonFull {
+  @Column({ type: 'number'})
+  author_id: number;
+
   @Column({ type: 'varchar', nullable: true})
   publication_year: string;
 

@@ -1,19 +1,15 @@
-import { Injectable, HttpException, HttpStatus, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, Inject, forwardRef, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
-import {
-  joinSimpleEntityFirst,
-  checkAccess
-} from '../../utils/utils';
+import { joinSimpleEntityFirst } from '../../utils/utils';
 import { IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
 import { FilesService } from 'src/files/files.service';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 import { ModeratorService } from '../../shared/services/moderator.service';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthorsService {
@@ -132,8 +128,8 @@ export class AuthorsService {
   }
 
   async update(id: number, user: IUser, updateAuthorDto: UpdateAuthorDto) {
-    await checkAccess(this.authorRepository, id, user);
-    const old_image_URL = await this.getImageURL(id); 
+    const recordOld = await this.moderatorService.checkDMLAccess(this.authorRepository, id, user);
+    const old_image_URL = recordOld.image_URL; 
     const new_image_URL: string | undefined = updateAuthorDto.image_URL;
     const update_image_URL = await this.filesService.updateRecordImage(
       old_image_URL,
@@ -144,12 +140,12 @@ export class AuthorsService {
       { id },
       { ...updateAuthorDto, image_URL: update_image_URL },
     );
-    if (res.affected === 0)
-      throw new HttpException(
+    if (res.affected === 0) 
+      throw new NotFoundException(
         {
+          error: 'NotFound',
           message: 'Автор не найден',
         },
-        HttpStatus.NOT_FOUND,
       );
     else {
       return this.authorRepository.findOne({ where: { id } });
@@ -178,20 +174,20 @@ export class AuthorsService {
   }
 
   async remove(id: number, user: IUser) {
-    await checkAccess(this.authorRepository, id, user);
+    const recordOld = await this.moderatorService.checkDMLAccess(this.authorRepository, id, user);
     try {
-      const author = await this.authorRepository.findOne({ where: { id } });
+      //const author = await this.authorRepository.findOne({ where: { id } });
       const res = await this.authorRepository.delete({ id });
       if (res.affected === 0)
-        throw new HttpException(
+        throw new NotFoundException(
           {
+            error: 'NotFound',
             message: 'Автор не найден',
-          },
-          HttpStatus.NOT_FOUND,
+          }
         );
       else {
-          if (author.image_URL) {
-            await this.filesService.deleteImage(author.image_URL);
+          if (recordOld.image_URL) {
+            await this.filesService.deleteImage(recordOld.image_URL);
           }
           return {
           success: true,
@@ -205,10 +201,10 @@ export class AuthorsService {
         errMessage =
           'Нельзя удалять автора, который закреплен за источниками: ';
         try {
-          const res = await this.sourcesService.findByCond({
-            where: { author: { id } },
-            take: 5,
-          });
+          const res = await this.sourcesService.findByCond(
+            { author: { id } },
+            // take: 5,
+          );
           //console.log('remove res',res);
           errMessage += joinSimpleEntityFirst(
             res.map((el) => ({ id: el.id, name: el.name })),
@@ -221,11 +217,11 @@ export class AuthorsService {
             ']';
         }
 
-        throw new HttpException(
+        throw new BadRequestException(
           {
-            message: errMessage,
-          },
-          HttpStatus.BAD_REQUEST,
+            error: 'Bad Request',
+            message: errMessage
+          }
         );
       }
     }

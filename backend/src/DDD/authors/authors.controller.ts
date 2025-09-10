@@ -9,6 +9,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthorsService } from './authors.service';
@@ -18,7 +19,7 @@ import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
 import { WithRole } from '../../authorization/decorators/role.decorator';
-import { IModerate, Role } from '../../types/custom';
+import { IModerate, Role, StatusCode } from '../../types/custom';
 import { FindOptionsWhere } from 'typeorm';
 import { Author } from './entities/author.entity';
 
@@ -66,6 +67,7 @@ export class AuthorsController {
 
   @Post('to-moderate/:id')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(StatusCode.successToModerate)
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -76,6 +78,7 @@ export class AuthorsController {
 
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
+  @HttpCode(StatusCode.successModerate)
   @WithRole(Role.Admin)
   moderate(
     @Param('id') id: string,
@@ -87,6 +90,7 @@ export class AuthorsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(StatusCode.successDelete)
   remove(@Param('id') id: string, @Req() req: Request) {
     return this.authorsService.remove(+id, req.user);
   }

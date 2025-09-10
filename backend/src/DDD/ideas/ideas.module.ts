@@ -12,7 +12,7 @@ import { SourcesModule } from '../sources/sources.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Idea]), 
     KeywordsModule, 
-    AttitudesModule, 
+    forwardRef(() => AttitudesModule), 
     InterconnectionsModule, 
     ModeratorModule,
     forwardRef(() => SourcesModule),

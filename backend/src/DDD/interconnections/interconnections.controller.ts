@@ -1,13 +1,15 @@
-import { Req, UseGuards, Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Req, UseGuards, Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } from '@nestjs/common';
 import { InterconnectionsService } from './interconnections.service';
 import { InterconnectionEntityDto } from './dto/create-interconnection.dto';
 import { UpdateInterconnectionDto } from './dto/update-interconnection.dto';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { Request } from 'express';
-import { IInterconnectionWay, IModerate, Role } from 'src/types/custom';
+import { IInterconnectionWay, IModerate, Role, StatusCode } from 'src/types/custom';
 import { RoleGuard } from 'src/authorization/guards/role.guard';
 import { WithRole } from 'src/authorization/decorators/role.decorator';
+import { FindOptionsWhere } from 'typeorm';
+import { Interconnection } from './entities/interconnection.entity';
 
 
 @Controller('interconnections')
@@ -20,11 +22,22 @@ export class InterconnectionsController {
     return this.interconnectionsService.create(req.user,interconnectionEntityDto);
   }
 
+  @Get('find')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @WithRole(Role.SuperAdmin)
+  find(
+    @Body() findInterconnectionWhere: FindOptionsWhere<Interconnection>,
+  ) {
+    return this.interconnectionsService.findByCond(findInterconnectionWhere);
+  }
+
+
   @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.interconnectionsService.findOne(+id, req.user);
   }
+
 
   @UseGuards(OptionalJwtAuthGuard)
   @Get('/count-by-idea/:idea_id')
@@ -51,12 +64,14 @@ export class InterconnectionsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @HttpCode(StatusCode.successDelete)
   remove(@Req() req: Request, @Param('id') id: string) {
     return this.interconnectionsService.remove(req.user,+id);
   }
 
   @Post('to-moderate/:id')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(StatusCode.successToModerate)
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -68,6 +83,7 @@ export class InterconnectionsController {
   @Post('moderate/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @WithRole(Role.Admin)
+  @HttpCode(StatusCode.successModerate)
   moderate(
     @Param('id') id: string,
     @Req() req: Request,

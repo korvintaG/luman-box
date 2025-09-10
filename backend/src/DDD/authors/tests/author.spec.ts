@@ -1,59 +1,41 @@
 import { NestExpressApplication } from '@nestjs/platform-express';
 
-import request from 'supertest';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 import {
-  createAuthor,
-  deleteAuthor,
-  toModerateAuthor,
-  moderateAuthor,
-  findAuthors,
-  updateAuthor,
+  authorTestHelper,
 } from './author.helper';
 import { checkPhoto, checkPhotoAbsent, uploadPhoto } from 'src/files/tests/files.helpers';
-import { setupTestApp } from 'src/test/helpers';
+import { setupTestApp } from 'src/test/tests.helpers';
+import { StatusCode } from 'src/types/custom';
 
-const authorsToAdd = [
+
+describe('AuthorsService (integration)', () => {
+  let app: NestExpressApplication;
+  let server: any;
+  const entityToAddOK = 
   {
     name: 'Added by User',
     birth_date: '1990-01-01',
-  },
-];
+  }
 
-let tokenUser: string;
-let tokenAdmin: string;
-let tokenSuperAdmin: string;
-let authorID: number;
-let authorImage: string;
+  const entityToAddBad = 
+  {
+    name: '',
+    birth_date: '1990-01-01', 
+  }
 
+  let tokenUser: string;
+  let tokenUser2: string;
+  let tokenAdmin: string;
+  let tokenSuperAdmin: string;
+  let entityID: number;
+  let entityImage: string;
 
-describe('AuthService (integration)', () => {
-  let app: NestExpressApplication;
-  let server: any;
-
-  const getAddedAuthorID = async () => {
-    const findRes = await findAuthors(server, tokenSuperAdmin, authorsToAdd[0]);    
-    if (findRes.body.length!==0) {
-      return findRes.body[0].id;
-    }
-    return null;
-  };
-
-  const withExistingAuthor = async (
-    errorMessage: string,
-    action: (authorID: number) => Promise<void>,
-  ) => {
-    const authorID = await getAddedAuthorID();
-    if (authorID) {
-      await action(authorID);
-    } else {
-      throw new Error(errorMessage);
-    }
-  };
 
 
   beforeAll(async () => {
-    ({ app, server, tokenUser, tokenAdmin, tokenSuperAdmin } = await setupTestApp());
+    ({ app, server, tokenUser, tokenUser2, tokenAdmin, tokenSuperAdmin } = await setupTestApp());
+    authorTestHelper.setParams(server, tokenUser, tokenUser2, tokenAdmin, tokenSuperAdmin);
   });
 
   afterAll(async () => {
@@ -62,126 +44,93 @@ describe('AuthService (integration)', () => {
 
 
   it('анонимное чтение списка авторов', async () => {
-    const res = await request(server).get('/api/authors').expect(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBeGreaterThanOrEqual(5);
-
-    const first = res.body[0];
-    expect(first).toHaveProperty('id');
-    expect(typeof first.id).toBe('number');
-    expect(first).toHaveProperty('name');
-    expect(typeof first.name).toBe('string');
-    if (first.birth_date !== undefined) {
-      expect(typeof first.birth_date === 'string' || first.birth_date === null).toBe(true);
-    }
+    await authorTestHelper.getAnonymous(5, [{ name: 'id', type: 'number' }, { name: 'name', type: 'string' }]);
   });
 
   it('попытка создать автора без авторизации должна вернуть 401', async () => {
-    const res = await request(server).post('/api/authors').expect(401);
-    expect(res.body.message).toBe('Unauthorized');
+    await authorTestHelper.createAnonymous(entityToAddOK);
   });
 
   it('удаление старого мусора с авторами если остался таковой', async () => {
-    // ищем авторов для удаления (суперадмин)
-    const findRes = await findAuthors(server, tokenSuperAdmin, authorsToAdd[0]);
-    // если найден, удаляем (суперадмин)
-    if (findRes.body.length!==0) {
-      const delRes=await deleteAuthor(server, tokenSuperAdmin, findRes.body[0].id);
-    }
+    await authorTestHelper.removeOldData(entityToAddOK);
+  });
+
+  it('попытка создания невалидного автора пользователем должна вернуть 400', async () => {
+    const res = await authorTestHelper.simpleCreate(tokenUser, entityToAddBad, StatusCode.BadRequest);
   });
 
   it('создание автора пользователем', async () => {
-    // создаем автора (пользователь)
-    const res = await createAuthor(server, tokenUser, authorsToAdd[0]);
-    expect(res.body.name).toBe(authorsToAdd[0].name);
-    expect(res.body.birth_date).toBe(authorsToAdd[0].birth_date);
-    authorID = res.body.id;
+    entityID = await authorTestHelper.createEntityAndCheck( entityToAddOK);
+  });
+
+  it('попытка создать автора с просроченным и плохим токеном должна вернуть 401', async () => {
+    await authorTestHelper.createWithBadTokens(entityToAddOK);
+  });
+
+  it('попытка модификация автора другим пользователем должна вернуть 401', async () => {
+    await authorTestHelper.updateByAnotherUser(entityID);
+  }); 
+
+  it('попытка модификации автора невалидными данными должна вернуть 400', async () => {
+    await authorTestHelper.updateByBadData( entityID, { name: '1' });
   });
 
   it('модификация автора пользователем', async () => {
-      const res=await updateAuthor(server, tokenUser, authorID, { about_author: 'test about author' });
-      expect(res.body.about_author).toBe('test about author');
+    await authorTestHelper.updateEntity( entityID, { about_author: 'test about author' });
   });
 
   it('загрузка фото автора пользователем', async () => {
-      const res=await uploadPhoto(server, tokenUser, process.env.AUTHOR_PHOTO as string);
-      expect(res.body.file_name).toBeDefined();
-      const res2=await updateAuthor(server, tokenUser, authorID, { image_URL: res.body.file_name });
-      expect(res2.body.image_URL).toBeDefined();
-      authorImage = res2.body.image_URL;
-      await checkPhoto(server, authorImage);
+    entityImage = await authorTestHelper.uploadPhotoAndSet( entityID, process.env.AUTHOR_PHOTO as string);
   });
 
   it('попытка создать автора-копии пользователем должна вернуть 500', async () => {
-    // создаем такого же автора, должна быть ошибка уникальности (пользователь)
-    const resCopy = await createAuthor(server, tokenUser, authorsToAdd[0], 500);
+      const resCopy = await authorTestHelper.simpleCreate(tokenUser, entityToAddOK, StatusCode.InternalServerError);
   });
 
   it('удаление автора пользователем', async () => {
-      const delRes=await deleteAuthor(server, tokenUser, authorID);
+      const delRes=await authorTestHelper.simpleRemove(tokenUser, entityID);
   });
 
   it('проверка удаления фото при удалении автора пользователем', async () => {
-    await checkPhotoAbsent(server, authorImage);
+    await checkPhotoAbsent(server, entityImage);
   });
 
   it('добавления нового автора пользователем сразу с фото', async () => {
-    const res=await uploadPhoto(server, tokenUser, process.env.AUTHOR_PHOTO as string);
-    expect(res.body.file_name).toBeDefined();
-    const res2=await createAuthor(server, tokenUser, {...authorsToAdd[0], image_URL: res.body.file_name });
-    authorID = res2.body.id;
-    expect(res2.body.image_URL).toBeDefined();
-    authorImage = res2.body.image_URL;
-    await checkPhoto(server, authorImage);
+     ({ entityID: entityID , image_URL: entityImage} = await authorTestHelper.createEntityWithPhoto(
+        entityToAddOK, process.env.AUTHOR_PHOTO as string));
   });
 
   it('публикация автора пользователем', async () => {
     // посылаем запрос на "к модерации" (пользователь)
-    const resModerate = await toModerateAuthor(server, tokenUser, authorID);
+    const resModerate = await authorTestHelper.simpleToModerate(tokenUser, entityID);
   });
 
   it('попытка удалить автора пользователем после публикации должна вернуть 401', async () => {
-      const delRes=await deleteAuthor(server, tokenUser, authorID, 401);
+      const delRes=await authorTestHelper.simpleRemove(tokenUser, entityID, StatusCode.Unauthorized);
   });
 
   it('попытка публикации пользователем автора после публикации вернуть ошибку 400', async () => {
-      const resModerate2 = await toModerateAuthor(server, tokenUser, authorID, 400);
+      const resModerate2 = await authorTestHelper.simpleToModerate(tokenUser, entityID, StatusCode.BadRequest);
   });
 
   it('модерация автора администратором', async () => {
-      // модерируем автора (админ)
-      const resModerateAdmin = await moderateAuthor(server, tokenAdmin, authorID, 'approve');
-      // проверяем, что модерация прошла успешно
-      const findRes2 = await findAuthors(server, tokenSuperAdmin, authorsToAdd[0]);
-      expect(findRes2.body.length).toBe(1);
-      expect(findRes2.body[0].verification_status).toBe(VerificationStatus.Moderated);
+      await authorTestHelper.moderateApprove( entityID, 'approve');
   }); 
 
   it('попытка удалить автора администратором после модерации должна вернуть 401', async () => {
-      const delRes=await deleteAuthor(server, tokenAdmin, authorID, 401);
+      const delRes=await authorTestHelper.simpleRemove(tokenAdmin, entityID, StatusCode.Unauthorized);
   });
 
   it('удаление автора суперадмином', async () => {
-      const delRes=await deleteAuthor(server, tokenSuperAdmin, authorID);
+      const delRes=await authorTestHelper.simpleRemove(tokenSuperAdmin, entityID);
   });
 
   it('отклонение автора администратором', async () => {
-    // создаем автора повторно еще раз (пользователь)
-    const resCopy3 = await createAuthor(server, tokenUser, authorsToAdd[0]);
-    authorID = resCopy3.body.id;
-    // посылаем запрос на "к модерации" (пользователь)
-    const resModerate3 = await toModerateAuthor(server, tokenUser, resCopy3.body.id);
-    // модерируем автора (админ)
-    const resModerateAdmin2 = await moderateAuthor(server, tokenAdmin, resCopy3.body.id, 'reject','test note');
-    // проверяем, что запрет прошёл успешно
-    const findRes3 = await findAuthors(server, tokenSuperAdmin, authorsToAdd[0]);
-    expect(findRes3.body.length).toBe(1);
-    expect(findRes3.body[0].verification_status).toBe(VerificationStatus.Rejected);
-    expect(findRes3.body[0].moderation_notes).toBe('test note');
+    entityID = await authorTestHelper.moderateReject(entityToAddOK);
   });
 
   it('удаление автора суперадмином', async () => {
-      const delRes=await deleteAuthor(server, tokenSuperAdmin, authorID);
+      const delRes=await authorTestHelper.simpleRemove( tokenSuperAdmin, entityID);
   });
 
 }); 

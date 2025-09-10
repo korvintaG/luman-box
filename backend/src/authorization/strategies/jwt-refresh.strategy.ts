@@ -6,7 +6,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../auth.service';
 import { IUser } from '../../types/custom';
-import { pay } from 'telegraf/typings/button';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
@@ -26,7 +25,10 @@ export class JwtRefreshStrategy extends PassportStrategy(
   async validate(payload: IUser) {
     if (!payload.id || !payload.name || payload.role_id == null) {
       console.log('JwtRefreshStrategy payload', payload);
-      throw new UnauthorizedException('Invalid refresh jwt payload.');
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: 'Invalid refresh jwt payload.',
+      });
     }
     return payload;
   }

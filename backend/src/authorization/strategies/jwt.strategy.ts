@@ -17,7 +17,10 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: IUser) {
     if (!payload.id || !payload.name || payload.role_id == null) {
-      throw new UnauthorizedException('Invalid jwt payload.');
+      throw new UnauthorizedException({
+        error: 'Unauthorized',
+        message: 'Invalid jwt payload.',
+      });
     }
     return payload;
   }
