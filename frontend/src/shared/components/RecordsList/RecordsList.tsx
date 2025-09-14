@@ -50,8 +50,8 @@ export const RecordsList: FC<RecordListProps> = (
   return (
     <div 
       className={props.mainClassName ? props.mainClassName
-         :clsx(styles.main, "main", {[styles["main-shrink"]]: props.liMobileAlteration})
-      }
+         :clsx(styles.main, "main", {[styles["main-shrink"]]: props.liMobileAlteration})}
+      data-cy="records-list"
     >
       {props.breadcrumbs && 
         <Breadcrumbs 
@@ -71,11 +71,12 @@ export const RecordsList: FC<RecordListProps> = (
           {props.children}
         </ul>
       )}
-      {props.addRecord && <ButtonUI
+      {props.addRecord && !props.readOnly && <ButtonUI
         logicType="add"
         onClick={props.addRecord}
         disabled={props.readOnly}
         caption={props.captionAddButton}
+        data-cy="add-record-button"
       />}
       {props.showBackButton && <ButtonUI logicType="back" onClick={back} caption="Назад" />}
       </div>

@@ -24,10 +24,10 @@ export const AppHeaderUI = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const menu: MenuItem[] = [
-    { name: "Авторы", link: appRoutesURL.authors },
-    { name: "Источники", link: appRoutesURL.sources },
-    { name: "Идеи", link: appRoutesURL.ideas },
-    { name: "Ключевые слова", link: appRoutesURL.keywords },
+    { name: "Авторы", link: appRoutesURL.authors, dataCy: "authors-menu" },
+    { name: "Источники", link: appRoutesURL.sources, dataCy: "sources-menu" },
+    { name: "Идеи", link: appRoutesURL.ideas, dataCy: "ideas-menu" },
+    { name: "Ключевые слова", link: appRoutesURL.keywords, dataCy: "keywords-menu" },
   ];
 
   const currentUser = useSelector(selectCurrentUser);
@@ -43,6 +43,7 @@ export const AppHeaderUI = () => {
           <LinkActionUI
             to={appRoutesURL.home}
             actionHandle={burgerDeactivate}
+            data-cy="logo-link"
           >
             <div className={styles.logo_block}>
               <WorldBookIcon className={styles.logo_icon} />
@@ -59,7 +60,7 @@ export const AppHeaderUI = () => {
             setBurgerActivated={setBurgerActivated}
           />
         </div>
-        <LinkActionUI to={appRoutesURL.auth} actionHandle={burgerDeactivate}>
+        <LinkActionUI to={appRoutesURL.auth} actionHandle={burgerDeactivate} data-cy="auth-button">
           {currentUser ? (
             <ExitIcon
               className={styles.auth}

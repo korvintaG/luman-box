@@ -6,6 +6,7 @@ import { appRoutesURL } from "../../../app/router/AppRoutesURL";
 import { AuthorDetails } from "../components/AuthorDetails/AuthorDetails"; 
 import { useAuthorDetails } from "../hooks/UseAuthorDetails";
 import { generatePath } from "react-router";
+import { genAuthorURL } from "../../../app/router/navigation";
 
 export const AuthorDetailsPage = () => {
   const { id } = useParams();
@@ -15,9 +16,9 @@ export const AuthorDetailsPage = () => {
   const gotoAuthorList = () => {
     navigate(appRoutesURL.authors)
   }
-
+ 
   const gotoAuthor = (id: number) => {
-    navigate(generatePath(appRoutesURL.author,id));
+    navigate(genAuthorURL(id));
   }
 
   const authorDetailsHookRes = useAuthorDetails({

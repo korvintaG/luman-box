@@ -13,10 +13,21 @@ export type ModerateBlockUIProps = {
 export const ModerateBlockUI: FC<ModerateBlockUIProps> = (props) => {
   return (
     <div className={styles.block}>
-      <ButtonUI logicType="moderate-approve" onClick={props.approveRecord} caption="Одобрить" />
-      <ButtonUI logicType="moderate-reject" onClick={props.rejectRecord} caption="Отвергнуть" />
+      <ButtonUI 
+        data-cy="moderate-approve-button" 
+        logicType="moderate-approve" 
+        onClick={props.approveRecord} 
+        caption="Одобрить" 
+      />
+      <ButtonUI 
+        data-cy="moderate-reject-button" 
+        logicType="moderate-reject" 
+        onClick={props.rejectRecord} 
+        caption="Отвергнуть" 
+      />
       <input 
         value={props.moderateNotes || ""} 
+        data-cy="moderate-notes-input"
         onChange={(e: ChangeEvent<HTMLInputElement>) => 
           props.setModerateNotes(e.target.value)
         } 

@@ -6,6 +6,7 @@ import { appRoutesURL } from "../../../app/router/AppRoutesURL";
 import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
 import { IdeaDetails } from "../components/smart/IdeaDetails/IdeaDetails";
 import { generatePath } from "react-router";
+import { genIdeaURL } from "../../../app/router/navigation";
 
 export const IdeaDetailsPage = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ export const IdeaDetailsPage = () => {
   };
 
   const gotoIdea = (id: number) => {
-    navigate(generatePath(appRoutesURL.idea,id));
+    navigate(genIdeaURL(id));
   }
 
   return (

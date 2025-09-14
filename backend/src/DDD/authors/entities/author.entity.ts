@@ -17,6 +17,9 @@ import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 @Entity('authors')
 @Index('UQ_author_name_birth_date_birth_place', ['name', 'birth_date', 'birth_place'], { unique: true })
 export class Author extends EntityCommonFull {
+  @Column({ type: 'varchar', nullable: false})
+  name: string;
+
   @Column({ type: 'varchar', default: ''})
   birth_date: string;
 

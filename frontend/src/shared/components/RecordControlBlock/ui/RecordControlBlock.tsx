@@ -32,7 +32,9 @@ export function RecordControlBlock<T>(
   useEffect(() => {
     console.log('RecordControlBlock useEffect', status.sliceStates[0]);
     if (status.sliceStates[0] === RequestStatus.Added) {
+      console.log('RecordControlBlock useEffect added');
       if (record.newID) {
+        console.log('RecordControlBlock useEffect record.newID=', record.newID);
         props.gotoEntityEdit(record.newID); //navigate to new author details page
       }
     }
@@ -93,7 +95,12 @@ export function RecordControlBlock<T>(
     <div
       className={styles["button-block"]}
     >
-      <ButtonUI logicType="back" onClick={back} caption="Назад" />
+      <ButtonUI 
+        data-cy="back-record-button" 
+        logicType="back" 
+        onClick={back} 
+        caption="Назад" 
+      />
       {status.editAccessStatus &&
         [EditAccessStatus.Editable,
         EditAccessStatus.EditableAndModeratable,
@@ -101,10 +108,12 @@ export function RecordControlBlock<T>(
           <>
             <ButtonUI
               disabled={!form.editStarted}
+              data-cy="save-record-button"
               logicType="agree"
               caption={saveCaption} />
             {props.entityDetailsHook.record && props.entityDetailsHook.record.id && (
               <ButtonUI
+                data-cy="delete-record-button"
                 logicType="alert"
                 caption={"Удалить запись"}
                 onClick={msgDeleteHook.openDialog}
@@ -117,6 +126,7 @@ export function RecordControlBlock<T>(
         status.editAccessStatus === EditAccessStatus.EditableAndPublishable && (
           <ButtonUI
             disabled={form.editStarted}
+            data-cy="publish-record-button"
             logicType="publish"
             caption="Опубликовать"
             onClick={msgPublishHook.openDialog}

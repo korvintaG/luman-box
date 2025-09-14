@@ -19,12 +19,14 @@ type ElementClasses = {
 export type InputTextUIProps = React.ComponentPropsWithoutRef<"textarea"> &
   CustomInput & {
     labelPosition?: LabelPosition;
+    dataCy?: string;
   };
 
 export const InputTextUI: FC<InputTextUIProps> = ({
   label,
   labelPosition,
   classes,
+  dataCy,
   ...textareaProps
 }) => {
   const inputId = useId();
@@ -77,16 +79,23 @@ export const InputTextUI: FC<InputTextUIProps> = ({
   const Wrapper = isDiv ? "div" : React.Fragment;
   return (
     <Wrapper {...(isDiv ? { className: classBlock } : {})}>
-      <label htmlFor={inputId} className={classLabel}>
+      <label 
+        htmlFor={inputId} 
+        className={classLabel}
+        data-cy={dataCy?`${dataCy}-label`:undefined}
+      >
         {label}
       </label>
       {textareaProps.readOnly ? (
-        <p id={inputId} className={classTextReadOnly}>
+        <p id={inputId} className={classTextReadOnly}
+          data-cy={dataCy?`${dataCy}-input-readonly`:undefined}
+        >
           {textareaProps.value}
         </p>
       ) : (
         <textarea
           id={inputId}
+          data-cy={dataCy?`${dataCy}-input`:undefined}
           className={classText}
           {...textareaProps}
           rows={rows}

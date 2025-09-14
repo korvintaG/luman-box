@@ -11,7 +11,6 @@ import {
 import { Authorship } from "../../../../shared/components/Authorship/ui/Authorship";
 import { RelationList } from "../../../../shared/components/RelationList/RelationList";
 import styles from "../../../../shared/CSS/StandartForm.module.css";
-import { User } from "../../../../features/auth/user-types";
 import { useAuthorDetails } from "../../hooks/UseAuthorDetails";
 import { RecordControlBlock } from "../../../../shared/components/RecordControlBlock/ui/RecordControlBlock";
 import {
@@ -109,6 +108,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               value={form.values.name}
               placeholder="Укажите ФИО автора"
               minLength={5}
+              dataCy="author_name"
               required
               {...inputProps}
             />
@@ -118,6 +118,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               value={form.values.birth_date}
               placeholder="Укажите год рождения"
               minLength={2}
+              dataCy="author_birth_date"
               required
               {...inputProps}
             />
@@ -127,6 +128,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               value={form.values.birth_place}
               placeholder="Укажите место рождения"
               minLength={5}
+              dataCy="author_birth_place"
               required
               {...inputProps}
             />
@@ -135,6 +137,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               name="about_author"
               label="Об авторе:"
               labelPosition={LabelPosition.left}
+              dataCy="author_about"
               {...inputProps}
             />
           </div>

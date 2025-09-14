@@ -3,7 +3,7 @@ import {   useNavigate, useSearchParams } from "react-router-dom";
 import {  FC } from "react";
 import { useSelector } from "../../../shared/services/store";
 import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
-import { genInterconnectionsURL } from "../../../app/router/navigation";
+import { genInterconnectionsURL, genInterconnectionURL } from "../../../app/router/navigation";
 import { ErrorMessageUI } from "../../../shared/ui/ErrorMessage/ErrorMessage";
 import { InterconnectionDetailsEdit } from "../components/smart/InterconnectionDetailsEdit/InterconnectionDetailsEdit";
 import { generatePath } from "react-router";
@@ -44,7 +44,7 @@ export const InterconnectionDetailsEditPage: FC = () => {
     }
 
     const gotoEdit = (id: number) => {
-      navigate(generatePath(appRoutesURL.interconnection, id));
+      navigate(genInterconnectionURL(id));
     }
 
 

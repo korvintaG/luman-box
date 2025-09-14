@@ -28,14 +28,28 @@ export class Api {
     };
   }
 
-  protected handleResponse<T>(response: Response): Promise<T> {
-    return response.ok
+  protected async handleResponse<T>(response: Response): Promise<T> {
+    if (response.ok) {
+      // Для статуса 204 (No Content) возвращаем пустой объект
+      if (response.status === 204) {
+        return Promise.resolve({} as T);
+      }
+      // Для других успешных статусов пытаемся парсить JSON
+      return response.json();
+    } else {
+      return response
+        .json()
+        .then((err) =>
+          Promise.reject({ ...err, statusCode: response.status }),
+        );
+    }    
+    /*return response.ok
       ? response.json()
       : response
           .json()
           .then((err) =>
             Promise.reject({ ...err, statusCode: response.status }),
-          );
+          );*/
   }
 
   async request<T>(endpoint: string, options: RequestInit) {

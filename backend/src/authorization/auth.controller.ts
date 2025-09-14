@@ -8,6 +8,7 @@ import {
   Res,
   UnauthorizedException,
   HttpCode,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from '../DDD/users/users.service';
 import { AuthService } from './auth.service';
@@ -39,7 +40,17 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(StatusCode.successLogout)
-  clearAuthCookie(@Res({ passthrough: true }) res: Response) {
+  clearAuthCookie(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const refreshToken = this.authService.extractRefreshTokenFromCookies(req);
+    
+    if (!refreshToken) {
+      throw new NotFoundException({
+        error: 'NotFound',
+        message: 'Refresh token не найден',
+      });
+    }
+    
+    // Если refreshToken есть, очищаем его
     res.clearCookie(this.authService.getCookieConfig().refreshToken.name);
     return { success: true };
   }

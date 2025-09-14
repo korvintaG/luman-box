@@ -6,6 +6,7 @@ import styles from "./BurgerMenu.module.css";
 export type MenuItem = {
   name: string;
   link: string;
+  dataCy?: string;
 };
 
 export type BurgerMenuProps = {
@@ -44,6 +45,7 @@ export const BurgerMenu: FC<BurgerMenuProps> = ({
                   to={el.link}
                   actionHandle={(e: SyntheticEvent) => setBurgerActivated(false)}
                   className={styles.item}
+                  data-cy={el.dataCy}
                 >
                 {el.name}
                 </LinkActionUI>

@@ -11,7 +11,7 @@ export type LinkActionUIProps = PropsWithChildren<
 export const LinkActionUI: FC<LinkActionUIProps> = ({
   children,
   actionHandle,
-  ...args
+    ...args
 }) => {
   return (
     <Link {...args}>

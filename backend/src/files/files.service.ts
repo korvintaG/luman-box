@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { unlink, readdir, stat } from 'fs/promises';
-import { join } from 'path';
+import path, { join } from 'path';
 import { safeRename } from 'src/utils/utils';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { STORE_FILE_PATH, UPLOAD_FILE_PATH } from './utils';
@@ -95,6 +95,31 @@ export class FilesService {
         if (fileAgeInMinutes > olderThanMinutes) {
           await unlink(filePath);
           console.log(`Удалён файл: ${filePath}`);
+        }
+      }
+    } catch (err) {
+      console.log(`Ошибка при удалении файлов: ${err.message}`);
+    }
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async cleanupOldLogFiles() {
+    try {
+      const logDir = path.join(__dirname, '..', '..', 'logs');
+      const files = await readdir(logDir);
+      const now = Date.now();
+      const olderThanDays = Number(process.env.MAX_LOG_FILES_SAVE_DAYS); 
+
+      for (const file of files) {
+        if (file.endsWith('.log') && file !== 'requests.log') {
+          const filePath = join(logDir, file);
+          const stats = await stat(filePath);
+          const fileAgeInDays = (now - stats.mtime.getTime()) / (1000 * 60 * 60 * 24);
+
+          if (fileAgeInDays > olderThanDays) {
+            await unlink(filePath);
+            console.log(`Удалён файл: ${filePath}`);
+          }
         }
       }
     } catch (err) {

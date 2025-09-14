@@ -23,12 +23,13 @@ export const AuthorList: FC<AuthorsListProps> = ({readOnly, gotoAuthorAdd}) => {
               captionAddButton="Добавить автора"
               addRecord={addNewAuthor}
             >
-              {authors.map((author) => (
-                <li key={`author_list_${author.id}`}>
+              {authors.map((author, cnt) => (
+                <li key={`author_list_${author.id}`} data-cy={`author_list_${cnt}`}>
                   <Link
                     key={`author_link_${author.id}`}
                     className={getVerificationClass(author.verification_status)}
                     to={genAuthorURL(author.id)}
+                    data-cy={`author_link_${cnt}`}
                   >
                     {author.name}
                   </Link>

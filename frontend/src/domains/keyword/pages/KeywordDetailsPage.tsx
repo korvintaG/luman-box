@@ -6,6 +6,7 @@ import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
 import { KeywordDetails } from "../components/KeywordDetails/KeywordDetails";
 import { generatePath } from "react-router";
 import { useKeywordDetails } from "../hooks/UseKeywordDetails";
+import { genKeywordURL } from "../../../app/router/navigation";
 
 export const KeywordDetailsPage = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export const KeywordDetailsPage = () => {
   }
 
   const gotoEdit = (id: number) => {
-    navigate(generatePath(appRoutesURL.keyword, id));
+    navigate(genKeywordURL(id));
   }
 
   const keywordDetailsHook = useKeywordDetails({

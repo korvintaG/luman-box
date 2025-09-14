@@ -60,3 +60,20 @@ export async function safeRename(oldPath: string, newPath: string) {
     );
   }
 }
+
+export async function getFileCreateDate(filePath: string): Promise<string> {
+  try {
+    const stats = await fs.stat(filePath);
+    const fileDate = stats.mtime.toDateString();
+    return fileDate;
+  } catch (err) {
+    return null;
+  }
+}
+
+export function formatDateForFilename(date: Date): string {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`
+}

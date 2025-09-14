@@ -16,13 +16,13 @@ export const AboutCardsList= React.memo( () => {
     <div className={styles.main}>
       <ul className={styles.card_list}>
         {aboutCardData.map((el, cnt) => (
-          <li key={cnt} className={styles.list_element}>
+          <li key={cnt} className={styles.list_element} data-cy={`about-card-${cnt}`}>
             <AboutCard {...el}/>
           </li>
         ))}
       </ul>
       {
-        <section className={clsx(styles.wikino,'card-container')}>
+        <section className={clsx(styles.wikino,'card-container')} data-cy="wikino-card">
           <img src={wiki_no} className={styles.wikino_img} />
           <article className={styles.wikino_article}>
             <h3 className={styles.wikino_header}>Wikipedia</h3>

@@ -41,13 +41,13 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
     >
       {props.currentUser ? (
         <>
-          <h1>Вы вошли как [{`${props.currentUser.name}`}]</h1>
+          <h1 data-cy="logout-form-title">Вы вошли как [{`${props.currentUser.name}`}]</h1>
           {props.currentUser.role_id!==null && <p>Ваша роль: {RoleNames[props.currentUser.role_id]}</p>}
-          <ButtonUI logicType="alert" caption="Выйти" />
+          <ButtonUI data-cy="logout-form-button" logicType="alert" caption="Выйти" />
         </>
       ) : (
         <>
-          <h1>Вход в систему</h1>
+          <h1 data-cy="login-form-title">Вход в систему</h1>
           <section className={styles.form__content}>
             <InputEditUI
               name="name"
@@ -55,6 +55,7 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
               label="Никнэйм:"
               value={props.values.name}
               onChange={props.handleChange}
+              dataCy="login-form-name"
             />
             <InputEditUI
               name="password"
@@ -63,14 +64,15 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
               label="Пароль:"
               value={props.values.password}
               onChange={props.handleChange}
+              dataCy="login-form-password"
             />
           </section>
-          <ButtonUI logicType="agree" caption="Войти" />
+          <ButtonUI data-cy="login-form-button" logicType="agree" caption="Войти" />
           <section>
             Вы еще не зарегестрированы в системе?
             <br />
             Зарегестрируйтесь через наш{" "}
-            <Link to="https://t.me/Sferatum_bot">телеграм-бот!</Link>
+            <Link to="https://t.me/Sferatum_bot" data-cy="register-link">телеграм-бот!</Link>
           </section>
         </>
       )}

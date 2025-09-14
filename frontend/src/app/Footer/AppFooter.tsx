@@ -4,7 +4,7 @@ import styles from "./AppFooter.module.css";
  * Компонент футер приложения
  */
 export const AppFooterUI = () => (
-  <footer className={styles.footer}>
+  <footer className={styles.footer} data-cy="footer">
     <div className={styles.contacts}>
       <span className={styles.contact_part}>
         По всем вопросам пишите:{" "}

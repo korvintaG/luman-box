@@ -69,6 +69,7 @@ import { FilesModule } from './files/files.module';
     AttitudesModule,
     InterconnectionsModule
   ],
-  providers: [configProvider],
+  providers: [configProvider,
+  ],
 })
 export class AppModule {}

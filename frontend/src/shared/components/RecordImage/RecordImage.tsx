@@ -58,6 +58,7 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
             ref={fileRef}
             className={styles.hidden}
             onChange={handleFileChange}
+            data-cy="file-input"
             type="file"
           />
 
@@ -66,6 +67,7 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
             logicType="add"
             caption="Загрузить фото"
             onClick={handleUploadClick}
+            data-cy="upload-button"
           />
           {src && (
             <ButtonUI
@@ -73,6 +75,7 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
               // className={styles.button_del}
               onClick={(e) => props.deleteImage()}
               caption="Удалить фото"
+              data-cy="delete-button"
             />
           )}
         </div>

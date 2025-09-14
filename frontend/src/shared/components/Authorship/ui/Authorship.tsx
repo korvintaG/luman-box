@@ -28,6 +28,7 @@ export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
     <>
     {props.record.verification_status!==null && <InfoFieldUI
           label="Статус:"
+          dataCy="status"
           text={VerificationStatusLabels[props.record.verification_status]}
           type={infoType(props.record.verification_status)}
         />
@@ -35,6 +36,7 @@ export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
     {props.record.verification_status!==null && props.record.moderation_notes && (
         <InfoFieldUI
           label="Замечание:"
+          dataCy="moderation_notes"
           text={props.record.moderation_notes}
           type={infoType(props.record.verification_status)}
         />
@@ -42,6 +44,7 @@ export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
     {props.record.date_time_create && (
         <InfoFieldUI
           label="Создано:"
+          dataCy="date_time_create"
           text={formatMoscowDateTime(props.record.date_time_create)}
         />
       )}
@@ -49,12 +52,14 @@ export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
         <InfoFieldUI
           label={(props.entityName?props.entityName:"Запись")+" добавил:"}
           text={props.record.user.name}
+          dataCy="user_name"
         />
       )}
      
       {props.record.date_time_to_moderate && (
         <InfoFieldUI
           label="На модерацию с:"
+          dataCy="date_time_to_moderate"
           text={formatMoscowDateTime(props.record.date_time_to_moderate)}
         />
       )}
@@ -62,11 +67,13 @@ export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
         <InfoFieldUI
           label="Проверил:"
           text={props.record.moderator.name}
+          dataCy="moderator_name"
         />
       )}
       {props.record.date_time_moderated && (
         <InfoFieldUI
           label="Модерировано:"
+          dataCy="date_time_moderated"
           text={formatMoscowDateTime(props.record.date_time_moderated)}
         />
       )}

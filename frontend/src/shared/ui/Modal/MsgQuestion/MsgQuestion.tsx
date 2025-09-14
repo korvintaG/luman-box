@@ -49,8 +49,18 @@ export const MsgQuestionUI: FC<MsgQuestionUIProps> = (props) => {
       </button>
       <p className={styles.question}>{props.question}</p>
       <div className={styles.buttons}>
-        <ButtonUI logicType={yesLogicType} onClick={yesAction} caption="Да" />
-        <ButtonUI logicType={noLogicType} onClick={noAction} caption="Нет" />
+        <ButtonUI 
+          data-cy="yes-button" 
+          logicType={yesLogicType} 
+          onClick={yesAction} 
+          caption="Да" 
+        />
+        <ButtonUI 
+          data-cy="no-button" 
+          logicType={noLogicType} 
+          onClick={noAction} 
+          caption="Нет" 
+        />
       </div>
     </Modal>
   );
