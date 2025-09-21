@@ -12,6 +12,7 @@ import {
   selectSliceState,
   toModerateKeyword,
   setSliceStatus,
+  selectNewID,
 } from "../store/KeywordDetailSlice";
 import { useForm } from "../../../shared/hooks/useForm"; 
 import { pick } from "lodash";
@@ -37,6 +38,7 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
   const errorText = useSelector(selectError);
   const currentRecord = useSelector(selectCurrentKeyword);
   const editAccessStatus = getEditAccess(id, currentUser, currentRecord)
+  const newID = useSelector(selectNewID);
 
   const fetchRecord = () => {
     if (id) dispatch(getKeyword(Number(id)));
@@ -93,6 +95,8 @@ export const useKeywordDetails = ({id, currentUser}: DetailsHookProps)
       setEditStarted
     },
     record: {
+      id: id?Number(id): undefined,
+      newID,
       fetchRecord,
       currentRecord,
       deleteRecordAction, 

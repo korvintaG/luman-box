@@ -30,7 +30,7 @@ export const IdeasTable: FC<IdeasTableProps> = (props: IdeasTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {props.ideas.map((el) => (
+        {props.ideas.map((el,index) => (
           <tr key={el.interconnection_id}>
             <td>
               <Link
@@ -38,6 +38,7 @@ export const IdeasTable: FC<IdeasTableProps> = (props: IdeasTableProps) => {
                   el.interconnection_id,
                   props.isReverse
                 )}
+                data-cy={`interconnection-link-${props.isReverse ? 'reverse' : 'direct'}-${index}`}
               >
                 {el.interconnection_name}
               </Link>

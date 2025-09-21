@@ -6,12 +6,14 @@ export type ScaleLabelsProps = {
   attitudesTotal: number[];
   attitudeNow?: number; // выбранное сейчас пользователем
   attitudeWas?: number; // ранее полученное выбранное пользователем, то, что включено ранее в labels
+  dataCy?: string;
 };
 
 export const ScaleLabels: FC<ScaleLabelsProps> = ({
   attitudesTotal,
   attitudeNow,
   attitudeWas,
+  dataCy,
 }) => {
   const viewTotal = [
     attitudesTotal[1],
@@ -61,14 +63,14 @@ export const ScaleLabels: FC<ScaleLabelsProps> = ({
   };
 
   return (
-    <div className={styles.labelContainer}>
+    <div className={styles.labelContainer} data-cy={dataCy ? `${dataCy}-labels` : undefined}>
       {viewTotal.map(
         (
           count,
           no // 1 2 0 3 4
         ) => (
           <div key={no} className={styles.label}>
-            <p>{getScaleLabel(count, no)}</p>
+            <p data-cy={dataCy ? `${dataCy}-label-${no}` : undefined}>{getScaleLabel(count, no)}</p>
           </div>
         )
       )}

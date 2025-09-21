@@ -25,6 +25,7 @@ export type AttitudeProps = {
   LikeYesSelected: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   DisLikeNotSelected: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   DisLikeYesSelected: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  dataCy?: string;
 };
 
 export const Attitude: FC<AttitudeProps> = (props) => {
@@ -93,7 +94,7 @@ export const Attitude: FC<AttitudeProps> = (props) => {
 
   return (
     <div className={styles.container}>
-      <LikeComponent {...propsLike} />
+      <LikeComponent {...propsLike}  />
       <Tooltip
         id={"like" + translit(props.title)}
         place="top-start"
@@ -107,11 +108,13 @@ export const Attitude: FC<AttitudeProps> = (props) => {
           handleClick={handleClick}
           getHintByValue={getHintByValue}
           attitudeNow={selectedValue}
+          dataCy={props.dataCy}
         />
         <ScaleLabels
           attitudesTotal={props.attitudesTotal}
           attitudeWas={props.attitudeUser}
           attitudeNow={selectedValue}
+          dataCy={props.dataCy}
         />
       </div>
       {/* выносим на уровень вверх подсказки, чтобы не глючили */}

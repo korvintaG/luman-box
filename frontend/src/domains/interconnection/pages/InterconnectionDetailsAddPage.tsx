@@ -2,7 +2,7 @@ import { generatePath, useNavigate, useParams, useSearchParams } from "react-rou
 import { ErrorMessageUI } from "../../../shared/ui/ErrorMessage/ErrorMessage";
 import { useSelector } from "../../../shared/services/store";
 import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
-import { genInterconnectionsURL } from "../../../app/router/navigation";
+import { genInterconnectionsURL, genInterconnectionURL } from "../../../app/router/navigation";
 import { InterconnectionDetailsAdd } from "../components/smart/InterconnectionDetailsAdd/InterconnectionDetailsAdd";
 import { interconnectionsTypeInfo } from "../../../shared/constants/InterconnectionTypeInfo";
 import { appRoutesURL } from "../../../app/router/AppRoutesURL";
@@ -30,7 +30,7 @@ export const InterconnectionDetailsAddPage = () => {
     }
 
     const gotoEdit = (id: number) => {
-      navigate(generatePath(appRoutesURL.interconnection, id));
+      navigate(genInterconnectionURL(id, !!isReverse ));
     }
 
 return <InterconnectionDetailsAdd

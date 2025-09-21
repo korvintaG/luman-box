@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { RecordsList } from "../../../../shared/components/RecordsList"; 
 import { useKeywordsList } from "../../hooks/UseKeywordsList";
 import { genKeywordURL } from "../../../../app/router/navigation";
+import { getVerificationClass } from "../../../../shared/CSS/CSS-utils";
 
 export type KeywordListUIProps = {
   readOnly?: boolean;
@@ -24,10 +25,12 @@ export const KeywordList: FC<KeywordListUIProps> = ({
       error={error}
    
   >
-      {keywords.map((keyword) => (
-        <li key={keyword.id}>
+      {keywords.map((keyword, index) => (
+        <li key={keyword.id} data-cy={`keyword_list_${index}`}>
           <Link
             to={genKeywordURL(keyword.id)}
+            data-cy={`keyword_link_${index}`}
+            className={getVerificationClass(keyword.verification_status)}
           >
             {keyword.name}
           </Link>

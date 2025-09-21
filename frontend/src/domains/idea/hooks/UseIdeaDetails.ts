@@ -109,10 +109,6 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
     else return [];
   };
 
- /* useEffect(() => {
-    fetchRecord();
-  }, []);*/
-
   useEffect(() => {
     if (currentRecord) {
       setValues({
@@ -205,6 +201,8 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
       setEditStarted
     },
     record: {
+      id: id?Number(id): undefined,
+      newID,
       fetchRecord,
       currentRecord,
       deleteRecordAction, 

@@ -8,11 +8,13 @@ import { isUnauthorizedError } from "../../../shared/utils/utils";
 import { SourceDetail } from "../types/source-type";
 import { RequestStatus } from "../../../shared/types/types-for-hooks";
 import { SliceDetail } from "../../../shared/types/types-for-slice";
+import { toModerateAuthor } from "../../author/store/AuthorDetailsSlice";
 
 export const initialState: SliceDetail<SourceDetail> = {
   current: null,
   status: RequestStatus.Idle,
   error: "",
+  newID: undefined,
 };
 
 export const getSource = createAsyncThunk("getSource", sourceAPI.getEntity);
@@ -48,6 +50,7 @@ const sourceDetailsSlice = createSlice({
     selectCurrentSource: (sliceState) => sliceState.current,
     selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error,
+    selectNewID: (sliceState) => sliceState.newID,
   },
   extraReducers: (builder) => {
     builder
@@ -57,9 +60,14 @@ const sourceDetailsSlice = createSlice({
       .addCase(getSource.fulfilled, (state, action) => {
         state.current = action.payload;
       })
-      .addCase(addSource.fulfilled, (state, _) => {
+      .addCase(addSource.fulfilled, (state, action) => {
         state.status = RequestStatus.Added;
+        state.newID = action.payload.id;
       })
+      .addCase(toModerateSource.fulfilled, (state, _) => {
+        state.status = RequestStatus.SendToModerating;
+      })
+
       .addCase(delSource.fulfilled, (state, _) => {
         state.status = RequestStatus.Deleted;
       })
@@ -84,6 +92,7 @@ const sourceDetailsSlice = createSlice({
           setSource.rejected,
           approveSource.rejected,
           rejectSource.rejected,
+          toModerateAuthor.rejected,
         ),
         (state) => {
           state.status = RequestStatus.FailedUpdate;
@@ -110,6 +119,7 @@ const sourceDetailsSlice = createSlice({
           setSource.pending,
           delSource.pending,
           approveSource.pending,
+          toModerateAuthor.pending,
           rejectSource.pending
         ), (state) => {
         state.status = RequestStatus.Loading;
@@ -121,6 +131,7 @@ const sourceDetailsSlice = createSlice({
           addSource.rejected,
           setSource.rejected,
           delSource.rejected,
+          toModerateSource.rejected,
           approveSource.rejected,
           rejectSource.rejected
         ), (state, action) => {
@@ -135,6 +146,7 @@ export const {
   selectCurrentSource,
   selectSliceState,
   selectError, 
+  selectNewID,
 } = sourceDetailsSlice.selectors;
 export const { clearCurrentSource, setSliceStatus} = sourceDetailsSlice.actions;
 export default sourceDetailsSlice.reducer;

@@ -122,7 +122,9 @@ export const appRoutes = createBrowserRouter([
         loader: keywordsLoad,
         errorElement: <ErrorPage />,
       },
-      { path: appRoutesURL.keywordAdd, Component: KeywordDetailsPage },
+      { path: appRoutesURL.keywordAdd, 
+        Component: KeywordDetailsPage
+        },
       {
         path: appRoutesURL.keyword,
         Component: KeywordDetailsPage,

@@ -40,25 +40,22 @@ export class LogMiddleware implements NestMiddleware {
         }
         const userAgent = req.get('User-Agent') || '';
         
-        // Логируем входящий запрос
-        // this.writeLogAsync(`-> ${method} ${originalUrl} - ${ip} - ${userAgent}`);
+        // Логируем заголовки запроса
+        const headers = req.headers;
+        const headersString = JSON.stringify(headers, null, 2);
 
-        // Логируем cookies запроса
-        const cookiesReq = req.headers['cookie'];
-        /*if (cookies) {
-            this.writeLogAsync(`->o ${method} ${originalUrl} - ${ip} - ${userAgent} - ${cookies}`);
-        }*/
-
-        req.on('data', (chunk) => {
-            requestBody += chunk.toString();
-        });
-
-        req.on('end', () => {
-            // Тело запроса собрано
-            //if (requestBody) {
-            this.writeLogAsync(`-> ${method} ${originalUrl} - ${ip} - ${userAgent} - ${cookiesReq} - ${requestBody}`);
-            //}
-        });          
+        // Проверяем, является ли запрос multipart/form-data
+        const isMultipart = req.get('content-type')?.includes('multipart/form-data');
+        if (!isMultipart) {
+          req.on('data', (chunk) => {
+              requestBody += chunk.toString();
+          });
+          req.on('end', () => {
+              this.writeLogAsync(`-> ${method} ${originalUrl} - ${ip} - ${userAgent} - ${headersString} - ${requestBody}`);
+          });          
+        } else {
+          this.writeLogAsync(`-> ${method} ${originalUrl} - ${ip} - ${userAgent} - ${headersString} - multipart`);
+        }
         
         res.send = function(body) {
             responseBody = typeof body === 'string' ? body : JSON.stringify(body);

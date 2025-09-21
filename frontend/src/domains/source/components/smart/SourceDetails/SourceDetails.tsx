@@ -75,9 +75,10 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
             newImageURL={form.values.new_image_URL}
             readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
             uploadFileAction={record.uploadFileAction}
-            deleteImage={() =>
+            deleteImage={() => {
+              form.setEditStarted(true);
               form.setValues({ ...form.values, new_image_URL: null })
-            }
+            }}
           />
           <div className={styles.form__content__text}>
             {record.currentRecord &&
@@ -90,6 +91,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               label="Название источника:"
               value={form.values.name}
               placeholder="Укажите название источника"
+              dataCy="source_name"
               {...inputProps}
             />
             <InputSelectUI
@@ -99,6 +101,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               value={form.values.author ? form.values.author.id : 0}
               valueText={record.currentRecord?.author?.name}
               URL={genAuthorURL(form.values.author!.id)}
+              dataCy="source_author"
               {...inputProps}
             />
             <InputEditUI
@@ -106,13 +109,15 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               label="Год публикации:"
               value={form.values.publication_year}
               placeholder="Укажите год публикации"
+              dataCy="source_publication_year"
               {...inputProps}
             />
             <InputTextUI
               value={form.values.about_source}
               name="about_source"
               label="Об источнике:"
-              labelPosition={LabelPosition.left}
+              labelPosition={LabelPosition.left} 
+              dataCy="source_about"
               {...inputProps}
             />
           </div>

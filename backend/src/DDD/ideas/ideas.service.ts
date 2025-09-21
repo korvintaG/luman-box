@@ -291,6 +291,7 @@ export class IdeasService {
         message: `Идея с ID=${id} не найдена!`
       });
     }
+    await this.moderatorService.checkGetRecordAccess(found, user);
     if (found.moderator) {
       const attitudes = await this.attitudesService.findOne(id, user);
       const interconnections = await this.interconnectionsService.countAllByIdea(id, user);

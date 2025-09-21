@@ -24,10 +24,9 @@ import { selectCurrentFile, selectSliceState as selectFileSliceState,
 import {
   getEditAccess,
 } from "../../../shared/utils/utils";
-import { DetailsHookProps, IDetailsEditHookRes, IDetailsWithPhotoHookRes, RequestStatus } from "../../../shared/types/types-for-hooks";
+import { DetailsHookProps, IDetailsWithPhotoHookRes, RequestStatus } from "../../../shared/types/types-for-hooks";
 import { calcUpdateImage } from "../../../features/files/utils";
 import { useNavigate } from "react-router-dom";
-import { genAuthorURL } from "../../../app/router/navigation";
 
 
 export const useAuthorDetails = ({ id, currentUser }: DetailsHookProps)
@@ -54,14 +53,11 @@ export const useAuthorDetails = ({ id, currentUser }: DetailsHookProps)
   const newID = useSelector(selectNewID);
 
   function fetchRecord() {
-    //console.log('useAuthorDetails fetchRecord id=', id, 'newID=', newID);
     if (id) {
       dispatch(getAuthor(Number(id)))
       setEditStarted(false);
     }
   }
-
-  /*useEffect(() => fetchRecord(), []);*/
 
   useEffect(() => {
     if (currentRecord) {
@@ -111,16 +107,13 @@ export const useAuthorDetails = ({ id, currentUser }: DetailsHookProps)
   }
 
   const handleSubmitAction = (e: SyntheticEvent) => {
-    //console.log('useAuthorDetails handleSubmit')
     e.preventDefault();
     let newImageURL=calcUpdateImage( values.image_URL, values.new_image_URL);
     if (id) {
-      //console.log('useAuthorDetails handleSubmit id')
       const newo = { ...getFormDTO(), id: Number(id), image_URL: newImageURL };
       dispatch(setAuthor(newo));
     }
     else { 
-      //console.log('useAuthorDetails handleSubmit not id',getFormDTO())
       dispatch(addAuthor({ ...getFormDTOObl(), image_URL: (newImageURL? newImageURL : null) }));
     }
   };

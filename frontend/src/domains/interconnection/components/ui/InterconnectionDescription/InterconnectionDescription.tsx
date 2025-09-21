@@ -26,6 +26,7 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             label="Комментарий к прямой связи:"
             onChange={handleChange}
             classes={classes}
+            dataCy="interconnection-name-direct"
             readOnly={readOnly}
             minLength={10}
         />}
@@ -41,6 +42,7 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             onChange={handleChange}
             classes={classes}
             readOnly={readOnly}
+            dataCy="interconnection-name-reverse"
             minLength={10}
         />
         {/*classBlockAdd={styles.reverse}*/}

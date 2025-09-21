@@ -53,7 +53,6 @@ export class FilesService {
     return null;
   }
 
-
   async updateRecordImage(oldImage: string | null, newImage: string | null, prefix: string) {
     let returnImage = '';
     if (newImage !== oldImage) { // мучать фото

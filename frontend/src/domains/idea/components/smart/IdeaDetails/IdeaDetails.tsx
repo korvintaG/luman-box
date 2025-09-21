@@ -110,6 +110,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
               label="Источник идеи:"
               value={form.values.source.id}
               onChange={form.handleChange}
+              dataCy="idea_source"
               URL={genSourceURL(form.values.source.id)}
               valueText={sourceFullNameFromObj(record.currentRecord?.source)}
               classes={classes}
@@ -126,6 +127,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
               placeholder="Укажите название идеи"
               onChange={form.handleChange}
               classes={classes}
+              dataCy="idea_name"
             />
           </div>
         </div>
@@ -137,6 +139,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
             readOnly={readOnly}
             classes={{ classInputAdd: styles.original_text }}
             onChange={form.handleChange}
+            dataCy="idea_original_text"
           />
           <InputTextUI
             value={form.values.content}
@@ -144,6 +147,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
             label="Суть идеи"
             readOnly={readOnly}
             onChange={form.handleChange}
+            dataCy="idea_content"
           />
         </div>
         
@@ -155,6 +159,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
             label="Код SVG-иконки идеи (необязательно)"
             readOnly={readOnly}
             onChange={form.handleChange}
+            dataCy="idea_SVG"
           />
           </div>
         )}

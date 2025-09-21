@@ -50,8 +50,9 @@ export class SourcesController {
 
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sourcesService.findOne(+id);
+  @UseGuards(OptionalJwtAuthGuard)
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.sourcesService.findOne(+id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)

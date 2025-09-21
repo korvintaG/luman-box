@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
 import { IModerate, IUser, Role } from '../../types/custom';
@@ -34,6 +34,28 @@ export class ModeratorService {
   constructor(
     private TelegramMessagingService: TelegramMessagingService
   ) { }
+
+  /**
+   * Проверяет права доступа к сущности для чтения
+   * @param entity - сущность
+   * @param user - пользователь
+   * @returns void
+   * @throws HttpException если доступ запрещен
+   */
+  async checkGetRecordAccess<T extends IModeratableEntity>(
+    entity: T,
+    user: IUser
+  ) {
+    if (
+      (!user && entity.verification_status !== VerificationStatus.Moderated) || 
+      (entity.verification_status !== VerificationStatus.Moderated && user.role_id === Role.User && entity.user_id !== user.id) || 
+      (entity.verification_status === VerificationStatus.Creating && user.role_id === Role.Admin && entity.user_id !== user.id)
+    )
+      throw new ForbiddenException({
+        error: 'Forbidden',
+        message: 'Доступ запрещен',
+      });
+  }
 
   /**
    * Проверяет права доступа к сущности для DML операций

@@ -6,6 +6,7 @@ import { SourceDetails } from "../components/smart/SourceDetails/SourceDetails";
 import { appRoutesURL } from "../../../app/router/AppRoutesURL";
 import { useSourceDetails } from "../hooks/UseSourceDetails";
 import { generatePath } from "react-router";
+import { genSourceURL } from "../../../app/router/navigation";
 
 export const SourceDetailsPage = () => {
   const { id } = useParams();
@@ -18,7 +19,8 @@ export const SourceDetailsPage = () => {
   }
 
   const gotoSource = (id: number) => {
-    navigate(generatePath(appRoutesURL.source,id));
+    console.log('gotoSource id=', id)
+    navigate(genSourceURL(id));
   }
 
   const sourceDetailsHookRes = useSourceDetails({

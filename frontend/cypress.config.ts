@@ -7,9 +7,9 @@ export default defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
     },
-    watchForFileChanges: false,
+    watchForFileChanges: false, 
     env: {
-      REACT_APP_USER_NAME: process.env.REACT_APP_USER_NAME,
+      REACT_APP_USER_LOGIN: process.env.REACT_APP_USER_LOGIN,
       REACT_APP_USER_PASSWORD: process.env.REACT_APP_USER_PASSWORD,
       REACT_APP_USER2_LOGIN: process.env.REACT_APP_USER2_LOGIN,
       REACT_APP_USER2_PASSWORD: process.env.REACT_APP_USER2_PASSWORD,

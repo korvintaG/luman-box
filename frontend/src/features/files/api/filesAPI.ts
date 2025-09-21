@@ -12,6 +12,10 @@ export class FilesAPI extends Api implements IFilesAPI {
 
 
 	uploadFile = (data: FormData) => {
+		if (!data.has('image')) {
+			return Promise.reject(new Error('No image file provided'));
+		  }
+		
 		return this.requestWithRefresh<IFile>('/files/upload-image', {
 			method: 'POST',
 			body: data,

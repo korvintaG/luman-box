@@ -66,6 +66,7 @@ export class InterconnectionsService {
         error: 'NotFound',
         message: `Взаимосвязи с ID=${id} не найдено!`
       });
+    await this.moderatorService.checkGetRecordAccess(interconnection, user);
     const addCond=getUserSQLFilter(user, 'ideas')
     const ideaCurrent=await this.interconnectionRepository.manager.query<IdeaInfo[]>(    
         `select ideas.id, ideas.name, sources.name || ' // ' || authors.name as source_name, source_id

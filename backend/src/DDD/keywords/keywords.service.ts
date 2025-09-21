@@ -64,7 +64,21 @@ export class KeywordsService {
   }
 
 
-  async findOne(id: number) {
+  async findOne(id: number, user: IUser) {
+    const mainRes = await this.keywordRepository
+      .createQueryBuilder('keyword')
+      .select([
+        'keyword',
+        'user.id',
+        'user.name',
+        'moderator.id',
+        'moderator.name',
+      ]) // Выбираем только нужные поля
+      .leftJoin('keyword.user', 'user')
+      .leftJoin('keyword.moderator', 'moderator')
+      .where('keyword.id = :id', { id })
+      .getOne();
+    await this.moderatorService.checkGetRecordAccess(mainRes, user);
     const authors = await this.keywordRepository.manager.query<SimpleEntity[]>(
       `select distinct authors.id, authors.name
         from keywords, idea_keywords , ideas, sources, authors 
@@ -89,21 +103,6 @@ export class KeywordsService {
         order by ideas.name || ' ['||sources.name ||' // ' || authors.name||']'`,
       [id],
     );
-    //const mainRes= await this.keywordRepository.findOne({where: { id }, relations: { user: true, moderator: true }});
-    const mainRes = await this.keywordRepository
-      .createQueryBuilder('keyword')
-      .select([
-        'keyword',
-        'user.id',
-        'user.name',
-        'moderator.id',
-        'moderator.name',
-      ]) // Выбираем только нужные поля
-      .leftJoin('keyword.user', 'user')
-      .leftJoin('keyword.moderator', 'moderator')
-      .where('keyword.id = :id', { id })
-      .getOne();
-
     return { ...mainRes, authors, sources, ideas };
   }
 

@@ -34,7 +34,7 @@ export type IDObject = {
   export const VerificationStatusLabels: Record<VerificationStatus, string> = {
     [VerificationStatus.Creating]: 'Создание',
     [VerificationStatus.ToModerate]: 'На модерации',
-    [VerificationStatus.Moderated]: 'Промодерировано',
+    [VerificationStatus.Moderated]: 'Одобрено',
     [VerificationStatus.Rejected]: 'Отклонено'
   };
 

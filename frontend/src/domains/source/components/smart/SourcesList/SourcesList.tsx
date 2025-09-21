@@ -6,6 +6,7 @@ import { getRouteParam, appRoutesURL } from "../../../../../app/router/AppRoutes
 import styles from "./SourcesList.module.css";
 import { sourceFullNameFromObj } from "../../../../../shared/utils/utils";
 import { useSourcesList } from "../../../hooks/UseSourcesList";
+import { getVerificationClass } from "../../../../../shared/CSS/CSS-utils";
 
 export type SourcesListProps = {
   readOnly?: boolean;
@@ -29,12 +30,12 @@ export const SourcesList: FC<SourcesListProps> = ({
       error={error}
       fetchRecords={fetchRecords}
     >
-      {sources.map((source) => (
-        <li key={source.id} className={styles.source_li}>
+      {sources.map((source, cnt) => (
+        <li key={`source_list_${source.id}`} className={styles.source_li}>
           <Link
-            className={clsx(styles.link/*, {
-              "moderated-need": !source.moderated,
-            }*/)}
+            key={`source_link_${source.id}`}
+            className={getVerificationClass(source.verification_status)}
+            data-cy={`source_link_${cnt}`}
             to={getRouteParam(appRoutesURL.source, source.id)}
           >
             {sourceFullNameFromObj(source)}

@@ -73,3 +73,8 @@ import { FilesModule } from './files/files.module';
   ],
 })
 export class AppModule {}
+/*export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogBodyMiddleware).forRoutes('*'); // или конкретный upload route
+  }
+}*/

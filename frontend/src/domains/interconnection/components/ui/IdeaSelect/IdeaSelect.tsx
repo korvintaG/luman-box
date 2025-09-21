@@ -49,6 +49,7 @@ export const IdeaSelect: FC<IdeaSelectProps> = ({
           classes={{ classInputAdd: styles.ID_input }}
           onChange={handleChangeAction}
           type="number"
+          data-cy="idea-id-input"
         />
         <div className={styles.button_block}>
           <button onClick={handleFindAction}>Найти</button>

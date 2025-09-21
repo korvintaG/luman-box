@@ -19,7 +19,7 @@ async function bootstrap() {
   app.use((req: Request, res: Response, next: NextFunction) => {
     return requestSizeLimitMiddleware(req, res, next);
   });
-  
+
   app.use((req: Request, res: Response, next: NextFunction) => 
     new LogMiddleware().use(req, res, next));
  

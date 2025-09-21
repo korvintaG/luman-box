@@ -100,7 +100,7 @@ export class SourcesService {
     });
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, user: IUser) {
     const mainRes = await this.sourceRepository
       .createQueryBuilder('source')
       .select([
@@ -120,6 +120,7 @@ export class SourcesService {
       .leftJoin('source.author', 'author')
       .where('source.id = :id', { id })
       .getOne();
+    await this.moderatorService.checkGetRecordAccess(mainRes, user);
     const keywords = await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
       `select keywords.name, keywords.id, count(ideas.*)::integer as cnt 
         from ideas, idea_keywords as ik, keywords

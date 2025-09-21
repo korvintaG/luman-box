@@ -41,7 +41,7 @@ export function getEditAccess<T extends ObjectCreationWithModeration | null | un
   currentUser: User | null,
   currentRecord: T,
 ): EditAccessStatus {
-  console.log('getEditAccess', id, currentUser, currentRecord);
+  //console.log('getEditAccess', id, currentUser, currentRecord);
   if (!currentUser)
     // не авторизован
     return EditAccessStatus.Readonly;
@@ -224,7 +224,7 @@ export function getErrorTypeBySlice(sliceState: RequestStatus):string {
     case RequestStatus.FailedUnAuth:
       return "Ошибка авторизации.";
     default:
-      return "Ошибка неизвестного типа";
+      return "";
   }
 }
 

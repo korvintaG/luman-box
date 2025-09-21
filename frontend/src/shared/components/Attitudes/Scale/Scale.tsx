@@ -14,6 +14,7 @@ export type ScaleProps = {
   attitudeNow?: number; // как оценено сейчас
   handleClick: (value: number) => void;
   getHintByValue: (value: number) => string;
+  dataCy?: string;
 };
 
 export const Scale: FC<ScaleProps> = ({
@@ -22,14 +23,16 @@ export const Scale: FC<ScaleProps> = ({
   attitudeNow,
   handleClick,
   getHintByValue,
+  dataCy,
 }) => {
   return (
     <div className={styles.scaleContainer}>
       
       <div className={styles.line} />
-      {attitudeViewArray.map((value) => (
+      {attitudeViewArray.map((value, index) => (
         <div
           key={value}
+          data-cy={dataCy ? `${dataCy}-${index}` : undefined}
           className={clsx(styles.tick, {
             [styles.tick_active]: !readOnly,
           })}

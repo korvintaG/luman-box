@@ -16,6 +16,7 @@ export type InputSelectUIProps = React.ComponentPropsWithoutRef<"select"> &
     readOnly?: boolean;
     URL?: string;
     valueText?:string;
+    dataCy?:string;
   };
 
 type ValueReadOnlyProps = {
@@ -23,19 +24,20 @@ type ValueReadOnlyProps = {
   id?: string;
   className?: string;
   text?: string;
+  dataCy?:string;
 };
 
 const ValueReadOnly: FC<ValueReadOnlyProps> = (props) => {
   //console.log('ValueReadOnly',props)
   if (props.URL)
     return (
-      <Link id={props.id} to={props.URL} className={props.className}>
+      <Link id={props.id} to={props.URL} className={props.className} data-cy={props.dataCy}>
         {props.text}
       </Link>
     );
   else
     return (
-      <p id={props.id} className={props.className}>
+      <p id={props.id} className={props.className} data-cy={props.dataCy}>
         {props.text}
       </p>
     );
@@ -49,6 +51,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
   hideEmpty,
   readOnly,
   URL,
+  dataCy,
   ...selectProps
 }) => {
   const inputId = useId();
@@ -88,7 +91,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
 
   return (
     <>
-      <label htmlFor={inputId} className={classLabel}>
+      <label htmlFor={inputId} className={classLabel} data-cy={`${dataCy}-label`}>
         {label}
       </label>
       {readOnly ? (
@@ -97,6 +100,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
           text={valueText}
           id={inputId}
           className={classEditReadonly}
+          dataCy={`${dataCy}-field-readonly`}
         />
       ) : (
         <select
@@ -105,6 +109,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
           name={selectProps.name}
           onChange={selectProps.onChange}
           className={classEdit}
+          data-cy={`${dataCy}-field`}
         >
           {hideEmpty ? null : <option value="0"></option>}
           {values.map((el) => (

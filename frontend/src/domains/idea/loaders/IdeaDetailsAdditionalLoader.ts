@@ -12,13 +12,15 @@ export async function ideaAdditionalLoad(idea: IdeaDetail | null) {
       getEditAccess(String(idea.id), currentUser, idea) :
       EditAccessStatus.Editable;
   
-    if (state.keywordList.list.length === 0) {// всегда тянем ключевые слова
+    if ([EditAccessStatus.Editable, EditAccessStatus.EditableAndPublishable, EditAccessStatus.EditableAndModeratable].includes(editAccessStatus)
+       || state.keywordList.list.length === 0) {// всегда тянем ключевые слова
       const resultKeywords = await store.dispatch(fetchKeywords());
       if (!fetchKeywords.fulfilled.match(resultKeywords))
         throw new Error(state.keywordList.error);
     }
   
-    if (editAccessStatus !== EditAccessStatus.Readonly && state.sourceList.list.length === 0) {
+    if ([EditAccessStatus.Editable, EditAccessStatus.EditableAndPublishable, EditAccessStatus.EditableAndModeratable].includes(editAccessStatus)
+       || state.sourceList.list.length === 0) {
       const resultSources = await store.dispatch(fetchSources());
       if (!fetchSources.fulfilled.match(resultSources))
         throw new Error(state.sourceList.error);

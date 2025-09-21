@@ -13,6 +13,7 @@ const SvgIcon: React.FC<SvgIconProps> = ({ svgString, className }) => {
 
   return (
     <div 
+      data-cy="svg-icon"
       className={className}
       dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
     />

@@ -44,7 +44,7 @@ export const InterconnectionDetailsEditPage: FC = () => {
     }
 
     const gotoEdit = (id: number) => {
-      navigate(genInterconnectionURL(id));
+      navigate(genInterconnectionURL(id, !!isReverse ));
     }
 
 

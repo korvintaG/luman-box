@@ -50,8 +50,9 @@ export class KeywordsController {
 
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.keywordsService.findOne(+id);
+  @UseGuards(OptionalJwtAuthGuard)
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.keywordsService.findOne(+id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)

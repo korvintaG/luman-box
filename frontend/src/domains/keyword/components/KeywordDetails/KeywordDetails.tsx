@@ -83,6 +83,7 @@ export const KeywordDetails: FC<KeywordDetailsProps> = ({
               label="Ключевое слово:"
               value={form.values.name}
               placeholder="Введите ключевое слово"
+              dataCy="keyword_name"
               {...inputProps}
             />
             <InputTextUI
@@ -90,6 +91,7 @@ export const KeywordDetails: FC<KeywordDetailsProps> = ({
               name="definition"
               label="Определение:"
               labelPosition={LabelPosition.left}
+              dataCy="keyword_definition"
               {...inputProps}
             />
           </div>

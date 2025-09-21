@@ -3,7 +3,8 @@ import { useForm } from "../../../shared/hooks/useForm";
 import { useSelector, useDispatch } from "../../../shared/services/store";
 import { fetchCurrentIdea, selectError, selectSliceState, addInterconnection, 
   selectInterconnectionAdd, fetchIdeaToSet, selectFindError, resetFoundData, setUpdateError,
-  setSliceStatus, 
+  setSliceStatus,
+  selectNewID, 
    } 
 from "../store/interconnection-add-slice";
 import { DetailsHookProps, IDetailsAddHookRes, RequestStatus } from "../../../shared/types/types-for-hooks";
@@ -43,6 +44,7 @@ export const useInterconnectionDetailsAdd = (
   const errorText = useSelector(selectError)
   const errorFindText = useSelector(selectFindError)
   const sliceState = useSelector(selectSliceState)
+  const newID = useSelector(selectNewID)
   const dispatch = useDispatch();   
     
   const fetchRecord = ()=>{
@@ -50,14 +52,9 @@ export const useInterconnectionDetailsAdd = (
   }
 
   const resetSliceStateAction =()=>{
-    //dispatch(resetSliceState());
     dispatch(setSliceStatus(RequestStatus.Idle));
   }
       
-  /*useEffect(() => {
-    fetchRecord();
-  }, [idea_id]);*/
-
   const resetFoundDataAction = ()=>{
     dispatch(resetFoundData())
   }
@@ -100,6 +97,7 @@ export const useInterconnectionDetailsAdd = (
       setEditStarted
     },
     record: {
+      newID: newID,
       fetchRecord,
       currentRecord,
       handleSubmitAction

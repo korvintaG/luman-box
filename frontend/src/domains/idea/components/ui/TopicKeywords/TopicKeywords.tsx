@@ -37,8 +37,9 @@ export const TopicKeywords: FC<TopicKeywordsProps> = (props) => {
     >
       {props.keywordsSelected ? (
         <div className={styles.keywords}>
-          {props.keywordsSelected.map((kw) => (
+          {props.keywordsSelected.map((kw, index) => (
             <KeywordUI
+              dataCy={`keyword_link_${index}`}
               key={kw.id}
               id={kw.id}
               name={getKeywordName(kw.id)}
@@ -55,6 +56,7 @@ export const TopicKeywords: FC<TopicKeywordsProps> = (props) => {
             name="keyword_id"
             label="Добавить ключевое слово:"
             value={keywordToAdd}
+            dataCy="keyword"
             values={props.keywordsAll.filter(
               (el) => !props.keywordsSelected.find((fel) => fel.id === el.id)
             )} // только новые

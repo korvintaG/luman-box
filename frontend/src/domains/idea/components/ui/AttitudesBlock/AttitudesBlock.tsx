@@ -37,7 +37,7 @@ export const AttitudesBlock: FC<AttitudesBlockProps> = ({
   };
 
   return (
-    <section className={styles.container}>
+    <section className={styles.container} data-cy="attitudes-block">
       <Attitude
         title="Нравится?"
         hintLike="Идея очень нравится!"
@@ -51,6 +51,7 @@ export const AttitudesBlock: FC<AttitudesBlockProps> = ({
         attitudeUser={attitudes.user ? attitudes.user.like : undefined}
         setAttitude={(value: number) => setAttitude("like", value)}
         attitudesTotal={attitudes.all.like}
+        dataCy="attitude-like"
       />
       <Attitude
         title="Значимо?"
@@ -65,6 +66,7 @@ export const AttitudesBlock: FC<AttitudesBlockProps> = ({
         attitudeUser={attitudes.user ? attitudes.user.importance : undefined}
         setAttitude={(value: number) => setAttitude("importance", value)}
         attitudesTotal={attitudes.all.importance}
+        dataCy="attitude-importance"
       />
       <Attitude
         title="Правдиво?"
@@ -79,6 +81,7 @@ export const AttitudesBlock: FC<AttitudesBlockProps> = ({
         attitudeUser={attitudes.user ? attitudes.user.truth : undefined}
         setAttitude={(value: number) => setAttitude("truth", value)}
         attitudesTotal={attitudes.all.truth}
+        dataCy="attitude-truth"
       />
     </section>
   );

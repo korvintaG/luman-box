@@ -32,6 +32,7 @@ export const InterconnectionIcon: FC<InterconnectionIconProps> = ({URL,
       className={clsx(styles.container,clsxPars)}
       data-tooltip-id={translit(iTI.hintFromIdea)}
       data-tooltip-content={iTI.hintFromIdea}
+      data-cy={`interconnection-icon-${iTI.id}`}
     >
         <p className={clsx(styles.cnt1,clsxPars)}> {cnt1===0?'':cnt1} </p>
         {isGrid && <div className={styles.blank}></div> /* лишний элемент для грида */}

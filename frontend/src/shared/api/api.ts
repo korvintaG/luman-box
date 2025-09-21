@@ -3,12 +3,12 @@ import { getCookie, setCookie } from "../utils/cookie";
 import { UserResponseToken } from "../../features/auth/user-types";
 import { isArray } from "lodash";
 
-export const enum RequestStatus {
+/*const enum ApiRequestStatus {
   Idle = "idle",
   Loading = "loading",
   Success = "success",
   Failed = "failed",
-}
+}*/
 
 export type FetchError = {
   message: string;
@@ -54,13 +54,24 @@ export class Api {
 
   async request<T>(endpoint: string, options: RequestInit) {
     try {
-      const res = await fetch(`${this.baseUrl}${endpoint}`, {
-        ...this.options,
-        ...options,
-      });
+      const requestOptions = { ...this.options, ...options };
+
+      if (options.body instanceof FormData) {
+        // Удаляем Content-Type для FormData - браузер установит его сам
+        if (requestOptions.headers) {
+          delete (requestOptions.headers as any)['Content-Type'];
+        }
+      }
+  
+      const res = await fetch(`${this.baseUrl}${endpoint}`, requestOptions);
       return await this.handleResponse<T>(res);
-    } catch (error) {
+    } catch (error) { 
       const fetchError = error as FetchError;
+      //console.log('request error', fetchError.message, fetchError.statusCode);
+      if (!fetchError.statusCode && fetchError.message.includes('Failed to fetch')) {
+        fetchError.statusCode = 500;
+        fetchError.message = 'Ошибка при отправке файла. Проблема или с размером файла (попробуйте файл меньше). Или проблема с Интернетом.';
+      }
 
       return Promise.reject({
         ...fetchError,
@@ -87,15 +98,15 @@ export class Api {
     try {
       return await this.request<T>(endpoint, options);
     } catch (error) {
-      console.log('requestWithRefresh error', error);
+      //console.log('requestWithRefresh error', error);
       const fetchError = error as FetchError;
       // Если ошибка не 401, то не пытаемся обновлять токен
       if (fetchError.statusCode !== 401) {
-        return Promise.reject(error/*{
+        return Promise.reject({
           ...fetchError,
           statusCode: fetchError.statusCode || 500,
-          //message: isArray(fetchError.message) ? fetchError.message.join('\n') : fetchError.message || 'Unknown error --',
-        }*/);  
+          message: isArray(fetchError.message) ? fetchError.message.join('\n') : fetchError.message || 'Unknown error --',
+        });  
       }
       
       try {

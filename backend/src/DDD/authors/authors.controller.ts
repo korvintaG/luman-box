@@ -50,8 +50,9 @@ export class AuthorsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authorsService.findOne(+id);
+  @UseGuards(OptionalJwtAuthGuard)
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.authorsService.findOne(+id, req.user);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -8,13 +8,14 @@ import { ListToWork, ErrorAction } from "../../../shared/utils/ForSliceUtils";
 import keywordAPI from "../api/keyword-api";
 import { isUnauthorizedError } from "../../../shared/utils/utils";
 import { KeywordShort, KeywordDetail, KeywordList } from "../types/KeywordTypes";
-import { RequestStatus } from "../../../shared/types/types-for-hooks";
+import { RequestStatus, RequestStatusValue } from "../../../shared/types/types-for-hooks";
 import { SliceDetail } from "../../../shared/types/types-for-slice";
 
 export const initialState: SliceDetail<KeywordDetail> = {
   current: null,
   status: RequestStatus.Idle,
   error: "",
+  newID: undefined,
 };
 
 export const setKeyword = createAsyncThunk("setKeyword", keywordAPI.setEntity);
@@ -41,7 +42,7 @@ const keywordDetailSlice = createSlice({
   name: "keywordDetail",
   initialState,
   reducers: {
-    setSliceStatus: (state, action) => {
+    setSliceStatus: (state, action: PayloadAction<RequestStatusValue>) => {
       state.status = action.payload; //RequestStatus.Success;
     },
     clearCurrentKeyword: (state) => {
@@ -55,6 +56,7 @@ const keywordDetailSlice = createSlice({
     selectCurrentKeyword: (sliceState) => sliceState.current,
     selectSliceState: (sliceState) => sliceState.status,
     selectError: (sliceState) => sliceState.error,
+    selectNewID: (sliceState) => sliceState.newID,
   },
   extraReducers: (builder) => {
     builder
@@ -64,8 +66,12 @@ const keywordDetailSlice = createSlice({
       .addCase(getKeyword.fulfilled, (state, action) => {
         state.current = action.payload;
       })
-      .addCase(addKeyword.fulfilled, (state, _) => {
+      .addCase(addKeyword.fulfilled, (state, action) => {
         state.status = RequestStatus.Added;
+        state.newID = action.payload.id;
+      })
+      .addCase(toModerateKeyword.fulfilled, (state, _) => {
+        state.status = RequestStatus.SendToModerating;
       })
       .addCase(delKeyword.fulfilled, (state, _) => {
         state.status = RequestStatus.Deleted;
@@ -91,6 +97,7 @@ const keywordDetailSlice = createSlice({
           setKeyword.rejected,
           approveKeyword.rejected,
           rejectKeyword.rejected,
+          toModerateKeyword.rejected,
         ),
         (state, _) => {
           state.status = RequestStatus.FailedUpdate;
@@ -109,7 +116,8 @@ const keywordDetailSlice = createSlice({
           addKeyword.pending,
           approveKeyword.pending,
           rejectKeyword.pending,
-          delKeyword.pending
+          delKeyword.pending,
+          toModerateKeyword.pending,
         ), (state) => {
         state.status = RequestStatus.Loading;
         state.error = "";
@@ -121,7 +129,8 @@ const keywordDetailSlice = createSlice({
           addKeyword.rejected,
           approveKeyword.rejected,
           rejectKeyword.rejected,
-          delKeyword.rejected
+          delKeyword.rejected,
+          toModerateKeyword.rejected,
         ), (state, action) => {
         state.error = action.error.message!;
         if (isUnauthorizedError(state.error))
@@ -134,6 +143,7 @@ export const {
   selectError,
   selectCurrentKeyword,
   selectSliceState,
+  selectNewID,
 } = keywordDetailSlice.selectors;
 export const { clearCurrentKeyword, setStateSuccess, setSliceStatus } = keywordDetailSlice.actions;
 export default keywordDetailSlice.reducer;

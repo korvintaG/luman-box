@@ -72,6 +72,7 @@ export const InterconnectionList: FC<InterconnectionListProps> = ({
             <ButtonUI
               logicType="add"
               // className={styles.button_add} 
+              data-cy="interconnection-add-button-reverse"
               caption="Добавить взаимосвязь"
               onClick={() => addNewInterconnection(true)}
             />
@@ -89,6 +90,7 @@ export const InterconnectionList: FC<InterconnectionListProps> = ({
             <ButtonUI
               logicType="add"
               // className={styles.button_add}
+              data-cy="interconnection-add-button-direct"
               caption="Добавить взаимосвязь"
               onClick={() => addNewInterconnection(false)}
             />

@@ -1,7 +1,9 @@
-import { FC, SyntheticEvent, useId, useRef } from "react";
+import { FC, SyntheticEvent, useId, useRef, useState } from "react";
 import styles from "./RecordImage.module.css";
 import { RequestStatus } from "../../types/types-for-hooks";
 import { ButtonUI } from "../../ui/button";
+import { useMsgModal } from "../../hooks/useMsgModal";
+import { MsgErrorModalUI } from "../../ui/Modal/MsgErrorModal/MsgErrorModal";
 
 export const STORE_FILE_PATH =
   process.env.REACT_APP_IMAGE_URL! +
@@ -19,13 +21,15 @@ export type RecordImageProps = {
   readOnly: boolean;
   uploadFileAction: (data: FormData) => void;
   deleteImage: () => void;
-  //sliceStatus: RequestStatus;
+  //sliceStatus: RequestStatus; 
 };
 
 export const RecordImage: FC<RecordImageProps> = (props) => {
   //console.log("RecordImage", props);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const id = useId();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const msgErrorHook = useMsgModal();
   let src: string | null = null;
   if (props.newImageURL !== null) {
     // не сброшено
@@ -33,12 +37,35 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
     else if (props.imageURL) src = `${STORE_FILE_PATH}/${props.imageURL}`;
   }
 
+  const errorCloseAction = () => {
+    setErrorMessage(null);
+    msgErrorHook.closeDialog();
+  };
+
   const handleFileChange = (e: SyntheticEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files?.length) {
-      const dataFile = new FormData();
-      dataFile.append("image", e.currentTarget.files[0]);
-      props.uploadFileAction(dataFile);
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    setErrorMessage(null); // Сбрасываем предыдущую ошибку
+    if (!file.type.startsWith('image/')) {
+      setErrorMessage('Пожалуйста, выберите файл изображения');
+      msgErrorHook.openDialogDirectly();
+      //props.deleteImage()
+      return;
     }
+
+    const maxFileSize = Number(process.env.REACT_APP_MAX_FILE_SIZE!);
+    console.log('file.size', file.size, 'maxFileSize', maxFileSize);
+    if (file.size > maxFileSize) {
+      setErrorMessage(`Размер файла не должен превышать ${Math.round(maxFileSize / 1024)}KB`);
+      e.currentTarget.value = '';
+      msgErrorHook.openDialogDirectly();
+     // props.deleteImage();
+      return;
+    }
+
+    const dataFile = new FormData();
+    dataFile.append("image", file, file.name);
+    props.uploadFileAction(dataFile);
   };
 
   const handleUploadClick = () => {
@@ -50,7 +77,19 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
 
   return (
     <div className={styles.container}>
-      {src && <img src={src} />}
+    {msgErrorHook.dialogWasOpened && (
+      <MsgErrorModalUI
+        message={`${errorMessage}`}
+        closeAction={errorCloseAction}
+      />
+    )}
+
+      {src && <img src={src} data-cy="image-preview" />}
+      {/*errorMessage && (
+        <div className={styles.error} data-cy="file-error">
+          {errorMessage}
+        </div>
+      )*/}
       {!props.readOnly && (
         <div className={styles.control}>
           <input
@@ -59,6 +98,7 @@ export const RecordImage: FC<RecordImageProps> = (props) => {
             className={styles.hidden}
             onChange={handleFileChange}
             data-cy="file-input"
+            accept="image/*"
             type="file"
           />
 

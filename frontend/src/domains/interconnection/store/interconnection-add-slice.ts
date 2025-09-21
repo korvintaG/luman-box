@@ -13,12 +13,14 @@ import { InterconnectionDetailAttachments } from "../types/entity-types";
     status: RequestStatus,
     error: string,
     errorFind: string;
+    newID: number | undefined;
   }
 
   export const initialState : InterconnectionAddState = {
     status: RequestStatus.Idle,
     error: "",
-    errorFind:""
+    errorFind:"",
+    newID: undefined
   };
   
   // блок для добавления
@@ -56,7 +58,8 @@ const interconnectionAddSlice = createSlice({
       selectInterconnectionAdd: (sliceState) => sliceState.currentAdd,
       selectSliceState: (sliceState) => sliceState.status,
       selectError: (sliceState) => sliceState.error,
-      selectFindError: (sliceState) => sliceState.errorFind
+      selectFindError: (sliceState) => sliceState.errorFind,
+      selectNewID: (sliceState) => sliceState.newID
     },
     extraReducers: (builder) => {
         builder
@@ -79,8 +82,9 @@ const interconnectionAddSlice = createSlice({
             else
               state.currentAdd = {idea_interconnect:action.payload, idea_current: null};
           })
-          .addCase(addInterconnection.fulfilled, (state, _) => {
+          .addCase(addInterconnection.fulfilled, (state, action) => {
             state.status = RequestStatus.Added;
+            state.newID = action.payload.id;
           })
           .addCase(addInterconnection.rejected, (state, action) => {
             state.status = RequestStatus.FailedAdd;
@@ -117,7 +121,8 @@ export const {
     selectInterconnectionAdd,
     selectSliceState,
     selectError,
-    selectFindError
+    selectFindError,
+    selectNewID
   } = interconnectionAddSlice.selectors;
 export const { clearCurrentInterconnection, resetFoundData, setUpdateError, setSliceStatus } = interconnectionAddSlice.actions;
 export default interconnectionAddSlice.reducer;

@@ -1,6 +1,7 @@
 import { Params } from "react-router-dom";
 import store from "../../../shared/services/store";
-import { getKeyword } from "../store/KeywordDetailSlice";
+import { clearCurrentKeyword, getKeyword, setSliceStatus } from "../store/KeywordDetailSlice";
+import { RequestStatus } from "../../../shared/types/types-for-hooks";
 
 
 

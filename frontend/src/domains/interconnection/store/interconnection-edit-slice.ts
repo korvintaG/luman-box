@@ -67,6 +67,9 @@ const interconnectionEditSlice = createSlice({
           .addCase(setInterconnection.fulfilled, (state, _) => {
             state.status = RequestStatus.Updated;
           })
+          .addCase(toModerateInterconnection.fulfilled, (state, _) => {
+            state.status = RequestStatus.SendToModerating;
+          })
           .addCase(approveInterconnection.fulfilled, (state, _) => {
             state.status = RequestStatus.Updated;
           })
@@ -81,6 +84,10 @@ const interconnectionEditSlice = createSlice({
             state.status = RequestStatus.FailedUpdate;
             state.error = action.error.message!;
           })
+          .addCase(toModerateInterconnection.rejected, (state, action) => {
+            state.status = RequestStatus.FailedUpdate;
+            state.error = action.error.message!;
+          })
           .addCase(approveInterconnection.rejected, (state, action) => {
             state.status = RequestStatus.FailedUpdate;
             state.error = action.error.message!;
@@ -89,7 +96,8 @@ const interconnectionEditSlice = createSlice({
             isAnyOf(setInterconnection.pending, 
               delInterconnection.pending, 
               fetchInterconnection.pending, 
-              approveInterconnection.pending
+              approveInterconnection.pending,
+              toModerateInterconnection.pending,
               ),
             (state) => {
               state.status = RequestStatus.Loading;

@@ -34,9 +34,15 @@ export const MsgErrorModalUI: FC<MsgErrorModalUIProps> = (props) => {
       <button className={styles["close-button"]} onClick={props.closeAction}>
         <CloseIcon />
       </button>
-      <p className={styles.error}>{props.message}</p>
+      <p className={styles.error} data-cy="error-message">{props.message}</p>
       <div className={styles.buttons}>
-        <ButtonUI logicType="alert" onClick={yesAction} caption="OK" />
+        <ButtonUI 
+          logicType="alert" 
+          onClick={yesAction} 
+          caption="OK" 
+          disabled={false}
+          data-cy="ok-button"
+        />
       </div>
     </Modal>
   );

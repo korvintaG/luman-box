@@ -29,7 +29,7 @@ export const useInterconnectionDetailsEdit = (
     const editAccessStatus = getEditAccess(id, currentUser, currentRecord)
     //console.log('useInterconnectionDetailsEdit editAccessStatus ',currentRecord)
      
-    const fetchRecord = ()=>{
+    const fetchRecord = ()=>{ 
       dispatch(fetchInterconnection(Number(id)));
     }
         
@@ -94,6 +94,7 @@ export const useInterconnectionDetailsEdit = (
         setEditStarted
       },
       record: {
+        id: id?Number(id): undefined,
         fetchRecord,
         currentRecord,
         deleteRecordAction, 

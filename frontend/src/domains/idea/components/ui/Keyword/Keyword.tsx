@@ -8,6 +8,7 @@ export type KeywordProps = {
   name: string;
   deleteKeyword: (e: SyntheticEvent, id: number) => void;
   readOnly?: boolean;
+  dataCy?: string;
 };
 
 export const Keyword: FC<KeywordProps> = ({
@@ -15,9 +16,10 @@ export const Keyword: FC<KeywordProps> = ({
   name,
   readOnly,
   deleteKeyword,
+  dataCy,
 }) => {
   return (
-    <div className={styles.keyword}>
+    <div className={styles.keyword} data-cy={dataCy?dataCy:undefined}>
       <Link to={getRouteParam(appRoutesURL.keyword, id)}>{"#" + name}</Link>
       {!readOnly && (
         <button

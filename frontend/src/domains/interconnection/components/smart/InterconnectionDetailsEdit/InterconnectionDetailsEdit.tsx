@@ -2,7 +2,6 @@ import { FC } from "react";
 import { Helmet } from "react-helmet-async";
 import { ErrorMessageUI } from "../../../../../shared/ui/ErrorMessage/ErrorMessage";
 import { interconnectionsTypeInfo } from "../../../../../shared/constants/InterconnectionTypeInfo";
-import { User } from "../../../../../features/auth/user-types";
 import { useInterconnectionDetailsEdit } from "../../../hooks/UseInterconnectionDetailsEdit";
 import { RecordEditForm } from "../../../../../shared/components/RecordEditForm/RecordEditForm";
 import { InterconnectionTypeInfo } from "../../../types/UI-types";
@@ -14,7 +13,6 @@ import { FillRecomendation } from "../../ui/FillRecomendation/FillRecomendation"
 import { Authorship } from "../../../../../shared/components/Authorship/ui/Authorship";
 import { EditAccessStatus } from "../../../../../shared/utils/utils";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
-import { genInterconnectionURL } from "../../../../../app/router/navigation";
 
 export type InterconnectionDetailsEditProp = {
   //id?: string;
@@ -98,7 +96,7 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> = ({
         {status.editAccessStatus === EditAccessStatus.Editable && (
           <FillRecomendation />
         )}
-        <RecordControlBlock
+        <RecordControlBlock 
           gotoEntityEdit={gotoEdit}
           entityDetailsHook={interconnectionDetailsHook}
           gotoEntityList={gotoList}

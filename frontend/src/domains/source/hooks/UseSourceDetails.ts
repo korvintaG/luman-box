@@ -13,6 +13,7 @@ import {
   selectSliceState,
   setSliceStatus,
   toModerateSource,
+  selectNewID,
 } from "../store/SourceDetailsSlice";
 import { useForm } from "../../../shared/hooks/useForm";
 import {
@@ -55,6 +56,7 @@ export const useSourceDetails = ({ id, currentUser }: DetailsHookProps)
   const fileSliceState = useSelector(selectFileSliceState);
   const currentFile = useSelector(selectCurrentFile);
   const fileErrorText = useSelector(fileSelectError);
+  const newID = useSelector(selectNewID);
 
   const errorText = useSelector(selectError);
   const authorsSliceState = useSelector(selectAuthorsSliceState);
@@ -109,6 +111,7 @@ export const useSourceDetails = ({ id, currentUser }: DetailsHookProps)
   };
 
   const uploadFileAction = (data: FormData) => {
+    setEditStarted(true);
     dispatch(uploadFile(data));
   }
 
@@ -126,6 +129,8 @@ export const useSourceDetails = ({ id, currentUser }: DetailsHookProps)
       setEditStarted
     },
     record: {
+      id: id?Number(id): undefined,
+      newID,
       fetchRecord,
       currentRecord,
       deleteRecordAction,

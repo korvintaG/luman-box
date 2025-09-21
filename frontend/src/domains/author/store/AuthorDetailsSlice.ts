@@ -81,7 +81,7 @@ const authorDetailsSlice = createSlice({
         state.status = RequestStatus.FailedDelete;
       })
       .addCase(toModerateAuthor.fulfilled, (state, _) => {
-        state.status = RequestStatus.SendToModerating;
+        state.status = RequestStatus.SendToModerating; 
       })
       .addMatcher(
         isAnyOf(

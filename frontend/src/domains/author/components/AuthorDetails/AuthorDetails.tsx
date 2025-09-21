@@ -31,8 +31,6 @@ import { AuthorAdd, AuthorDetail } from "../../types/author-type";
  * Чистый компонент редактирования автора
  */
 export type AuthorDetailsProps = {
-  //id: string | undefined;
-  //currentUser: User | null;
   authorDetailsHookRes: ReturnType<typeof useAuthorDetails>;
   gotoAuthorList: () => void;
   gotoAuthor: (id: number) => void;
@@ -43,12 +41,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
   gotoAuthorList,
   gotoAuthor,
 }: AuthorDetailsProps) => {
-  /*const authorDetailsHook = useAuthorDetails({
-    id,
-    currentUser,
-  });*/
   const { form, status, record } = authorDetailsHookRes;
-  //const fileRef = useRef<HTMLInputElement | null>(null);
 
   const params: HeaderParType = [
     status.editAccessStatus === EditAccessStatus.Readonly,
@@ -85,7 +78,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
         fetchRecord={record.fetchRecord}
       >
         <section className={styles.form__content}>
-          <RecordImage
+          <RecordImage 
             imageURL={form.values.image_URL}
             newImageURL={form.values.new_image_URL}
             readOnly={status.editAccessStatus === EditAccessStatus.Readonly}

@@ -8,6 +8,7 @@ import { sourceFullNameFromObj } from "../../../../../shared/utils/utils";
 import { useIdeasList } from "../../../hooks/UseIdeasList";
 import { genIdeaURL, genSourceURL } from "../../../../../app/router/navigation";
 import SvgIcon from "../../../../../shared/components/SvgIcon/SvgIcon";
+import { getVerificationClass } from "../../../../../shared/CSS/CSS-utils";
 
 export type IdeasListProps = {
   readOnly: boolean;
@@ -45,12 +46,13 @@ export const IdeasList: FC<IdeasListProps> = ({
           </tr> 
         </thead>
         <tbody>
-          {ideas.map((idea) => {
+          {ideas.map((idea,index) => {
             return (
-              <tr key={idea.id}>
+              <tr key={idea.id} data-cy={`idea_list_${index}`}>
                 <td >
                   <Link
-                    className={clsx(styles.name_cell/*, { "moderated-need": !idea.moderated }*/)}
+                    className={clsx(styles.name_cell, getVerificationClass(idea.verification_status))}
+                    data-cy={`idea_link_${index}`}
                     to={genIdeaURL(idea.id)}
                   >
                     {idea.SVG && idea.SVG.length>0 && <SvgIcon

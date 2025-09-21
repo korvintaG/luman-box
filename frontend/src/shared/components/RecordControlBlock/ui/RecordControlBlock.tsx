@@ -21,8 +21,8 @@ export function RecordControlBlock<T>(
   const msgErrorHook = useMsgModal();
   const msgPublishHook = useMsgModal();
   const navigate = useNavigate();
-  //const location = useLocation();
   const { form, status, record, moderate } = props.entityDetailsHook;
+  //console.log('RecordControlBlock status=', status);
 
   let saveCaption = props.entityDetailsHook.record.id
     ? "Сохранить данные"
@@ -30,11 +30,11 @@ export function RecordControlBlock<T>(
 
 
   useEffect(() => {
-    console.log('RecordControlBlock useEffect', status.sliceStates[0]);
+    //console.log('RecordControlBlock useEffect', status.sliceStates[0]);
     if (status.sliceStates[0] === RequestStatus.Added) {
-      console.log('RecordControlBlock useEffect added');
+      //console.log('RecordControlBlock useEffect added');
       if (record.newID) {
-        console.log('RecordControlBlock useEffect record.newID=', record.newID);
+        //console.log('RecordControlBlock useEffect record.newID=', record.newID);
         props.gotoEntityEdit(record.newID); //navigate to new author details page
       }
     }
@@ -42,8 +42,10 @@ export function RecordControlBlock<T>(
       record.fetchRecord();
       //props.resetEditStarted();
     }
-    else if (status.sliceStates[0] === RequestStatus.SendToModerating) props.gotoEntityList();
-    else if (status.sliceStates[0] === RequestStatus.Deleted) {
+    else if (status.sliceStates[0] === RequestStatus.SendToModerating || 
+             status.sliceStates[0] === RequestStatus.Deleted) {
+      //console.log('RecordControlBlock useEffect gotoEntityList');
+      status.resetSlicesStatus();
       props.gotoEntityList();
     }
   }, [status.sliceStates[0]]);
@@ -58,6 +60,7 @@ export function RecordControlBlock<T>(
 
   const back = (e: SyntheticEvent<Element, Event>) => {
     e.preventDefault();
+    status.resetSlicesStatus();
     if (props.gotoEntityList)
       props.gotoEntityList();
     else

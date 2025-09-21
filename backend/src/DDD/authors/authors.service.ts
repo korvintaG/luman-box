@@ -1,4 +1,4 @@
-import { Injectable, Inject, forwardRef, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Inject, forwardRef, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -69,7 +69,7 @@ export class AuthorsService {
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: number, user: IUser) {
     const author = await this.authorRepository
       .createQueryBuilder('author')
       .select([
@@ -86,6 +86,7 @@ export class AuthorsService {
       .leftJoin('author.moderator', 'moderator')
       .where('author.id = :id', { id })
       .getOne();
+    await this.moderatorService.checkGetRecordAccess(author, user);
     const sources = await this.authorRepository.manager.query<SimpleEntity[]>(
       `select distinct sources.id, sources.name 
         from sources
@@ -108,6 +109,8 @@ export class AuthorsService {
         order by keywords.name`,
       [id],
     );
+
+
 
     return { ...author, sources, ideas, keywords };
   }
