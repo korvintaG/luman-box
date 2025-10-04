@@ -63,7 +63,6 @@ export const BasicInstructionsCMS = React.memo(() => {
             </p>
           </div>
         </section>
-        <button onClick={(e:SyntheticEvent)=>{window.history.go(-1);}}>back</button>
       </div>
     </>
   );

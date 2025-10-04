@@ -6,5 +6,6 @@ dist
 package-lock.json 
 arc.bat 
 ar*.bat
-
-
+docker-compose.yml 
+create_check_database.sql
+php

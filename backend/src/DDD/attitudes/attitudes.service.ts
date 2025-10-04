@@ -29,18 +29,18 @@ export class AttitudesService {
         error:'NotFound',
         message: `Idea with id ${ideaID} not found`
       });*/
-    if (!createAttitudeDto.importance)
-      createAttitudeDto.importance=0;
-    if (!createAttitudeDto.like)
-      createAttitudeDto.like=0;
-    if (!createAttitudeDto.truth)
-      createAttitudeDto.truth=0;
     try {
       const found=await this.attitudeRepository.find({
         where:{user_id:user.id, 
               idea_id:ideaID}
         });
       if (found.length===0) {// не найдено
+        if (!createAttitudeDto.importance)
+          createAttitudeDto.importance=0;
+        if (!createAttitudeDto.like)
+          createAttitudeDto.like=0;
+        if (!createAttitudeDto.truth)
+          createAttitudeDto.truth=0;
         if (createAttitudeDto.importance!==0 || createAttitudeDto.like!==0 || createAttitudeDto.truth!==0) {
           const res=await this.attitudeRepository.save({
             ...createAttitudeDto,
@@ -65,7 +65,8 @@ export class AttitudesService {
           };
       }
       else {
-        if (createAttitudeDto.importance===0 && createAttitudeDto.like===0 && createAttitudeDto.truth===0) {
+        const newRes={...found[0],...createAttitudeDto};
+        if (newRes.importance===0 && newRes.like===0 && newRes.truth===0) {
           const res= this.attitudeRepository.delete({user_id:user.id, idea_id:ideaID});
           return {
             success: true,
@@ -77,7 +78,7 @@ export class AttitudesService {
         }
         else {
           const res=await this.attitudeRepository.update({user_id:user.id, idea_id:ideaID}, 
-            createAttitudeDto);      
+            newRes);      
           if (res.affected===0) {
             throw new NotFoundException({
               error:'NotFound',

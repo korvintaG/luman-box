@@ -15,8 +15,5 @@ export const AppFooterUI = () => (
         <a href="https://t.me/KorvinTag">@KorvinTag</a>
       </span>
     </div>
-    <div className={styles.contact_part}>
-      Ресурс находится в стадии тестирования. Данные не сохраняются!
-    </div>
   </footer>
 );
