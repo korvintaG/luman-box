@@ -10,14 +10,18 @@ import { RoleGuard } from 'src/authorization/guards/role.guard';
 import { WithRole } from 'src/authorization/decorators/role.decorator';
 import { FindOptionsWhere } from 'typeorm';
 import { Interconnection } from './entities/interconnection.entity';
+import { JwtAuth, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { InterconnectionCreateResponceDto } from './dto/interconnection-create-responce.dto';
 
-
+@ApiTags('Взаимосвязи')
 @Controller('interconnections')
 export class InterconnectionsController {
   constructor(private readonly interconnectionsService: InterconnectionsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @JwtAuthUser()
+  @ApiOkResponse({ description: 'Созданная связь', type: InterconnectionCreateResponceDto })
   create(@Req() req: Request, @Body() interconnectionEntityDto: InterconnectionEntityDto) {
     return this.interconnectionsService.create(req.user,interconnectionEntityDto);
   }

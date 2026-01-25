@@ -1,7 +1,9 @@
 import {
   BadRequestException,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { IUser, SimpleEntity, Role } from '../types/custom';
+import { IUser, SimpleEntity, Role, ExceptionType } from '../types/custom';
 import fs from 'fs/promises'
 import path from 'path';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
@@ -76,4 +78,34 @@ export function formatDateForFilename(date: Date): string {
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
   return `${day}.${month}.${year}`
+}
+
+export function throwException(exceptionType:ExceptionType, text: string) {
+  switch (exceptionType) {
+    case ExceptionType.BadRequestException:
+      throw new BadRequestException(
+        {
+          error: exceptionType,
+          message: text
+        }
+      );
+      break;
+    case ExceptionType.NotFoundException:
+      throw new NotFoundException(
+        {
+          error: exceptionType,
+          message: text
+        }
+      );
+      break;
+    case ExceptionType.UnauthorizedException:
+      throw new UnauthorizedException(
+        {
+          error: exceptionType,
+          message: text
+        }
+      );
+      break;
+  }
+
 }

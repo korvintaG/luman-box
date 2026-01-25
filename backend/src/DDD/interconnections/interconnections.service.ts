@@ -8,7 +8,7 @@ import { Interconnection } from './entities/interconnection.entity';
 import { getUserSQLFilter } from 'src/utils/utils';
 import { isEmpty } from 'lodash';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
-import { ModeratorService } from '../../shared/services/moderator.service';
+import { ModeratorService } from '../../shared/services/moderator/moderator.service';
 import { IdeasService } from '../ideas/ideas.service';
 
 type ICTC={

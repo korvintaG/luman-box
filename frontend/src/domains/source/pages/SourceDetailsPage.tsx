@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "../../../shared/services/store";
 import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
 import { SourceDetails } from "../components/smart/SourceDetails/SourceDetails";
-import { appRoutesURL } from "../../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../../app/router/app-routes-URL";
 import { useSourceDetails } from "../hooks/UseSourceDetails";
 import { generatePath } from "react-router";
 import { genSourceURL } from "../../../app/router/navigation";

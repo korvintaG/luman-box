@@ -12,16 +12,12 @@
 .group_label, .group_label_readonly {
     position: absolute;
     top: -10px;
-    left: 5px;
+    left: 10px;
     z-index: 1;
     padding-left: 5px;
     padding-right: 5px;
     font-size: 12px;
-    font-weight: bold;
-}
-
-.group_label {
-    background-color: white;
+    background-color: var(--app-background-color);
 }
 
 
@@ -37,6 +33,7 @@
     padding: 10px;
     font-family: 'Montserrat';
     height: 100%;
+    width: 100%
 }
 
 .group_text_readonly {

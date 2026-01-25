@@ -1,39 +1,33 @@
 import { FC, useId } from "react";
 import { combineClasses } from "../../../utils/utils";
 import styles from "./input-edit.module.css";
-import { CustomInput } from "../../UITypes";
+import { CustomInput } from "../../../types/ui-types";
+import clsx from "clsx";
+
+export enum ReadOnlyDecor {
+  ToModerate=1,
+  Rejected=2
+}
 
 export type InputEditUIProps = React.ComponentPropsWithoutRef<"input"> & CustomInput & {
   dataCy?: string;
+  readOnlyDecor?: ReadOnlyDecor;
+  errorModerationText?:string;
 };
 
 export const InputEditUI: FC<InputEditUIProps> = ({
   label,
-  classes,
   dataCy,
+  readOnlyDecor,
+  errorModerationText,
   ...inputProps
 }) => {
   const inputId = useId();
-  const classLabel = combineClasses(
-    styles.label,
-    classes?.classLabelReplace,
-    classes?.classLabelAdd
-  );
-  const classEdit = combineClasses(
-    styles.field,
-    classes?.classInputReplace,
-    classes?.classInputAdd
-  );
-  const classEditReadonly = combineClasses(
-    styles.field_readonly,
-    classes?.classInputReplace,
-    classes?.classInputAdd
-  );
 
   return (
     <>
-      {label !== "" && (
-        <label htmlFor={inputId} className={classLabel} data-cy={dataCy?`${dataCy}-label`:undefined}>
+      {label  && (
+        <label htmlFor={inputId} className={styles.label} data-cy={dataCy?`${dataCy}-label`:undefined}>
           {label}
         </label>
       )}
@@ -41,14 +35,18 @@ export const InputEditUI: FC<InputEditUIProps> = ({
       {inputProps.readOnly ? (
         <p 
           id={inputId} 
-          className={classEditReadonly} 
+          className={styles.field_readonly} 
           data-cy={dataCy?`${dataCy}-field-readonly`:undefined}>
-          {inputProps.value}
+          <span className={clsx({
+            ['record-to-moderate']:readOnlyDecor===ReadOnlyDecor.ToModerate,
+            ['record-canceled']:readOnlyDecor===ReadOnlyDecor.Rejected,
+          })}>{inputProps.value}</span>
+          {errorModerationText && <span className={styles.error_moderation_text}>{` (${errorModerationText})`}</span>}
         </p>
       ) : (
         <input
           id={inputId}
-          className={classEdit}
+          className={styles.input}
           data-cy={dataCy?`${dataCy}-input`:undefined}
           {...inputProps}
           value={inputProps.value !== null ? inputProps.value : ""}

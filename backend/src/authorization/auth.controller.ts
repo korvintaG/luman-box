@@ -22,7 +22,12 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { RoleGuard } from './guards/role.guard';
 import { WithRole } from './decorators/role.decorator';
 import { Role, StatusCode } from '../types/custom';
+import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { LogoutResponseDto } from './dto/logout-response.dto';
 
+@ApiTags('Авторизация')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -30,16 +35,18 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
+  @UseGuards(LocalAuthGuard)
   @HttpCode(StatusCode.successAuth)
+  @ApiBody({ type: LoginDto, description: 'Данные для входа' })
+  @ApiOkResponse({ description: 'Успешная авторизация', type: LoginResponseDto })
   signin(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    //console.log('AuthController login origin host',req.get('origin'),req.get('host'))
     return this.authService.login(res, req.user);
   }
 
   @Post('logout')
   @HttpCode(StatusCode.successLogout)
+  @ApiResponse({ status:StatusCode.successLogout, description: 'Успешный выход из системы', type: LogoutResponseDto })
   clearAuthCookie(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = this.authService.extractRefreshTokenFromCookies(req);
     
@@ -62,8 +69,8 @@ export class AuthController {
     return await this.authService.register(createUserDto);
   }
 
-  @UseGuards(JwtRefreshAuthGuard)
   @Get('token')
+  @UseGuards(JwtRefreshAuthGuard)
   refreshTokens(@Req() req: Request) {
     if (!req.user) {
       throw new UnauthorizedException({
@@ -74,16 +81,16 @@ export class AuthController {
     return this.authService.generateAccessToken(req.user);
   }
 
+  @Get('user')
   @UseGuards(JwtAuthGuard)
   @Serialize(UserDto)
-  @Get('user')
   async getUser(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
     res.header('Cache-Control', 'no-store');
     const user = await this.usersService.findOne(req.user.id);
-    //console.log('getUser',user);
+    console.log('getUser',user);
     return user;
   }
 }

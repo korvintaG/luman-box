@@ -7,7 +7,7 @@ import { RecordEditForm } from "../../../../../shared/components/RecordEditForm/
 import { IdeaCard } from "../../ui/ideaCard/ideaCard";
 import { InterconnectionDescription } from "../../ui/InterconnectionDescription/InterconnectionDescription";
 import { IdeaSelect } from "../../ui/IdeaSelect/IdeaSelect";
-import { RecordControlBlock } from "../../../../../shared/components/RecordControlBlock/ui/RecordControlBlock";
+import { RecordControlBlock } from "../../../../../shared/components/record-control-block/ui/record-control-block";
 import { FillRecomendation } from "../../ui/FillRecomendation/FillRecomendation";
 import styles from "./InterconnectionDetailsAdd.module.css";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
@@ -54,8 +54,8 @@ export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> = ({
     <IdeaSelect
       error={find.errorFind}
       iitype_name={isReverse ? iti.name1_one : iti.name2_one}
-      idValue={form.values.idea_id ? form.values.idea_id.toString() : null}
-      handleChange={form.handleChange}
+      idValue={form?.values.idea_id ? form?.values.idea_id?.toString() : null}
+      handleChange={form?.handleChange ?? (() => {})}
       handleFindAction={find.findIdeaToAddByID}
       ideaSelected={record.currentRecord?.idea_interconnect}
       sliceState={status.sliceStates[0]}
@@ -84,9 +84,9 @@ export const InterconnectionDetailsAdd: FC<InterconnectionDetailsAddProp> = ({
           {isReverse && CurrentSelect}
         </div>
         <InterconnectionDescription
-          nameDirect={form.values.name_direct}
-          nameReverse={form.values.name_reverse}
-          handleChange={form.handleChange}
+          nameDirect={form?.values.name_direct ?? ""}
+          nameReverse={form?.values.name_reverse ?? ""}
+          handleChange={form?.handleChange ?? (() => {})}
           ideaTypeInfo={iti}
         />
         <div className={styles.idea_bottom}>

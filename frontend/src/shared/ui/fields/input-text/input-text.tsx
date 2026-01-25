@@ -1,93 +1,33 @@
 import React, { FC, useId } from "react";
 import { combineClasses } from "../../../utils/utils";
 import styles from "./input-text.module.css";
-import { CustomInput } from "../../UITypes";
+import { CustomInput, LabelPosition } from "../../../types/ui-types";
+import { InputTextUIProps } from "./types";
 
-export enum LabelPosition {
-  left = 0,
-  groupHeader = 1,
-}
-
-type ElementClasses = {
-  block: string;
-  label: string;
-  label_readonly: string;
-  memo: string;
-  memo_readonly: string;
-};
-
-export type InputTextUIProps = React.ComponentPropsWithoutRef<"textarea"> &
-  CustomInput & {
-    labelPosition?: LabelPosition;
-    dataCy?: string;
-  };
 
 export const InputTextUI: FC<InputTextUIProps> = ({
   label,
   labelPosition,
-  classes,
   dataCy,
   ...textareaProps
 }) => {
   const inputId = useId();
   const rows = textareaProps.rows ? textareaProps.rows : 13;
 
-  const elementClassesArray: ElementClasses[] = [
-    {
-      block: '',
-      label: styles.left_label,
-      label_readonly: styles.left_label,
-      memo: styles.left_text,
-      memo_readonly: styles.left_text_readonly,
-    },
-    {
-      block: styles.group_block,
-      label: styles.group_label,
-      label_readonly: styles.group_label_readonly,
-      memo: styles.group_text,
-      memo_readonly: styles.group_text_readonly,
-    },
-  ];
   let curLabelPosition =
     labelPosition !== undefined ? labelPosition : LabelPosition.groupHeader;
 
-  const classLabel = combineClasses(
-    textareaProps.readOnly
-      ? elementClassesArray[curLabelPosition].label_readonly
-      : elementClassesArray[curLabelPosition].label,
-    classes?.classLabelReplace,
-    classes?.classLabelAdd
-  );
-  const classBlock = combineClasses(
-    elementClassesArray[curLabelPosition].block,
-    classes?.classReplace,
-    classes?.classAdd
-  );
-
-  const classText = combineClasses(
-    elementClassesArray[curLabelPosition].memo,
-    classes?.classInputReplace,
-    classes?.classInputAdd
-  );
-  const classTextReadOnly = combineClasses(
-    elementClassesArray[curLabelPosition].memo_readonly,
-    classes?.classInputReplace,
-    classes?.classInputAdd
-  );
-  
-  const isDiv = curLabelPosition === LabelPosition.groupHeader;
-  const Wrapper = isDiv ? "div" : React.Fragment;
-  return (
-    <Wrapper {...(isDiv ? { className: classBlock } : {})}>
+  if (curLabelPosition === LabelPosition.groupHeader) { // если заголовок, то класс группового блока
+    return <div className={styles.group_block}>
       <label 
         htmlFor={inputId} 
-        className={classLabel}
         data-cy={dataCy?`${dataCy}-label`:undefined}
+        className={styles.group_label}
       >
         {label}
       </label>
       {textareaProps.readOnly ? (
-        <p id={inputId} className={classTextReadOnly}
+        <p id={inputId} className={styles.group_text_readonly}
           data-cy={dataCy?`${dataCy}-input-readonly`:undefined}
         >
           {textareaProps.value}
@@ -96,11 +36,38 @@ export const InputTextUI: FC<InputTextUIProps> = ({
         <textarea
           id={inputId}
           data-cy={dataCy?`${dataCy}-input`:undefined}
-          className={classText}
+          className={styles.group_text}
           {...textareaProps}
           rows={rows}
         />
       )}
-    </Wrapper>
-  );
+    </div> 
+  }
+  
+  else { // если label слева, то безымянный блок, которым управляет пользователь
+    return <>
+      <label 
+        htmlFor={inputId} 
+        data-cy={dataCy?`${dataCy}-label`:undefined}
+        className={styles.left_label}
+      >
+        {label}
+      </label>
+      {textareaProps.readOnly ? (
+        <p id={inputId} className={styles.left_text_readonly}
+          data-cy={dataCy?`${dataCy}-input-readonly`:undefined}
+        >
+          {textareaProps.value}
+        </p>
+      ) : (
+        <textarea
+          id={inputId}
+          data-cy={dataCy?`${dataCy}-input`:undefined}
+          className={styles.left_text}
+          {...textareaProps}
+          rows={rows}
+        />
+      )}
+    </>
+  }
 };

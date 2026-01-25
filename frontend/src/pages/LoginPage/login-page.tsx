@@ -13,7 +13,7 @@ import {
   AuthStatus,
 } from "../../features/auth/store/AuthSlice";
 import { useNavigate } from "react-router-dom";
-import { appRoutesURL } from "../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../app/router/app-routes-URL";
 import { LoginForm } from "../../features/auth/components/login-form/login-form";
 import { UserInner } from "../../features/auth/user-types";
 

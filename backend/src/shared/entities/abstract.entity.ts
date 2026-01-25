@@ -24,7 +24,7 @@ export abstract class EntityIDCommon extends EntityID {
 }
 
 export abstract class EntityCreation extends EntityID {
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   date_time_create: Date;
 
   @Column({ type: 'int', nullable: true, name: 'user_id' })
@@ -44,16 +44,16 @@ export abstract class EntityModerate extends EntityCreation {
   @Column({ type: 'int', nullable: false, default: VerificationStatus.Creating })
   verification_status: VerificationStatus;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp', nullable: true, select: false })
   date_time_to_moderate: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'timestamp', nullable: true, select: false })
   date_time_moderated: Date;
 
-  @Column({ type: 'int', nullable: true, name: 'verified_user_id' })
+  @Column({ type: 'int', nullable: true, name: 'verified_user_id', select: false })
   verified_user_id: number;
 
-  @Column({ type: 'varchar', nullable: true, name: 'moderation_notes' })
+  @Column({ type: 'varchar', nullable: true, name: 'moderation_notes', select: true })
   moderation_notes: string;
 
   @ManyToOne(() => User, (user) => user.name, { nullable: true })

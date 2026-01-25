@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useId } from "react";
 import { combineClasses } from "../../../utils/utils";
 import styles from "./input-select.module.css";
-import { CustomInput } from "../../UITypes";
+import { CustomInput } from "../../../types/ui-types";
 import { Link } from "react-router-dom";
 
 export type SelectedValues = {
@@ -45,7 +45,6 @@ const ValueReadOnly: FC<ValueReadOnlyProps> = (props) => {
 
 export const InputSelectUI: FC<InputSelectUIProps> = ({
   label,
-  classes,
   values,
   valueText,
   hideEmpty,
@@ -62,21 +61,6 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
     else return "";
   };
 
-  const classLabel = combineClasses(
-    styles.label,
-    classes?.classLabelReplace,
-    classes?.classLabelAdd
-  );
-  const classEdit = combineClasses(
-    styles.field,
-    classes?.classInputReplace,
-    classes?.classInputAdd
-  );
-  const classEditReadonly = combineClasses(
-    styles.field_readonly,
-    classes?.classInputReplace,
-    classes?.classInputAdd
-  );
 
   /*const ReadOnlyComp = () =>
     URL ? (
@@ -91,7 +75,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
 
   return (
     <>
-      <label htmlFor={inputId} className={classLabel} data-cy={`${dataCy}-label`}>
+      <label htmlFor={inputId} className={styles.label} data-cy={`${dataCy}-label`}>
         {label}
       </label>
       {readOnly ? (
@@ -99,7 +83,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
           URL={URL}
           text={valueText}
           id={inputId}
-          className={classEditReadonly}
+          className={styles.read_only}
           dataCy={`${dataCy}-field-readonly`}
         />
       ) : (
@@ -108,7 +92,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
           value={selectProps.value}
           name={selectProps.name}
           onChange={selectProps.onChange}
-          className={classEdit}
+          className={styles.edit}
           data-cy={`${dataCy}-field`}
         >
           {hideEmpty ? null : <option value="0"></option>}

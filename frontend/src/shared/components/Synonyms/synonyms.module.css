@@ -1,0 +1,59 @@
+.container {
+    position: relative;
+    border: 1px solid black;
+    display: grid;
+    row-gap: 10px;
+    column-gap: 3px;
+    grid-template-columns: 30px 1fr 30px;
+    padding: 10px 0;
+        
+}
+
+.container::before {
+    content: 'Варианты названий (синонимы):';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    background-color: var(--app-background-color);
+    padding: 0 5px;
+}
+
+.radio_button_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+}
+
+.radio_button {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.delete_button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete_button:hover {
+    opacity: 0.7;
+}
+
+.deleteIcon {
+    width: 20px;
+    height: 20px;
+    color: #dc2626;
+}
+
+

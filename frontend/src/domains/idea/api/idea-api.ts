@@ -6,7 +6,7 @@ import { generatePath } from "react-router-dom";
 import { EntityAPI, IEntityAPI } from '../../../shared/api/entity-api';
 
 export interface IIdeaAPI extends IEntityAPI<
-  IdeaAdd, IdeaPlain, 
+  IdeaAdd, 
   IdeaDetailPartial, IdeaDetail,
   undefined, IdeaList[]> 
 {
@@ -14,7 +14,7 @@ export interface IIdeaAPI extends IEntityAPI<
 }
 
 export class IdeaAPI extends EntityAPI<
-    IdeaAdd, IdeaPlain, 
+    IdeaAdd, 
     IdeaDetailPartial, IdeaDetail,
     undefined, IdeaList[]> 
   implements IIdeaAPI {

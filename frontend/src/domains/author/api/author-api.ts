@@ -1,13 +1,13 @@
 import {  AuthorAdd,  AuthorDetail,  AuthorDetailPartial, AuthorList, AuthorPlain, AuthorShort}  from '../types/author-type'
 import { EntityAPI, IEntityAPI } from '../../../shared/api/entity-api';
 
-export interface IAuthorAPI extends IEntityAPI<AuthorAdd, AuthorPlain, 
+export interface IAuthorAPI extends IEntityAPI<AuthorAdd, 
   AuthorDetailPartial, AuthorDetail,
   undefined, AuthorList[]> {
 }
 
 export class AuthorAPI extends EntityAPI<
-  AuthorAdd, AuthorPlain, 
+  AuthorAdd, 
   AuthorDetailPartial, AuthorDetail,
   undefined, AuthorList[]>
 implements IAuthorAPI {

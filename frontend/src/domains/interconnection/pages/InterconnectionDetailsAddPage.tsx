@@ -5,7 +5,7 @@ import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
 import { genInterconnectionsURL, genInterconnectionURL } from "../../../app/router/navigation";
 import { InterconnectionDetailsAdd } from "../components/smart/InterconnectionDetailsAdd/InterconnectionDetailsAdd";
 import { interconnectionsTypeInfo } from "../../../shared/constants/InterconnectionTypeInfo";
-import { appRoutesURL } from "../../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../../app/router/app-routes-URL";
 
 export const InterconnectionDetailsAddPage = () => {
     const {idea_id, iitype_id } = useParams(); 

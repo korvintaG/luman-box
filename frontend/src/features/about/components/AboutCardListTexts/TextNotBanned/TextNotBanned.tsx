@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { CMSPath, genCMSPath } from "../../../../CMS/CMSTypes";
-import { appRoutesURL } from "../../../../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../../../../app/router/app-routes-URL";
 export const TextNotBanned = React.memo(() => {
   return (
     <>

@@ -1,5 +1,5 @@
 import {fetchSources, selectError, selectSources, selectSliceState, setSliceStatus } from "./store/SourceListSlice";
-import {SourceListPage} from "./pages/SourceListPage";
+import {SourceListPage} from "./pages/source-list-page";
 import {SourceDetailsPage} from "./pages/SourceDetailsPage";
 import { SourceShort } from "./types/source-type";
 import { sourceAddLoad } from "./loaders/SourceDetailsAddLoader";

@@ -7,7 +7,7 @@ import { genInterconnectionsURL, genInterconnectionURL } from "../../../app/rout
 import { ErrorMessageUI } from "../../../shared/ui/ErrorMessage/ErrorMessage";
 import { InterconnectionDetailsEdit } from "../components/smart/InterconnectionDetailsEdit/InterconnectionDetailsEdit";
 import { generatePath } from "react-router";
-import { appRoutesURL } from "../../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../../app/router/app-routes-URL";
 import { useInterconnectionDetailsEdit } from "../hooks/UseInterconnectionDetailsEdit";
 
 

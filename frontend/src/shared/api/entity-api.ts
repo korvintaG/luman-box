@@ -5,13 +5,15 @@ import { Api } from "./api";
 export const API_URL = process.env.REACT_APP_API_URL!;
  
 export interface IEntityAPI <
-  EntityAdd, EntityPlain, 
-  EntityDetailPartial extends Partial<IDObject>, EntityDetail, 
-  ListParam, EntityList> {
+  EntityAdd, 
+  EntityDetailPartial extends IDObject, 
+  EntityDetail, 
+  ListParam, 
+  EntityList> {
+    addEntity: (data: EntityAdd) => Promise<EntityDetail>;
     getEntity: (id: number) => Promise<EntityDetail>;
     getEntities: (params: ListParam) => Promise<EntityList>;
-    addEntity: (data: EntityAdd) => Promise<EntityPlain>;
-    setEntity: (data: EntityDetailPartial) => Promise<EntityPlain>;
+    setEntity: (data: EntityDetailPartial) => Promise<EntityDetail>;
     delEntity: (id: number) => Promise<DeleteEntityResponse>;
     approveEntity: (data: IModerate) => Promise<ModerateEntityResponse>;
     rejectEntity: (data: IModerate) => Promise<ModerateEntityResponse>;
@@ -19,12 +21,18 @@ export interface IEntityAPI <
   }
   
 export abstract class EntityAPI<
-  EntityAdd, EntityPlain, 
-  EntityDetailPartial extends Partial<IDObject>, EntityDetail,
-  ListParam, EntityList> extends Api 
-  implements IEntityAPI<EntityAdd, EntityPlain, EntityDetailPartial, EntityDetail, ListParam, EntityList> {
+  EntityAdd, 
+  EntityDetailPartial extends IDObject, 
+  EntityDetail,
+  ListParam, 
+  EntityList> extends Api 
+  implements IEntityAPI<EntityAdd, 
+  EntityDetailPartial, 
+  EntityDetail, 
+  ListParam, 
+  EntityList> {
 
-  constructor(private readonly entity: string) {
+  constructor(protected readonly entity: string) {
         super(API_URL);
   }
 
@@ -37,7 +45,7 @@ export abstract class EntityAPI<
   getEntities = (params: ListParam): Promise<EntityList> => {
     let queryString = "";
     if (params) {
-      queryString = this.getQueryListString(params);
+      queryString = `?${this.getQueryListString(params)}`;
     }
     return this.requestWithRefresh<EntityList>(`/${this.entity}${queryString}`, {
       method: "GET",
@@ -46,7 +54,7 @@ export abstract class EntityAPI<
         Authorization: `Bearer ${getCookie("accessToken")}`,
       },
     });
-  };
+  }; 
 
 
 
@@ -61,7 +69,7 @@ export abstract class EntityAPI<
   };
 
   addEntity = (data: EntityAdd) => {
-        return this.requestWithRefresh<EntityPlain>(`/${this.entity}/`, {
+        return this.requestWithRefresh<EntityDetail>(`/${this.entity}/`, {
           method: "POST",
           body: JSON.stringify({ ...data }),
           headers: {
@@ -73,7 +81,7 @@ export abstract class EntityAPI<
 
   setEntity = (data: EntityDetailPartial) => {
         console.log("setEntity", data);
-        return this.requestWithRefresh<EntityPlain>(`/${this.entity}/${data.id}`, {
+        return this.requestWithRefresh<EntityDetail>(`/${this.entity}/${data.id}`, {
           method: "PATCH",
           body: JSON.stringify({ ...data }),
           headers: {
@@ -92,8 +100,11 @@ export abstract class EntityAPI<
   };
 
   approveEntity = (data: IModerate) => {
+        const moderationRecordIdPar = data.moderationRecordID ? 
+          `&moderation_record_id=${data.moderationRecordID}`
+          :'';
         return this.requestWithRefresh<ModerateEntityResponse>(
-          `/${this.entity}/moderate/${data.id}?action=approve&notes=${encodeURIComponent(data.notes)}`, {
+          `/${this.entity}/moderate/${data.id}?action=approve&notes=${encodeURIComponent(data.notes)}${moderationRecordIdPar}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -103,8 +114,11 @@ export abstract class EntityAPI<
   };
     
   rejectEntity = (data: IModerate) => {
+        const moderationRecordIdPar = data.moderationRecordID ? 
+        `&moderation_record_id=${data.moderationRecordID}`
+        :'';
         return this.requestWithRefresh<ModerateEntityResponse>(
-          `/${this.entity}/moderate/${data.id}?action=reject&notes=${encodeURIComponent(data.notes)}`, {
+          `/${this.entity}/moderate/${data.id}?action=reject&notes=${encodeURIComponent(data.notes)}${moderationRecordIdPar}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

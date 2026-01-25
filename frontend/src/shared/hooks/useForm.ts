@@ -16,11 +16,12 @@ export function useForm<T>(inputValues: T) {
     let key: keyof Partial<T>;
     for (key in obj) {
       if (typeof obj[key] === "object") {
+        if (Array.isArray(obj[key])) continue;
         try {
           let anaPart: any = obj[key]; // тут без any никак
           if (!anaPart?.id)
             // считаем, что объект только для .id, если изменится, нужно будет доработать код
-            delete obj[key];
+            delete obj[key]; 
           else {
             anaPart.id = Number(anaPart.id);
             obj[key] = anaPart;
@@ -36,6 +37,7 @@ export function useForm<T>(inputValues: T) {
     let key: keyof T;
     for (key in obj) {
       if (typeof obj[key] === "object") {
+        if (Array.isArray(obj[key])) continue;
         let anaPart: any = obj[key]; // тут без any никак
         if (!anaPart?.id)
           // считаем, что объект только для .id, если изменится, нужно будет доработать код
@@ -64,6 +66,12 @@ export function useForm<T>(inputValues: T) {
     } else setValues({ ...values, [name]: value });
   };
 
+  // TODO реализовать функцию означивания поля по имени
+  const setFieldValueDirect = <T>(fieldName: string, value:T) =>{
+    setEditStarted(true);
+    setValues(prevValues => ({...prevValues, [fieldName]: value}))
+  }
+
   return {
     values,
     handleChange,
@@ -74,5 +82,6 @@ export function useForm<T>(inputValues: T) {
     getFormDTOObl,
     editStarted,
     setEditStarted,
+    setFieldValueDirect
   };
 }

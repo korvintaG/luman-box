@@ -16,7 +16,7 @@ import { EntityCommonFull } from 'src/shared/entities/abstract.entity';
 @Entity('sources')
 @Index('UQ_source_author_id_name', ['author_id', 'name' ], { unique: true })
 export class Source extends EntityCommonFull {
-  @Column({ type: 'number'})
+  @Column({ type: 'integer'})
   author_id: number;
 
   @Column({ type: 'varchar', nullable: true})
@@ -34,7 +34,7 @@ export class Source extends EntityCommonFull {
   /*@RelationId((source: Source) => source.ideas) // Получаем только ID постов
     ideaIds: number[];*/
 
-  @ManyToOne(() => Author, (author) => author.name, { nullable: true })
+  @ManyToOne(() => Author, (author) => author.sources, { nullable: true })
   @JoinColumn({ name: 'author_id' })
   author: Author;
 

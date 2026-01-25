@@ -1,5 +1,5 @@
 import {fetchAuthors, selectError, selectAuthors, selectSliceState, setSliceStatus } from "./store/AuthorListSlice";
-import {AuthorListPage} from "./pages/AuthorListPage";
+import {AuthorListPage} from "./pages/author-list-page";
 import {AuthorDetailsPage} from "./pages/AuthorDetailsPage";
 import { AuthorShort } from "./types/author-type";
 import { authorLoad } from "./loaders/AuthorDetailsLoader";

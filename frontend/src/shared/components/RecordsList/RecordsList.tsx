@@ -37,7 +37,7 @@ export const RecordsList: FC<RecordListProps> = (
     return <ErrorMessageUI
       error={props.error?props.error:null}
       okAction={props.fetchRecords}
-      errorTitle="Ошибка"
+      errorTitle="Ошибка" 
       okCaption="Повторить запрос"
     />
 

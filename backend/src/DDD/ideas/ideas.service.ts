@@ -8,6 +8,7 @@ import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { IIdeaBySourceAndKeyword, IdeaForList, IModerate } from '../../types/custom';
 import { isEmpty, omit } from 'lodash';
 import { KeywordsService } from '../keywords/keywords.service';
+import { KeywordsModerationService } from '../keywords/keywords-moderation.service';
 import { IUser, Role } from '../../types/custom';
 import { getUserSQLFilter } from '../../utils/utils';
 import { AttitudesService } from '../attitudes/attitudes.service';
@@ -15,9 +16,10 @@ import { InterconnectionsService } from '../interconnections/interconnections.se
 import DOMPurify from 'dompurify';
 //import sanitizeSVG from '@mattkrick/sanitize-svg'
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
-import { ModeratorService } from '../../shared/services/moderator.service';
+import { ModeratorService } from '../../shared/services/moderator/moderator.service';
 import { SourcesService } from '../sources/sources.service';
 import { Interconnection } from '../interconnections/entities/interconnection.entity';
+import { KeywordName } from '../keywords/entities/keyword.entity';
 
 @Injectable()
 export class IdeasService {
@@ -25,6 +27,7 @@ export class IdeasService {
     @InjectRepository(Idea)
     private readonly ideaRepository: Repository<Idea>,
     private keywordsService: KeywordsService,
+    private keywordsModerationService: KeywordsModerationService,
     private attitudesService: AttitudesService,
     private interconnectionsService: InterconnectionsService,
     private moderatorService: ModeratorService,
@@ -76,13 +79,13 @@ export class IdeasService {
       'Идея'
     );
 
-    if (!createIdeaDto.keywords)
+    if (!createIdeaDto.keyword_names)
       throw new BadRequestException( {
         error: 'Bad Request',
         message: 'Для идеи должны быть назначены ключевые слова!'
       });
 
-    if (createIdeaDto.keywords.length > Number(process.env.MAX_KEYWORDS_FOR_IDEA))
+    if (createIdeaDto.keyword_names.length > Number(process.env.MAX_KEYWORDS_FOR_IDEA))
       throw new BadRequestException({
         error: 'Bad Request',
         message: `Для идеи может быть назначено не более ${process.env.MAX_KEYWORDS_FOR_IDEA} ключевых слов!`
@@ -106,13 +109,13 @@ export class IdeasService {
     }
 
     let idea = this.ideaRepository.create({ ...onlyIdea, SVG });
-    if (createIdeaDto.keywords)
-      if (createIdeaDto.keywords.length > 0) {
-        const keywords = await this.keywordsService.findByCond(
-           { id: In(createIdeaDto.keywords.map((el) => el.id)) },
-        );
-        idea.keywords = keywords;
-      }
+    if (createIdeaDto.keyword_names && createIdeaDto.keyword_names.length > 0) {
+      const keywordNameRepository = this.ideaRepository.manager.getRepository(KeywordName);
+      const keywordNames = await keywordNameRepository.find({
+        where: { id: In(createIdeaDto.keyword_names.map((el) => el.id)) },
+      });
+      idea.keyword_names = keywordNames;
+    }
     return this.ideaRepository.save({ ...idea, user: { id: user.id } });
   }
 
@@ -235,8 +238,8 @@ export class IdeasService {
   async findBySourceKw(src: string, kw: string, user: IUser) {
     const founds = await this.ideaRepository.manager.query<{ id: number }[]>(
       `select ideas.id
-        from ideas, idea_keywords as ik
-        where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,
+        from ideas, idea_keyword_names as ik
+        where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_name_d=$2`,
       [src, kw],
     );
     return this.findOne(founds[0].id, user);
@@ -271,14 +274,15 @@ export class IdeasService {
         'source.name',
         'author.id',
         'author.name',
-        'keywords.id',
-        'keywords.name',
+        'keyword_names.id',
+        'keyword_names.name',
+        'keyword_names.class_name_before',
         'user.id',
         'user.name',
         'moderator.id',
         'moderator.name',
       ]) // Выбираем только нужные поля
-      .leftJoin('idea.keywords', 'keywords')
+      .leftJoin('idea.keyword_names', 'keyword_names')
       .leftJoin('idea.source', 'source')
       .leftJoin('source.author', 'author')
       .leftJoin('idea.user', 'user')
@@ -302,13 +306,13 @@ export class IdeasService {
 
   async update(id: number, user: IUser, updateIdeaDto: UpdateIdeaDto) {
     const recordOld = await this.moderatorService.checkDMLAccess(this.ideaRepository, id, user);
-    const onlyIdea = omit(updateIdeaDto, ['keywords']);
+    const onlyIdea = omit(updateIdeaDto, ['keyword_names']);
     if (!isEmpty(onlyIdea)) {
       await this.ideaRepository.update({ id }, onlyIdea);
     }
     const idea = await this.ideaRepository.findOne({
       where: { id },
-      relations: ['keywords'],
+      relations: ['keyword_names'],
     });
     let SVG: (string | null) = null;
     if (updateIdeaDto.SVG && updateIdeaDto.SVG.length > 0) {
@@ -322,15 +326,15 @@ export class IdeasService {
       }
     }
 
-    if (updateIdeaDto.keywords && updateIdeaDto.keywords.length > 0) {
-      const keywords = await this.keywordsService.findByCond(
-        { id: In(updateIdeaDto.keywords.map((el) => el.id)) },
-      );
-      idea.keywords = keywords;
-
-      return this.ideaRepository.save({ ...idea, SVG });
+    if (updateIdeaDto.keyword_names && updateIdeaDto.keyword_names.length > 0) {
+      const keywordNameRepository = this.ideaRepository.manager.getRepository(KeywordName);
+      const keywordNames = await keywordNameRepository.find({
+        where: { id: In(updateIdeaDto.keyword_names.map((el) => el.id)) },
+      });
+      idea.keyword_names = keywordNames;
     }
-    return idea;
+
+    return this.ideaRepository.save({ ...idea, SVG });
   }
 
   async toModerate(id: number, user: IUser) {
@@ -352,21 +356,16 @@ export class IdeasService {
     }
 
     const keywords = await this.ideaRepository.manager.query<
-      { id: number, verification_status: VerificationStatus }[]>
+      { id: number }[]>
       (`select 
-          keywords.id, 
-          keywords.verification_status 
-        from keywords, idea_keywords 
-        where idea_keywords.idea_id=$1 and keywords.id=idea_keywords.keyword_id`, [id]);
-    if (!keywords || keywords.length === 0) 
-      throw new BadRequestException({
-        error: 'Bad Request',
-        message: 'Для идеи не назначены ключевые слова'
-      });
+          keyword_names.keyword_id as id  
+        from keyword_names, idea_keyword_names 
+        where idea_keyword_names.idea_id=$1 
+          and keyword_names.verification_status =$2
+          and keyword_names.id=idea_keyword_names.keyword_name_id`, 
+        [id, VerificationStatus.Creating]);
     for (const keyword of keywords) {
-      if (keyword.verification_status === VerificationStatus.Creating) {
-        await this.keywordsService.toModerate(keyword.id, user, true);
-      }
+        await this.keywordsModerationService.toModerate(keyword.id, user, true);
     }
     return this.moderatorService.toModerateEntity(
       this.ideaRepository,
@@ -397,19 +396,15 @@ export class IdeasService {
           message: `Не одобрен источник идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_SOURCE_DETAIL}/${source[0].id}`
         });
       const keywords = await this.ideaRepository.manager.query<
-        { id: number, verification_status: VerificationStatus }[]>
-        (`select 
-            keywords.id, 
-            keywords.verification_status 
-          from keywords, idea_keywords 
-          where idea_keywords.idea_id=$1 and keywords.id=idea_keywords.keyword_id`, [id]);
-      if (!keywords || keywords.length === 0) 
-        throw new BadRequestException({
-          error: 'Bad Request',
-          message: 'Для идеи не назначены ключевые слова'
-        });
+        { id: number }[]>
+        (`select distinct
+            keyword_names.keyword_id as id
+          from keyword_names, idea_keyword_names 
+          where idea_keyword_names.idea_id=$1 
+            and verification_status=$2
+            and keyword_names.id=idea_keyword_names.keyword_name_id`, 
+          [id, VerificationStatus.ToModerate]);
       for (const keyword of keywords) {
-        if (keyword.verification_status !== VerificationStatus.Moderated) 
           throw new BadRequestException({
             error: 'Bad Request',
             message: `Не одобрено ключевое слово идеи. Чтобы одобрить, перейдите по ссылке: ${process.env.FRONTEND_URL}${process.env.ROUTE_KEYWORD_DETAIL}/${keyword.id}`

@@ -2,10 +2,10 @@ import { baseUrl } from '../../tests.constants';
 import { routes } from '../../tests.constants';
 
 describe('проверяем список ключевых слов', function() {
-    const url = `${baseUrl}${routes.keywords}`;
+    const url = `${baseUrl}${routes.keywords.replace(':id', '0')}`;
     it(`переход на страницу ключевых слов`, function() {
         cy.visit(url); 
-        cy.url().should('include', `${routes.keywords}`);
+        cy.url().should('include', `${url}`);
         cy.get('[data-cy="records-list"]').should('be.visible');
         // Проверяем, что на странице есть хотя бы 4 ключевых слова
         for (let i = 0; i < 4; i++) {

@@ -6,14 +6,14 @@ import { InterconnectionUpdateForm } from '../types/UI-types';
 import { EntityAPI, IEntityAPI } from '../../../shared/api/entity-api';
 
 export interface IInterconnectionAPI extends IEntityAPI<
-  InterconnectionAdd, InterconnectionDetail, 
+  InterconnectionAdd, 
   InterconnectionUpdateForm, InterconnectionDetail,
   InterconnectionsParamsType, InterconnectionList> {
   
 }
 
 export class InterconnectionAPI extends EntityAPI<
-  InterconnectionAdd, InterconnectionDetail, 
+  InterconnectionAdd, 
   InterconnectionUpdateForm, InterconnectionDetail,
   InterconnectionsParamsType, InterconnectionList> 
   implements IInterconnectionAPI {

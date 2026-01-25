@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import { appRoutesURL } from "../../../../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../../../../app/router/app-routes-URL";
 
 import styles from "./SourceKeywords.module.css";
 import { SimpleNameObjectWithCnt } from "../../../../../shared/types/entity-types";

@@ -51,7 +51,6 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
           <section className={styles.form__content}>
             <InputEditUI
               name="name"
-              classes={classes}
               label="Никнэйм:"
               value={props.values.name}
               onChange={props.handleChange}
@@ -59,7 +58,6 @@ export const LoginForm: FC<LoginFormProps> = (props: LoginFormProps) => {
             />
             <InputEditUI
               name="password"
-              classes={classes}
               type="password"
               label="Пароль:"
               value={props.values.password}

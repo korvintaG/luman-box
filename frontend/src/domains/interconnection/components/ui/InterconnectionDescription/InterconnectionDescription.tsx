@@ -5,7 +5,7 @@ import { InputTextUI } from "../../../../../shared/ui/fields/input-text/input-te
 import ArrowIcon from "../../../../../shared/ui/icons/ArrowIcon/ArrowIcon";
 import { InterconnectionTypeInfo } from "../../../types/UI-types";
 import clsx from "clsx";
-import { Classes } from "../../../../../shared/ui/UITypes";
+import { Classes } from "../../../../../shared/types/ui-types";
 
 
 export type InterconnectionDescriptionProp = {
@@ -25,7 +25,6 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             rows={2}
             label="Комментарий к прямой связи:"
             onChange={handleChange}
-            classes={classes}
             dataCy="interconnection-name-direct"
             readOnly={readOnly}
             minLength={10}
@@ -40,7 +39,6 @@ export const InterconnectionDescription: FC<InterconnectionDescriptionProp> =
             name="name_reverse"
             label="Комментарий к обратной связи:"
             onChange={handleChange}
-            classes={classes}
             readOnly={readOnly}
             dataCy="interconnection-name-reverse"
             minLength={10}

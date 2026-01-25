@@ -10,7 +10,7 @@ import { SimpleEntityWithCnt, SimpleEntity, IModerate } from '../../types/custom
 import { IUser, Role } from '../../types/custom';
 import { FilesService } from 'src/files/files.service';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
-import { ModeratorService } from '../../shared/services/moderator.service';
+import { ModeratorService } from '../../shared/services/moderator/moderator.service';
 import { AuthorsService } from '../authors/authors.service';
 
 @Injectable()

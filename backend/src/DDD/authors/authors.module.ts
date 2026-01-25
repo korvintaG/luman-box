@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesModule } from '../sources/sources.module';
 import { FilesModule } from 'src/files/files.module';
-import { ModeratorModule } from '../../shared/services/moderator.module';
+import { ModeratorModule } from '../../shared/services/moderator/moderator.module';
 
 @Module({
   imports: [

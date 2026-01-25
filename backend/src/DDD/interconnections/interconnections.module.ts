@@ -3,7 +3,7 @@ import { InterconnectionsService } from './interconnections.service';
 import { InterconnectionsController } from './interconnections.controller';
 import { Interconnection } from './entities/interconnection.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ModeratorModule } from '../../shared/services/moderator.module';
+import { ModeratorModule } from '../../shared/services/moderator/moderator.module';
 import { IdeasModule } from '../ideas/ideas.module';
 
 @Module({

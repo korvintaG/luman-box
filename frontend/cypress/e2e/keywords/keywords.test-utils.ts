@@ -1,4 +1,4 @@
-import { authorToAdd, baseUrl, keywordToAdd, routes } from "../tests.constants";
+import { authorToAdd, baseUrl, keywordToAdd, routes, timeout } from "../tests.constants";
 
 const loginURL = `${baseUrl}${routes.auth}`;
 
@@ -20,23 +20,21 @@ function  getKeywordId() {
 
 export function createKeyword() {
     cy.clickKeywordsMenu();
-    cy.clickAddRecordButton();
+    cy.clickAddRecordButton('new');
     cy.fillKeywordForm();
-    cy.clickSaveEntityButton(routes.keywords);
-    getKeywordId();
+    cy.clickSaveEntityButton(routes.keywordsOnly);
+    /* getKeywordId();*/
 }
 
 export function moderateKeyword() {
     cy.clickKeywordsMenu();
+    cy.classFindAndClickEntity('keyword', keywordToAdd.names[keywordToAdd.default_name_index]);
+
     // найти элементы с data-cy="author_link_*" и текст которых равен authorToAdd.name
-    cy.get('[data-cy^="keyword_link_"]').each(($el) => {
-        if ($el.text().trim() === keywordToAdd.name) {
-            cy.wrap($el).click();
-            cy.get('[data-cy="moderate-approve-button"]').should('be.visible');
-            cy.get('[data-cy="moderate-approve-button"]').click();
-            cy.get('[data-cy="moderate-approve-button"]').should('not.exist');
-            cy.get('[data-cy="status-field"]').filter(':visible').should('have.text', 'Одобрено');
-        }
-    });
+    cy.get('[data-cy="moderate-approve-button"]').should('be.visible');
+    cy.get('[data-cy="moderate-approve-button"]').click();
+    cy.get('[data-cy="moderate-approve-button"]').should('not.exist');
+    cy.get('[data-cy="status-field"]').filter(':visible').should('have.text', 'Одобрено');
+
 
 }

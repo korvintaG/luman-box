@@ -2,7 +2,7 @@ import { FC } from "react";
 import clsx from "clsx";
 import { RecordsList } from "../../../../../shared/components/RecordsList";
 import { Link } from "react-router-dom";
-import { getRouteParam, appRoutesURL } from "../../../../../app/router/AppRoutesURL";
+import { getRouteParam, appRoutesURL } from "../../../../../app/router/app-routes-URL";
 import styles from "./SourcesList.module.css";
 import { sourceFullNameFromObj } from "../../../../../shared/utils/utils";
 import { useSourcesList } from "../../../hooks/UseSourcesList";

@@ -16,7 +16,8 @@ export const passwordError = Cypress.env("REACT_APP_ERROR_PASSWORD");
 export const routes = {
     authors: '/authors',
     sources: '/sources',
-    keywords: '/keywords',
+    keywordsOnly: '/keywords',
+    keywords: '/keywords/:id/children',
     ideas: '/ideas',
     auth: '/auth',
     interconnections: '/interconnections',
@@ -49,12 +50,16 @@ export const sourceToAdd: SourceToAdd = {
 };
 
 export type KeywordToAdd = {
-    name: string;
+    class_keyword_id: number;
+    names: string[];
+    default_name_index: number;
     definition: string;
 };
 
 export const keywordToAdd: KeywordToAdd = {
-    name: 'Cypress Test Keyword',
+    class_keyword_id: 0,
+    names: ['Cypress Test Keyword Name', 'Cypress Test Keyword Name 2'],
+    default_name_index: 0,
     definition: 'Test Definition',
 };
 

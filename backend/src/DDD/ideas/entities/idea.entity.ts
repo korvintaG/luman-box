@@ -9,17 +9,17 @@ import {
   Index,
 } from 'typeorm';
 import { Source } from '../../sources/entities/source.entity';
-import { Keyword } from '../../keywords/entities/keyword.entity';
+import { Keyword, KeywordName } from '../../keywords/entities/keyword.entity';
 import { Attitude } from 'src/DDD/attitudes/entities/attitude.entity';
 import { EntityCommonFull} from '../../../shared/entities/abstract.entity';
 
 @Entity('ideas')
 @Index('UQ_idea_source_id_name', ['source_id', 'name' ], { unique: true })
 export class Idea extends EntityCommonFull {
-  @Column({ type: 'number'})
+  @Column({ type: 'integer'})
   source_id: number;
 
-  @ManyToOne(() => Source, (source) => source.name, { nullable: true })
+  @ManyToOne(() => Source, (source) => source.ideas, { nullable: true })
   @JoinColumn({ name: 'source_id' })
   source: Source;
 
@@ -32,19 +32,23 @@ export class Idea extends EntityCommonFull {
   @Column({ type: 'varchar', nullable: true})
   SVG: string;
 
-  @ManyToMany(() => Keyword, (keyword) => keyword.ideas)
+  @ManyToMany(() => KeywordName, (keywordName) => keywordName.ideas)
   @JoinTable({
-    name: 'idea_keywords',
-    joinColumn: {
-      name: 'idea_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'keyword_id',
-      referencedColumnName: 'id',
-    },
+    name: 'idea_keyword_names',
+    joinColumns: [
+      {
+        name: 'idea_id',
+        referencedColumnName: 'id',
+      },
+    ],
+    inverseJoinColumns: [
+      {
+        name: 'keyword_name_id',
+        referencedColumnName: 'id',
+      },
+    ],
   })
-  keywords: Keyword[];
+  keyword_names: KeywordName[];
 
   @OneToMany(() => Attitude, (attitude) => attitude.idea)
   attitudes: Attitude[];

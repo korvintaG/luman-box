@@ -3,7 +3,7 @@ import styles from "./RecordEditForm.module.css";
 import { RequestStatus } from "../../types/types-for-hooks";
 import { Preloader } from "../../ui/Preloader"; 
 import { ErrorMessageUI } from "../../ui/ErrorMessage/ErrorMessage";
-import { BreadcrumbSimpeType, Breadcrumbs, BreadcrumbSimple } from "../Breadcrumbs/Breadcrumbs";
+import { BreadcrumbSimpeType, Breadcrumbs, BreadcrumbSimple, Breadcrumb } from "../Breadcrumbs/Breadcrumbs";
 
 export type RecordEditFormProps = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export type RecordEditFormProps = {
   header?: string;
   formClass?: string;
   mainClass?: string;
-  breadcrumbs: BreadcrumbSimpeType[];
+  breadcrumbs: Breadcrumb[];
 };
 
 export const RecordEditForm: FC<RecordEditFormProps> = (

@@ -10,10 +10,10 @@ import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 export class EntityTestHelper {
   private readonly apiURL: string;
   private server: any;
-  private tokenUser: string;
-  private tokenUser2: string;
-  private tokenAdmin: string;
-  private tokenSuperAdmin: string;
+  protected tokenUser: string;
+  protected tokenUser2: string;
+  protected tokenAdmin: string;
+  protected tokenSuperAdmin: string;
 
   constructor(apiURL: string) {
     this.apiURL = apiURL;
@@ -142,13 +142,18 @@ export class EntityTestHelper {
     action: 'approve' | 'reject',
     note: string = '',
     expectedStatus: number = StatusCode.successModerate,
+    moderation_record_id?: number,
   ) {
     let noteReq = '';
     if (note && note !== '') {
       noteReq = `&notes=${encodeURIComponent(note)}`;
     }
-    const url = `${this.apiURL}/moderate/${id}?action=${action}${noteReq}`;
-    //console.log('simpleModerate url: ', url);
+    let record_moderation_idReq = '';
+    if (moderation_record_id && moderation_record_id !== 0) {
+      record_moderation_idReq = `&moderation_record_id=${moderation_record_id}`;
+    }
+    const url = `${this.apiURL}/moderate/${id}?action=${action}${noteReq}${record_moderation_idReq}`;
+    console.log('simpleModerate url: ', url);
     return request(this.server)
       .post(url)
       .set('Authorization', `Bearer ${token}`)
@@ -206,6 +211,7 @@ export class EntityTestHelper {
 
 
   async removeOldData( findDto: any) {
+    console.log('removeOldData findDto: ', findDto);
     const res = await this.simpleFind(this.tokenSuperAdmin, findDto);
     for (const item of res.body) {
       await this.simpleRemove(this.tokenSuperAdmin, item.id);
@@ -304,8 +310,17 @@ export class EntityTestHelper {
     return { entityID, image_URL };
   }
 
-  async moderateApprove(id: number, action: 'approve' | 'reject', note: string = '') {  
-    const resModerateAdmin = await this.simpleModerate(this.tokenAdmin, id, action, note);
+  async moderateApprove(
+    id: number, 
+    action: 'approve' | 'reject', 
+    note: string = '', 
+    record_moderation_id?: number ) {  
+    const resModerateAdmin = await this.simpleModerate(this.tokenAdmin, 
+      id, 
+      action, 
+      note, 
+      StatusCode.successModerate, 
+      record_moderation_id);
     // проверяем, что модерация прошла успешно
     const findRes2 = await this.simpleFind(this.tokenSuperAdmin, {id});
     expect(findRes2.body.length).toBe(1);

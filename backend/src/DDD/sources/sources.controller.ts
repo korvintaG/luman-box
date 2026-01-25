@@ -15,33 +15,34 @@ import { Request } from 'express';
 import { SourcesService } from './sources.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
-import { RoleGuard } from '../../authorization/guards/role.guard';
-import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-import { IModerate, Role, StatusCode } from '../../types/custom';
+import { IModerate, StatusCode } from '../../types/custom';
 import { FindOptionsWhere } from 'typeorm';
 import { Source } from './entities/source.entity';
+import { JwtAuth, JwtAuthAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from '../../shared/decorators/api-jwt-auth.decorator';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { SourceCreateResponseDto } from './dto/source-create-response.dto';
 
+@ApiTags('Источники')
 @Controller('sources')
 export class SourcesController {
   constructor(private readonly sourcesService: SourcesService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post() 
+  @JwtAuthUser()
+  @ApiOkResponse({ description: 'Созданный источник', type: SourceCreateResponseDto })
   create(@Req() req: Request, @Body() createSourceDto: CreateSourceDto) {
     return this.sourcesService.create(req.user, createSourceDto);
   }
 
   @Get()
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
   findAll(@Req() req: Request) {
     return this.sourcesService.findAll(req.user);
   }
 
   @Get('find')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.SuperAdmin)
+  @JwtAuthSuperAdmin()
   find(
     @Body() findSourceWhere: FindOptionsWhere<Source>,
   ) {
@@ -50,13 +51,13 @@ export class SourcesController {
 
 
   @Get(':id')
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.sourcesService.findOne(+id, req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @JwtAuth()
   update(
     @Param('id') id: string,
     @Req() req: Request,
@@ -66,7 +67,7 @@ export class SourcesController {
   }
 
   @Post('to-moderate/:id')
-  @UseGuards(JwtAuthGuard)
+  @JwtAuth()
   @HttpCode(StatusCode.successToModerate)
   toModerate(
     @Param('id') id: string,
@@ -77,8 +78,7 @@ export class SourcesController {
 
 
   @Post('moderate/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.Admin)
+  @JwtAuthAdmin()
   @HttpCode(StatusCode.successModerate)
   moderate(
     @Param('id') id: string,
@@ -88,10 +88,10 @@ export class SourcesController {
     return this.sourcesService.moderate(+id, req.user, query);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @JwtAuth()
   @HttpCode(StatusCode.successDelete)  
   remove(@Param('id') id: string, @Req() req: Request) {
     return this.sourcesService.remove(+id, req.user);
   }
-}
+} 

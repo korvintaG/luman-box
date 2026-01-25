@@ -1,0 +1,1 @@
+export { IdeaDetails } from "./idea-details";

@@ -32,7 +32,7 @@ export type AuthorDetailAttachments = {
 };
 
 export type AuthorDetail = AuthorAdd & IDObject & AuthorDetailAttachments & ObjectCreation & ObjectModeration;
-export type AuthorDetailPartial = Partial<AuthorDetail>;
+export type AuthorDetailPartial = Partial<AuthorDetail> & IDObject;
 
 /*export type AuthorRaw = AuthorAdd & {
   sources?: SimpleNameObject[];

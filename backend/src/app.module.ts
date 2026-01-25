@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Author } from './DDD/authors/entities/author.entity';
 import { Source } from './DDD/sources/entities/source.entity';
-import { Keyword } from './DDD/keywords/entities/keyword.entity';
+import { Keyword, KeywordModeration, KeywordName } from './DDD/keywords/entities/keyword.entity';
 import { Idea } from './DDD/ideas/entities/idea.entity';
 import { configProvider } from './app.config.provider';
 import { SourcesModule } from './DDD/sources/sources.module';
@@ -23,6 +23,7 @@ import { AttitudesModule } from './DDD/attitudes/attitudes.module';
 import { Interconnection } from './DDD/interconnections/entities/interconnection.entity';
 import { InterconnectionsModule } from './DDD/interconnections/interconnections.module';
 import { FilesModule } from './files/files.module';
+import { DatabaseSetupService } from './shared/services/database-setup/database-setup.service';
 
 @Module({
   imports: [
@@ -45,6 +46,8 @@ import { FilesModule } from './files/files.module';
             Author,
             Source,
             Keyword,
+            KeywordName,
+            KeywordModeration,
             Attitude,
             Interconnection,
             Idea,
@@ -69,7 +72,7 @@ import { FilesModule } from './files/files.module';
     AttitudesModule,
     InterconnectionsModule
   ],
-  providers: [configProvider,
+  providers: [configProvider, DatabaseSetupService,
   ],
 })
 export class AppModule {}

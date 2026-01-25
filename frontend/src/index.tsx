@@ -7,7 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import "./assets/fonts/fonts.css";
 import "./index.css";
 import { store } from "./shared/services/store";
-import { appRoutes } from "./app/router/AppRoutes";
+import { appRoutes } from "./app/router/app-routes";
 import { Preloader } from "./shared/ui/Preloader";
 
 const root = ReactDOM.createRoot(

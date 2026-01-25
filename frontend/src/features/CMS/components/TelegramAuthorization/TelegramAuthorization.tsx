@@ -1,5 +1,5 @@
 import React from 'react';
-import { appRoutesURL, telegramBotURL } from "../../../../app/router/AppRoutesURL";
+import { appRoutesURL, telegramBotURL } from "../../../../app/router/app-routes-URL";
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import telegram from "../../../../assets/images/Telegram.png";

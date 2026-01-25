@@ -20,6 +20,18 @@
   font-size: 17px;
   font-weight: bold;
   text-align: left;
+  padding: 0;
+  margin: 0;
+}
+
+.input {
+  width: 100%;
+}
+
+.error_moderation_text {
+  color: darkgray;
+  font-size: 12px;
+
 }
 
 /********************************************

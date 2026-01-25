@@ -47,6 +47,7 @@ export interface IdeaForList {
 
 export interface IModerate {
   action: 'approve' | 'reject';
+  moderation_record_id?: number;
   notes?: string;
 }
 
@@ -60,6 +61,7 @@ export type AccessTokenPayload = {
 };
 
 export const enum Role {
+  Anonymous = -1,
   User = 0,
   Admin = 1,
   //Blocked = 2,
@@ -102,6 +104,7 @@ export enum StatusCode {
   InternalServerError = 500,
   BadRequest = 400,
   NotFound = 404,
+  Forbidden = 403,
 }
 /*export enum InterconnestionsReverseTypes { // временно не нужен
   Generalizes = 3,
@@ -112,3 +115,9 @@ export enum StatusCode {
 // Фильтрация числовых ключей
 export const InterconnestionsTypesArray = Object.values(InterconnestionsTypes)
   .filter(value => typeof value === 'number') as InterconnestionsTypes[];
+
+export enum ExceptionType {
+  BadRequestException='Bad Request',
+  NotFoundException='NotFound',
+  UnauthorizedException='Unauthorized'
+}

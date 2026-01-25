@@ -4,7 +4,7 @@ import { RecordEditForm } from "../../../../../shared/components/RecordEditForm/
 import { InputEditUI } from "../../../../../shared/ui/fields/input-edit/input-edit";
 import { InputSelectUI } from "../../../../../shared/ui/fields/input-select/input-select";
 import { RelationList } from "../../../../../shared/components/RelationList/RelationList";
-import styles from "../../../../../shared/CSS/StandartForm.module.css";
+import styles from "../../../../../shared/CSS/StandartForm.module.scss";
 import {
   genHeaderText,
   EditAccessStatus,
@@ -15,13 +15,13 @@ import { Authorship } from "../../../../../shared/components/Authorship/ui/Autho
 import { SourceKeywords } from "../../ui/SourceKeywords/SourceKeywords";
 import { genAuthorURL, genIdeaURL, genSourceURL } from "../../../../../app/router/navigation";
 import { useSourceDetails } from "../../../hooks/UseSourceDetails";
-import { RecordControlBlock } from "../../../../../shared/components/RecordControlBlock/ui/RecordControlBlock";
+import { RecordControlBlock } from "../../../../../shared/components/record-control-block/ui/record-control-block";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import {
-  InputTextUI,
-  LabelPosition,
+  InputTextUI
 } from "../../../../../shared/ui/fields/input-text/input-text";
 import { RecordImage } from "../../../../../shared/components/RecordImage/RecordImage";
+import { LabelPosition } from "../../../../../shared/types/ui-types";
 
 export type SourceDetailsProps = {
   gotoSourceList: () => void;
@@ -51,7 +51,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
       classInputAdd: styles.input,
     },
     readOnly: status.editAccessStatus === EditAccessStatus.Readonly,
-    onChange: form.handleChange,
+    onChange: form?.handleChange,
   };
 
   return (
@@ -71,13 +71,13 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
       >
         <section className={styles.form__content}>
           <RecordImage
-            imageURL={form.values.image_URL}
-            newImageURL={form.values.new_image_URL}
+            imageURL={form?.values.image_URL ?? null}
+            newImageURL={form?.values.new_image_URL ?? null}
             readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
             uploadFileAction={record.uploadFileAction}
             deleteImage={() => {
-              form.setEditStarted(true);
-              form.setValues({ ...form.values, new_image_URL: null })
+              form?.setEditStarted(true);
+              form?.setValues({ ...form?.values, new_image_URL: null })
             }}
           />
           <div className={styles.form__content__text}>
@@ -89,7 +89,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
             <InputEditUI
               name="name"
               label="Название источника:"
-              value={form.values.name}
+              value={form?.values.name}
               placeholder="Укажите название источника"
               dataCy="source_name"
               {...inputProps}
@@ -98,22 +98,22 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               name="author.id"
               label="Автор:"
               values={authors}
-              value={form.values.author ? form.values.author.id : 0}
+              value={form?.values.author ? form?.values.author.id : 0}
               valueText={record.currentRecord?.author?.name}
-              URL={genAuthorURL(form.values.author!.id)}
+              URL={genAuthorURL(form?.values.author?.id ?? 0)}
               dataCy="source_author"
               {...inputProps}
             />
             <InputEditUI
               name="publication_year"
               label="Год публикации:"
-              value={form.values.publication_year}
+              value={form?.values.publication_year}
               placeholder="Укажите год публикации"
               dataCy="source_publication_year"
               {...inputProps}
             />
             <InputTextUI
-              value={form.values.about_source}
+              value={form?.values.about_source}
               name="about_source"
               label="Об источнике:"
               labelPosition={LabelPosition.left} 

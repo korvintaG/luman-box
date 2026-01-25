@@ -1,9 +1,10 @@
 import { FC } from "react";
-import { appRoutesURL } from "../../../app/router/AppRoutesURL";
+import { appRoutesURL } from "../../../app/router/app-routes-URL";
 import { CMSPath, genCMSPath } from "../../../features/CMS/CMSTypes";
 import styles from "./Breadcrumbs.module.css";
 import { Link } from "react-router-dom";
 import SvgIcon from "../SvgIcon/SvgIcon";
+import { genKeywordsByClassURL } from "../../../app/router/navigation";
 
 export const enum BreadcrumbSimpeType {
     CMSAbout= 'CMSAbout',
@@ -60,8 +61,8 @@ export const BreadcrumbsData:BreadcrumbSimple[] =[
     },
     {
         id:BreadcrumbSimpeType.KeywordsList,
-        name:'Список ключевых слов',
-        path: appRoutesURL.keywords
+        name:'Ключевые слова',
+        path: genKeywordsByClassURL(0)
     },
 
 ];

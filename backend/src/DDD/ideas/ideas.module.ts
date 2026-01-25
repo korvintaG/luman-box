@@ -6,7 +6,7 @@ import { Idea } from './entities/idea.entity';
 import { KeywordsModule } from '../keywords/keywords.module';
 import { AttitudesModule } from '../attitudes/attitudes.module';
 import { InterconnectionsModule } from '../interconnections/interconnections.module';
-import { ModeratorModule } from '../../shared/services/moderator.module';
+import { ModeratorModule } from '../../shared/services/moderator/moderator.module';
 import { SourcesModule } from '../sources/sources.module';
 
 @Module({

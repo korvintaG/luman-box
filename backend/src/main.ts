@@ -10,6 +10,7 @@ import { requestSizeLimitMiddleware } from './middleware/request-size-limit.midd
 import { ConfigService } from '@nestjs/config';
 import { Request, Response, NextFunction } from 'express';
 import { LogMiddleware } from './middleware/request-log.middleware';
+import { setupSwagger } from './swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -28,6 +29,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new RateLimitInterceptor(configService));
   
   app.setGlobalPrefix('api');
+  setupSwagger(app);
   app.useStaticAssets(
     join(__dirname, '..', process.env.UPLOAD_FILE_PATH),
       {prefix: `/${process.env.UPLOAD_FILE_PATH}/`},

@@ -4,7 +4,7 @@ import "./App.css";
 import { Outlet, useNavigation } from 'react-router-dom';
 import { Location, useMatches, ScrollRestoration } from "react-router-dom";
 
-import { AppHeaderUI } from "./Header/AppHeader";
+import { AppHeaderUI } from "./header/app-header";
 import { AppFooterUI } from "./Footer/AppFooter";
 import { Preloader } from "../shared/ui/Preloader";
 

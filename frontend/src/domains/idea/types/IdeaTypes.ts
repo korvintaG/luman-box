@@ -23,10 +23,14 @@ export type IdeaList=IdeaShort & { // для списка
   verification_status: VerificationStatus;
 };
 
+export type KeywordNameObject = SimpleNameObject & {
+  class_name_before: string;
+};
+
 export type IdeaAdd = NameObject & IdeaListDetailGeneral &  ModerationNotes & {
   original_text: string;
   content: string;
-  keywords: IDObject[];
+  keyword_names: KeywordNameObject[];
 }
 
 export type IdeaPlain = IdeaAdd & IDObject & ObjectCreationPlain & ObjectModerationPlain;
@@ -37,22 +41,21 @@ export type IdeaDetailAttachments = {
 }
 
 export type IdeaDetail = IdeaAdd & IDObject & IdeaDetailAttachments & ObjectCreation & ObjectModeration;
-export type IdeaDetailPartial = Partial<IdeaDetail>;
+export type IdeaDetailPartial = Partial<IdeaDetail> & IDObject;
 
-  
-  export type IdeaForList = {
+export type IdeaForList = {
     id: number;
     name:string;
     source_name: string;
     source_id:number;
     SVG: string | null;
-  }
+}
   
-  export type UserAttitude={
+export type UserAttitude={
     like: number;
     importance: number;
     truth: number;  
-  }
+}
   
   export type UserAttitudeIdea = Partial<UserAttitude> & IDObject;
   

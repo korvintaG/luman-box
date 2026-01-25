@@ -9,7 +9,7 @@ import { joinSimpleEntityFirst } from '../../utils/utils';
 import { IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
 import { FilesService } from 'src/files/files.service';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
-import { ModeratorService } from '../../shared/services/moderator.service';
+import { ModeratorService } from '../../shared/services/moderator/moderator.service';
 
 @Injectable()
 export class AuthorsService {

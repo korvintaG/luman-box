@@ -10,9 +10,9 @@ import {
 } from "../../../../shared/utils/utils";
 import { Authorship } from "../../../../shared/components/Authorship/ui/Authorship";
 import { RelationList } from "../../../../shared/components/RelationList/RelationList";
-import styles from "../../../../shared/CSS/StandartForm.module.css";
+import styles from "../../../../shared/CSS/StandartForm.module.scss";
 import { useAuthorDetails } from "../../hooks/UseAuthorDetails";
-import { RecordControlBlock } from "../../../../shared/components/RecordControlBlock/ui/RecordControlBlock";
+import { RecordControlBlock } from "../../../../shared/components/record-control-block/ui/record-control-block";
 import {
   genAuthorURL,
   genIdeaURL,
@@ -22,10 +22,11 @@ import {
 import { BreadcrumbSimpeType } from "../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import {
   InputTextUI,
-  LabelPosition,
 } from "../../../../shared/ui/fields/input-text/input-text";
 import { RecordImage } from "../../../../shared/components/RecordImage/RecordImage";
 import { AuthorAdd, AuthorDetail } from "../../types/author-type";
+import { LabelPosition } from "../../../../shared/types/ui-types";
+// import { LabelPosition } from "../../../../shared/ui/fields/input-text/types";
 
 /**
  * Чистый компонент редактирования автора
@@ -59,7 +60,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
       classInputAdd: styles.input,
     },
     readOnly: status.editAccessStatus === EditAccessStatus.Readonly,
-    onChange: form.handleChange,
+    onChange: form?.handleChange ?? (() => {}),
   };
 
   return (
@@ -79,13 +80,13 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
       >
         <section className={styles.form__content}>
           <RecordImage 
-            imageURL={form.values.image_URL}
-            newImageURL={form.values.new_image_URL}
+            imageURL={form?.values.image_URL ?? null}
+            newImageURL={form?.values.new_image_URL ?? null}
             readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
             uploadFileAction={record.uploadFileAction}
             deleteImage={() => {
-              form.setEditStarted(true);
-              form.setValues({ ...form.values, new_image_URL: null });
+              form?.setEditStarted(true);
+              form?.setValues({ ...form?.values, new_image_URL: null });
             }}
           />
           <div className={styles.form__content__text}>
@@ -98,7 +99,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
             <InputEditUI
               name="name"
               label="ФИО автора:"
-              value={form.values.name}
+              value={form?.values.name ?? ""}
               placeholder="Укажите ФИО автора"
               minLength={5}
               dataCy="author_name"
@@ -108,7 +109,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
             <InputEditUI
               name="birth_date"
               label="Рождения год:"
-              value={form.values.birth_date}
+              value={form?.values.birth_date ?? ""}
               placeholder="Укажите год рождения"
               minLength={2}
               dataCy="author_birth_date"
@@ -118,7 +119,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
             <InputEditUI
               name="birth_place"
               label="Город/страна:"
-              value={form.values.birth_place}
+              value={form?.values.birth_place ?? ""}
               placeholder="Укажите место рождения"
               minLength={5}
               dataCy="author_birth_place"
@@ -126,10 +127,9 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               {...inputProps}
             />
             <InputTextUI
-              value={form.values.about_author}
+              value={form?.values.about_author ?? ""}
               name="about_author"
               label="Об авторе:"
-              labelPosition={LabelPosition.left}
               dataCy="author_about"
               {...inputProps}
             />

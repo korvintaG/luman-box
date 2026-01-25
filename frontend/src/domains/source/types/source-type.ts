@@ -28,5 +28,5 @@ export type SourceDetailAttachments = {
 };
 
 export type SourceDetail = SourceAdd & IDObject & SourceDetailAttachments & ObjectCreation & ObjectModeration;
-export type SourceDetailPartial = Partial<SourceDetail>;
+export type SourceDetailPartial = Partial<SourceDetail> & IDObject;
 

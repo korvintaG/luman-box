@@ -47,6 +47,7 @@ export interface IFormHookRes<FormValues> {
   setValues:(newValues: FormValues)=>void;
   editStarted: boolean;
   setEditStarted: (editStarted: boolean) => void;
+  setFieldValueDirect?: <T>(fieldName: string, value:T) => void;
 }
 
 export interface IDetailsAddHookRes<FormValues, Record> {

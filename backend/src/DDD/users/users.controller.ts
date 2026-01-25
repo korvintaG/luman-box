@@ -51,7 +51,7 @@ export class UsersController {
       return user;
   }
 */
-  @Post()
+/*  @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
@@ -74,5 +74,5 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
-  }
+  }*/
 }

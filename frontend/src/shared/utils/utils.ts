@@ -34,34 +34,48 @@ export const enum EditAccessStatus {
   EditableAndPublishable = "editableAndPublishable",
   EditableAndModeratable = "editableAndModeratable",
   Moderatable = "moderatable",
+  PossibleInsert = "possibleInsert",
+  EditableAndModeratableInserted = "editableAndModeratableInserted"
 }
 
 export function getEditAccess<T extends ObjectCreationWithModeration | null | undefined>(
   id: string | undefined,
-  currentUser: User | null,
+  currentUser: User | null, 
   currentRecord: T,
+  possibleToInsert?:boolean
 ): EditAccessStatus {
-  //console.log('getEditAccess', id, currentUser, currentRecord);
-  if (!currentUser)
+  console.log('getEditAccess', id, currentUser, currentRecord);
+  if (!currentUser) {
     // не авторизован
+    //console.log('getEditAccess не авторизован')
     return EditAccessStatus.Readonly;
-  if (!id)
+  }
+  if (!id) 
     // новый всегда можно
     return EditAccessStatus.Editable;
-  if (!currentRecord) 
+  if (!currentRecord) {
+   // console.log('getEditAccess !currentRecord')
     return EditAccessStatus.Readonly;
+  }
   // точно есть автор и пользователь
-  if (!currentRecord.user)
+  if (!currentRecord.user) {
     // старый
+    //console.log('getEditAccess !currentRecord.user')
     return EditAccessStatus.Readonly;
-  if (!currentRecord.user.id) 
+  }
+  if (!currentRecord.user.id)  {
+    //console.log('getEditAccess !currentRecord.user.id')
     return EditAccessStatus.Readonly;
+  }
+  //console.log('getEditAccess currentUser.role_id',currentUser.role_id)
   if ([Role.Admin, Role.SuperAdmin].includes(currentUser.role_id)) { // админ или супермодератор
-    if (currentRecord.verification_status 
-      && currentRecord.verification_status > VerificationStatus.Creating) {
-      // уже отмодерировано
-      if (currentUser.role_id === Role.SuperAdmin || 
-          currentRecord.verification_status === VerificationStatus.ToModerate)
+    //console.log('getEditAccess админ или супер')
+    if (currentRecord.verification_status) { 
+      if (currentRecord.verification_status === VerificationStatus.ToModerate) {
+        console.log('getEditAccess EditAccessStatus.EditableAndModeratable');
+        return EditAccessStatus.EditableAndModeratable; // супермодератор может менять все, а админ только к модерации
+      }
+      else  if (currentUser.role_id === Role.SuperAdmin)
         return EditAccessStatus.EditableAndModeratable; // супермодератор может менять все, а админ только к модерации
       else 
         return EditAccessStatus.Readonly; // обычный модератор ничего не может делать с отмодерированными
@@ -73,6 +87,8 @@ export function getEditAccess<T extends ObjectCreationWithModeration | null | un
         return EditAccessStatus.Readonly;
   } 
   else { // обычный пользователь
+    if (possibleToInsert && currentRecord.verification_status === VerificationStatus.Moderated)
+      return EditAccessStatus.PossibleInsert;
     if (currentRecord.verification_status 
         && (currentRecord.verification_status > VerificationStatus.Creating)) 
       return EditAccessStatus.Readonly;

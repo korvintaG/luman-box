@@ -12,7 +12,7 @@ describe('проверяем список ключевых слов при ав�
     it(`создание нового ключевого слова`, function() {
         cy.loginUser();
         createKeyword();
-        cy.clickPublishEntityButton(routes.keywords);
+        cy.clickPublishEntityButton(routes.keywords.replace(':id', '0'));
         cy.logout();
     });
 
@@ -22,7 +22,7 @@ describe('проверяем список ключевых слов при ав�
         cy.logout();
     })
 
-    it('удаление ранее добавленных ключевых слов', function() {
+     it('удаление ранее добавленных ключевых слов', function() {
         cy.loginSuperAdmin();
         cy.deleteKeywordIfExists();
         cy.logout();

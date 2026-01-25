@@ -1,4 +1,4 @@
-import { appRoutesURL, telegramBotURL } from "../../../../app/router/AppRoutesURL";
+import { appRoutesURL, telegramBotURL } from "../../../../app/router/app-routes-URL";
 import { SimpleComponentType } from "../../CMSTypes";
 import styles from "../CMS.module.css";
 import manual from "../../../../assets/images/manual.png";

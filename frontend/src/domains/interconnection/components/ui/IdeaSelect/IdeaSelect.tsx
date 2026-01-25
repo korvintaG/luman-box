@@ -46,7 +46,6 @@ export const IdeaSelect: FC<IdeaSelectProps> = ({
           value={idValue ? idValue : ""}
           name="idea_id"
           label="Идея ID:"
-          classes={{ classInputAdd: styles.ID_input }}
           onChange={handleChangeAction}
           type="number"
           data-cy="idea-id-input"
@@ -64,10 +63,6 @@ export const IdeaSelect: FC<IdeaSelectProps> = ({
         </div>
         <LinkFieldUI
           label="Название:"
-          classes={{
-            classLabelAdd: styles.name_label,
-            classInputAdd: styles.name,
-          }}
           to={
             ideaSelected && ideaSelected.id && ideaSelected.name
               ? genIdeaURL(ideaSelected.id)
@@ -79,10 +74,6 @@ export const IdeaSelect: FC<IdeaSelectProps> = ({
 
         <LinkFieldUI
           label="Источник:"
-          classes={{
-            classLabelAdd: styles.source_label,
-            classInputAdd: styles.source,
-          }}
           to={
             ideaSelected && ideaSelected.source_id && ideaSelected.source_name
               ? genSourceURL(ideaSelected.source_id)

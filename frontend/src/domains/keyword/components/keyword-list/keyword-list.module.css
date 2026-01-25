@@ -1,0 +1,77 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-left: 10px;
+    max-width: 500px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 24px;
+    justify-items: center;
+}
+
+.list li {
+    position: relative;
+}
+
+.list li:not(:first-of-type) {
+    padding: 5px 0;
+}
+
+.list li:first-of-type {
+    padding-bottom: 0px;
+}
+
+.keyword_li::before, .definition::before {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 2px;
+    top: 0;
+    background-color: blue;
+    left: -15px;
+    z-index: 100;
+}
+
+.definition::before {
+    height: 100%;
+
+}
+
+.keyword_li:not(:last-of-type)::before {
+    height: 100%;
+}
+
+.keyword_li:last-of-type::before {
+    height: 50%;
+}
+
+
+.list li:not(:first-of-type)::after {
+    position: absolute;
+    content: '';
+    display: block;
+    height: 2px;
+    width: 12px;
+    background-color: blue;
+    left: -15px;
+    top: 50%;
+    z-index: 100;
+}
+
+
+.definition {
+    text-align: left;
+    font-size: 14px;
+}

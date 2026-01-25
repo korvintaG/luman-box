@@ -22,13 +22,18 @@ import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { FindOptionsWhere } from 'typeorm';
 import { Idea } from './entities/idea.entity';
+import { JwtAuth, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { IdeaCreateResponseDto } from './dto/idea-create-response.dto';
 
+@ApiTags('Идеи')
 @Controller('ideas')
 export class IdeasController {
   constructor(private readonly ideasService: IdeasService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @JwtAuthUser()
+  @ApiOkResponse({ description: 'Добавленная идея', type: IdeaCreateResponseDto })
   create(@Req() req: Request, @Body() createIdeaDto: CreateIdeaDto) {
     return this.ideasService.create(req.user, createIdeaDto);
   }

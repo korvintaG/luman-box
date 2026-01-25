@@ -5,7 +5,14 @@ export interface SliceList<T> {
     status: RequestStatusValue;
     error: string;
   }
+
+export interface SliceComplexList<T> {
+    list?: T;
+    status: RequestStatusValue;
+    error: string;
+  }
   
+
   export interface SliceDetail<T> {
     current: T | null | undefined;
     status: RequestStatusValue;

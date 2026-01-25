@@ -5,7 +5,7 @@ import { interconnectionsTypeInfo } from "../../../../../shared/constants/Interc
 import { useInterconnectionDetailsEdit } from "../../../hooks/UseInterconnectionDetailsEdit";
 import { RecordEditForm } from "../../../../../shared/components/RecordEditForm/RecordEditForm";
 import { InterconnectionTypeInfo } from "../../../types/UI-types";
-import { RecordControlBlock } from "../../../../../shared/components/RecordControlBlock/ui/RecordControlBlock";
+import { RecordControlBlock } from "../../../../../shared/components/record-control-block/ui/record-control-block";
 import styles from "./InterconnectionDetailsEdit.module.css";
 import { IdeaCard } from "../../ui/ideaCard/ideaCard";
 import { InterconnectionDescription } from "../../ui/InterconnectionDescription/InterconnectionDescription";
@@ -78,9 +78,9 @@ export const InterconnectionDetailsEdit: FC<InterconnectionDetailsEditProp> = ({
           </div>
         )}
         <InterconnectionDescription
-          nameDirect={form.values.name_direct}
-          nameReverse={form.values.name_reverse}
-          handleChange={form.handleChange}
+          nameDirect={form?.values.name_direct ?? ""}
+          nameReverse={form?.values.name_reverse ?? ""}
+          handleChange={form?.handleChange ?? (() => {})}
           ideaTypeInfo={iitype}
           readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
         />
