@@ -5,7 +5,7 @@ class KeywordNameDto {
   @ApiProperty({ description: 'ID названия ключевого слова', example: 1 })
   id: number;
 
-  @ApiProperty({ description: 'Название ключевого слова', example: 'Систематизация' })
+  @ApiProperty({ description: 'Название ключевого слова', example: 'Враг' })
   name: string;
 }
 
@@ -18,7 +18,7 @@ export class KeywordCreateResponceDto {
   @ApiProperty({ description: 'ID ключевого слова', example: 1 })
   id: number;
 
-  @ApiProperty({ description: 'Название ключевого слова', example: 'Систематизация' })
+  @ApiProperty({ description: 'Название ключевого слова', example: 'Враг' })
   name: string;
 
   @ApiProperty({
@@ -29,25 +29,25 @@ export class KeywordCreateResponceDto {
 
   @ApiPropertyOptional({
     description: 'Определение ключевого слова',
-    example: 'Процесс организации информации в систему',
+    example: 'Враг — противник, недруг, тот, кто находится в состоянии борьбы с кем-либо, а также приносит вред и зло.',
   })
   definition?: string;
 
   @ApiPropertyOptional({
     description: 'Хлебные крошки (иерархия)',
-    example: '[Категория 1 > Категория 2]',
+    example: '[{\"id\" : 2172, \"name\" : \"Общество\"} , {\"id\" : 2569, \"name\" : \"Политика\"}]',
   })
   bread_crumbs?: string;
 
   @ApiPropertyOptional({
-    description: 'Название класса до',
-    example: 'Категория 1',
+    description: 'Название класса метод ДО',
+    example: 'Общество / Политика',
   })
   class_name_before?: string;
 
   @ApiPropertyOptional({
-    description: 'Название класса после',
-    example: 'Категория 2',
+    description: 'Название класса метод ПОСЛЕ',
+    example: 'Политика / Общество',
   })
   class_name_after?: string;
 

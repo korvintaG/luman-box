@@ -34,7 +34,7 @@ export class Source extends EntityCommonFull {
   /*@RelationId((source: Source) => source.ideas) // Получаем только ID постов
     ideaIds: number[];*/
 
-  @ManyToOne(() => Author, (author) => author.sources, { nullable: true })
+  @ManyToOne(() => Author, (author) => author.sources)
   @JoinColumn({ name: 'author_id' })
   author: Author;
 

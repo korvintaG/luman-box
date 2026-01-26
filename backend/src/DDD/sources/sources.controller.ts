@@ -7,7 +7,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Query,
   HttpCode,
 } from '@nestjs/common';
@@ -15,15 +14,18 @@ import { Request } from 'express';
 import { SourcesService } from './sources.service';
 import { CreateSourceDto } from './dto/create-source.dto';
 import { UpdateSourceDto } from './dto/update-source.dto';
-import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { IModerate, StatusCode } from '../../types/custom';
 import { FindOptionsWhere } from 'typeorm';
 import { Source } from './entities/source.entity';
 import { JwtAuth, JwtAuthAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from '../../shared/decorators/api-jwt-auth.decorator';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiExtraModels, ApiOkResponse, ApiOperation, ApiParam, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { SourceCreateResponseDto } from './dto/source-create-response.dto';
+import { SourceListItemDto, SourceAuthorDto } from './dto/source-list-item.dto';
+import { SourceFindWhereDto } from './dto/source-find-where.dto';
+import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Источники')
+@ApiExtraModels(SourceListItemDto, SourceAuthorDto)
 @Controller('sources')
 export class SourcesController {
   constructor(private readonly sourcesService: SourcesService) {}
@@ -31,29 +33,35 @@ export class SourcesController {
   @Post() 
   @JwtAuthUser()
   @ApiOkResponse({ description: 'Созданный источник', type: SourceCreateResponseDto })
+  @ApiCreateEntityErrors()
   create(@Req() req: Request, @Body() createSourceDto: CreateSourceDto) {
     return this.sourcesService.create(req.user, createSourceDto);
   }
 
   @Get()
   @JwtAuthOptional()
+  @ApiOkResponse({description: 'Список источников',type: SourceListItemDto,isArray: true})
   findAll(@Req() req: Request) {
     return this.sourcesService.findAll(req.user);
   }
 
-  @Get('find')
+  @Get(':id')
+  @JwtAuthOptional()
+  @ApiParam({ name: 'id', description: 'ID источника', example: 1 })
+  @ApiOkResponse({ description: 'Детали источника', type: SourceCreateResponseDto })
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.sourcesService.findOne(+id, req.user);
+  }
+
+  @Post('find')
   @JwtAuthSuperAdmin()
+  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
+  @ApiBody({ type: SourceFindWhereDto, description: 'Условия поиска источников (TypeORM FindOptionsWhere)' })
+  @ApiOkResponse({ description: 'Список источников по условию', type: SourceListItemDto, isArray: true })
   find(
     @Body() findSourceWhere: FindOptionsWhere<Source>,
   ) {
     return this.sourcesService.findByCond(findSourceWhere);
-  }
-
-
-  @Get(':id')
-  @JwtAuthOptional()
-  findOne(@Param('id') id: string, @Req() req: Request) {
-    return this.sourcesService.findOne(+id, req.user);
   }
 
   @Patch(':id')

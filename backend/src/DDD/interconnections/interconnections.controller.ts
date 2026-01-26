@@ -10,9 +10,13 @@ import { RoleGuard } from 'src/authorization/guards/role.guard';
 import { WithRole } from 'src/authorization/decorators/role.decorator';
 import { FindOptionsWhere } from 'typeorm';
 import { Interconnection } from './entities/interconnection.entity';
-import { JwtAuth, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuth, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { InterconnectionCreateResponceDto } from './dto/interconnection-create-responce.dto';
+import { InterconnectionByIdeaAndTypeResponseDto } from './dto/interconnection-by-idea-and-type-response.dto';
+import { InterconnectionCountItemDto } from './dto/interconnection-count-response.dto';
+import { InterconnectionFindWhereDto } from './dto/interconnection-find-where.dto';
+import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Взаимосвязи')
 @Controller('interconnections')
@@ -22,13 +26,35 @@ export class InterconnectionsController {
   @Post()
   @JwtAuthUser()
   @ApiOkResponse({ description: 'Созданная связь', type: InterconnectionCreateResponceDto })
+  @ApiCreateEntityErrors()
   create(@Req() req: Request, @Body() interconnectionEntityDto: InterconnectionEntityDto) {
     return this.interconnectionsService.create(req.user,interconnectionEntityDto);
   }
 
-  @Get('find')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.SuperAdmin)
+  @JwtAuthOptional()
+  @Get('/count-by-idea/:idea_id')
+  @ApiParam({ name: 'idea_id', description: 'ID идеи', example: 1 })
+  @ApiOkResponse({ description: 'Статистика взаимосвязей идеи по типам', type: InterconnectionCountItemDto, isArray: true })
+  countByIdea(@Param('idea_id') idea_id: string, @Req() req: Request) {
+    return this.interconnectionsService.countAllByIdea(+idea_id, req.user);
+  }
+
+  @JwtAuthOptional()
+  @Get('/by-idea-and-type/:idea_id/:type_id')
+  @ApiParam({ name: 'idea_id', description: 'ID идеи', example: 1 })
+  @ApiParam({ name: 'type_id', description: 'ID типа взаимосвязи', example: 1 })
+  @ApiOkResponse({ description: 'Взаимосвязи идеи по типу', type: InterconnectionByIdeaAndTypeResponseDto })
+  findAllByIdeaAndType(@Param('idea_id') idea_id: string, 
+    @Param('type_id') type_id: string, 
+    @Req() req: Request) {
+    return this.interconnectionsService.getByIdeaAndType(+idea_id,+type_id, req.user);
+  }
+
+  @Post('find')
+  @JwtAuthSuperAdmin()
+  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
+  @ApiBody({ type: InterconnectionFindWhereDto, description: 'Условия поиска взаимосвязей (TypeORM FindOptionsWhere)' })
+  @ApiOkResponse({ description: 'Список взаимосвязей по условию', type: InterconnectionCreateResponceDto, isArray: true })
   find(
     @Body() findInterconnectionWhere: FindOptionsWhere<Interconnection>,
   ) {
@@ -36,23 +62,12 @@ export class InterconnectionsController {
   }
 
 
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
   @Get(':id')
+  @ApiParam({ name: 'id', description: 'ID взаимосвязи', example: 1 })
+  @ApiOkResponse({ description: 'Детали взаимосвязи', type: InterconnectionCreateResponceDto })
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.interconnectionsService.findOne(+id, req.user);
-  }
-
-
-  @UseGuards(OptionalJwtAuthGuard)
-  @Get('/count-by-idea/:idea_id')
-  countByIdea(@Param('idea_id') idea_id: string, @Req() req: Request) {
-    return this.interconnectionsService.countAllByIdea(+idea_id, req.user);
-  }
-
-  @UseGuards(OptionalJwtAuthGuard)
-  @Get('/by-idea-and-type/:idea_id/:type_id')
-  findAllByIdeaAndType(@Param('idea_id') idea_id: string, @Param('type_id') type_id: string, @Req() req: Request) {
-    return this.interconnectionsService.getByIdeaAndType(+idea_id,+type_id, req.user);
   }
 
   /*@Get('/idea-for-interconnect/:id/:tid/:iid')
@@ -60,8 +75,11 @@ export class InterconnectionsController {
     return this.interconnectionsService.getIdeaToInterconnect(+id,+tid,+iid);
   }*/
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @JwtAuth()
+  @ApiParam({ name: 'id', description: 'ID взаимосвязи', example: 1 })
+  @ApiBody({ type: UpdateInterconnectionDto, description: 'Частичное обновление взаимосвязи' })
+  @ApiOkResponse({ description: 'Обновленная взаимосвязь', type: InterconnectionCreateResponceDto })
   update(@Req() req: Request, @Param('id') id: string, @Body() updateInterconnectionDto: UpdateInterconnectionDto) {
     return this.interconnectionsService.update(req.user, +id, updateInterconnectionDto);
   }

@@ -1,5 +1,5 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { RoleGuard } from '../../authorization/guards/role.guard';
@@ -29,6 +29,7 @@ export function JwtAuthAdmin() {
     UseGuards(JwtAuthGuard, RoleGuard),
     WithRole(Role.Admin),
     ApiBearerAuth(),
+    ApiOperation({ description: 'Только для админов!' }),
   );
 }
 
@@ -37,6 +38,7 @@ export function JwtAuthSuperAdmin() {
     UseGuards(JwtAuthGuard, RoleGuard),
     WithRole(Role.SuperAdmin),
     ApiBearerAuth(),
+    ApiOperation({ description: 'Только для суперадминов!' }),
   );
 }
 
@@ -45,6 +47,7 @@ export function JwtAuthAdminSuperAdmin() {
     UseGuards(JwtAuthGuard, RoleGuard),
     WithRole([Role.SuperAdmin,Role.Admin]),
     ApiBearerAuth(),
+    ApiOperation({ description: 'Только для админов и суперадминов!' }),
   );
 }
 
@@ -53,6 +56,7 @@ export function JwtAuthUser() {
     UseGuards(JwtAuthGuard, RoleGuard),
     WithRole([Role.User]),
     ApiBearerAuth(),
+    ApiOperation({ description: 'Только для простых пользователей!' }),
   );
 }
 

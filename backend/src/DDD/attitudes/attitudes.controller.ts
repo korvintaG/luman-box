@@ -6,8 +6,10 @@ import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-au
 import { Request, Response } from 'express';
 import { StatusCode } from 'src/types/custom';
 import { JwtAuth, JwtAuthOptional } from 'src/shared/decorators/api-jwt-auth.decorator';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AttitudeCreateResponceDto } from './dto/attitude-create-responce.dto';
+import { AttitudeFindResponseDto } from './dto/attitude-find-response.dto';
+import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Оценки идей')
 @Controller('attitudes')
@@ -17,6 +19,7 @@ export class AttitudesController {
   @Post(':idea_id')
   @JwtAuth()
   @ApiOkResponse({ description: 'Результат создания/обновления/удаления оценки', type: AttitudeCreateResponceDto })
+  @ApiCreateEntityErrors()
   async create(@Param('idea_id') idea_id: string, 
     @Req() req: Request, 
     @Res() res: Response, 
@@ -33,6 +36,8 @@ export class AttitudesController {
 
   @Get(':idea_id')
   @JwtAuthOptional()
+  @ApiParam({ name: 'idea_id', description: 'ID идеи', example: 1 })
+  @ApiOkResponse({ description: 'Статистика оценок идеи', type: AttitudeFindResponseDto })
   find(@Param('idea_id') idea_id: string, @Req() req: Request) {
     return this.attitudesService.findOne(Number(idea_id),req.user)
   }

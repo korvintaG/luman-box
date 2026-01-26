@@ -22,10 +22,13 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { RoleGuard } from './guards/role.guard';
 import { WithRole } from './decorators/role.decorator';
 import { Role, StatusCode } from '../types/custom';
-import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { LogoutResponseDto } from './dto/logout-response.dto';
+import { RegisterResponseDto } from './dto/register-response.dto';
+import { RefreshTokenResponseDto } from './dto/refresh-token-response.dto';
+import { JwtAuth, JwtAuthSuperAdmin } from 'src/shared/decorators/api-jwt-auth.decorator';
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -56,21 +59,24 @@ export class AuthController {
         message: 'Refresh token не найден',
       });
     }
-    
     // Если refreshToken есть, очищаем его
     res.clearCookie(this.authService.getCookieConfig().refreshToken.name);
     return { success: true };
   }
 
   @Post('register')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.SuperAdmin)
+  @JwtAuthSuperAdmin()
+  @ApiOperation({ description: 'Для служебного создания новых пользователей под SuperAdmin' })
+  @ApiBody({ type: CreateUserDto, description: 'Данные нового пользователя' })
+  @ApiOkResponse({ description: 'Пользователь успешно зарегистрирован', type: RegisterResponseDto })
   async register(@Body() createUserDto: CreateUserDto) {
     return await this.authService.register(createUserDto);
   }
 
   @Get('token')
   @UseGuards(JwtRefreshAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Новый токен доступа успешно сгенерирован', type: RefreshTokenResponseDto })
   refreshTokens(@Req() req: Request) {
     if (!req.user) {
       throw new UnauthorizedException({
@@ -82,15 +88,15 @@ export class AuthController {
   }
 
   @Get('user')
-  @UseGuards(JwtAuthGuard)
+  @JwtAuth()
   @Serialize(UserDto)
+  @ApiOkResponse({ description: 'Данные текущего пользователя', type: UserDto })
   async getUser(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
     res.header('Cache-Control', 'no-store');
     const user = await this.usersService.findOne(req.user.id);
-    console.log('getUser',user);
     return user;
   }
 }

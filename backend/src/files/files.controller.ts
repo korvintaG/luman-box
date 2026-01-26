@@ -2,28 +2,30 @@ import {
   Req,
   Controller,
   Post,
-  UseGuards,
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { JwtAuthGuard } from 'src/authorization/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from 'src/files/multer.config';
 import { FilesService } from './files.service';
-import { Base64ToDiskInterceptor } from 'src/interceptors/base64-to-disk.interceptor';
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuth } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { UploadImageResponseDto } from './dto/upload-image-response.dto';
+import { UploadImageDto } from './dto/upload-image.dto';
 
 @Controller('files')
+@ApiTags('Загрузка файлов')
 export class FilesController {
   constructor(private readonly filesService: FilesService) { }
 
-  @UseGuards(JwtAuthGuard)
+  @JwtAuth()
   @Post('upload-image')
   @UseInterceptors(FileInterceptor('image', multerConfig))
-  /*@UseInterceptors(
-    FileInterceptor('image', multerConfig),
-    Base64ToDiskInterceptor,
-  )*/
+  @ApiOperation({ description: 'Загрузка изображения' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UploadImageDto })
+  @ApiOkResponse({ description: 'Изображение успешно загружено', type: UploadImageResponseDto })
   uploadImage(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
     return this.filesService.uploadImage(file, req);
   }

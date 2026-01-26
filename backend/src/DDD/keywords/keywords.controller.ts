@@ -27,9 +27,13 @@ import { FindOptionsWhere } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
 import { FindKeywordDto } from './dto/find-keyword.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthAdminSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { JwtAuth, JwtAuthAdminSuperAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
 import { KeywordCreateResponceDto } from './dto/keyword-create-responce.dto';
+import { KeywordByClassQueryDto } from './dto/keyword-by-class-query.dto';
+import { KeywordByClassResponseDto } from './dto/keyword-by-class-response.dto';
+import { KeywordFindWhereDto } from './dto/keyword-find-where.dto';
+import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Ключевые слова')
 @Controller('keywords')
@@ -42,10 +46,21 @@ export class KeywordsController {
   @Post()
   @JwtAuthUser()
   @ApiOkResponse({ description: 'Созданное ключевое слово', type: KeywordCreateResponceDto })
+  @ApiCreateEntityErrors()
   create(@Req() req: Request, @Body() createKeywordDto: CreateKeywordDto) {
     return this.keywordsService.create(req.user, createKeywordDto);
   }
 
+  @Get('')
+  @JwtAuthOptional()
+  @ApiQuery({ name: 'class_id', required: false, type: String, description: 'ID ключевого слова верхнего уровня для фильтрации (опционально, 0 или не указано для корневого уровня)', example: '0' })
+  @ApiOkResponse({ description: 'Ключевые слова по классу', type: KeywordByClassResponseDto })
+  findByClass(
+    @Req() req: Request,
+    @Query() query: {class_id?: string}
+  ) {
+    return this.keywordsService.findByClass(req.user, query.class_id);
+  }
 
   @Patch('class_id/:id')
   @JwtAuthAdminSuperAdmin()
@@ -62,9 +77,11 @@ export class KeywordsController {
     return this.keywordsService.findByToken(req.user, findKeywordDto);
   }
 
-  @Get('find') // нужен для тестов, не удалять!!!!
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.SuperAdmin)
+  @Post('find')
+  @JwtAuthSuperAdmin()
+  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
+  @ApiBody({ type: KeywordFindWhereDto, description: 'Условия поиска ключевых слов (TypeORM FindOptionsWhere)' })
+  @ApiOkResponse({ description: 'Список ключевых слов по условию', type: KeywordCreateResponceDto, isArray: true })
   find(
     @Body() findKeywordWhere: FindOptionsWhere<Keyword>,
   ) {
@@ -73,19 +90,13 @@ export class KeywordsController {
 
   
   @Get(':id')
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
+  @ApiParam({ name: 'id', description: 'ID ключевого слова', example: 1 })
+  @ApiOkResponse({ description: 'Детали ключевого слова', type: KeywordCreateResponceDto })
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.keywordsService.findOne(+id, req.user);
   }
 
-  @Get('')
-  @UseGuards(OptionalJwtAuthGuard)
-  findByClass(
-    @Req() req: Request,
-    @Query() query: {class_id?: string}
-  ) {
-    return this.keywordsService.findByClass(req.user, query.class_id);
-  }
 
   @Get('/:id/summary')
   @UseGuards(OptionalJwtAuthGuard)
@@ -93,8 +104,11 @@ export class KeywordsController {
     return this.keywordsService.findSummary(+id, req.user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @JwtAuth()
+  @ApiParam({ name: 'id', description: 'ID ключевого слова', example: 1 })
+  @ApiBody({ type: UpdateKeywordDto, description: 'Частичное обновление ключевого слова' })
+  @ApiOkResponse({ description: 'Обновленное ключевое слово', type: KeywordCreateResponceDto })
   update(
     @Param('id') id: string,
     @Req() req: Request,

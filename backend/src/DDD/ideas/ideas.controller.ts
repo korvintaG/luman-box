@@ -22,9 +22,16 @@ import { WithRole } from '../../authorization/decorators/role.decorator';
 import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { FindOptionsWhere } from 'typeorm';
 import { Idea } from './entities/idea.entity';
-import { JwtAuth, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuth, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IdeaCreateResponseDto } from './dto/idea-create-response.dto';
+import { IdeaFindAllQueryDto } from './dto/idea-find-all-query.dto';
+import { IdeaListItemDto } from './dto/idea-list-item.dto';
+import { IdeaFindWhereDto } from './dto/idea-find-where.dto';
+import { ApiQueryMultiple } from '../../shared/decorators/api-query-multiple.decorator';
+import { IdeaFindAllQueryParams } from './dto/idea-find-all-query-params';
+import { EntityDeleteResponseDto } from 'src/shared/dto/entity-delete-response.dto';
+import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Идеи')
 @Controller('ideas')
@@ -34,12 +41,16 @@ export class IdeasController {
   @Post()
   @JwtAuthUser()
   @ApiOkResponse({ description: 'Добавленная идея', type: IdeaCreateResponseDto })
+  @ApiCreateEntityErrors()
   create(@Req() req: Request, @Body() createIdeaDto: CreateIdeaDto) {
     return this.ideasService.create(req.user, createIdeaDto);
   }
 
   @Get()
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
+  @ApiOperation({ description: 'Получить список идей. Все query-параметры опциональны. Если указаны оба параметра (source_id и keyword_id), выполняется фильтрация по источнику и ключевому слову.' })
+  @ApiQueryMultiple(IdeaFindAllQueryParams)
+  @ApiOkResponse({ description: 'Список идей', type: IdeaListItemDto, isArray: true })
   findAll(
     @Req() req: Request,
     @Query() query: Partial<IIdeaBySourceAndKeyword>,
@@ -52,15 +63,28 @@ export class IdeasController {
     else return this.ideasService.findAll(req.user);
   }
 
+  @Delete(':id')
+  @JwtAuth()
+  @HttpCode(StatusCode.successDelete)
+  @ApiParam({ name: 'id', description: 'ID идеи', example: 1 })
+  @ApiResponse({ status: StatusCode.successDelete, description: 'Результат удаления идеи', type: EntityDeleteResponseDto })
+  remove(@Param('id') id: string, @Req() req: Request) {
+    return this.ideasService.remove(+id, req.user);
+  }
+
+
   @Get('/find-by-source-kw/:src/:kw')
   @UseGuards(OptionalJwtAuthGuard)
   findBySourceKw(@Param('src') src: string, @Param('kw') kw: string, @Req() req: Request) {
     return this.ideasService.findBySourceKw(src, kw,req.user);
   }
 
-  @Get('find')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.SuperAdmin)
+ 
+  @Post('find')
+  @JwtAuthSuperAdmin()
+  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
+  @ApiBody({ type: IdeaFindWhereDto, description: 'Условия поиска идей (TypeORM FindOptionsWhere)' })
+  @ApiOkResponse({ description: 'Список идей по условию', type: IdeaListItemDto, isArray: true })
   find(
     @Body() findIdeaWhere: FindOptionsWhere<Idea>,
   ) {
@@ -69,7 +93,9 @@ export class IdeasController {
   
 
   @Get(':id')
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
+  @ApiParam({ name: 'id', description: 'ID идеи', example: 1 })
+  @ApiOkResponse({ description: 'Детали идеи', type: IdeaCreateResponseDto })
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.ideasService.findOne(+id,req.user);
   }
@@ -114,10 +140,4 @@ export class IdeasController {
     return this.ideasService.moderate(+id, req.user, query);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  @HttpCode(StatusCode.successDelete)
-  remove(@Param('id') id: string, @Req() req: Request) {
-    return this.ideasService.remove(+id, req.user);
-  }
 }
