@@ -168,7 +168,7 @@ export class EntityTestHelper {
   ) {
     const URL = `${this.apiURL}/find`;
     return request(this.server)
-      .get(URL)
+      .post(URL)
       .set('Authorization', `Bearer ${token}`)
       .send(dto)
       .expect((res) => { if (res.status !== expectedStatus) { console.log('simpleFind URL: ', URL, 'dto', dto, 'res.body', res.body); } })
@@ -213,6 +213,7 @@ export class EntityTestHelper {
   async removeOldData( findDto: any) {
     console.log('removeOldData findDto: ', findDto);
     const res = await this.simpleFind(this.tokenSuperAdmin, findDto);
+    console.log('removeOldData res: ', res.body);
     for (const item of res.body) {
       await this.simpleRemove(this.tokenSuperAdmin, item.id);
     }

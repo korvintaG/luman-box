@@ -29,7 +29,7 @@ import { AuthorListItemDto } from './dto/author-list-item.dto';
 import { AuthorCreateResponseDto } from './dto/author-create-response.dto';
 import { AuthorFindWhereDto } from './dto/author-find-where.dto';
 import { JwtAuth, JwtAuthAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from '../../shared/decorators/api-jwt-auth.decorator';
-import { ApiCreateEntityErrors, ApiFindAllEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { ApiCreateEntityErrors, ApiDeleteEntityErrors, ApiFindAllEntityErrors, ApiGetEntityErrors, ApiModerateEntityErrors, ApiToModerateEntityErrors, ApiUpdateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Авторы')
 @Controller('authors')
@@ -54,27 +54,17 @@ export class AuthorsController {
 
   @Get(':id')
   @JwtAuthOptional()
-  @ApiParam({ name: 'id', description: 'ID автора', example: 1 })  
   @ApiOkResponse({ description: 'Детали автора', type: AuthorDetailsDto })
+  @ApiGetEntityErrors()
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.authorsService.findOne(+id, req.user);
-  }
-  @Post('find')
-  @JwtAuthSuperAdmin()
-  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
-  @ApiBody({ type: AuthorFindWhereDto, description: 'Условия поиска авторов (TypeORM FindOptionsWhere)' })
-  @ApiOkResponse({description: 'Список авторов по условию',type: AuthorListItemDto,isArray: true})
-  find(
-    @Body() findAuthorWhere: FindOptionsWhere<Author>,
-  ) {
-    return this.authorsService.findByCond(findAuthorWhere);
   }
 
   @Patch(':id')
   @JwtAuth()
-  @ApiParam({ name: 'id', description: 'ID автора', example: 1 })
   @ApiBody({ type: AuthorUpdateRequestDto, description: 'Частичное обновление автора' })
   @ApiOkResponse({ description: 'Обновленный автор', type: AuthorUpdateResponseDto })
+  @ApiUpdateEntityErrors()
   update(
     @Param('id') id: string,
     @Req() req: Request,
@@ -86,17 +76,30 @@ export class AuthorsController {
   @Delete(':id')
   @JwtAuth()
   @HttpCode(StatusCode.successDelete)
-  @ApiParam({ name: 'id', description: 'ID автора', example: 1 })
   @ApiResponse({ status: StatusCode.successDelete, description: 'Результат удаления автора', type: EntityDeleteResponseDto })
+  @ApiDeleteEntityErrors()
   remove(@Param('id') id: string, @Req() req: Request) {
     return this.authorsService.remove(+id, req.user);
   }
 
+  @Post('find')
+  @JwtAuthSuperAdmin()
+  @HttpCode(StatusCode.successFind)
+  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
+  @ApiBody({ type: AuthorFindWhereDto, description: 'Условия поиска авторов (TypeORM FindOptionsWhere)' })
+  @ApiResponse({ status: StatusCode.successFind, description: 'Список авторов по условию', type: AuthorListItemDto, isArray: true })
+  @ApiFindAllEntityErrors()
+  find(
+    @Body() findAuthorWhere: FindOptionsWhere<Author>,
+  ) {
+    return this.authorsService.findByCond(findAuthorWhere);
+  }
 
   @Post('to-moderate/:id')
   @JwtAuth()
   @HttpCode(StatusCode.successToModerate)
   @ApiOkResponse({ description: 'Результат перевода в модерацию', type: EntityToModerateResponseDto })
+  @ApiToModerateEntityErrors()
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -104,16 +107,15 @@ export class AuthorsController {
     return this.authorsService.toModerate(+id, req.user);
   }
 
-
   @Post('moderate/:id')
   @JwtAuthAdmin()
   @HttpCode(StatusCode.successModerate)
-  @ApiQuery({ type: EntityModerateQueryDto })
   @ApiOkResponse({ description: 'Результат модерации автора', type: EntityModerateResponseDto })
+  @ApiModerateEntityErrors()
   moderate(
     @Param('id') id: string,
     @Req() req: Request,
-    @Query() query: IModerate,
+    @Query() query: EntityModerateQueryDto,
   ) {
     return this.authorsService.moderate(+id, req.user, query);
   }

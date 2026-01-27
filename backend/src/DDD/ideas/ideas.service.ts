@@ -20,6 +20,7 @@ import { ModeratorService } from '../../shared/services/moderator/moderator.serv
 import { SourcesService } from '../sources/sources.service';
 import { Interconnection } from '../interconnections/entities/interconnection.entity';
 import { KeywordName } from '../keywords/entities/keyword.entity';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class IdeasService {

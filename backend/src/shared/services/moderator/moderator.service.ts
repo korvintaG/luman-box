@@ -1,9 +1,10 @@
 import { Injectable, UnauthorizedException, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
-import { IModerate, IUser, Role } from '../../../types/custom';
+import { ExceptionType, IModerate, IUser, Role } from '../../../types/custom';
 import { VerificationStatus } from '../../entities/abstract.entity';
 import { TelegramMessagingService } from 'src/DDD/telegram/messages/telegram-messages.service';
+import { throwException } from 'src/utils/utils';
 
 export interface IModerationResult {
   success: boolean;
@@ -126,10 +127,7 @@ export class ModeratorService {
     );
 
     if (res.affected === 0) {
-      throw new NotFoundException({
-        error: 'NotFound',
-        message: `${entityName} не найден`,
-      });
+      throwException(ExceptionType.NotFoundException, `${entityName} не найден`);
     }
 
     return {
@@ -161,22 +159,13 @@ export class ModeratorService {
     const record = await repository.findOne(
       { where: { id } as FindOptionsWhere<T> });
     if (!record) {
-      throw new NotFoundException({
-        error: 'NotFound',
-        message: `${entityName} не найден`
-      });
+      throwException(ExceptionType.NotFoundException, `${entityName} не найден`);
     }
     if (record.verification_status !== VerificationStatus.Creating) {
-      throw new BadRequestException({
-        error: 'Bad Request',
-        message: `${entityName} находится не в статусе создания`
-      });
+      throwException(ExceptionType.BadRequestException, `${entityName} находится не в статусе создания`);
     }
     if (record.user_id !== user.id) {
-      throw new UnauthorizedException({
-        error: 'Unauthorized',
-        message: `Вы не можете перевести в статус на модерацию ${entityName.toLowerCase()}, которого не создавали`
-      });
+      throwException(ExceptionType.UnauthorizedException, `Вы не можете перевести в статус на модерацию ${entityName.toLowerCase()}, которого не создавали`);
     }
     const whereCondition = { id } as FindOptionsWhere<T>;
     const res = await repository.update(
@@ -187,10 +176,7 @@ export class ModeratorService {
       } as any // сложно типизировать update в typeorm
     );
     if (res.affected === 0)
-      throw new BadRequestException({
-        error: 'Bad Request',
-        message: `Не удалось перевести в статус на модерацию`
-      });
+      throwException(ExceptionType.BadRequestException, `Не удалось перевести в статус на модерацию`);
     else {
       await this.TelegramMessagingService.sendMessageToAdmin(
         `Новая запись ${entityName} ${process.env.FRONTEND_URL}${routeForModeration}/${id} на модерации`);

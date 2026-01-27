@@ -20,5 +20,12 @@ export class UnauthorizedResponseDto {
 export class InternalServerErrorResponseDto {
   @ApiProperty({ description: 'Сообщение об ошибке', example: 'Нарушение целостности данных по индексу...' })
   message: string;
+}
 
+export class NotFoundResponseDto {
+  @ApiProperty({ description: 'Тип ошибки', example: 'NotFound' })
+  error: string;
+
+  @ApiProperty({ description: 'Сообщение об ошибке', example: 'Сущность не найдена' })
+  message: string;
 }

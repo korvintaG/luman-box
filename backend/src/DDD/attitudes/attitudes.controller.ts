@@ -1,15 +1,13 @@
-import { Req, UseGuards,Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Req,Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { AttitudesService } from './attitudes.service';
 import { CreateAttitudeDto } from './dto/create-attitude.dto';
-import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
-import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { Request, Response } from 'express';
 import { StatusCode } from 'src/types/custom';
 import { JwtAuth, JwtAuthOptional } from 'src/shared/decorators/api-jwt-auth.decorator';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { AttitudeCreateResponceDto } from './dto/attitude-create-responce.dto';
 import { AttitudeFindResponseDto } from './dto/attitude-find-response.dto';
-import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { ApiCreateEntityErrors, ApiGetEntityErrors } from 'src/shared/decorators/api-errors.decorator';
 
 @ApiTags('Оценки идей')
 @Controller('attitudes')
@@ -38,6 +36,7 @@ export class AttitudesController {
   @JwtAuthOptional()
   @ApiParam({ name: 'idea_id', description: 'ID идеи', example: 1 })
   @ApiOkResponse({ description: 'Статистика оценок идеи', type: AttitudeFindResponseDto })
+  @ApiGetEntityErrors()
   find(@Param('idea_id') idea_id: string, @Req() req: Request) {
     return this.attitudesService.findOne(Number(idea_id),req.user)
   }

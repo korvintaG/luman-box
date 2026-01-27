@@ -7,33 +7,27 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Query,
   HttpCode,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { KeywordsService } from './keywords.service';
 import { KeywordsModerationService } from './keywords-moderation.service';
 import { CreateKeywordDto } from './dto/create-keyword.dto';
 import { UpdateKeywordDto } from './dto/update-keyword.dto';
-import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
-import { RoleGuard } from '../../authorization/guards/role.guard';
-import { WithRole } from '../../authorization/decorators/role.decorator';
-import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
-import { IModerate, Role, StatusCode } from '../../types/custom';
+import { IModerate, StatusCode } from '../../types/custom';
 import { FindOptionsWhere } from 'typeorm';
 import { Keyword } from './entities/keyword.entity';
 import { FindKeywordDto } from './dto/find-keyword.dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuth, JwtAuthAdminSuperAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
 import { KeywordCreateResponceDto } from './dto/keyword-create-responce.dto';
-import { KeywordByClassQueryDto } from './dto/keyword-by-class-query.dto';
-import { KeywordByClassResponseDto } from './dto/keyword-by-class-response.dto';
+import { KeywordByClassResponseDto, KeywordItemDto } from './dto/keyword-by-class-response.dto';
 import { KeywordFindWhereDto } from './dto/keyword-find-where.dto';
-import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { KeywordSummaryDto } from './dto/keyword-summary.dto';
+import { ApiCreateEntityErrors, ApiDeleteEntityErrors, ApiFindAllEntityErrors, ApiGetEntityErrors, ApiModerateEntityErrors, ApiToModerateEntityErrors, ApiUpdateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { EntityToModerateResponseDto } from 'src/shared/dto/entity-to-moderate-response.dto';
+import { EntityModerateResponseDto } from 'src/shared/dto/entity-moderate-response.dto';
 
 @ApiTags('Ключевые слова')
 @Controller('keywords')
@@ -55,6 +49,7 @@ export class KeywordsController {
   @JwtAuthOptional()
   @ApiQuery({ name: 'class_id', required: false, type: String, description: 'ID ключевого слова верхнего уровня для фильтрации (опционально, 0 или не указано для корневого уровня)', example: '0' })
   @ApiOkResponse({ description: 'Ключевые слова по классу', type: KeywordByClassResponseDto })
+  @ApiFindAllEntityErrors()
   findByClass(
     @Req() req: Request,
     @Query() query: {class_id?: string}
@@ -69,7 +64,9 @@ export class KeywordsController {
   }
 
   @Post('search') // нужен для поиска динамического по подстроке
-  @UseGuards(JwtAuthGuard)
+  @JwtAuth()
+  @ApiOkResponse({ description: 'Ключевые слова по токену', type: KeywordItemDto, isArray: true })
+  @ApiFindAllEntityErrors()
   findByToken(
     @Req() req: Request,
     @Body() findKeywordDto: FindKeywordDto) 
@@ -79,36 +76,38 @@ export class KeywordsController {
 
   @Post('find')
   @JwtAuthSuperAdmin()
+  @HttpCode(StatusCode.successFind)
   @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
   @ApiBody({ type: KeywordFindWhereDto, description: 'Условия поиска ключевых слов (TypeORM FindOptionsWhere)' })
-  @ApiOkResponse({ description: 'Список ключевых слов по условию', type: KeywordCreateResponceDto, isArray: true })
+  @ApiResponse({ status: StatusCode.successFind, description: 'Список ключевых слов по условию', type: KeywordCreateResponceDto, isArray: true })
   find(
     @Body() findKeywordWhere: FindOptionsWhere<Keyword>,
   ) {
     return this.keywordsService.findByCond(findKeywordWhere);
   }
 
-  
   @Get(':id')
   @JwtAuthOptional()
-  @ApiParam({ name: 'id', description: 'ID ключевого слова', example: 1 })
   @ApiOkResponse({ description: 'Детали ключевого слова', type: KeywordCreateResponceDto })
+  @ApiGetEntityErrors()
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.keywordsService.findOne(+id, req.user);
   }
 
 
   @Get('/:id/summary')
-  @UseGuards(OptionalJwtAuthGuard)
+  @JwtAuthOptional()
+  @ApiOkResponse({ description: 'Сводка ключевого слова', type: KeywordSummaryDto })
+  @ApiGetEntityErrors()
   findSummary(@Param('id') id: string, @Req() req: Request) {
     return this.keywordsService.findSummary(+id, req.user);
   }
 
   @Patch(':id')
   @JwtAuth()
-  @ApiParam({ name: 'id', description: 'ID ключевого слова', example: 1 })
   @ApiBody({ type: UpdateKeywordDto, description: 'Частичное обновление ключевого слова' })
   @ApiOkResponse({ description: 'Обновленное ключевое слово', type: KeywordCreateResponceDto })
+  @ApiUpdateEntityErrors()
   update(
     @Param('id') id: string,
     @Req() req: Request,
@@ -117,9 +116,10 @@ export class KeywordsController {
     return this.keywordsService.update(+id, req.user, updateKeywordDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @JwtAuth()
   @HttpCode(StatusCode.successDelete)
+  @ApiDeleteEntityErrors()
   remove(@Param('id') id: string, @Req() req: Request) {
     return this.keywordsService.remove(+id, req.user);
   }
@@ -142,9 +142,10 @@ export class KeywordsController {
 
 
   @Post('to-moderate/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole([Role.User])
+  @JwtAuthUser()
   @HttpCode(StatusCode.successToModerate)
+  @ApiOkResponse({ description: 'Результат перевода в модерацию', type: EntityToModerateResponseDto })
+  @ApiToModerateEntityErrors()
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -155,9 +156,10 @@ export class KeywordsController {
 
 
   @Post('moderate/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole([Role.Admin, Role.SuperAdmin])
+  @JwtAuthAdminSuperAdmin()
   @HttpCode(StatusCode.successModerate)
+  @ApiOkResponse({ description: 'Результат модерации ключевого слова', type: EntityModerateResponseDto })
+  @ApiModerateEntityErrors()
   moderate(
     @Param('id') id: string,
     @Req() req: Request,

@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { VerificationStatus } from '../../../shared/entities/abstract.entity';
 
-class KeywordItemDto {
+export class KeywordItemDto {
   @ApiProperty({ description: 'ID ключевого слова', example: 1 })
   id: number;
 

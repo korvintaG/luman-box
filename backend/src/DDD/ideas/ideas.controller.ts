@@ -7,7 +7,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Query,
   HttpCode,
 } from '@nestjs/common';
@@ -16,13 +15,9 @@ import { IdeasService } from './ideas.service';
 import { IIdeaBySourceAndKeyword, IModerate, Role, StatusCode } from '../../types/custom';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
-import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
-import { RoleGuard } from '../../authorization/guards/role.guard';
-import { WithRole } from '../../authorization/decorators/role.decorator';
-import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { FindOptionsWhere } from 'typeorm';
 import { Idea } from './entities/idea.entity';
-import { JwtAuth, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { JwtAuth, JwtAuthAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { IdeaCreateResponseDto } from './dto/idea-create-response.dto';
 import { IdeaFindAllQueryDto } from './dto/idea-find-all-query.dto';
@@ -31,7 +26,9 @@ import { IdeaFindWhereDto } from './dto/idea-find-where.dto';
 import { ApiQueryMultiple } from '../../shared/decorators/api-query-multiple.decorator';
 import { IdeaFindAllQueryParams } from './dto/idea-find-all-query-params';
 import { EntityDeleteResponseDto } from 'src/shared/dto/entity-delete-response.dto';
-import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { ApiCreateEntityErrors, ApiDeleteEntityErrors, ApiFindAllEntityErrors, ApiGetEntityErrors, ApiModerateEntityErrors, ApiToModerateEntityErrors, ApiUpdateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { EntityToModerateResponseDto } from 'src/shared/dto/entity-to-moderate-response.dto';
+import { EntityModerateResponseDto } from 'src/shared/dto/entity-moderate-response.dto';
 
 @ApiTags('Идеи')
 @Controller('ideas')
@@ -51,6 +48,7 @@ export class IdeasController {
   @ApiOperation({ description: 'Получить список идей. Все query-параметры опциональны. Если указаны оба параметра (source_id и keyword_id), выполняется фильтрация по источнику и ключевому слову.' })
   @ApiQueryMultiple(IdeaFindAllQueryParams)
   @ApiOkResponse({ description: 'Список идей', type: IdeaListItemDto, isArray: true })
+  @ApiFindAllEntityErrors()
   findAll(
     @Req() req: Request,
     @Query() query: Partial<IIdeaBySourceAndKeyword>,
@@ -63,52 +61,18 @@ export class IdeasController {
     else return this.ideasService.findAll(req.user);
   }
 
-  @Delete(':id')
-  @JwtAuth()
-  @HttpCode(StatusCode.successDelete)
-  @ApiParam({ name: 'id', description: 'ID идеи', example: 1 })
-  @ApiResponse({ status: StatusCode.successDelete, description: 'Результат удаления идеи', type: EntityDeleteResponseDto })
-  remove(@Param('id') id: string, @Req() req: Request) {
-    return this.ideasService.remove(+id, req.user);
-  }
-
-
-  @Get('/find-by-source-kw/:src/:kw')
-  @UseGuards(OptionalJwtAuthGuard)
-  findBySourceKw(@Param('src') src: string, @Param('kw') kw: string, @Req() req: Request) {
-    return this.ideasService.findBySourceKw(src, kw,req.user);
-  }
-
- 
-  @Post('find')
-  @JwtAuthSuperAdmin()
-  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
-  @ApiBody({ type: IdeaFindWhereDto, description: 'Условия поиска идей (TypeORM FindOptionsWhere)' })
-  @ApiOkResponse({ description: 'Список идей по условию', type: IdeaListItemDto, isArray: true })
-  find(
-    @Body() findIdeaWhere: FindOptionsWhere<Idea>,
-  ) {
-    return this.ideasService.findByCond(findIdeaWhere);
-  }
-  
-
   @Get(':id')
   @JwtAuthOptional()
-  @ApiParam({ name: 'id', description: 'ID идеи', example: 1 })
   @ApiOkResponse({ description: 'Детали идеи', type: IdeaCreateResponseDto })
+  @ApiGetEntityErrors()
   findOne(@Param('id') id: string, @Req() req: Request) {
     return this.ideasService.findOne(+id,req.user);
   }
 
-  @Get('/for-list/:id')
-  @UseGuards(OptionalJwtAuthGuard)
-  findForList(@Param('id') id: string, @Req() req: Request) {
-    return this.ideasService.findForList(+id,req.user);
-  }
-
-
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @JwtAuth()
+  @ApiOkResponse({ description: 'Обновленная идея', type: IdeaCreateResponseDto })  
+  @ApiUpdateEntityErrors()
   update(
     @Param('id') id: string,
     @Req() req: Request,
@@ -116,10 +80,52 @@ export class IdeasController {
   ) {
     return this.ideasService.update(+id, req.user, updateIdeaDto);
   }
+  
+  @Delete(':id')
+  @JwtAuth()
+  @HttpCode(StatusCode.successDelete)
+  @ApiResponse({ status: StatusCode.successDelete, description: 'Результат удаления идеи', type: EntityDeleteResponseDto })
+  @ApiDeleteEntityErrors()
+  remove(@Param('id') id: string, @Req() req: Request) {
+    return this.ideasService.remove(+id, req.user);
+  }
+
+  @Get('/find-by-source-kw/:src/:kw')
+  @JwtAuthOptional()
+  @ApiOkResponse({ description: 'Идеи по источнику и ключевому слову', type: IdeaListItemDto, isArray: true })
+  @ApiFindAllEntityErrors()
+  findBySourceKw(@Param('src') src: string, 
+    @Param('kw') kw: string, 
+    @Req() req: Request) {
+    return this.ideasService.findBySourceKw(src, kw,req.user);
+  }
+ 
+  @Post('find')
+  @JwtAuthSuperAdmin()
+  @HttpCode(StatusCode.successFind)
+  @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
+  @ApiBody({ type: IdeaFindWhereDto, description: 'Условия поиска идей (TypeORM FindOptionsWhere)' })
+  @ApiResponse({ status: StatusCode.successFind, description: 'Список идей по условию', type: IdeaListItemDto, isArray: true })
+  @ApiFindAllEntityErrors()
+  find(
+    @Body() findIdeaWhere: FindOptionsWhere<Idea>,
+  ) {
+    return this.ideasService.findByCond(findIdeaWhere);
+  }
+  
+
+  @Get('/for-list/:id')
+  @JwtAuthOptional()
+  @ApiGetEntityErrors()
+  findForList(@Param('id') id: string, @Req() req: Request) {
+    return this.ideasService.findForList(+id,req.user);
+  }
 
   @Post('to-moderate/:id')
-  @UseGuards(JwtAuthGuard)
+  @JwtAuth()
   @HttpCode(StatusCode.successToModerate)
+  @ApiOkResponse({ description: 'Результат перевода в модерацию', type: EntityToModerateResponseDto })
+  @ApiToModerateEntityErrors()
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -127,11 +133,11 @@ export class IdeasController {
     return this.ideasService.toModerate(+id, req.user);
   }
 
-
   @Post('moderate/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.Admin)
+  @JwtAuthAdmin()
   @HttpCode(StatusCode.successModerate)
+  @ApiOkResponse({ description: 'Результат модерации автора', type: EntityModerateResponseDto })
+  @ApiModerateEntityErrors()
   moderate(
     @Param('id') id: string,
     @Req() req: Request,

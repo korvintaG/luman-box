@@ -10,6 +10,7 @@ import { authorTestHelper } from 'src/DDD/authors/tests/author.helper';
 import { sourceTestHelper } from 'src/DDD/sources/tests/source.helper';
 import { keywordTestHelper } from 'src/DDD/keywords/tests/keyword.helper';
 import { ideaTestHelper } from 'src/DDD/ideas/tests/idea.helper';
+import { Keyword } from 'src/DDD/keywords/entities/keyword.entity';
 
 
 describe('InterconnectionsService (integration)', () => {
@@ -22,8 +23,10 @@ describe('InterconnectionsService (integration)', () => {
     name_reverse : "Название сути связи обратное для теста"
   }
 
-  const keywordToAddOK = {
-    name: 'Keyword name for test idea',
+  const keywordToAddOK = { 
+    names: ['Keyword name for test idea', 'Keyword name for test idea 2'],
+    default_name_index: 0,
+    class_keyword_id: 0
   }
 
   const idea1ToAddOK = {
@@ -63,7 +66,7 @@ describe('InterconnectionsService (integration)', () => {
   let entityID: number;
   let authorID: number;
   let sourceID: number;
-  let keywordID: number;
+  let keyword: Keyword;
   let idea1ID: number;
   let idea2ID: number;
 
@@ -91,16 +94,19 @@ describe('InterconnectionsService (integration)', () => {
     await interconnectionTestHelper.removeOldData(entityToAddOK);
     await ideaTestHelper.removeOldData(idea1ToAddOK);
     await ideaTestHelper.removeOldData(idea2ToAddOK);
-    await keywordTestHelper.removeOldData(keywordToAddOK);
+    await keywordTestHelper.removeOldData({
+      name: keywordToAddOK.names[0], 
+      class_keyword_id: keywordToAddOK.class_keyword_id
+    });
     await sourceTestHelper.removeOldData(sourceToAddOK);
     await authorTestHelper.removeOldData(authorToAddOK);
     authorID = await authorTestHelper.createEntityAndCheck(authorToAddOK);
     const sourceToAddOKWithAuthor = { ...sourceToAddOK, author: {id: authorID } };
     sourceID = await sourceTestHelper.createEntityAndCheck(sourceToAddOKWithAuthor);
-    keywordID = await keywordTestHelper.createEntityAndCheck(keywordToAddOK);
-    const idea1ToAddOKWithSource = { ...idea1ToAddOK, source: {id: sourceID }, keywords: [{id: keywordID }] };
+    keyword = await keywordTestHelper.createKeywordAndCheck(keywordToAddOK);
+    const idea1ToAddOKWithSource = { ...idea1ToAddOK, source: {id: sourceID }, keyword_names: [{id: keyword.names[0].id }] };
     idea1ID = await ideaTestHelper.createEntityAndCheck(idea1ToAddOKWithSource);
-    const idea2ToAddOKWithSource = { ...idea2ToAddOK, source: {id: sourceID }, keywords: [{id: keywordID }] };
+    const idea2ToAddOKWithSource = { ...idea2ToAddOK, source: {id: sourceID }, keyword_names: [{id: keyword.names[0].id }]};
     idea2ID = await ideaTestHelper.createEntityAndCheck(idea2ToAddOKWithSource);
     entityToAddOKWithAll = { ...entityToAddOK, idea1_id: idea1ID, idea2_id: idea2ID };
   });
@@ -150,7 +156,7 @@ describe('InterconnectionsService (integration)', () => {
     expect(resIdea2.body[0].verification_status).toBe(VerificationStatus.ToModerate);
     const resSource = await sourceTestHelper.simpleFind(tokenSuperAdmin, {id: sourceID});
     expect(resSource.body[0].verification_status).toBe(VerificationStatus.ToModerate);
-    const resKeyword = await keywordTestHelper.simpleFind(tokenSuperAdmin, {id: keywordID});
+    const resKeyword = await keywordTestHelper.simpleFind(tokenSuperAdmin, {id: keyword.id});
     expect(resKeyword.body[0].verification_status).toBe(VerificationStatus.ToModerate);
     const resAuthor = await authorTestHelper.simpleFind(tokenSuperAdmin, {id: authorID});
     expect(resAuthor.body[0].verification_status).toBe(VerificationStatus.ToModerate);
@@ -170,7 +176,7 @@ describe('InterconnectionsService (integration)', () => {
       await interconnectionTestHelper.simpleModerate(tokenAdmin, entityID, 'approve', '', StatusCode.BadRequest); // ошибка т.к. источник непроверены
       await sourceTestHelper.simpleModerate(tokenAdmin, sourceID, 'approve');
       await interconnectionTestHelper.simpleModerate(tokenAdmin, entityID, 'approve', '', StatusCode.BadRequest); // ошибка т.к. ключевое слово непроверены
-      await keywordTestHelper.simpleModerate(tokenAdmin, keywordID, 'approve');
+      await keywordTestHelper.simpleModerate(tokenAdmin, keyword.id, 'approve');
       await interconnectionTestHelper.simpleModerate(tokenAdmin, entityID, 'approve', '', StatusCode.BadRequest); // ошибка т.к. идеи непроверены
       await ideaTestHelper.simpleModerate(tokenAdmin, idea1ID, 'approve');
       await ideaTestHelper.simpleModerate(tokenAdmin, idea2ID, 'approve');
@@ -194,7 +200,7 @@ describe('InterconnectionsService (integration)', () => {
     const delRes2=await ideaTestHelper.simpleRemove( tokenSuperAdmin, idea1ID, StatusCode.BadRequest);
     const delRes3=await ideaTestHelper.simpleRemove( tokenSuperAdmin, idea2ID, StatusCode.BadRequest);
     const delRes4=await sourceTestHelper.simpleRemove( tokenSuperAdmin, sourceID, StatusCode.BadRequest);
-    const delRes5=await keywordTestHelper.simpleRemove( tokenSuperAdmin, keywordID, StatusCode.BadRequest);
+    const delRes5=await keywordTestHelper.simpleRemove( tokenSuperAdmin, keyword.id, StatusCode.BadRequest);
   });
 
   it('удаление автора, источника, ключевого слова, идей, связи между идеями суперадмином', async () => {
@@ -202,7 +208,7 @@ describe('InterconnectionsService (integration)', () => {
     const delRes3=await ideaTestHelper.simpleRemove( tokenSuperAdmin, idea1ID);
     const delRes4=await ideaTestHelper.simpleRemove( tokenSuperAdmin, idea2ID);
     const delRes=await sourceTestHelper.simpleRemove( tokenSuperAdmin, sourceID);
-    const delRes2=await keywordTestHelper.simpleRemove( tokenSuperAdmin, keywordID);
+    const delRes2=await keywordTestHelper.simpleRemove( tokenSuperAdmin, keyword.id);
     const delRes5=await authorTestHelper.simpleRemove( tokenSuperAdmin, authorID);
   });
 

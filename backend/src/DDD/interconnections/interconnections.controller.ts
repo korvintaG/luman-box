@@ -1,22 +1,20 @@
-import { Req, UseGuards, Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } from '@nestjs/common';
+import { Req, Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } from '@nestjs/common';
 import { InterconnectionsService } from './interconnections.service';
 import { InterconnectionEntityDto } from './dto/create-interconnection.dto';
 import { UpdateInterconnectionDto } from './dto/update-interconnection.dto';
-import { JwtAuthGuard } from '../../authorization/guards/jwt-auth.guard';
-import { OptionalJwtAuthGuard } from '../../authorization/guards/optional-jwt-auth.guard';
 import { Request } from 'express';
-import { IInterconnectionWay, IModerate, Role, StatusCode } from 'src/types/custom';
-import { RoleGuard } from 'src/authorization/guards/role.guard';
-import { WithRole } from 'src/authorization/decorators/role.decorator';
+import { IModerate, StatusCode } from 'src/types/custom';
 import { FindOptionsWhere } from 'typeorm';
 import { Interconnection } from './entities/interconnection.entity';
-import { JwtAuth, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { JwtAuth, JwtAuthAdmin, JwtAuthOptional, JwtAuthSuperAdmin, JwtAuthUser } from 'src/shared/decorators/api-jwt-auth.decorator';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { InterconnectionCreateResponceDto } from './dto/interconnection-create-responce.dto';
 import { InterconnectionByIdeaAndTypeResponseDto } from './dto/interconnection-by-idea-and-type-response.dto';
 import { InterconnectionCountItemDto } from './dto/interconnection-count-response.dto';
 import { InterconnectionFindWhereDto } from './dto/interconnection-find-where.dto';
-import { ApiCreateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { ApiCreateEntityErrors, ApiDeleteEntityErrors, ApiFindAllEntityErrors, ApiGetEntityErrors, ApiModerateEntityErrors, ApiToModerateEntityErrors, ApiUpdateEntityErrors } from 'src/shared/decorators/api-errors.decorator';
+import { EntityToModerateResponseDto } from 'src/shared/dto/entity-to-moderate-response.dto';
+import { EntityModerateResponseDto } from 'src/shared/dto/entity-moderate-response.dto';
 
 @ApiTags('Взаимосвязи')
 @Controller('interconnections')
@@ -31,30 +29,61 @@ export class InterconnectionsController {
     return this.interconnectionsService.create(req.user,interconnectionEntityDto);
   }
 
-  @JwtAuthOptional()
   @Get('/count-by-idea/:idea_id')
+  @JwtAuthOptional()
   @ApiParam({ name: 'idea_id', description: 'ID идеи', example: 1 })
-  @ApiOkResponse({ description: 'Статистика взаимосвязей идеи по типам', type: InterconnectionCountItemDto, isArray: true })
+  @ApiOkResponse({ description: 'Калькуляция взаимосвязей идеи по типам', type: InterconnectionCountItemDto, isArray: true })
+  @ApiFindAllEntityErrors()
   countByIdea(@Param('idea_id') idea_id: string, @Req() req: Request) {
     return this.interconnectionsService.countAllByIdea(+idea_id, req.user);
   }
 
-  @JwtAuthOptional()
   @Get('/by-idea-and-type/:idea_id/:type_id')
+  @JwtAuthOptional()
   @ApiParam({ name: 'idea_id', description: 'ID идеи', example: 1 })
   @ApiParam({ name: 'type_id', description: 'ID типа взаимосвязи', example: 1 })
   @ApiOkResponse({ description: 'Взаимосвязи идеи по типу', type: InterconnectionByIdeaAndTypeResponseDto })
+  @ApiFindAllEntityErrors()
   findAllByIdeaAndType(@Param('idea_id') idea_id: string, 
     @Param('type_id') type_id: string, 
     @Req() req: Request) {
     return this.interconnectionsService.getByIdeaAndType(+idea_id,+type_id, req.user);
   }
 
+  @Get(':id')
+  @JwtAuthOptional()
+  @ApiParam({ name: 'id', description: 'ID взаимосвязи', example: 1 })
+  @ApiOkResponse({ description: 'Детали взаимосвязи', type: InterconnectionCreateResponceDto })
+  @ApiGetEntityErrors()
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    return this.interconnectionsService.findOne(+id, req.user);
+  }
+
+  @Patch(':id')
+  @JwtAuth()
+  @ApiParam({ name: 'id', description: 'ID взаимосвязи', example: 1 })
+  @ApiBody({ type: UpdateInterconnectionDto, description: 'Частичное обновление взаимосвязи' })
+  @ApiOkResponse({ description: 'Обновленная взаимосвязь', type: InterconnectionCreateResponceDto })
+  @ApiUpdateEntityErrors()
+  update(@Req() req: Request, @Param('id') id: string, @Body() updateInterconnectionDto: UpdateInterconnectionDto) {
+    return this.interconnectionsService.update(req.user, +id, updateInterconnectionDto);
+  }
+
+  @Delete(':id')
+  @JwtAuth()
+  @HttpCode(StatusCode.successDelete)
+  @ApiDeleteEntityErrors()
+  remove(@Req() req: Request, @Param('id') id: string) {
+    return this.interconnectionsService.remove(req.user,+id);
+  }
+
   @Post('find')
   @JwtAuthSuperAdmin()
+  @HttpCode(StatusCode.successFind)
   @ApiOperation({ description: 'Только для суперадмина для нужд тестирования' })
   @ApiBody({ type: InterconnectionFindWhereDto, description: 'Условия поиска взаимосвязей (TypeORM FindOptionsWhere)' })
-  @ApiOkResponse({ description: 'Список взаимосвязей по условию', type: InterconnectionCreateResponceDto, isArray: true })
+  @ApiResponse({ status: StatusCode.successFind, description: 'Список взаимосвязей по условию', type: InterconnectionCreateResponceDto, isArray: true })
+  @ApiFindAllEntityErrors()
   find(
     @Body() findInterconnectionWhere: FindOptionsWhere<Interconnection>,
   ) {
@@ -62,38 +91,11 @@ export class InterconnectionsController {
   }
 
 
-  @JwtAuthOptional()
-  @Get(':id')
-  @ApiParam({ name: 'id', description: 'ID взаимосвязи', example: 1 })
-  @ApiOkResponse({ description: 'Детали взаимосвязи', type: InterconnectionCreateResponceDto })
-  findOne(@Param('id') id: string, @Req() req: Request) {
-    return this.interconnectionsService.findOne(+id, req.user);
-  }
-
-  /*@Get('/idea-for-interconnect/:id/:tid/:iid')
-  findIdeaToInterconnect(@Param('id') id: string, @Param('tid') tid: string, @Param('iid') iid: string) {
-    return this.interconnectionsService.getIdeaToInterconnect(+id,+tid,+iid);
-  }*/
-
-  @Patch(':id')
-  @JwtAuth()
-  @ApiParam({ name: 'id', description: 'ID взаимосвязи', example: 1 })
-  @ApiBody({ type: UpdateInterconnectionDto, description: 'Частичное обновление взаимосвязи' })
-  @ApiOkResponse({ description: 'Обновленная взаимосвязь', type: InterconnectionCreateResponceDto })
-  update(@Req() req: Request, @Param('id') id: string, @Body() updateInterconnectionDto: UpdateInterconnectionDto) {
-    return this.interconnectionsService.update(req.user, +id, updateInterconnectionDto);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  @HttpCode(StatusCode.successDelete)
-  remove(@Req() req: Request, @Param('id') id: string) {
-    return this.interconnectionsService.remove(req.user,+id);
-  }
-
   @Post('to-moderate/:id')
-  @UseGuards(JwtAuthGuard)
+  @JwtAuth()
   @HttpCode(StatusCode.successToModerate)
+  @ApiOkResponse({ description: 'Результат перевода в модерацию', type: EntityToModerateResponseDto })
+  @ApiToModerateEntityErrors()
   toModerate(
     @Param('id') id: string,
     @Req() req: Request,
@@ -101,11 +103,11 @@ export class InterconnectionsController {
     return this.interconnectionsService.toModerate(+id, req.user);
   }
 
-
   @Post('moderate/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @WithRole(Role.Admin)
+  @JwtAuthAdmin()
   @HttpCode(StatusCode.successModerate)
+  @ApiOkResponse({ description: 'Результат модерации взаимосвязи', type: EntityModerateResponseDto })
+  @ApiModerateEntityErrors()
   moderate(
     @Param('id') id: string,
     @Req() req: Request,

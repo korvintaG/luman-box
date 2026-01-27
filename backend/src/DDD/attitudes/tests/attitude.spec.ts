@@ -11,6 +11,7 @@ import { authorTestHelper } from 'src/DDD/authors/tests/author.helper';
 import { sourceTestHelper } from 'src/DDD/sources/tests/source.helper';
 import { keywordTestHelper } from 'src/DDD/keywords/tests/keyword.helper';
 import { ideaTestHelper } from 'src/DDD/ideas/tests/idea.helper';
+import { Keyword } from 'src/DDD/keywords/entities/keyword.entity';
 
 
 describe('AttitudesService (integration)', () => {
@@ -24,8 +25,10 @@ describe('AttitudesService (integration)', () => {
     user_id : 1
   }
 
-  const keywordToAddOK = {
-    name: 'Keyword name for test idea',
+  const keywordToAddOK = { 
+    names: ['Keyword name for test idea', 'Keyword name for test idea 2'],
+    default_name_index: 0,
+    class_keyword_id: 0
   }
 
   const ideaToAddOK = {
@@ -58,7 +61,7 @@ describe('AttitudesService (integration)', () => {
   let entityID: number;
   let authorID: number;
   let sourceID: number;
-  let keywordID: number;
+  let keyword: Keyword;
   let ideaID: number;
 
   let entityToAddOKWithAll: any;
@@ -93,14 +96,17 @@ describe('AttitudesService (integration)', () => {
 
   it('подготовка данных для тестов - удаление старых данных и добавление новоых автора, идеи, ключевого слова, источника', async () => {
     await ideaTestHelper.removeOldData(ideaToAddOK);
-    await keywordTestHelper.removeOldData(keywordToAddOK);
+    await keywordTestHelper.removeOldData({
+      name: keywordToAddOK.names[0], 
+      class_keyword_id: keywordToAddOK.class_keyword_id
+    });
     await sourceTestHelper.removeOldData(sourceToAddOK);
     await authorTestHelper.removeOldData(authorToAddOK);
     authorID = await authorTestHelper.createEntityAndCheck(authorToAddOK);
     const sourceToAddOKWithAuthor = { ...sourceToAddOK, author: {id: authorID } };
     sourceID = await sourceTestHelper.createEntityAndCheck(sourceToAddOKWithAuthor);
-    keywordID = await keywordTestHelper.createEntityAndCheck(keywordToAddOK);
-    const ideaToAddOKWithSource = { ...ideaToAddOK, source: {id: sourceID }, keywords: [{id: keywordID }] };
+    keyword = await keywordTestHelper.createKeywordAndCheck(keywordToAddOK);
+    const ideaToAddOKWithSource = { ...ideaToAddOK, source: {id: sourceID }, keyword_names:  [{id: keyword.names[0].id }]  };
     ideaID = await ideaTestHelper.createEntityAndCheck(ideaToAddOKWithSource);
     entityToAddOKWithAll = { ...entityToAddOK, idea_id: ideaID };
   });
@@ -167,7 +173,7 @@ describe('AttitudesService (integration)', () => {
   it('удаление автора, источника, ключевого слова, идей суперадмином', async () => {
     const delRes3=await ideaTestHelper.simpleRemove( tokenSuperAdmin, ideaID);
     const delRes=await sourceTestHelper.simpleRemove( tokenSuperAdmin, sourceID);
-    const delRes2=await keywordTestHelper.simpleRemove( tokenSuperAdmin, keywordID);
+    const delRes2=await keywordTestHelper.simpleRemove( tokenSuperAdmin, keyword.id);
     const delRes5=await authorTestHelper.simpleRemove( tokenSuperAdmin, authorID);
   });
 

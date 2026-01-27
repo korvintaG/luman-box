@@ -5,8 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { Author } from './entities/author.entity';
 import { SourcesService } from '../sources/sources.service';
-import { joinSimpleEntityFirst } from '../../utils/utils';
-import { IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
+import { joinSimpleEntityFirst, throwException } from '../../utils/utils';
+import { ExceptionType, IModerate, IUser, Role, SimpleEntity } from '../../types/custom';
 import { FilesService } from 'src/files/files.service';
 import { VerificationStatus } from 'src/shared/entities/abstract.entity';
 import { ModeratorService } from '../../shared/services/moderator/moderator.service';
@@ -86,6 +86,8 @@ export class AuthorsService {
       .leftJoin('author.moderator', 'moderator')
       .where('author.id = :id', { id })
       .getOne();
+    if (!author)
+      throwException(ExceptionType.NotFoundException, 'Автор не найден');
     await this.moderatorService.checkGetRecordAccess(author, user);
     const sources = await this.authorRepository.manager.query<SimpleEntity[]>(
       `select distinct sources.id, sources.name 
@@ -103,8 +105,10 @@ export class AuthorsService {
     );
     const keywords = await this.authorRepository.manager.query<SimpleEntity[]>(
       `select distinct keywords.id, keywords.name
-        from keywords, idea_keywords , ideas, sources
-        where idea_keywords.keyword_id=keywords.id and idea_keywords.idea_id=ideas.id
+        from keywords, idea_keyword_names , ideas, sources, keyword_names
+        where idea_keyword_names.keyword_name_id=keyword_names.id 
+          and keyword_names.keyword_id=keywords.id 
+          and idea_keyword_names.idea_id=ideas.id
           and sources.id=source_id and author_id=$1
         order by keywords.name`,
       [id],
@@ -182,12 +186,7 @@ export class AuthorsService {
       //const author = await this.authorRepository.findOne({ where: { id } });
       const res = await this.authorRepository.delete({ id });
       if (res.affected === 0)
-        throw new NotFoundException(
-          {
-            error: 'NotFound',
-            message: 'Автор не найден',
-          }
-        );
+        throwException(ExceptionType.NotFoundException, 'Автор не найден');
       else {
           if (recordOld.image_URL) {
             await this.filesService.deleteImage(recordOld.image_URL);
@@ -220,12 +219,7 @@ export class AuthorsService {
             ']';
         }
 
-        throw new BadRequestException(
-          {
-            error: 'Bad Request',
-            message: errMessage
-          }
-        );
+        throwException(ExceptionType.BadRequestException, errMessage);
       }
     }
   }
