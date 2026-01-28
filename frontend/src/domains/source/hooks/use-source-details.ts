@@ -25,7 +25,7 @@ import {
   selectError as selectAuthorError,
   selectSliceState as selectAuthorsSliceState,
   AuthorShort
-} from "../../../domains/author/";
+} from "../../author";
 import { DetailsHookProps, IDetailsWithPhotoHookRes, RequestStatus } from "../../../shared/types/types-for-hooks";
 import {
   selectCurrentFile, selectSliceState as selectFileSliceState,
@@ -73,17 +73,18 @@ export const useSourceDetails = ({ id, currentUser }: DetailsHookProps)
 
   useEffect(() => {
     if (currentRecord) {
-      setValues({
+      setValues(prevValues => ({
         ...pick(currentRecord, ["name", "author", "publication_year", "about_source", "image_URL", "moderation_notes"]),
         author: { id: currentRecord.author ? currentRecord.author.id : 0, name: "" },
-      });
+        new_image_URL: prevValues.new_image_URL, // Сохраняем текущее значение new_image_URL при обновлении из currentRecord
+      }));
       //fetchAdditional();      
     }
   }, [currentRecord]);
 
   useEffect(() => {
     if (currentFile) {
-      setValues({ ...values, new_image_URL: currentFile })
+      setValues(prevValues => ({ ...prevValues, new_image_URL: currentFile }))
     }
   }, [currentFile])
 

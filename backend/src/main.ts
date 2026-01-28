@@ -28,16 +28,19 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.useGlobalInterceptors(new RateLimitInterceptor(configService));
   
-  app.setGlobalPrefix('api');
-  setupSwagger(app);
+  // Регистрируем статические файлы ДО установки глобального префикса,
+  // чтобы они были доступны без префикса /api
   app.useStaticAssets(
-    join(__dirname, '..', process.env.UPLOAD_FILE_PATH),
+    join(process.cwd(), process.env.UPLOAD_FILE_PATH),
       {prefix: `/${process.env.UPLOAD_FILE_PATH}/`},
   );
   app.useStaticAssets(
-    join(__dirname, '..', process.env.STORE_FILE_PATH),
+    join(process.cwd(), process.env.STORE_FILE_PATH),
       {prefix: `/${process.env.STORE_FILE_PATH}/`},
   );
+  
+  app.setGlobalPrefix('api');
+  setupSwagger(app);
   app.enableCors({ origin: true, credentials: true });
   //["http://localhost:3006","192.168.50.151"]
   

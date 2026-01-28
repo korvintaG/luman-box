@@ -5,7 +5,7 @@ import { AboutPage } from "../../pages/AboutPage/AboutPage";
 import { CMSPage } from "../../pages/CMSPage/CMSPage";
 import { AuthorListPage, AuthorDetailsPage, authorsLoad, authorLoad } from "../../domains/author";
 import { SourceListPage } from "../../domains/source/pages/source-list-page";
-import { SourceDetailsPage } from "../../domains/source/pages/SourceDetailsPage";
+import { SourceDetailsPage } from "../../domains/source/pages/source-details-page";
 import { IdeasPage } from "../../domains/idea/pages/idea-list-page";
 import { IdeaDetailsPage } from "../../domains/idea/pages/idea-details-page";
 import { InterconnectionsPage } from "../../domains/interconnection/pages/interconnection-list-page";

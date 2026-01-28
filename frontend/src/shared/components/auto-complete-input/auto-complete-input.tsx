@@ -2,6 +2,8 @@ import { FC, useState, useEffect, useRef, useId, useCallback, KeyboardEvent, Cha
 import styles from "./auto-complete-input.module.scss";
 import { CustomInput } from "../../types/ui-types";
 
+export const autoCompleteDataCy = 'autocomplete';
+
 export type AutocompleteInputProps<T> = Omit<React.ComponentPropsWithoutRef<"input">, "onChange" | "value" | "onSelect"> & CustomInput & {
   /** Функция поиска, которая принимает строку запроса и возвращает Promise с массивом результатов */
   searchFunction: (query: string) => Promise<T[]>;
@@ -365,7 +367,7 @@ export const AutocompleteInput = <T,>({
           ref={inputRef}
           id={inputId}
           className={styles.input}
-          data-cy={dataCy ? `${dataCy}-input` : undefined}
+          data-cy={(dataCy ? dataCy : autoCompleteDataCy) + '_input'}
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -390,7 +392,7 @@ export const AutocompleteInput = <T,>({
           <ul
             ref={suggestionsRef}
             className={`${styles.suggestions_list} ${openFromTop ? styles.suggestions_list_top : ""}`}
-            data-cy={dataCy ? `${dataCy}-suggestions` : undefined}
+            data-cy={(dataCy ? dataCy : autoCompleteDataCy) + '_suggestions'}
           >
             {suggestions.map((item, index) => {
               const displayText = getDisplayText(item);
@@ -398,12 +400,12 @@ export const AutocompleteInput = <T,>({
               return (
                 <li
                   key={getValue ? getValue(item) : index}
+                  data-cy={(dataCy ? dataCy : autoCompleteDataCy) + '_suggestion-' + index.toString()}
                   className={`${styles.suggestion_item} ${
                     index === selectedIndex ? styles.suggestion_item_selected : ""
                   }`}
                   onClick={() => handleSelectItem(item)}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  data-cy={dataCy ? `${dataCy}-suggestion-${index}` : undefined}
                 >
                   {highlightText(displayText, trimmedInputValue)}
                 </li>

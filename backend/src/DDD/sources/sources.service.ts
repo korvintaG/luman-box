@@ -123,8 +123,12 @@ export class SourcesService {
     await this.moderatorService.checkGetRecordAccess(mainRes, user);
     const keywords = await this.sourceRepository.manager.query<SimpleEntityWithCnt[]>(
       `select keywords.name, keywords.id, count(ideas.*)::integer as cnt 
-        from ideas, idea_keywords as ik, keywords
-        where ideas.source_id=$1 and ik.idea_id=ideas.id and keywords.id=ik.keyword_id
+        from ideas, idea_keyword_names as ikn, keyword_names as kn, keywords
+        where 
+          ideas.source_id=$1 
+          and ikn.idea_id=ideas.id 
+          and keywords.id=kn.keyword_id 
+          and ikn.keyword_name_id=kn.id
         group by keywords.name, keywords.id
         order by keywords.name`,
       [id],

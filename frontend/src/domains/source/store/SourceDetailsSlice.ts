@@ -59,6 +59,7 @@ const sourceDetailsSlice = createSlice({
       })
       .addCase(getSource.fulfilled, (state, action) => {
         state.current = action.payload;
+        // {...action.payload, new_image_URL:null};
       })
       .addCase(addSource.fulfilled, (state, action) => {
         state.status = RequestStatus.Added;

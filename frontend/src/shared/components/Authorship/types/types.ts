@@ -14,5 +14,7 @@ export interface IAuthorshipProps <T extends IAuthorshipRecord>{
     record: T;
     entityName?:string;
     className?: string;
+    divSpacer?: boolean;
+
   };
   

@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent, useId, useRef, useState } from "react";
-import styles from "./RecordImage.module.css";
+import styles from "./record-image.module.css";
 import { RequestStatus } from "../../types/types-for-hooks";
 import { ButtonUI } from "../../ui/button";
 import { useMsgModal } from "../../hooks/useMsgModal";
@@ -17,7 +17,7 @@ export const UPLOAD_FILE_PATH =
 
 export type RecordImageProps = {
   imageURL: string | null;
-  newImageURL: string | null | undefined;
+  newImageURL: string | null | undefined; // =null - сбросить, =undefined - не определено
   readOnly: boolean;
   uploadFileAction: (data: FormData) => void;
   deleteImage: () => void;
@@ -25,7 +25,7 @@ export type RecordImageProps = {
 };
 
 export const RecordImage: FC<RecordImageProps> = (props) => {
-  //console.log("RecordImage", props);
+  console.log("RecordImage", props);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const id = useId();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

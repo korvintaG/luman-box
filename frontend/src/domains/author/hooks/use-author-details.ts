@@ -37,7 +37,6 @@ export const useAuthorDetails = ({ id, currentUser }: DetailsHookProps)
     birth_place: "",
     about_author: "",
     image_URL: "",
-    new_image_URL: "",
     moderation_notes: null
   });
 
@@ -61,11 +60,11 @@ export const useAuthorDetails = ({ id, currentUser }: DetailsHookProps)
 
   useEffect(() => {
     if (currentRecord) {
-      setValues({
+      setValues((prevValues) => ({
         ...pick(currentRecord,
           ["name", "birth_date", "birth_place", "about_author", "image_URL", "moderation_notes"]),
-        new_image_URL: undefined
-      });
+          new_image_URL: prevValues.new_image_URL, // Сохраняем текущее значение new_image_URL при обновлении из currentRecord
+      }));
       //setCurrentFileName(currentRecord.image_URL);
     }
   }, [currentRecord, setValues]);

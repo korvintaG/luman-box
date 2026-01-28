@@ -114,7 +114,7 @@ Cypress.Commands.add('checkImage', (imageURL?: string, checkAbsent?: boolean) =>
   }
 })
 
-Cypress.Commands.add('clickAddRecordButton', (addCmd: string='add') => {
+Cypress.Commands.add('clickAddRecordButton', (addCmd: string='new') => {
   cy.get('[data-cy="add-record-button"]').should('be.visible');
   cy.get('[data-cy="add-record-button"]').click();
   cy.location('pathname', {timeout})

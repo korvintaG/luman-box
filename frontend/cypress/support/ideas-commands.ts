@@ -36,7 +36,8 @@ Cypress.Commands.add('fillIdeasForm', (idea?: IdeaToAdd) => {
   cy.get('[data-cy="idea_name-input"]').should('be.visible');
   cy.get('[data-cy="idea_name-input"]').should('have.value', '');
   cy.get('[data-cy="svg-icon"]').should('not.exist');
-  cy.get('[data-cy="idea_name-input"]').clear().type(ideaAdd.name, { delay: 0 });  cy.get('[data-cy="idea_original_text-input"]').type(ideaAdd.original_text);
+  cy.get('[data-cy="idea_name-input"]').clear().type(ideaAdd.name, { delay: 0 });  
+  cy.get('[data-cy="idea_original_text-input"]').type(ideaAdd.original_text);
   cy.get('[data-cy="idea_content-input"]').type(ideaAdd.content);
   cy.get('[data-cy="idea_SVG-input"]').type(ideaAdd.SVG);
   /*cy.get('[data-cy="idea_source-field"]').then(($select) => {
@@ -58,18 +59,11 @@ Cypress.Commands.add('fillIdeasForm', (idea?: IdeaToAdd) => {
       }
     });
   });  
-  cy.get('[data-cy="keyword-field"]').then(($select) => {
-    // Найти option с текстом, начинающимся с keywordToAdd.name
-    cy.wrap($select).find('option').then(($options) => {
-      const targetOption = Array.from($options).find(option => 
-        option.textContent?.startsWith(keywordToAdd.name)
-      );
-      if (targetOption) {
-        const value = targetOption.getAttribute('value');
-        cy.wrap($select).select(value as string);
-      }
-    });
-  });  
+  cy.get('[data-cy="keyword-autocomplete_input"]').type(keywordToAdd.names[keywordToAdd.default_name_index]);
+  //подождать 1 секунду
+  cy.wait(1000);
+  cy.get('[data-cy="keyword-autocomplete_suggestion-0"]').click();
+  
 });
 
 Cypress.Commands.add('deleteIdeasCascade', () => {

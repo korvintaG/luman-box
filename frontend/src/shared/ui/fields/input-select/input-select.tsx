@@ -3,6 +3,7 @@ import { combineClasses } from "../../../utils/utils";
 import styles from "./input-select.module.css";
 import { CustomInput } from "../../../types/ui-types";
 import { Link } from "react-router-dom";
+import { DivSpacer } from "../../div-spacer/div-spacer";
 
 export type SelectedValues = {
   id: number;
@@ -16,6 +17,7 @@ export type InputSelectUIProps = React.ComponentPropsWithoutRef<"select"> &
     readOnly?: boolean;
     URL?: string;
     valueText?:string;
+    divSpacer?:boolean;
     dataCy?:string;
   };
 
@@ -51,6 +53,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
   readOnly,
   URL,
   dataCy,
+  divSpacer,
   ...selectProps
 }) => {
   const inputId = useId();
@@ -103,6 +106,7 @@ export const InputSelectUI: FC<InputSelectUIProps> = ({
           ))}
         </select>
       )}
+      <DivSpacer/>
     </>
   );
 };

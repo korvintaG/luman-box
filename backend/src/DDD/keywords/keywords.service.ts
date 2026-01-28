@@ -503,9 +503,10 @@ export class KeywordsService {
           const result = await this.keywordRepository.manager.query<
             SimpleEntity[]
           >(
-            `select i.id, i.name from idea_keywords as ik
+            `select i.id, i.name 
+            from idea_keyword_names as ikn, keyword_names kn
             LEFT JOIN ideas as i on ik.idea_id=i.id
-            where keyword_id=$1
+            where kn.keyword_id=$1 and ikn,keyword_name_id=kn.id
             limit 5`,
             [id],
           );

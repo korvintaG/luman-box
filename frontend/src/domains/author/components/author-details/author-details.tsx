@@ -11,7 +11,7 @@ import {
 import { Authorship } from "../../../../shared/components/Authorship/ui/Authorship";
 import { RelationList } from "../../../../shared/components/RelationList/RelationList";
 import styles from "../../../../shared/CSS/StandartForm.module.scss";
-import { useAuthorDetails } from "../../hooks/UseAuthorDetails";
+import { useAuthorDetails } from "../../hooks/use-author-details";
 import { RecordControlBlock } from "../../../../shared/components/record-control-block/ui/record-control-block";
 import {
   genAuthorURL,
@@ -23,8 +23,7 @@ import { BreadcrumbSimpeType } from "../../../../shared/components/Breadcrumbs/B
 import {
   InputTextUI,
 } from "../../../../shared/ui/fields/input-text/input-text";
-import { RecordImage } from "../../../../shared/components/RecordImage/RecordImage";
-import { AuthorAdd, AuthorDetail } from "../../types/author-type";
+import { RecordImage } from "../../../../shared/components/record-image/record-image";
 import { LabelPosition } from "../../../../shared/types/ui-types";
 // import { LabelPosition } from "../../../../shared/ui/fields/input-text/types";
 
@@ -54,14 +53,11 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
   const tabHeader = genTabHeaderText(...params);
 
   const inputProps = {
-    classes: {
-      classBlockAdd: styles.input_block,
-      classLabelAdd: styles.label,
-      classInputAdd: styles.input,
-    },
     readOnly: status.editAccessStatus === EditAccessStatus.Readonly,
     onChange: form?.handleChange ?? (() => {}),
   };
+
+  console.log('form?.values.image_URL', form?.values.image_URL)
 
   return (
     <>
@@ -81,7 +77,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
         <section className={styles.form__content}>
           <RecordImage 
             imageURL={form?.values.image_URL ?? null}
-            newImageURL={form?.values.new_image_URL ?? null}
+            newImageURL={form?.values.new_image_URL}
             readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
             uploadFileAction={record.uploadFileAction}
             deleteImage={() => {
@@ -94,6 +90,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               <Authorship
                 record={record.currentRecord}
                 entityName="Автор"
+                divSpacer
               />
             }
             <InputEditUI
@@ -103,9 +100,11 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               placeholder="Укажите ФИО автора"
               minLength={5}
               dataCy="author_name"
+              divSpacer
               required
               {...inputProps}
             />
+            
             <InputEditUI
               name="birth_date"
               label="Рождения год:"
@@ -113,6 +112,7 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               placeholder="Укажите год рождения"
               minLength={2}
               dataCy="author_birth_date"
+              divSpacer
               required
               {...inputProps}
             />
@@ -123,11 +123,13 @@ export const AuthorDetails: FC<AuthorDetailsProps> = ({
               placeholder="Укажите место рождения"
               minLength={5}
               dataCy="author_birth_place"
+              divSpacer
               required
               {...inputProps}
             />
             <InputTextUI
               value={form?.values.about_author ?? ""}
+              labelPosition={LabelPosition.left} 
               name="about_author"
               label="Об авторе:"
               dataCy="author_about"

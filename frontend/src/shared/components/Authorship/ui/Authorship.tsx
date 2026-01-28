@@ -5,6 +5,7 @@ import { IAuthorshipProps, IAuthorshipRecord } from "../types/types";
 import { formatMoscowDateTime } from "../../../utils/utils";
 import { VerificationStatus, VerificationStatusClass, VerificationStatusLabels } from "../../../types/entity-types";
 import clsx from "clsx";
+import { DivSpacer } from "../../../ui/div-spacer/div-spacer";
 
 
 export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
@@ -77,6 +78,7 @@ export const Authorship: FC<IAuthorshipProps<IAuthorshipRecord>> = (props) => {
           text={formatMoscowDateTime(props.record.date_time_moderated)}
         />
       )}
+      {props.divSpacer && <DivSpacer size="middle"/>}
     </>
   );
 };

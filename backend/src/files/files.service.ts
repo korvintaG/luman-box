@@ -30,7 +30,12 @@ export class FilesService {
   async deleteImage(image: string) {
     if (image) {
       const delFile = join(STORE_FILE_PATH(), image)
-      await unlink(delFile)
+      try {
+        await unlink(delFile)
+      }
+      catch (error) {
+        console.log(`Не получилось удалить файл ${image}: ${error.message}`);
+      }
     }
   }
 
@@ -92,8 +97,14 @@ export class FilesService {
         const fileAgeInMinutes = (now - stats.mtime.getTime()) / (1000 * 60);
 
         if (fileAgeInMinutes > olderThanMinutes) {
-          await unlink(filePath);
-          console.log(`Удалён файл: ${filePath}`);
+          try {
+            await unlink(filePath);
+            console.log(`Удалён файл: ${filePath}`);
+          }
+          catch (error) {
+            console.log(`Не получилось удалить файл ${filePath}: ${error.message}`);
+          }
+    
         }
       }
     } catch (err) {
@@ -116,8 +127,14 @@ export class FilesService {
           const fileAgeInDays = (now - stats.mtime.getTime()) / (1000 * 60 * 60 * 24);
 
           if (fileAgeInDays > olderThanDays) {
-            await unlink(filePath);
-            console.log(`Удалён файл: ${filePath}`);
+            try {
+              await unlink(filePath);
+              console.log(`Удалён файл: ${filePath}`);
+            }
+            catch (error) {
+              console.log(`Не получилось удалить файл ${filePath}: ${error.message}`);
+            }
+      
           }
         }
       }

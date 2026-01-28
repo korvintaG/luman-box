@@ -14,13 +14,13 @@ import {
 import { Authorship } from "../../../../../shared/components/Authorship/ui/Authorship";
 import { SourceKeywords } from "../../ui/SourceKeywords/SourceKeywords";
 import { genAuthorURL, genIdeaURL, genSourceURL } from "../../../../../app/router/navigation";
-import { useSourceDetails } from "../../../hooks/UseSourceDetails";
+import { useSourceDetails } from "../../../hooks/use-source-details";
 import { RecordControlBlock } from "../../../../../shared/components/record-control-block/ui/record-control-block";
 import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumbs/Breadcrumbs";
 import {
   InputTextUI
 } from "../../../../../shared/ui/fields/input-text/input-text";
-import { RecordImage } from "../../../../../shared/components/RecordImage/RecordImage";
+import { RecordImage } from "../../../../../shared/components/record-image/record-image";
 import { LabelPosition } from "../../../../../shared/types/ui-types";
 
 export type SourceDetailsProps = {
@@ -54,6 +54,8 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
     onChange: form?.handleChange,
   };
 
+  console.log('form values',form.values)
+
   return (
     <>
       <Helmet>
@@ -72,10 +74,11 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
         <section className={styles.form__content}>
           <RecordImage
             imageURL={form?.values.image_URL ?? null}
-            newImageURL={form?.values.new_image_URL ?? null}
+            newImageURL={form ? form.values.new_image_URL : undefined}
             readOnly={status.editAccessStatus === EditAccessStatus.Readonly}
             uploadFileAction={record.uploadFileAction}
             deleteImage={() => {
+              console.log('delete image !!!!!!')
               form?.setEditStarted(true);
               form?.setValues({ ...form?.values, new_image_URL: null })
             }}
@@ -85,6 +88,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               <Authorship
                 record={record.currentRecord}
                 entityName="Источник"
+                divSpacer
             />}
             <InputEditUI
               name="name"
@@ -92,6 +96,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               value={form?.values.name}
               placeholder="Укажите название источника"
               dataCy="source_name"
+              divSpacer
               {...inputProps}
             />
             <InputSelectUI
@@ -101,6 +106,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               value={form?.values.author ? form?.values.author.id : 0}
               valueText={record.currentRecord?.author?.name}
               URL={genAuthorURL(form?.values.author?.id ?? 0)}
+              divSpacer
               dataCy="source_author"
               {...inputProps}
             />
@@ -110,6 +116,7 @@ export const SourceDetails: FC<SourceDetailsProps> = ({
               value={form?.values.publication_year}
               placeholder="Укажите год публикации"
               dataCy="source_publication_year"
+              divSpacer
               {...inputProps}
             />
             <InputTextUI

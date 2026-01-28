@@ -206,8 +206,13 @@ export class IdeasService {
       // неавторизован, выводим все отмодерированное
       founds = await this.ideaRepository.manager.query<{ id: number }[]>(
         `select ideas.id
-        from ideas, idea_keywords as ik
-        where ideas.source_id=$1 and ideas.verification_status = $2 and ik.idea_id=ideas.id and ik.keyword_id=$3`,
+        from ideas, idea_keyword_names as ikn, keyword_names as kn
+        where 
+          ideas.source_id=$1 
+          and ideas.verification_status = $2 
+          and ikn.idea_id=ideas.id and 
+          ikn.keyword_name_id=kn.id
+          and kn.keyword_id=$3`,
         [cond.source_id,  VerificationStatus.Moderated, cond.keyword_id],
       );
     else {
@@ -215,16 +220,25 @@ export class IdeasService {
         // простой пользователь - выводим отмодерированное и его
         founds = await this.ideaRepository.manager.query<{ id: number }[]>(
           `select ideas.id
-          from ideas, idea_keywords as ik
-          where ideas.source_id=$1 and (ideas.verification_status = $2 or ideas.user_id=$3) and ik.idea_id=ideas.id and ik.keyword_id=$4`,
+          from ideas, idea_keyword_names as ikn, keyword_names as kn
+          where 
+            ideas.source_id=$1 
+            and (ideas.verification_status = $2 or ideas.user_id=$3) 
+            and ikn.idea_id=ideas.id 
+            and ikn.keyword_name_id=kn.id
+            and kn.keyword_id=$4`,
           [cond.source_id, VerificationStatus.Moderated, user.id, cond.keyword_id],
         );
       else {
         // админ, выводим все
         founds = await this.ideaRepository.manager.query<{ id: number }[]>(
           `select ideas.id
-          from ideas, idea_keywords as ik
-          where ideas.source_id=$1 and ik.idea_id=ideas.id and ik.keyword_id=$2`,
+          from ideas, idea_keyword_names as ikn, keyword_names as kn
+          where 
+            ideas.source_id=$1 
+            and ikn.idea_id=ideas.id 
+            and ikn.keyword_name_id=kn.id
+            and kn.keyword_id=$2`,
           [cond.source_id, cond.keyword_id],
         );
       }

@@ -2,9 +2,9 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "../../../shared/services/store";
 import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
-import { SourceDetails } from "../components/smart/SourceDetails/SourceDetails";
+import { SourceDetails } from "../components/smart/source-details/source-details";
 import { appRoutesURL } from "../../../app/router/app-routes-URL";
-import { useSourceDetails } from "../hooks/UseSourceDetails";
+import { useSourceDetails } from "../hooks/use-source-details";
 import { generatePath } from "react-router";
 import { genSourceURL } from "../../../app/router/navigation";
 

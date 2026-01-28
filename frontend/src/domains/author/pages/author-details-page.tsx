@@ -3,8 +3,8 @@ import { useParams } from "react-router";
 import { useSelector } from "../../../shared/services/store";
 import { selectCurrentUser } from "../../../features/auth/store/AuthSlice";
 import { appRoutesURL } from "../../../app/router/app-routes-URL";
-import { AuthorDetails } from "../components/AuthorDetails/AuthorDetails"; 
-import { useAuthorDetails } from "../hooks/UseAuthorDetails";
+import { AuthorDetails } from "../components/author-details/author-details"; 
+import { useAuthorDetails } from "../hooks/use-author-details";
 import { generatePath } from "react-router";
 import { genAuthorURL } from "../../../app/router/navigation";
 

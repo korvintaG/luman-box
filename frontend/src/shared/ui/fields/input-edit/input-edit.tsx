@@ -3,6 +3,7 @@ import { combineClasses } from "../../../utils/utils";
 import styles from "./input-edit.module.css";
 import { CustomInput } from "../../../types/ui-types";
 import clsx from "clsx";
+import { DivSpacer } from "../../div-spacer/div-spacer";
 
 export enum ReadOnlyDecor {
   ToModerate=1,
@@ -13,6 +14,7 @@ export type InputEditUIProps = React.ComponentPropsWithoutRef<"input"> & CustomI
   dataCy?: string;
   readOnlyDecor?: ReadOnlyDecor;
   errorModerationText?:string;
+  divSpacer?: boolean;
 };
 
 export const InputEditUI: FC<InputEditUIProps> = ({
@@ -20,6 +22,7 @@ export const InputEditUI: FC<InputEditUIProps> = ({
   dataCy,
   readOnlyDecor,
   errorModerationText,
+  divSpacer,
   ...inputProps
 }) => {
   const inputId = useId();
@@ -52,6 +55,7 @@ export const InputEditUI: FC<InputEditUIProps> = ({
           value={inputProps.value !== null ? inputProps.value : ""}
         ></input>
       )}
+      {divSpacer && <DivSpacer/>}
     </>
   );
 };
