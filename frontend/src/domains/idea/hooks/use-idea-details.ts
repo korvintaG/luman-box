@@ -1,7 +1,7 @@
 import { useForm } from "../../../shared/hooks/useForm";
 import { pick } from "lodash";
 import { useDispatch, useSelector } from "../../../shared/services/store";
-import {  IdeaAdd, IdeaDetail, IdeaDetailPartial, KeywordNameObject, UserAttitudeIdea } from "../types/IdeaTypes";
+import {  IdeaAdd, IdeaDetail, IdeaDetailPartial, IdeaType, KeywordNameObject, UserAttitudeIdea } from "../types/IdeaTypes";
 import { addIdea, approveIdea, attitudeIdea, delIdea, getIdea,  rejectIdea, 
   selectCurrentIdea, selectError, selectNewID, selectSliceState, setIdea, setSliceStatus, toModerateIdea } from "../store/idea-details-slice";
 import {
@@ -29,6 +29,7 @@ import { SourceShort } from "../../source/types/source-type";
 import { useNavigate } from "react-router-dom";
 import { genIdeaURL } from "../../../app/router/navigation";
 import store from "../../../shared/services/store";
+import { selectIdeaTypes } from "../store/idea-types-slice";
 
 export interface DetailsIdeaHookProps extends  DetailsHookProps  {
   findSourceId: string | null;
@@ -38,6 +39,7 @@ export interface DetailsIdeaHookProps extends  DetailsHookProps  {
 export interface DetailsIdeaHookRes<FormValues, Record> extends
   IDetailsEditHookRes<FormValues, Record> {
     record: IDetailsEditHookRes<FormValues, Record>['record'] & {
+      ideaTypes: IdeaType[];
       sources: SourceShort[];
       keywords: KeywordSummary[];
     }
@@ -53,10 +55,12 @@ export interface DetailsIdeaHookRes<FormValues, Record> extends
 export const useIdeaDetails =({id, currentUser, findSourceId, findKeywordId}: 
   DetailsIdeaHookProps):DetailsIdeaHookRes<IdeaAdd, IdeaDetail>=>{
  
-const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted, setEditStarted } = useForm<IdeaAdd>({
+const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted, setEditStarted } =
+ useForm<IdeaAdd>({
     name: "",
     source: { id: 0, name: "", author: {id:0, name:""}},
     original_text: "",
+    idea_type_id: 4,
     content: "",
     date_time_create: new Date(),
     SVG:"",
@@ -71,6 +75,7 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
   const searchKeywordsSliceState = useSelector(selectSearchKeywordsSliceState);
   const currentRecord = useSelector(selectCurrentIdea);
   const sources = useSelector(selectSources);
+  const ideaTypes= useSelector(selectIdeaTypes);
   const errorText = useSelector(selectError);
   const sourcesErrorText = useSelector(selectSourcesError)
   const keywordsErrorText = useSelector(selectKeywordsError)
@@ -126,6 +131,7 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
     if (currentRecord) {
       setValues({
         ...pick(currentRecord, [
+          "idea_type_id",
           "SVG",
           "name",
           "original_text",
@@ -140,7 +146,7 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
           name: currentRecord.source ? currentRecord.source.name : "", 
           author: {id:0, name:""}
           
-        },
+        }
       });
       //fetchAdditional();
     }
@@ -212,7 +218,7 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
   };
 
   const handleSubmitAction = (e: SyntheticEvent) => {
-    console.log('handleSubmitAction')
+    console.log('handleSubmitAction', values, getFormDTO())
     e.preventDefault();
     if (id) {
       const upd = {
@@ -255,6 +261,7 @@ const { values, handleChange, setValues, getFormDTO, getFormDTOObl, editStarted,
       deleteRecordAction, 
       handleSubmitAction,
       sources, 
+      ideaTypes,
       //keywords: keywords?keywords.keywords:[]      
       keywords: []      
     },

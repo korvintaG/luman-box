@@ -51,6 +51,17 @@
   height: 50vh;
 }
 
+.idea_type_block {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-items:flex-start;
+
+  & a {
+    font-size: 13px;
+  }
+}
+
 /********************************************
 * адаптивность
 ********************************************/

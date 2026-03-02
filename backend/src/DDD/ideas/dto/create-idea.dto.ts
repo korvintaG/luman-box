@@ -99,7 +99,17 @@ export class CreateIdeaDto {
   @Type(() => CreateIdeaSourceDto)
   source: CreateIdeaSourceDto;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
+    description: 'ID типа идеи',
+    example: 4,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt({ message: 'Поле [idea_type_id] должно быть целым числом' })
+  @Min(1, { message: 'Поле [idea_type_id] должно быть больше нуля' })
+  idea_type_id?: number;
+
+  /*@ApiProperty({
     description: 'Ключевые слова идеи',
     type: CreateIdeaKeywordNameDto,
     isArray: true,
@@ -111,7 +121,7 @@ export class CreateIdeaDto {
     message: 'Для идеи должно быть минимум одно ключевое слово',
   })
   @Type(() => CreateIdeaKeywordNameDto)
-  keyword_names: CreateIdeaKeywordNameDto[];
+  keyword_names: CreateIdeaKeywordNameDto[];*/
 }
 
 /*export class CreateIdeaDto {

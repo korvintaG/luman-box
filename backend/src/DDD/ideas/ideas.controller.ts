@@ -35,6 +35,15 @@ import { EntityModerateResponseDto } from 'src/shared/dto/entity-moderate-respon
 export class IdeasController {
   constructor(private readonly ideasService: IdeasService) {}
 
+  @Get('/idea-types')
+  @ApiOperation({ description: 'Получить список типов идей.' })
+  @ApiFindAllEntityErrors()
+  findIdeaTypes(
+  ) {
+    return this.ideasService.findIdeaTypes();
+  }
+
+
   @Post()
   @JwtAuthUser()
   @ApiOkResponse({ description: 'Добавленная идея', type: IdeaCreateResponseDto })

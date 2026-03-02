@@ -7,11 +7,24 @@ import {
   Entity,
   Column,
   Index,
+  PrimaryColumn,
 } from 'typeorm';
 import { Source } from '../../sources/entities/source.entity';
 import { Keyword, KeywordName } from '../../keywords/entities/keyword.entity';
 import { Attitude } from 'src/DDD/attitudes/entities/attitude.entity';
 import { EntityCommonFull} from '../../../shared/entities/abstract.entity';
+
+@Entity('idea_types')
+export class IdeaType  {
+  @PrimaryColumn({ type: 'integer'})
+  id: number;
+
+  @Column({ type: 'varchar', nullable: false })
+  name: string;
+
+  @OneToMany(() => Idea, (idea) => idea.idea_type_id)
+  ideas: Idea[];
+}
 
 @Entity('ideas')
 @Index('UQ_idea_source_id_name', ['source_id', 'name' ], { unique: true })
@@ -31,6 +44,13 @@ export class Idea extends EntityCommonFull {
 
   @Column({ type: 'varchar', nullable: true})
   SVG: string;
+
+  @Column({ type: 'integer', nullable: true })
+  idea_type_id: number | null;
+
+  @ManyToOne(() => IdeaType, (ideaType) => ideaType.ideas)
+  @JoinColumn({ name: 'idea_type_id' })
+  ideaType: IdeaType;
 
   @ManyToMany(() => KeywordName, (keywordName) => keywordName.ideas)
   @JoinTable({

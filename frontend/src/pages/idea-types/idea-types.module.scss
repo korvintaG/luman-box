@@ -1,0 +1,14 @@
+.main {
+    max-width: 1200px;
+    display: flex;
+    gap: 10px;
+    margin: 10px auto;
+    padding: 0 15px 10px;
+    flex-wrap: wrap;
+    justify-content: center;   
+
+    & p {
+       text-align: justify;
+      
+    }
+}

@@ -30,6 +30,7 @@ import { BreadcrumbSimpeType } from "../../../../../shared/components/Breadcrumb
 import SvgIcon from "../../../../../shared/components/SvgIcon/SvgIcon";
 import { Classes } from "../../../../../shared/types/ui-types";
 import { DivSpacer } from "../../../../../shared/ui/div-spacer/div-spacer";
+import { Link } from "react-router-dom";
 
 export type IdeaDetailsProps = {
   id: string | undefined;
@@ -72,6 +73,10 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
   const classes:Classes={
     classInputAdd:styles.input,
     classLabelAdd:styles.label
+  }
+
+  const getIdeaTypeName = (id:number) => {
+    return record.ideaTypes.find((el)=>el.id===id)?.name;
   }
 
   return (
@@ -165,7 +170,27 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
           />
           </div>
         )}
-       <TopicKeywords
+        <div className={styles.idea_type_block}>
+            {<InputSelectUI
+              name="idea_type_id"
+              readOnly={readOnly}
+              label="Тип идеи:"
+              value={form.values.idea_type_id}
+              onChange={form.handleChange}
+              dataCy="idea_type"
+              hideEmpty
+              valueText={getIdeaTypeName(form.values.idea_type_id)}
+              values={record.ideaTypes.map((el) => ({
+                id: el.id,
+                name: el.name ,
+              }))}
+            />}
+            {!readOnly && <Link to={"https://habr.com/ru/companies/lumanbox/articles/1004132/"}>
+              Как правильно задать тип идеи?
+            </Link>}
+        </div>
+
+       {/*<TopicKeywords
           searchKeyword={form.searchKeyword}
           keywordsSelected={form.values.keyword_names ? 
             //form.values.keyword_names.map(el => ({id:el.id, name:''}))  
@@ -174,7 +199,7 @@ export const IdeaDetails: FC<IdeaDetailsProps> = ({
           readOnly={readOnly}
           deleteKeyword={form.deleteKeyword}
           addKeyword={form.addKeyword}
-        />
+        />*/}
         {readOnly &&
           id &&
           record.currentRecord &&

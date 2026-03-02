@@ -9,12 +9,16 @@ export type IdeaListDetailGeneral = {
   date_time_create: Date;
   user: User;
   source: SourceShort;
+  idea_type_id: number;
 }
 
 export type IdeaShort = SimpleNameObject & IdeaListDetailGeneral;
 
+export type IdeaType = SimpleNameObject;
+
 export type IdeaListPlain = SimpleNameObject & {
   source_id: number;
+  idea_type_id: number;
   source_name: string;
   SVG: string | null;
 }
@@ -40,7 +44,7 @@ export type IdeaDetailAttachments = {
   interconnections?: InterconnectionsCount[];
 }
 
-export type IdeaDetail = IdeaAdd & IDObject & IdeaDetailAttachments & ObjectCreation & ObjectModeration;
+export type IdeaDetail = IdeaAdd & IDObject & IdeaDetailAttachments & ObjectCreation & ObjectModeration ;
 export type IdeaDetailPartial = Partial<IdeaDetail> & IDObject;
 
 export type IdeaForList = {
@@ -48,6 +52,7 @@ export type IdeaForList = {
     name:string;
     source_name: string;
     source_id:number;
+    idea_type_id: number;
     SVG: string | null;
 }
   

@@ -17,9 +17,9 @@ import LoginPage from "../../pages/LoginPage/login-page";
 import { NotFoundPage } from "../../pages/NotFoundPage/not-found-page";
 import { TestPage, getArrayLoader } from "../../pages/TestPage/TestPage";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
-import { ideasLoad } from "../../domains/idea/loaders/IdeasListLoader";
-import { ideaEditLoad } from "../../domains/idea/loaders/IdeaDetailsEditLoader";
-import { ideaAddLoad } from "../../domains/idea/loaders/IdeaDetailsAddLoader";
+import { ideasLoad } from "../../domains/idea/loaders/idea-list-loader";
+import { ideaEditLoad } from "../../domains/idea/loaders/idea-details-edit-loader";
+import { ideaAddLoad } from "../../domains/idea/loaders/idea-details-add-loader";
 import { sourceListLoad } from "../../domains/source/loaders/SourceListLoader";
 import { sourceEditLoad } from "../../domains/source/loaders/SourceDetailsEditLoader";
 import { sourceAddLoad } from "../../domains/source/loaders/SourceDetailsAddLoader";
@@ -30,6 +30,7 @@ import { interconnectionEditLoad } from "../../domains/interconnection/loaders/I
 import { interconnectionAddLoad } from "../../domains/interconnection/loaders/InterconnectionDetailsAddLoader";
 import { KeywordAddPage } from "../../domains/keyword/pages/keyword-add-page";
 import { keywordAddLoad } from "../../domains/keyword/loaders/keyword-add-loader";
+import { IdeaTypesPage } from "../../pages/idea-types/idea-types";
 
 export const appRoutes = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const appRoutes = createBrowserRouter([
         loader: getArrayLoader,
       },
       { path: appRoutesURL.CMS, element: <CMSPage /> },
+      { path: appRoutesURL.ideaTypes, element: <IdeaTypesPage /> },
       {
         path: appRoutesURL.authors,
         Component: AuthorListPage,

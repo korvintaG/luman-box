@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Author } from './DDD/authors/entities/author.entity';
 import { Source } from './DDD/sources/entities/source.entity';
 import { Keyword, KeywordModeration, KeywordName } from './DDD/keywords/entities/keyword.entity';
-import { Idea } from './DDD/ideas/entities/idea.entity';
+import { Idea, IdeaType } from './DDD/ideas/entities/idea.entity';
 import { configProvider } from './app.config.provider';
 import { SourcesModule } from './DDD/sources/sources.module';
 import { KeywordsModule } from './DDD/keywords/keywords.module';
@@ -51,6 +51,7 @@ import { DatabaseSetupService } from './shared/services/database-setup/database-
             Attitude,
             Interconnection,
             Idea,
+            IdeaType,
             User,
             TelegramSessions,
             TelegramMessage,

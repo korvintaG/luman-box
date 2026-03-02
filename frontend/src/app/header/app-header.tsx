@@ -29,7 +29,8 @@ export const AppHeaderUI = () => {
     { name: "Авторы", link: appRoutesURL.authors, dataCy: "authors-menu" },
     { name: "Источники", link: appRoutesURL.sources, dataCy: "sources-menu" },
     { name: "Идеи", link: appRoutesURL.ideas, dataCy: "ideas-menu" },
-    { name: "Ключевые слова", link: genKeywordsByClassURL(0), dataCy: "keywords-menu" },
+    /*{ name: "Ключевые слова", link: genKeywordsByClassURL(0), dataCy: "keywords-menu" },*/
+    /*{ name: "Типы идей", link: appRoutesURL.ideaTypes, dataCy: "idea-types-menu" },*/
   ];
 
   const currentUser = useSelector(selectCurrentUser);

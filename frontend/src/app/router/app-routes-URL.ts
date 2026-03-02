@@ -33,6 +33,7 @@ export const appRoutesURL = {
   keyword: routeKeyword+routeEdit,
   keywordAdd: routeKeyword+"/:class_keyword_id/children"+routeAdd,
   user: routeUser+routeEdit,
+  ideaTypes: '/idea-types'
 };
 
 

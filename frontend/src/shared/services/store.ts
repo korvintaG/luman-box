@@ -14,6 +14,7 @@ import interconnectionAddReducer from "../../domains/interconnection/store/inter
 import interconnectionEditReducer from "../../domains/interconnection/store/interconnection-edit-slice";
 import filesReducer from "../../features/files/store/filesSlice";
 import keywordSearchReducer from "../../domains/keyword/store/keyword-search-slice"
+import ideaTypesSliceReducer from "../../domains/idea/store/idea-types-slice";
 
 import {
   TypedUseSelectorHook,
@@ -36,7 +37,8 @@ export const rootReducer = combineReducers({
   interconnectionList: interconnectionListReducer,
   interconnectionAdd: interconnectionAddReducer,
   interconnectionEdit: interconnectionEditReducer,
-  files: filesReducer
+  files: filesReducer,
+  ideaTypes: ideaTypesSliceReducer
 });
 
 export const store = configureStore({

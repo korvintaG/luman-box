@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException, Inject, forwardRef 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, FindManyOptions, FindOptionsWhere } from 'typeorm';
 import { JSDOM } from 'jsdom';
-import { Idea } from './entities/idea.entity';
+import { Idea, IdeaType } from './entities/idea.entity';
 import { CreateIdeaDto } from './dto/create-idea.dto';
 import { UpdateIdeaDto } from './dto/update-idea.dto';
 import { IIdeaBySourceAndKeyword, IdeaForList, IModerate } from '../../types/custom';
@@ -35,6 +35,14 @@ export class IdeasService {
     @Inject(forwardRef(() => SourcesService))
     private sourcesService: SourcesService
   ) { }
+
+  async findIdeaTypes() {
+    const ideaTypes = await this.ideaRepository.manager.query<IdeaType[]>(
+      `select idea_types.id, idea_types.name
+      from idea_types
+      order by id`);
+    return ideaTypes;
+  }
 
   findSvgElement = (node: Node): Element | null => {
     // Если это элемент SVG - возвращаем его
@@ -80,7 +88,7 @@ export class IdeasService {
       'Идея'
     );
 
-    if (!createIdeaDto.keyword_names)
+    /*if (!createIdeaDto.keyword_names)
       throw new BadRequestException( {
         error: 'Bad Request',
         message: 'Для идеи должны быть назначены ключевые слова!'
@@ -90,7 +98,7 @@ export class IdeasService {
       throw new BadRequestException({
         error: 'Bad Request',
         message: `Для идеи может быть назначено не более ${process.env.MAX_KEYWORDS_FOR_IDEA} ключевых слов!`
-      });
+      });*/
 
       
     let onlyIdea = omit(createIdeaDto, ['keywords', 'date_time_create']);
@@ -110,13 +118,13 @@ export class IdeasService {
     }
 
     let idea = this.ideaRepository.create({ ...onlyIdea, SVG });
-    if (createIdeaDto.keyword_names && createIdeaDto.keyword_names.length > 0) {
+    /*if (createIdeaDto.keyword_names && createIdeaDto.keyword_names.length > 0) {
       const keywordNameRepository = this.ideaRepository.manager.getRepository(KeywordName);
       const keywordNames = await keywordNameRepository.find({
         where: { id: In(createIdeaDto.keyword_names.map((el) => el.id)) },
       });
       idea.keyword_names = keywordNames;
-    }
+    }*/
     return this.ideaRepository.save({ ...idea, user: { id: user.id } });
   }
 
@@ -311,12 +319,16 @@ export class IdeasService {
       });
     }
     await this.moderatorService.checkGetRecordAccess(found, user);
+    /*const ideaTypes = await this.ideaRepository.manager.query<IdeaType[]>(
+      `select idea_types.id, idea_types.name
+      from idea_types
+      order by id`);*/
     if (found.moderator) {
       const attitudes = await this.attitudesService.findOne(id, user);
       const interconnections = await this.interconnectionsService.countAllByIdea(id, user);
-      return { ...found, attitudes, interconnections }
+      return { ...found, attitudes, interconnections/*, idea_types: ideaTypes */}
     }
-    return found
+    return { ...found/*, idea_types:ideaTypes */}
   }
 
   async update(id: number, user: IUser, updateIdeaDto: UpdateIdeaDto) {
@@ -341,13 +353,13 @@ export class IdeasService {
       }
     }
 
-    if (updateIdeaDto.keyword_names && updateIdeaDto.keyword_names.length > 0) {
+    /*if (updateIdeaDto.keyword_names && updateIdeaDto.keyword_names.length > 0) {
       const keywordNameRepository = this.ideaRepository.manager.getRepository(KeywordName);
       const keywordNames = await keywordNameRepository.find({
         where: { id: In(updateIdeaDto.keyword_names.map((el) => el.id)) },
       });
       idea.keyword_names = keywordNames;
-    }
+    }*/
 
     return this.ideaRepository.save({ ...idea, SVG });
   }

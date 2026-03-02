@@ -1,7 +1,9 @@
 import { Params } from "react-router-dom";
 import store from "../../../shared/services/store";
 import { getIdea, getIdeaBySrcKw } from "../store/idea-details-slice";
-import { ideaAdditionalLoad } from "./IdeaDetailsAdditionalLoader";
+import { ideaAdditionalLoad } from "./idea-details-additional-loader";
+import { fetchIdeaTypes } from "../store/idea-types-slice";
+import { RequestStatus } from "../../../shared/types/types-for-hooks";
 
 
 export async function ideaEditLoad({ params, request }:
@@ -10,7 +12,14 @@ export async function ideaEditLoad({ params, request }:
   const url = new URL(request.url);
   const condSrc = url.searchParams.get("source_id");
   const condKw = url.searchParams.get("keyword_id");
+  await store.dispatch(fetchIdeaTypes());
   const state = store.getState();
+  if (
+    state.ideaTypes.status === RequestStatus.Failed ||
+    state.ideaTypes.status === RequestStatus.FailedUnAuth
+  ) {
+    throw new Error(state.ideaTypes.error);
+  }
 
   if (id) {
     const result = await store.dispatch(getIdea(Number(id)));

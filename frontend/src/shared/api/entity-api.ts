@@ -80,7 +80,7 @@ export abstract class EntityAPI<
   };
 
   setEntity = (data: EntityDetailPartial) => {
-        console.log("setEntity", data);
+        console.log("setEntity", JSON.stringify({ ...data }));
         return this.requestWithRefresh<EntityDetail>(`/${this.entity}/${data.id}`, {
           method: "PATCH",
           body: JSON.stringify({ ...data }),

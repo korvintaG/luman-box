@@ -1,4 +1,4 @@
-import { IdeaAdd, IdeaDetail, IdeaDetailPartial, IdeaForList, IdeaList, IdeaPlain, IdeaShort, UserAttitude,  UserAttitudeIdea} 
+import { IdeaAdd, IdeaDetail, IdeaDetailPartial, IdeaForList, IdeaList, IdeaPlain, IdeaShort, IdeaType, UserAttitude,  UserAttitudeIdea} 
 from '../types/IdeaTypes'
 import { getCookie } from '../../../shared/utils/cookie'; 
 import { omit } from "lodash";
@@ -11,6 +11,7 @@ export interface IIdeaAPI extends IEntityAPI<
   undefined, IdeaList[]> 
 {
   getIdeaForList : (id: number) => Promise<IdeaForList>;
+  getIdeaTypes: () => Promise<IdeaType[]>;
 }
 
 export class IdeaAPI extends EntityAPI<
@@ -21,6 +22,13 @@ export class IdeaAPI extends EntityAPI<
 
   constructor() {
     super("ideas");
+  }
+
+  getIdeaTypes = () : Promise<IdeaType[]>=> {
+    return this.request<IdeaType[]>(
+      `/ideas/idea-types`,
+      { method: "GET" },
+    );
   }
 
   getIdeasBySrcKw = (cond: {
