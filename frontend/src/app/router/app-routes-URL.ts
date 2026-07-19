@@ -9,6 +9,7 @@ const routeIdea="/ideas"; // маршрут идей
 const routeInterconnection="/interconnections"; // маршрут связей
 const routeKeyword="/keywords"; // маршрут ключевых слов
 const routeUser="/users"; // маршрут пользователей
+const routeMindTest="/mind-test"; // маршрут пользователей
 
 export const appRoutesURL = {
   home: "/",
@@ -33,7 +34,8 @@ export const appRoutesURL = {
   keyword: routeKeyword+routeEdit,
   keywordAdd: routeKeyword+"/:class_keyword_id/children"+routeAdd,
   user: routeUser+routeEdit,
-  ideaTypes: '/idea-types'
+  ideaTypes: '/idea-types',
+  routeMindTest: routeMindTest
 };
 
 

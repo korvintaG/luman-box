@@ -22,6 +22,8 @@ import { Attitude } from './DDD/attitudes/entities/attitude.entity';
 import { AttitudesModule } from './DDD/attitudes/attitudes.module';
 import { Interconnection } from './DDD/interconnections/entities/interconnection.entity';
 import { InterconnectionsModule } from './DDD/interconnections/interconnections.module';
+import { FacetEntity, FacetMechanism } from './DDD/facets/entities/facet.entity';
+import { FacetsModule } from './DDD/facets/facets.module';
 import { FilesModule } from './files/files.module';
 import { DatabaseSetupService } from './shared/services/database-setup/database-setup.service';
 
@@ -50,6 +52,8 @@ import { DatabaseSetupService } from './shared/services/database-setup/database-
             KeywordModeration,
             Attitude,
             Interconnection,
+            FacetEntity, 
+            FacetMechanism,
             Idea,
             IdeaType,
             User,
@@ -71,7 +75,8 @@ import { DatabaseSetupService } from './shared/services/database-setup/database-
     UsersModule,
     AuthModule,
     AttitudesModule,
-    InterconnectionsModule
+    InterconnectionsModule,
+    FacetsModule,
   ],
   providers: [configProvider, DatabaseSetupService,
   ],

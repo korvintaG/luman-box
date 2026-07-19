@@ -31,6 +31,7 @@ import { interconnectionAddLoad } from "../../domains/interconnection/loaders/In
 import { KeywordAddPage } from "../../domains/keyword/pages/keyword-add-page";
 import { keywordAddLoad } from "../../domains/keyword/loaders/keyword-add-loader";
 import { IdeaTypesPage } from "../../pages/idea-types/idea-types";
+import { MindTest } from "../../domains/mind-test/mind-test";
 
 export const appRoutes = createBrowserRouter([
   {
@@ -133,6 +134,11 @@ export const appRoutes = createBrowserRouter([
         path: appRoutesURL.keyword,
         Component: KeywordDetailsPage,
         loader: keywordLoad,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: appRoutesURL.routeMindTest,
+        Component: MindTest,
         errorElement: <ErrorPage />,
       },
       { path: appRoutesURL.auth, element: <LoginPage /> },

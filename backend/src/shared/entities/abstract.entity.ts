@@ -70,3 +70,29 @@ export abstract class EntityCommonFull extends EntityCommon {
   @Column({ type: 'varchar'})
   name: string;
 }
+
+export abstract class Facet extends EntityIDName {
+  @Column({ type: 'varchar', nullable: true})
+  id_out: string;
+
+  @Column({ type: 'integer'})
+  class_id: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  class_id_out: string;
+
+  @Column({ type: 'integer', default: 0})
+  order_: number;
+
+  @Column({ type: 'integer', default: 0})
+  order_global: number;
+
+  @Column({ type: 'varchar', nullable: true })
+  class_name_before: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  class_name_after: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  bread_crumbs: string;
+}
